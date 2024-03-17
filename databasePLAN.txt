@@ -1,0 +1,244 @@
+-----------------------------------------------------------------
+ceos*:
+-id
+-name
+-email[UNIQUE]
+-password
+created_at
+updated_at
+
+warehouses*:
+-id
+-name[UNIQUE]
+-ceo_id
+totla_income
+city_id
+created_at
+updated_at
+
+employees*:
+-id
+-name
+-email[UNIQUE]
+-password
+-position
+-warehouse_id
+activity
+all_vacation
+payment
+proifile_picture
+created_at
+updated_at
+
+fleets:
+-id
+-employee_id
+-warehouse_id
+-plate_number[UNIQUE]
+type
+chassis_number
+consumption
+gas_tank_size
+storage
+status
+last_service
+created_at
+updated_at
+
+cities[FROM TXT]:
+-id
+-city_name[UNIQUE]
+-longtitude
+-latitude
+
+orders:
+-id
+-qty
+-order_date
+-warehouse_id
+-product_id
+user_name
+payment_method
+sum_volume
+created_at
+updated_at
+
+products:
+-id
+-product_name
+-price
+weight
+volume
+description
+image
+created_at
+updated_at
+
+log:
+-id
+-person_id
+-log_message
+-updated_at
+
+costume roles:
+-id
+-role_name
+created_at
+updated_at
+
+jobs done:
+-id
+-person_id
+-job_count
+created_at
+updated_at
+
+vacations:
+-id
+-person_id
+-from_when
+-to_when
+
+[warehouse]:
+-id
+-product_id
+-qty
+
+
+-- Először hozzuk létre a cities táblát, mert ez nem függ más tábláktól
+CREATE TABLE cities (
+  id INT PRIMARY KEY,
+  city_name VARCHAR(50) NOT NULL,
+  longitude DECIMAL(9,6) NOT NULL,
+  latitude DECIMAL(9,6) NOT NULL
+);
+
+-- Másodszor hozzuk létre a ceos táblát, mert ez sem függ más tábláktól
+CREATE TABLE ceos (
+  id INT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  email VARCHAR(50) UNIQUE NOT NULL,
+  password VARCHAR(50) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Harmadszor hozzuk létre a warehouses táblát, mert ez függ a cities és a ceos tábláktól
+CREATE TABLE warehouses (
+  id INT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  ceo_id INT NOT NULL,
+  total_income DECIMAL(10,2) NOT NULL,
+  city_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (ceo_id) REFERENCES ceos (id),
+  FOREIGN KEY (city_id) REFERENCES cities (id)
+);
+
+-- Negyedszer hozzuk létre az employees táblát, mert ez függ a warehouses táblától
+CREATE TABLE employees (
+  id INT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  email VARCHAR(50) UNIQUE NOT NULL,
+  password VARCHAR(50) NOT NULL,
+  position VARCHAR(50) NOT NULL,
+  activity BOOLEAN DEFAULT TRUE,
+  all_vacation INT NOT NULL,
+  payment DECIMAL(10,2) NOT NULL,
+  profile_picture VARCHAR(50),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  warehouse_id INT NOT NULL,
+  FOREIGN KEY (warehouse_id) REFERENCES warehouses (id)
+);
+
+-- Ötödször hozzuk létre a products táblát, mert ez sem függ más tábláktól
+CREATE TABLE products (
+  id INT PRIMARY KEY,
+  product_name VARCHAR(50) NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  weight DECIMAL(10,2) NOT NULL,
+  volume DECIMAL(10,2) NOT NULL,
+  description VARCHAR(255),
+  image VARCHAR(50),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Hatodszor hozzuk létre az orders táblát, mert ez függ a warehouses és a products tábláktól
+CREATE TABLE orders (
+  id INT PRIMARY KEY,
+  qty INT NOT NULL,
+  order_date DATE NOT NULL,
+  warehouse_id INT NOT NULL,
+  product_id INT NOT NULL,
+  user_name VARCHAR(50) NOT NULL,
+  payment_method VARCHAR(50) NOT NULL,
+  sum_volume DECIMAL(10,2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (warehouse_id) REFERENCES warehouses (id),
+  FOREIGN KEY (product_id) REFERENCES products (id)
+);
+
+-- Hetedik hozzuk létre a fleets táblát, mert ez függ az employees és a warehouses tábláktól
+CREATE TABLE fleets (
+  id INT PRIMARY KEY,
+  employee_id INT NOT NULL,
+  warehouse_id INT NOT NULL,
+  plate_number VARCHAR(50) NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  chassis_number VARCHAR(50) NOT NULL,
+  consumption DECIMAL(10,2) NOT NULL,
+  gas_tank_size DECIMAL(10,2) NOT NULL,
+  storage DECIMAL(10,2) NOT NULL,
+  status VARCHAR(50) NOT NULL,
+  last_service DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (employee_id) REFERENCES employees (id),
+  FOREIGN KEY (warehouse_id) REFERENCES warehouses (id)
+);
+
+-- Nyolcadik hozzuk létre a log táblát, mert ez függ az employees táblától
+CREATE TABLE log (
+  id INT PRIMARY KEY,
+  person_id INT NOT NULL,
+  log_message VARCHAR(255) NOT NULL,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (person_id) REFERENCES employees (id)
+);
+
+-- Kilencedik hozzuk létre a costume_roles táblát, mert ez sem függ más tábláktól
+CREATE TABLE costume_roles (
+  id INT PRIMARY KEY,
+  role_name VARCHAR(50) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tizedik hozzuk létre a jobs_done táblát, mert ez függ az employees táblától
+CREATE TABLE jobs_done (
+  id INT PRIMARY KEY,
+  person_id INT NOT NULL,
+  job_count INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (person_id) REFERENCES employees (id)
+);
+
+-- Tizenegyedik hozzuk létre a vacations táblát, mert ez függ az employees táblától
+CREATE TABLE vacations (
+  id INT PRIMARY KEY,
+  person_id INT NOT NULL,
+  from_when DATE NOT NULL,
+  to_when DATE NOT NULL,
+  FOREIGN KEY (person_id) REFERENCES employees (id)
+);
+
+
+-- Végül hozzuk létre a jobs_done és a vacations táblákat, mert ezek csak az employees tábláktól függnek
+
+
+

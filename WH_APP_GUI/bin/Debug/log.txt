@@ -1,0 +1,103 @@
+
+[2024. 03. 13:15-09] ERROR: MySqlConnector.MySqlException (0x80004005): Unknown database 'someotherdb'
+   a következő helyen: MySqlConnector.Core.ServerSession.<ReceiveReplyAsync>d__107.MoveNext() hely: /_/src/MySqlConnector/Core/ServerSession.cs, sor: 876
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: System.Threading.Tasks.ValueTask`1.get_Result()
+   a következő helyen: MySqlConnector.Core.ServerSession.<ConnectAsync>d__98.MoveNext() hely: /_/src/MySqlConnector/Core/ServerSession.cs, sor: 532
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: MySqlConnector.Core.ConnectionPool.<ConnectSessionAsync>d__21.MoveNext() hely: /_/src/MySqlConnector/Core/ConnectionPool.cs, sor: 428
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   a következő helyen: MySqlConnector.Core.ConnectionPool.<ConnectSessionAsync>d__21.MoveNext() hely: /_/src/MySqlConnector/Core/ConnectionPool.cs, sor: 433
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: System.Threading.Tasks.ValueTask`1.get_Result()
+   a következő helyen: MySqlConnector.Core.ConnectionPool.<GetSessionAsync>d__9.MoveNext() hely: /_/src/MySqlConnector/Core/ConnectionPool.cs, sor: 111
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   a következő helyen: MySqlConnector.Core.ConnectionPool.<GetSessionAsync>d__9.MoveNext() hely: /_/src/MySqlConnector/Core/ConnectionPool.cs, sor: 144
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: System.Threading.Tasks.ValueTask`1.get_Result()
+   a következő helyen: MySqlConnector.MySqlConnection.<CreateSessionAsync>d__131.MoveNext() hely: /_/src/MySqlConnector/MySqlConnection.cs, sor: 919
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: System.Threading.Tasks.ValueTask`1.get_Result()
+   a következő helyen: MySqlConnector.MySqlConnection.<OpenAsync>d__28.MoveNext() hely: /_/src/MySqlConnector/MySqlConnection.cs, sor: 434
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: MySqlConnector.MySqlConnection.Open() hely: /_/src/MySqlConnector/MySqlConnection.cs, sor: 381
+   a következő helyen: WH_APP_GUI.SQL.SqlQuery(String query) hely: C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpfApp\WH_APP_GUI\SQL.cs, sor: 244
+[2024. 03. 13:15-10] ERROR: MySqlConnector.MySqlException (0x80004005): Unknown database 'someotherdb'
+   a következő helyen: MySqlConnector.Core.ServerSession.<ReceiveReplyAsync>d__107.MoveNext() hely: /_/src/MySqlConnector/Core/ServerSession.cs, sor: 876
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: System.Threading.Tasks.ValueTask`1.get_Result()
+   a következő helyen: MySqlConnector.Core.ServerSession.<ConnectAsync>d__98.MoveNext() hely: /_/src/MySqlConnector/Core/ServerSession.cs, sor: 532
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: MySqlConnector.Core.ConnectionPool.<ConnectSessionAsync>d__21.MoveNext() hely: /_/src/MySqlConnector/Core/ConnectionPool.cs, sor: 428
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   a következő helyen: MySqlConnector.Core.ConnectionPool.<ConnectSessionAsync>d__21.MoveNext() hely: /_/src/MySqlConnector/Core/ConnectionPool.cs, sor: 433
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: System.Threading.Tasks.ValueTask`1.get_Result()
+   a következő helyen: MySqlConnector.Core.ConnectionPool.<GetSessionAsync>d__9.MoveNext() hely: /_/src/MySqlConnector/Core/ConnectionPool.cs, sor: 111
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   a következő helyen: MySqlConnector.Core.ConnectionPool.<GetSessionAsync>d__9.MoveNext() hely: /_/src/MySqlConnector/Core/ConnectionPool.cs, sor: 144
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: System.Threading.Tasks.ValueTask`1.get_Result()
+   a következő helyen: MySqlConnector.MySqlConnection.<CreateSessionAsync>d__131.MoveNext() hely: /_/src/MySqlConnector/MySqlConnection.cs, sor: 919
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: System.Threading.Tasks.ValueTask`1.get_Result()
+   a következő helyen: MySqlConnector.MySqlConnection.<OpenAsync>d__28.MoveNext() hely: /_/src/MySqlConnector/MySqlConnection.cs, sor: 434
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: MySqlConnector.MySqlConnection.Open() hely: /_/src/MySqlConnector/MySqlConnection.cs, sor: 381
+   a következő helyen: WH_APP_GUI.SQL.SqlQuery(String query) hely: C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpfApp\WH_APP_GUI\SQL.cs, sor: 244
+[2024. 03. 13:15-15] ERROR: MySqlConnector.MySqlException (0x80004005): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DEFAULT CHARACTER SET utf8' at line 1
+   a következő helyen: MySqlConnector.Core.ServerSession.<ReceiveReplyAsync>d__107.MoveNext() hely: /_/src/MySqlConnector/Core/ServerSession.cs, sor: 876
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: System.Threading.Tasks.ValueTask`1.get_Result()
+   a következő helyen: MySqlConnector.Core.ResultSet.<ReadResultSetHeaderAsync>d__2.MoveNext() hely: /_/src/MySqlConnector/Core/ResultSet.cs, sor: 37
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) hely: /_/src/MySqlConnector/MySqlDataReader.cs, sor: 130
+   a következő helyen: MySqlConnector.MySqlDataReader.<InitAsync>d__107.MoveNext() hely: /_/src/MySqlConnector/MySqlDataReader.cs, sor: 503
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ValidateEnd(Task task)
+   a következő helyen: MySqlConnector.Core.CommandExecutor.<ExecuteReaderAsync>d__0.MoveNext() hely: /_/src/MySqlConnector/Core/CommandExecutor.cs, sor: 56
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: MySqlConnector.MySqlCommand.<ExecuteNonQueryAsync>d__78.MoveNext() hely: /_/src/MySqlConnector/MySqlCommand.cs, sor: 309
+--- Verem vége nyomkövetés a kivétel előző előfordulási helyétől kezdve ---
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   a következő helyen: System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   a következő helyen: MySqlConnector.MySqlCommand.ExecuteNonQuery() hely: /_/src/MySqlConnector/MySqlCommand.cs, sor: 108
+   a következő helyen: WH_APP_GUI.SQL.SqlCommandWithoutDatabase(String command) hely: C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpfApp\WH_APP_GUI\SQL.cs, sor: 174
+[2024. 03. 14:21-25] ERROR: System.NullReferenceException: Az objektumhivatkozás nincs beállítva semmilyen objektumpéldányra.
+   a következő helyen: WH_APP_GUI.SQL.FindOneDataFromQuery(String query) hely: C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpfApp\WH_APP_GUI\SQL.cs, sor: 200
+[2024. 03. 14:21-26] ERROR: System.NullReferenceException: Az objektumhivatkozás nincs beállítva semmilyen objektumpéldányra.
+   a következő helyen: WH_APP_GUI.SQL.FindOneDataFromQuery(String query) hely: C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpfApp\WH_APP_GUI\SQL.cs, sor: 200
