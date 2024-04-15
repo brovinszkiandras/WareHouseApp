@@ -1,0 +1,123 @@
+﻿<Page x:Class="WH_APP_GUI.WarehousesPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WH_APP_GUI"
+        mc:Ignorable="d"
+        Unloaded="Page_Unloaded"
+        Title="WarehousesPage"
+      d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel Margin="10">
+            <Button Content="Add new warehouse" Name="AddNewWarehouse" Click="AddNewWarehouse_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+        
+            <ScrollViewer Name="DisplayWarehouses" Visibility="Visible">
+                <StackPanel Name="DisplayWarehousesStackpanel" Orientation="Vertical" Visibility="Visible">
+
+                </StackPanel>
+            </ScrollViewer>
+        </StackPanel>
+
+        <Grid x:Name="Display" Grid.Column="1">
+
+            <StackPanel Name="AddNewWarehouseDisplay" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <Label Content="Warehouse Name:" Name="WHnameLBL" VerticalAlignment="Bottom"/>
+                <TextBox Name="WarehouseName" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
+
+                <Label Content="Warehouse Length:" Name="WHlenghtLBL" VerticalAlignment="Bottom" Visibility="Collapsed"/>
+                <TextBox Name="WarehouseLength" BorderBrush="Black" SelectionBrush="Black" Visibility="Collapsed" Margin="5"/>
+
+                <Label Content="Warehouse Width:" Name="WHwidthLBL" VerticalAlignment="Bottom" Visibility="Collapsed"/>
+                <TextBox Name="WarehouseWidth" SelectionBrush="Black" BorderBrush="Black" Visibility="Collapsed" Margin="5"/>
+
+                <Label Content="Warehouse Height:" Name="WHheightLBL" VerticalAlignment="Bottom" Visibility="Collapsed"/>
+                <TextBox Name="WarehouseHeight" SelectionBrush="Black" BorderBrush="Black" Visibility="Collapsed" Margin="5"/>
+
+                <Label Content="City:" Name="WHcityLBL" VerticalAlignment="Bottom" Visibility="Collapsed"/>
+                <ComboBox Name="CityID" BorderBrush="Black" Visibility="Visible" Margin="5"/>
+
+                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
+                    <Button Content="Create Warehouse" Name="CreateWarehouse" Click="CreateWarehouse_Click" Margin="10"/>
+                    <Button Content="Cancel" Name="CancelCreation" Click="CancelCreation_Click" Margin="10"/>
+                </StackPanel>
+
+            </StackPanel>
+
+            <Grid Name="DisplayOneWarehouse" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Height="auto" Content="Warehouse name" Name="WarehouseNameDisplay" BorderBrush="Black" BorderThickness="0,0,0,2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"/>
+
+
+                    <Grid Name="MapDisplay" Grid.Row="1"/>
+                        
+                <ScrollViewer Grid.Row="2">
+
+                    <StackPanel Name="Statistic" Grid.Row="1">
+                        <Label Content="Revenue a day: Kiadás"/>
+                        <Label Content="Revenue a day: Bevétel"/>
+                        <Label Content="Warehouse total value: work in progress"/>
+                        <Label Content="Warehouse total income: work in progress"/>
+                        <Label Content="Warehouse total spending: work in progress"/>
+                        <Label Content="Warehouse capacity usage: work in progress"/>
+
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                        <Label Content="1"/>
+                    </StackPanel>
+                </ScrollViewer>
+
+
+                <StackPanel Grid.Column="1" Grid.RowSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                    <Button Margin="20, 5" Content="Sectors" Name="SectorsInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="SectorsInspectToWarehouse_Click"/>
+                    <Button Margin="20, 5" Content="Employees" Name="EmployeesInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="EmployeesInspectToWarehouse_Click"/>
+                    <Button Margin="20, 5" Content="Orders" Name="OrdersInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="OrdersInspectToWarehouse_Click"/>
+                    <Button Margin="20, 5" Content="Products" Name="ProductsInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="ProductsInspectToWarehouse_Click"/>
+                    <Button Margin="20, 5" Content="Fleet" Name="FleetInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="FleetInspectToWarehouse_Click"/>
+                    <Button Margin="20, 5" Content="Docks" Name="DocksInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="DocksInspectToWarehouse_Click"/>
+                    <Button Margin="20, 5" Content="Forklift" Name="ForkliftInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="ForkliftInspectToWarehouse_Click"/>
+
+                    <Button Margin="20, 30" Content="back" Name="back_all_Warehouse" Click="Back_AllWarehouse_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" VerticalAlignment="Bottom"/>
+
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

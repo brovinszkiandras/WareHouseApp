@@ -1,0 +1,23 @@
+﻿<Window x:Class="WH_APP_GUI.CreateShelf"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WH_APP_GUI"
+        mc:Ignorable="d"
+        Title="CreateShelf" Height="400" Width="400">
+    <Grid>
+        <StackPanel Width="200">
+            <Label Content="Shelf Name:"></Label>
+            <TextBox x:Name="shelf_Name"></TextBox>
+            <Label HorizontalAlignment="Left" Content="Width"></Label>
+            <StackPanel Orientation="Horizontal">
+                <TextBox HorizontalAlignment="Left" Name="shelf_width" Width="130"></TextBox>
+                <Label Name="maxWidth" Width="70"></Label>
+            </StackPanel>
+            <Label Content="Orientation"></Label>
+            <Button x:Name="change_orientation" Click="change_orientation_Click" Content="Horizontal"></Button>
+        </StackPanel>
+        <Button Click="Button_Click" VerticalAlignment="Center" Height="30" Content="To shelf creator" Width="200"></Button>
+    </Grid>
+</Window>
