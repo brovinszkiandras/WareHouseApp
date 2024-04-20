@@ -347,13 +347,51 @@ namespace WH_APP_GUI
         }
         #endregion
 
-        static public bool ContainsIllegalRegex(string input)
+        static public bool ContainsAllIllegalRegex(string input)
         {
-            string[] illegalPatterns = { @"\s", @"[\W&&[^_]]", @"\b(select|insert|update|delete|table)\b", @"[!@#$%^&*()+=\[\]{};':"",.<>?/\\|~`]", "[áéűó]" };
+            string[] illegalPatterns = {
+                @"\s",                                   
+                @"[\W&&[^_]]",                            
+                @"\b(select|insert|update|delete|table)\b", 
+                @"[!@#$%^&*()+=\[\]{};':"",.<>?/\\|~`]",  
+                "[áéűó]"                                  
+            };
 
             foreach (var pattern in illegalPatterns)
             {
-                if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase) || char.IsDigit(input[0]))
+                if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase))
+                {
+                    return true;
+                }
+            }
+           
+            return false;
+        }
+
+        static public bool ContainsIllegalRegexWithExceptions(string input, char[] exceptions)
+        {
+            char[] problematicCharacters = {
+                '\'', '\"', ';', '(', ')', ' ',
+                '[', ']', '{', '}', '=', '<', '>', ',',
+                '+', '-', '*', '/', '%', '&', '|', '^', '~', '!',
+                '\\', '\n', '\r', '\t'
+            };
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (problematicCharacters.Contains(input[i]) && !exceptions.Contains(input[i]))
+                {
+                    return true;
+                }
+            }
+
+            string[] problematicWords = {
+                "insert", "delete", "update", "select", "drop", "create"
+            };
+
+            for (int i = 0; i < problematicWords.Length; i++)
+            {
+                if (input.Contains(problematicWords[i]))
                 {
                     return true;
                 }

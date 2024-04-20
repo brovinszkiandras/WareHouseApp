@@ -16,12 +16,12 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel HorizontalAlignment="Center">
-
-            <Button Margin="30, 30, 30, 5" Content="Loging as Admin" Name="LoginAsAdmin" Click="LoginAsAdmin_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
             <Button Margin="30, 5" Content="Register a new Employee" Name="RegisterEmployee" Click="RegisterEmployee_Click"  Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Margin="30, 5" Content="Register a new Staff" Name="RegisterStaff" Click="RegisterStaff_Click"  Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
             <Button Margin="30, 5" Content="Import Employees" Name="ImportEmployees" Click="ImportEmployees_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
             <Button Margin="30, 5" Content="Manage Database" Name="ManageDatabase" Click="ManageDatabase_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
             <Button Margin="30, 5" Content="Manage Roles" Name="manageRoles" Click="manageRoles_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Content="To the app" Name="ToTheApp" Visibility="Collapsed" Margin="30, 5" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="ToTheApp_Click"/>
         </StackPanel>
         
         <Grid x:Name="Display" Grid.Column="1" Background="White" Visibility="Visible">
@@ -103,8 +103,7 @@
                 </StackPanel>
             </StackPanel>
             
-            
-            <ScrollViewer x:Name="RolesScrollViewer" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" Grid.Row="1">
+            <ScrollViewer x:Name="RolesScrollViewer" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible" Grid.Row="1">
                 <StackPanel Orientation="Vertical" Name="RolesStackpanel">
                 </StackPanel>
             </ScrollViewer>
@@ -124,5 +123,6 @@
 
             <Button Margin="30" Content="Create Fetures" Name="IncludeFeture" Click="IncludeFeture_Click" BorderBrush="Black" Background="White" Foreground="Black" BorderThickness="1"/>
         </StackPanel>
+        <Frame x:Name="AdminContent" Grid.ColumnSpan="2" Visibility="Collapsed"/>
     </Grid>
 </Page>

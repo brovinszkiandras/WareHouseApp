@@ -185,7 +185,7 @@ namespace WH_APP_GUI
             Visual.sector["area_in_use"] = (double)Visual.sector["area_in_use"] + square.Width * square.Height;
 
             
-            Tables.sector.updateChanges();
+            
         }
 
         public static void removeSquaresAreaFromSectorsAreaInUse(Button square)
@@ -193,7 +193,7 @@ namespace WH_APP_GUI
             Visual.sector["area_in_use"] = (double)Visual.sector["area_in_use"] - square.Width * square.Height;
 
 
-            Tables.sector.updateChanges();
+            
         }
     }
 }

@@ -28,6 +28,8 @@ namespace WH_APP_GUI
         {
             InitializeComponent();
 
+            //Email.send("szsoly04@gmail.com", "Megkérdezzem?", "Mivan mivan mivan");
+
             if (! SQL.IsDatabasetxtExist())
             {
                 DatabaseSet.Visibility = Visibility.Visible;
@@ -49,17 +51,19 @@ namespace WH_APP_GUI
 
                             //Belépéshez nem kell név csak email meg jelszó
                             Name.Visibility = Visibility.Collapsed;
+                            NameBorder.Visibility = Visibility.Collapsed;
                             NameLBL.Visibility = Visibility.Collapsed;
                         }
-                        else {
+                        else 
+                        {
                             AdminLogInshow();
                         }
                     }
                     else
                     {
                         AdminLogInshow();
+                    }
                 }
-            }
                 else
                 {
                     AdminLogInshow();
@@ -105,13 +109,55 @@ namespace WH_APP_GUI
             if (Emali.Text != string.Empty && Password.Text != string.Empty)
             {
                 string hpsw = Hash.HashPassword(Password.Text);
-                User.SetCurrentUser(Emali.Text, hpsw);
-                if (User.currentUser != null)
+
+                List<string> employees = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM {Tables.employees.actual_name}"));
+                List<string> staffs = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM {Tables.staff.actual_name}"));
+
+                if (employees.Contains(Emali.Text))
                 {
-                    LogIn.Visibility = Visibility.Visible;
-                    content.Visibility = Visibility.Visible;
-                    content.Content = null;
-                    content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM {Tables.employees.actual_name} WHERE email = '{Emali.Text}'");
+
+                    if (datasOfUser[0][4] != "" || datasOfUser[0][5] != "")
+                    {
+                        User.SetCurrentUser(Emali.Text, hpsw);
+                        Controller.LogWrite(User.currentUser["email"].ToString(),"The user has been logged in to the application");
+                        if (User.currentUser != null)
+                        {
+                            LogIn.Visibility = Visibility.Visible;
+                            content.Visibility = Visibility.Visible;
+                            content.Content = null;
+                            content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Entry blocked. The user's data is either incomplete or non-existent.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
+                }
+                else if (staffs.Contains(Emali.Text))
+                {
+                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM {Tables.staff.actual_name} WHERE email = '{Emali.Text}'");
+
+                    if (datasOfUser[0][4] != "")
+                    {
+                        User.SetCurrentUser(Emali.Text, hpsw);
+                        if (User.currentUser != null)
+                        {
+                            LogIn.Visibility = Visibility.Visible;
+                            content.Visibility = Visibility.Visible;
+                            content.Content = null;
+                            content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Entry blocked. The user's data is either incomplete or non-existent.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("This person not existing!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
@@ -139,6 +185,17 @@ namespace WH_APP_GUI
             {
                 MessageBox.Show("Empty input field", "Missing data", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void content_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+           
+            //if(Navigation.content2.Parent != null)
+            //{
+            //    Navigation.RemoveParent();
+                
+            //}
+            
         }
     }
 }

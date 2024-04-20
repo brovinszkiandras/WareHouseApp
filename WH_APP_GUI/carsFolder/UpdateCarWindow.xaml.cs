@@ -36,7 +36,7 @@ namespace WH_APP_GUI
             //set data types
             plate_number.ValueDataType = typeof(string);
             type.ValueDataType = typeof(string);
-            km.ValueDataType = typeof(decimal);
+            km.ValueDataType = typeof(double);
            
             //last_exam.ValueDataType = typeof(DateTime);
             //last_exam.NullValue = DateTime.Now;
@@ -224,6 +224,17 @@ namespace WH_APP_GUI
         private void last_exam_InputValidationError(object sender, Xceed.Wpf.Toolkit.Core.Input.InputValidationErrorEventArgs e)
         {
             Xceed.Wpf.Toolkit.MessageBox.Show($"You can only input a date");
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            foreach (DataColumn column in Tables.cars.database.Columns)
+            {
+                if (car[column, DataRowVersion.Original] != null)
+                {
+                    car[column] = car[column, DataRowVersion.Original];
+                }
+            }
         }
     }
 }

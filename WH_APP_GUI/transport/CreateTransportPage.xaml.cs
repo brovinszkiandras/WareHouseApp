@@ -25,6 +25,7 @@ namespace WH_APP_GUI.transport
         public CreateTransportPage()
         {
             InitializeComponent();
+            transport["status"] = "Docking";
             transport["start_date"] = DateTime.Now;
            // transport["is_transported"] = false;
 
@@ -59,17 +60,21 @@ namespace WH_APP_GUI.transport
 
             }
 
-            foreach (DataRow row in Tables.docks.database.Rows)
+            if(Tables.features.isFeatureInUse("Dock") == true)
             {
-                if ((bool)row["free"] != false)
+                foreach (DataRow row in Tables.docks.database.Rows)
                 {
-                    ComboBoxItem item = new ComboBoxItem();
-                    item.Content = row["name"];
-                    item.Tag = row["id"];
-                   Xceed.Wpf.Toolkit.MessageBox.Show(item.Tag.ToString());
-                    DocksCBX.Items.Add(item);
+                    if ((bool)row["free"] != false)
+                    {
+                        ComboBoxItem item = new ComboBoxItem();
+                        item.Content = row["name"];
+                        item.Tag = row["id"];
+                        Xceed.Wpf.Toolkit.MessageBox.Show(item.Tag.ToString());
+                        DocksCBX.Items.Add(item);
+                    }
                 }
             }
+           
             if (CarsCBX.Items.Count == 0)
             {
 
@@ -134,14 +139,17 @@ namespace WH_APP_GUI.transport
         private void DocksCBX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBoxItem comboBoxItem = DocksCBX.SelectedItem as ComboBoxItem;
-
-            if (transport["dock_id"] != DBNull.Value)
+            if (Tables.features.isFeatureInUse("Dock"))
             {
-                Tables.transports.getDock(transport)["free"] = true;
+                if (transport["dock_id"] != DBNull.Value)
+                {
+                    Tables.transports.getDock(transport)["free"] = true;
+                }
+
+                Tables.docks.database.Select($"id = {comboBoxItem.Tag}")[0]["free"] = false;
+                transport["dock_id"] = comboBoxItem.Tag;
             }
-           
-            Tables.docks.database.Select($"id = {comboBoxItem.Tag}")[0]["free"] = false;
-            transport["dock_id"] = comboBoxItem.Tag;
+            
         }
 
         private void save_Click(object sender, RoutedEventArgs e)
@@ -160,9 +168,11 @@ namespace WH_APP_GUI.transport
                 Xceed.Wpf.Toolkit.MessageBox.Show($"A car mus be selected");
 
             }
-            else if (DocksCBX.SelectedIndex < 0)
+            else if (DocksCBX.SelectedIndex < 0 && Tables.features.isFeatureInUse("Dock") == true)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show($"A dock mus be selected");
+               
+                    Xceed.Wpf.Toolkit.MessageBox.Show($"A dock mus be selected");
+                
 
             }
             else

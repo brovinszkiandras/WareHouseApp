@@ -1,0 +1,50 @@
+﻿<Page x:Class="WH_APP_GUI.Warehouse.CreateWarehouse"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WH_APP_GUI.Warehouse"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="CreateWarehouse">
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1">
+            <Image Name="WarehouseImage" Height="150" Width="150" Margin="5"/>
+            <Grid x:Name="DatasgGRID">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0"/>
+                <Label Content="Length:" Margin="5" Grid.Column="0" Grid.Row="1"/>
+                <Label Content="Width:" Margin="5" Grid.Column="0" Grid.Row="2"/>
+                <Label Content="Height:" Margin="5" Grid.Column="0" Grid.Row="3"/>
+                <Label Content="City:" Name="CityLBL" Margin="5" Grid.Column="0" Grid.Row="4"/>
+
+                <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="length" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="width" Grid.Column="1" Grid.Row="2" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="height" Grid.Column="1" Grid.Row="3" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto"/>
+                <ComboBox Name="city_id" Grid.Column="1" Grid.Row="4" Margin="5"/>
+            </Grid>
+            <Button Name="Done" Content="Done" BorderBrush="Black" Margin="5" Click="Done_Click"/>
+            <Button Name="Cancel" Content="Cancel" BorderBrush="Black" Margin="5" Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

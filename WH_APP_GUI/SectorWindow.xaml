@@ -4,30 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WH_APP_GUI"
-         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        mc:Ignorable="d"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        WindowStyle="SingleBorderWindow"
+        Unloaded="Window_Unloaded"
         Title="SectorWindow" Height="800" Width="800">
-    <Window.Resources>
-        <ControlTemplate x:Key="NoMouseOverButtonTemplate"   
-         TargetType="Button">
-            <Border Background="{TemplateBinding Background}"  
-  BorderBrush="{TemplateBinding BorderBrush}"  
-  BorderThickness="{TemplateBinding BorderThickness}">
-                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"  
-              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-            </Border>
+    
 
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsEnabled"  
-     Value="False">
-                    <Setter Property="Background"  
-      Value="{x:Static SystemColors.ControlLightBrush}" />
-                    <Setter Property="Foreground"  
-      Value="{x:Static SystemColors.GrayTextBrush}" />
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
+        <Window.Resources>
+        <Style x:Key="RectangleButtonStyle" TargetType="Button">
+            
+            
+        </Style>
     </Window.Resources>
+
+    
+
+    <Window.Style>
+        <Style TargetType="{x:Type Window}" BasedOn="{StaticResource {x:Type Window}}">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+    </Window.Style>
+    
+
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -41,6 +42,10 @@
             <RowDefinition Height="3*"></RowDefinition>
         </Grid.RowDefinitions>
 
+        
+           
+       
+        
         <Label FontSize="25"
         Content="{Binding Path=[name]}"
         VerticalContentAlignment="Center"

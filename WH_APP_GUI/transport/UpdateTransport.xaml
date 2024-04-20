@@ -6,6 +6,7 @@
          xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WH_APP_GUI.transport"
         mc:Ignorable="d"
+        Unloaded="Page_Unloaded"
         Title="UpdateTransport">
     <Grid>
         <Grid.ColumnDefinitions>

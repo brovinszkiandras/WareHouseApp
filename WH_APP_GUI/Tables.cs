@@ -44,6 +44,10 @@ namespace WH_APP_GUI
             {
                 addDockTableToTables();
             }
+            if ((bool)features.database.Select("name = 'Forklift'")[0]["in_use"])
+            {
+                addForkliftTableToTables();
+            }
         }
 
         public static void addRequriedTablesToTables()
@@ -62,7 +66,6 @@ namespace WH_APP_GUI
             Relations.makeRelation("staffRole", roles.database, staff.database, "id", "role_id");
             Relations.makeRelation("employeeRole", roles.database, employees.database, "id", "role_id");
             Relations.makeRelation("employeeWarehouse", warehouses.database, employees.database, "id", "warehouse_id");
-            Relations.makeRelation("orderWarehouse", warehouses.database, orders.database, "id", "warehouse_id");
             Relations.makeRelation("orderProduct", products.database, orders.database, "id", "product_id");
             Relations.makeRelation("shelfSector", sector.database, shelf.database, "id", "sector_id");
 
@@ -122,8 +125,10 @@ namespace WH_APP_GUI
         public static void disableDockFeature()
         {
             docks = null;
-            if (bool.Parse(Tables.features.database.Select("name = 'Fleet'")[0]["in_use"].ToString()) && bool.Parse(Tables.features.database.Select("name = 'Dock'")[0]["in_use"].ToString()))
+            
+            if (Tables.features.isFeatureInUse("Fleet") && Tables.features.isFeatureInUse("Dock"))
             {
+               
                 databases.Relations.Remove("transportDock");
                 transports.database.Constraints.Remove("transportDock");
                 Tables.transports.database.Columns.Remove("dock_id");
@@ -141,7 +146,12 @@ namespace WH_APP_GUI
             Tables.warehouses.database.Columns.Remove("city_id");
             Tables.orders.database.Columns.Remove("city_id");
         }
+        public static void disableForkliftFeauture()
+        {
+            forklifts = null;
 
+            databases.Relations.Remove("forkliftWarehouse");
+        }
 
     }
 }

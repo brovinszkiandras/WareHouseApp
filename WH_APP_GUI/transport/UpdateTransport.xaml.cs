@@ -62,20 +62,25 @@ namespace WH_APP_GUI.transport
                 }
             }
 
-            foreach (DataRow row in Tables.docks.database.Rows)
+            if(Tables.features.isFeatureInUse("Dock") == true)
             {
-                ComboBoxItem item = new ComboBoxItem();
-                item.Content = row["name"];
-                item.Tag = row["id"];
-
-                DocksCBX.Items.Add(item);
-
-                if ((int)row["id"] == (int)transport["dock_id"])
+                foreach (DataRow row in Tables.docks.database.Rows)
                 {
+                    ComboBoxItem item = new ComboBoxItem();
+                    item.Content = row["name"];
+                    item.Tag = row["id"];
 
-                    DocksCBX.SelectedItem = item;
+                    DocksCBX.Items.Add(item);
+
+                    if ((int)row["id"] == (int)transport["dock_id"])
+                    {
+
+                        DocksCBX.SelectedItem = item;
+                    }
                 }
             }
+
+           
 
             switch (transport["status"].ToString())
             {
@@ -137,12 +142,14 @@ namespace WH_APP_GUI.transport
         private void DocksCBX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBoxItem comboBoxItem = DocksCBX.SelectedItem as ComboBoxItem;
+            if (Tables.features.isFeatureInUse("Dock"))
+            {
 
+                Tables.transports.getDock(transport)["free"] = true;
 
-            Tables.transports.getDock(transport)["free"] = true;
-
-            // Tables.docks.database.Select(comboBoxItem.Tag.ToString())[0]["free"] = false;
-            transport["dock_id"] = comboBoxItem.Tag;
+                // Tables.docks.database.Select(comboBoxItem.Tag.ToString())[0]["free"] = false;
+                transport["dock_id"] = comboBoxItem.Tag;
+            }
         }
 
         private void save_Click(object sender, RoutedEventArgs e)
@@ -182,6 +189,17 @@ namespace WH_APP_GUI.transport
                 transport["status"] = SelectedItem.Content.ToString();
             }
            
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            foreach (DataColumn column in Tables.transports.database.Columns)
+            {
+                if (transport[column, DataRowVersion.Original] != null)
+                {
+                    transport[column] = transport[column, DataRowVersion.Original];
+                }
+            }
         }
     }
 }

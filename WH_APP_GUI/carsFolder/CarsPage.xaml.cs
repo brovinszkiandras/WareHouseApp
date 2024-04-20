@@ -78,31 +78,38 @@ namespace WH_APP_GUI.carsFolder
                 Grid.SetColumn(inspect, 3);
 
                 carsGrid.Children.Add(inspect);
+                if(User.DoesHavePermission("Modify Car") || User.DoesHavePermission("Modify all Car"))
+                {
+                    Button edit = new Button();
+                    edit.Content = "Edit";
+                    edit.FontSize = 15;
+                    edit.Foreground = Brushes.White;
+                    edit.Background = Brushes.Green;
+                    edit.Click += Edit_Click;
+                    edit.Tag = car["id"];
 
-                Button edit = new Button();
-                edit.Content = "Edit";
-                edit.FontSize = 15;
-                edit.Foreground = Brushes.White;
-                edit.Background = Brushes.Green;
-                edit.Click += Edit_Click;
-                edit.Tag = car["id"];
+                    Grid.SetRow(edit, lastRow);
+                    Grid.SetColumn(edit, 4);
 
-                Grid.SetRow(edit, lastRow);
-                Grid.SetColumn(edit, 4);
+                    carsGrid.Children.Add(edit);
 
-                carsGrid.Children.Add(edit);
+                    Button delete = new Button();
+                    delete.Content = "Delete";
+                    delete.FontSize = 15;
+                    delete.Foreground = Brushes.White;
+                    delete.Background = Brushes.Green;
+                    delete.Tag = car["id"];
+                    delete.Click += Delete_Click;
+                    Grid.SetRow(delete, lastRow);
+                    Grid.SetColumn(delete, 5);
 
-                Button delete = new Button();
-                delete.Content = "Delete";
-                delete.FontSize = 15;
-                delete.Foreground = Brushes.White;
-                delete.Background = Brushes.Green;
-                delete.Tag = car["id"];
-                delete.Click += Delete_Click;
-                Grid.SetRow(delete, lastRow);
-                Grid.SetColumn(delete, 5);
-
-               carsGrid.Children.Add(delete);
+                    carsGrid.Children.Add(delete);
+                }
+                else
+                {
+                    Create.Visibility = Visibility.Collapsed;
+                }
+                
 
                 lastRow++;
             }

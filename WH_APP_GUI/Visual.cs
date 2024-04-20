@@ -109,6 +109,10 @@ namespace WH_APP_GUI
                 {
                     squaresInUSe = Tables.sector.getShelfs(sector).Sum(row => (double)row["length"]);
                 }
+                else
+                {
+                    squaresInUSe = 0;
+                }
             }
             
         }

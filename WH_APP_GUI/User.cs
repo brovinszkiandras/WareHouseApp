@@ -11,6 +11,7 @@ namespace WH_APP_GUI
     internal class User
     {
         public static DataRow currentUser;
+        public static DataRow tempWarehouse;
         public static void SetCurrentUser(string email, string password) //hased psw
         {
             Tables.staff.Refresh();
@@ -64,6 +65,31 @@ namespace WH_APP_GUI
                 }
             }
             return false;
+        }
+
+        public static DataRow Warehouse()
+        {
+            if(currentUser.Table == Tables.employees.database)
+            {
+                return Tables.employees.getWarehouse(currentUser);
+            }
+            else
+            {
+                return tempWarehouse;
+            }
+        }
+
+        public static warehouse WarehouseTable()
+        {
+            warehouse warehouse = new warehouse(Warehouse()["name"].ToString());
+            if(warehouse != null)
+            {
+                return warehouse;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

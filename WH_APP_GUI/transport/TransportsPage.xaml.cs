@@ -89,52 +89,66 @@ namespace WH_APP_GUI.transport
 
                 transportGrid.Children.Add(end_date);
 
-                TextBlock dock = new TextBlock();
-                dock.Text = Tables.transports.getDock(transport)["name"].ToString();
-                dock.FontSize = 15;
-                dock.Foreground = Brushes.White;
-                dock.TextWrapping = TextWrapping.Wrap;
-                Grid.SetRow(dock, lastRow);
-                Grid.SetColumn(dock, 5);
 
-                transportGrid.Children.Add(dock);
+                if (Tables.features.isFeatureInUse("Dock") == true)
+                {
+                    TextBlock dock = new TextBlock();
+                    dock.Text = Tables.transports.getDock(transport)["name"].ToString();
+                    dock.FontSize = 15;
+                    dock.Foreground = Brushes.White;
+                    dock.TextWrapping = TextWrapping.Wrap;
+                    Grid.SetRow(dock, lastRow);
+                    Grid.SetColumn(dock, 5);
 
+                    transportGrid.Children.Add(dock);
+                }
+                
 
-                Button inspect = new Button();
-                inspect.Content = "Inspect";
-                inspect.FontSize = 15;
-                inspect.Foreground = Brushes.White;
-                inspect.Background = Brushes.Green;
-                inspect.Tag = transport["id"];
-                Grid.SetRow(inspect, lastRow);
-                Grid.SetColumn(inspect, 6);
+                if(User.DoesHavePermission("Assign to transport"))
+                {
+                    Button inspect = new Button();
+                    inspect.Content = "Inspect";
+                    inspect.FontSize = 15;
+                    inspect.Foreground = Brushes.White;
+                    inspect.Background = Brushes.Green;
+                    inspect.Tag = transport["id"];
+                    Grid.SetRow(inspect, lastRow);
+                    Grid.SetColumn(inspect, 6);
 
-                transportGrid.Children.Add(inspect);
+                    transportGrid.Children.Add(inspect);
+                }
+                
+                if(User.DoesHavePermission("Modify Transport") ||User.DoesHavePermission("Modify all Transport"))
+                {
+                    Button edit = new Button();
+                    edit.Content = "Edit";
+                    edit.FontSize = 15;
+                    edit.Foreground = Brushes.White;
+                    edit.Background = Brushes.Green;
+                    edit.Click += Edit_Click;
+                    edit.Tag = transport["id"];
 
-                Button edit = new Button();
-                edit.Content = "Edit";
-                edit.FontSize = 15;
-                edit.Foreground = Brushes.White;
-                edit.Background = Brushes.Green;
-                edit.Click += Edit_Click;
-                edit.Tag = transport["id"];
+                    Grid.SetRow(edit, lastRow);
+                    Grid.SetColumn(edit, 7);
 
-                Grid.SetRow(edit, lastRow);
-                Grid.SetColumn(edit, 7);
+                    transportGrid.Children.Add(edit);
 
-                transportGrid.Children.Add(edit);
+                    Button delete = new Button();
+                    delete.Content = "Delete";
+                    delete.FontSize = 15;
+                    delete.Foreground = Brushes.White;
+                    delete.Background = Brushes.Green;
+                    delete.Tag = transport["id"];
+                    delete.Click += Delete_Click;
+                    Grid.SetRow(delete, lastRow);
+                    Grid.SetColumn(delete, 8);
 
-                Button delete = new Button();
-                delete.Content = "Delete";
-                delete.FontSize = 15;
-                delete.Foreground = Brushes.White;
-                delete.Background = Brushes.Green;
-                delete.Tag = transport["id"];
-                delete.Click += Delete_Click;
-                Grid.SetRow(delete, lastRow);
-                Grid.SetColumn(delete, 8);
-
-                transportGrid.Children.Add(delete);
+                    transportGrid.Children.Add(delete);
+                }
+                else
+                {
+                    Create.Visibility = Visibility.Collapsed;
+                }
 
                 lastRow++;
             }
@@ -176,7 +190,7 @@ namespace WH_APP_GUI.transport
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             Button button = e.Source as Button;
-            DataRow transport = Tables.transports.database.Select($"id = {button.Tag}")[0];
+            DataRow transport = Tables.transports.database.Select($"id = '{button.Tag}'")[0];
             UpdateTransport updateTransport = new UpdateTransport(transport);
 
             Navigation.content2.Navigate(updateTransport);

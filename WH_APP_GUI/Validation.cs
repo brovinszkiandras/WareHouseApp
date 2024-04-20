@@ -15,46 +15,77 @@ namespace WH_APP_GUI
     {
         public static bool ValidateTextbox(ValueRangeTextBox textBox, DataRow context)
         {
+            
             bool HasError = false;
             DataTable contextTable = context.Table;
-           
-            if (textBox.Text.Length == 0)
+            
+            if(textBox.Visibility == Visibility.Visible)
             {
-
-                if (contextTable.Columns[textBox.Name].AllowDBNull == false)
+                if (textBox.Text.Length == 0)
                 {
-                    // Xceed.Wpf.Toolkit.MessageBox.Show(context[textBox.Name, DataRowVersion.Original].ToString());
+
+                    if (contextTable.Columns[textBox.Name].AllowDBNull == false)
+                    {
+                        // Xceed.Wpf.Toolkit.MessageBox.Show(context[textBox.Name, DataRowVersion.Original].ToString());
+
+                        textBox.Text = context[textBox.Name].ToString();
+                        Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot be emtpy");
+                        HasError = true;
+
+                    }
+                    //else
+                    //{
+                    //    context[textBox.Name] = null;
+                    //}
+                }
+                else if (textBox.HasParsingError == true)
+                {
+                    Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} must be a {textBox.ValueDataType.Name}");
+
 
                     textBox.Text = context[textBox.Name].ToString();
-                    Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot be emtpy");
                     HasError = true;
-                    
+
                 }
-            }
-            else if (textBox.HasParsingError == true)
-            {
-                Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} must be a {textBox.ValueDataType.Name}");
-                
-
-                textBox.Text = context[textBox.Name].ToString();
-                HasError = true;
-
-            }
-            
-            else if (contextTable.Columns[textBox.Name].Unique == true)
-            {
-                DataRow[] matchingRows = contextTable.Select($"{textBox.Name} = '{textBox.Value}'");
-                if (matchingRows.Length != 0)
+                else if (contextTable.Columns[textBox.Name].Unique == true && textBox.Name != "email")
                 {
-                    MessageBox.Show(matchingRows[0]["id"].ToString());
-                    MessageBox.Show(context["id"].ToString());
-                    if ((int)matchingRows[0]["id"] != (int)context["id"])
+                    DataRow[] matchingRows = contextTable.Select($"{textBox.Name} = '{textBox.Value}'");
+                    if (matchingRows.Length != 0)
                     {
-                        Xceed.Wpf.Toolkit.MessageBox.Show("An element with this plate_number already exists");
+                        MessageBox.Show(matchingRows[0]["id"].ToString());
+                        MessageBox.Show(context["id"].ToString());
+                        if ((int)matchingRows[0]["id"] != (int)context["id"])
+                        {
+                            Xceed.Wpf.Toolkit.MessageBox.Show($"An element with this {textBox.Name} already exists");
+                            HasError = true;
+                        }
+                    }
+                }
+                else if (textBox.IsValueOutOfRange == true)
+                {
+                    Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} must be smaller or equal to {textBox.MaxValue}");
+                    HasError = true;
+                }
+                else
+                {
+                    char[] Email_exceptions = { '@', '.' };
+                    char[] Name_exceptions = { ' ', '-' };
+                    if (textBox.Name == "email" && SQL.ContainsIllegalRegexWithExceptions(textBox.Text, Email_exceptions))
+                    {
+                        textBox.Text = context[textBox.Name].ToString();
+
+                        Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot contain special characters");
+                        HasError = true;
+                    }
+                    else if(textBox.Name != "email" && SQL.ContainsIllegalRegexWithExceptions(textBox.Text, Name_exceptions) && (textBox.ValueDataType != typeof(int) && textBox.ValueDataType != (typeof(double))))
+                    {
+                        textBox.Text = context[textBox.Name].ToString();
+
+                        Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot contain special characters");
                         HasError = true;
                     }
                 }
-            }
+            }        
             return HasError;
         }
     }

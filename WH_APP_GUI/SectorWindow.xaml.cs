@@ -24,7 +24,8 @@ namespace WH_APP_GUI
         {
             InitializeComponent();
 
-            
+            MessageBox.Show(Visual.sector["id"].ToString());
+
 
             this.DataContext = Visual.sector;
 
@@ -45,6 +46,7 @@ namespace WH_APP_GUI
                 for (int j = 0; j < boxGrid.RowDefinitions.Count; j++)
                 {
                     Button button = new Button();
+                    button.Style = (Style)this.Resources["RectangleButtonStyle"];
                     button.Click += box_Click;
                     button.BorderBrush = Brushes.GreenYellow;
                     button.BorderThickness = new System.Windows.Thickness(0.03);
@@ -94,6 +96,10 @@ namespace WH_APP_GUI
             squaresProgressBar.Value = Visual.squaresInUSe;
 
             squaresProgressBar.Maximum = Visual.CalCulateSquaresInTotal();
+
+            shelfBuilder.isAShelfBeingCreated = false;
+            shelfBuilder.isDeleteBeingUsed = false;
+            shelfBuilder.isDesignerModeActive = false;
         }
 
         public void box_Click(object sender, RoutedEventArgs e)
@@ -235,6 +241,8 @@ namespace WH_APP_GUI
         {
             shelfBuilder.isAShelfBeingCreated = false;
             Tables.shelf.database.Rows.Add(shelfBuilder.newShelf);
+            
+            Tables.sector.database.AcceptChanges();
 
             Tables.shelf.updateChanges();
 
@@ -306,6 +314,24 @@ namespace WH_APP_GUI
             squares_in_use.Content = Visual.squaresInUSe.ToString();
             squaresProgressBar.Value = Visual.squaresInUSe;
 
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if(shelfBuilder.isAShelfBeingCreated == true)
+            {
+                Tables.sector.database.RejectChanges();
+
+                shelfBuilder.newShelf = null;
+
+                
+
+               Visual.calculateSquaresInUse();
+                
+                MessageBox.Show(Tables.sector.getShelfs(Visual.sector).Length.ToString());
+                
+                
+            }
         }
     }
 }

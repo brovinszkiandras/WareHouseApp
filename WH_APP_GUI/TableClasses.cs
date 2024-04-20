@@ -23,6 +23,8 @@ namespace WH_APP_GUI
         {
             GetNames();
             fill();
+            setupAutoIncrement();
+           
         }
 
         public table(string actualname)
@@ -30,6 +32,28 @@ namespace WH_APP_GUI
             this.actual_name = actualname;
             GetNames();
             fill();
+            setupAutoIncrement();
+           
+        }
+
+        public void setupAutoIncrement()
+        {
+            database.Columns["id"].AutoIncrement = true;
+            database.Columns["id"].AutoIncrementStep = 1;
+
+           
+
+            if (database.Rows.Count > 0)
+            {
+                database.Columns["id"].AutoIncrementSeed = (int)database.Rows[database.Rows.Count - 1]["id"] + 1;
+
+            }
+            else
+            {
+                database.Columns["id"].AutoIncrementSeed = 1;
+            }
+
+           
         }
 
         public void GetNames()
@@ -139,9 +163,16 @@ namespace WH_APP_GUI
     class warehouses : table
     {
 
+
+
         public warehouses() : base()
         {
-
+            
+            database.Columns["name"].Unique = true;
+            database.Columns["name"].AllowDBNull = false;
+            database.Columns["length"].AllowDBNull=false;
+            database.Columns["width"].AllowDBNull=false;
+            database.Columns["height"].AllowDBNull=false;
         }
 
         public DataRow[] getEmployees(DataRow warehouse)
@@ -153,6 +184,7 @@ namespace WH_APP_GUI
         {
             return Relations.childRelation("orderWarehouse", warehouse);
         }
+        
 
         public DataRow getCity(DataRow warehouse)
         {
@@ -178,7 +210,9 @@ namespace WH_APP_GUI
     {
         public dock() : base()
         {
-
+            database.Columns["name"].Unique = true;
+            database.Columns["name"].AllowDBNull = false;
+            database.Columns["warehouse_id"].AllowDBNull=false;
         }
 
         public DataRow[] getTransports(DataRow dock)
@@ -202,6 +236,7 @@ namespace WH_APP_GUI
         {
             return Relations.parentRelation("orderWarehouse", order);
         }
+       
 
         public DataRow getProduct(DataRow order)
         {
@@ -215,10 +250,15 @@ namespace WH_APP_GUI
     }
     class employees : staff
     {
-        public employees() : base() { }
-
-
-
+        public employees() : base() 
+        {
+            database.Columns["name"].AllowDBNull = false;
+            database.Columns["email"].Unique = true;
+            database.Columns["email"].AllowDBNull = false;
+            database.Columns["password"].AllowDBNull = false;
+            database.Columns["role_id"].AllowDBNull = false;
+            database.Columns["warehouse_id"].AllowDBNull = true;
+        }
         public DataRow getWarehouse(DataRow employee)
         {
             return Relations.parentRelation("employeeWarehouse", employee);
@@ -235,6 +275,13 @@ namespace WH_APP_GUI
 
         public products() : base()
         {
+            database.Columns["name"].Unique = false;
+            database.Columns["name"].AllowDBNull=false;
+            database.Columns["buying_price"].AllowDBNull = false;
+            database.Columns["selling_price"].AllowDBNull = false;
+            database.Columns["description"].AllowDBNull = true;
+            //database.Columns["created_at"].DefaultValue = DateTime.Now;
+            //database.Columns["updated_at"].DefaultValue = DateTime.Now;
 
         }
 
@@ -248,7 +295,9 @@ namespace WH_APP_GUI
 
         public roles() : base()
         {
-
+            database.Columns["role"].Unique = true;
+            database.Columns["role"].AllowDBNull = false;
+            database.Columns["description"].AllowDBNull = false;
         }
 
         public DataRow[] getStaff(DataRow role)
@@ -291,7 +340,7 @@ namespace WH_APP_GUI
 
         public cars() : base()
         {
-            database.Columns["id"].AutoIncrement = true;
+           
             database.Columns["plate_number"].AllowDBNull = false;
             database.Columns["plate_number"].Unique = true;
             database.Columns["type"].AllowDBNull = false;
@@ -309,7 +358,11 @@ namespace WH_APP_GUI
     {
         public transports() : base()
         {
-
+            database.Columns["employee_id"].AllowDBNull = false;
+            database.Columns["car_id"].AllowDBNull=false;
+            database.Columns["status"].AllowDBNull = false;
+            database.Columns["end_date"].AllowDBNull = true;
+            
         }
 
         public DataRow getEmployee(DataRow transport)
@@ -354,20 +407,20 @@ namespace WH_APP_GUI
     {
         public warehouse(string actualname) : base(actualname)
         {
-
+            database.Columns["product_id"].AllowDBNull = false;
+            database.Columns["qty"].AllowDBNull = false;
+            database.Columns["shelf_id"].AllowDBNull=false;
+            database.Columns["on_shelf_level"].AllowDBNull = false;
         }
 
         public DataRow getProduct(DataRow item)
         {
-            Relations.makeRelation(actual_name + "Product", Tables.products.database, this.database, "id", "product_id");
-
-            return Relations.parentRelation(actual_name + "Product", item);
+            return Tables.products.database.Select($"id = {item["product_id"]}")[0];
         }
 
         public DataRow getShelf(DataRow item)
         {
-            Relations.makeRelation(actual_name + "shelf", Tables.shelf.database, this.database, "id", "shelf_id");
-            return Relations.parentRelation(actual_name + "shelf", item);
+            return Tables.shelf.database.Select($"id = {item["shelf_id"]}")[0];
         }
     }
 
@@ -375,7 +428,10 @@ namespace WH_APP_GUI
     {
         public Sector(string actualname) : base(actualname)
         {
-
+            database.Columns["name"].Unique = true;
+            database.Columns["name"].AllowDBNull = false;
+            database.Columns["length"].AllowDBNull=false;
+            database.Columns["width"].AllowDBNull = false;
         }
 
         public DataRow[] getShelfs(DataRow sector)
@@ -391,7 +447,12 @@ namespace WH_APP_GUI
 
     class shelf : table
     {
-        public shelf(string actualname) : base(actualname) { }
+        public shelf(string actualname) : base(actualname) 
+        {
+            database.Columns["name"].Unique = true;
+            database.Columns["name"].AllowDBNull = false;
+            database.Columns["width"].AllowDBNull = false;
+        }
 
         public DataRow getSector(DataRow shelf)
         {
@@ -408,7 +469,8 @@ namespace WH_APP_GUI
     {
         public forklift() : base()
         {
-
+            database.Columns["type"].AllowDBNull = false;
+            database.Columns["status"].AllowDBNull = false;
         }
 
         public DataRow getWarehouse(DataRow forklift)

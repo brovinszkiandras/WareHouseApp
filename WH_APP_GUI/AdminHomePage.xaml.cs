@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WH_APP_GUI.Employee;
+using WH_APP_GUI.Staff;
 
 namespace WH_APP_GUI
 {
@@ -351,9 +353,9 @@ namespace WH_APP_GUI
     #endregion
     public partial class AdminHomePage : Page
     {
-        public static string SAdminName;
-        public static string SAdminEmail;
-        public static string SAdminPassword;
+        public static string SAdminName = string.Empty;
+        public static string SAdminEmail = string.Empty;
+        public static string SAdminPassword = string.Empty;
         public AdminHomePage(string AdminName, string AdminEmail, string AdminPassword)
         {
             InitializeComponent();
@@ -361,6 +363,7 @@ namespace WH_APP_GUI
             SAdminName = AdminName;
             SAdminEmail = AdminEmail;
             SAdminPassword = AdminPassword;
+            ToTheApp.Visibility = Visibility.Visible;
 
             try
             {
@@ -371,7 +374,6 @@ namespace WH_APP_GUI
                 }
                 else
                 {
-                    LoginAsAdmin.IsEnabled = false;
                     RegisterEmployee.IsEnabled = false;
                     ImportEmployees.IsEnabled = false;
                     manageRoles.IsEnabled = false;
@@ -387,6 +389,7 @@ namespace WH_APP_GUI
         public AdminHomePage()
         {
             InitializeComponent();
+            ToTheApp.Visibility = Visibility.Collapsed;
 
             try
             {
@@ -394,7 +397,6 @@ namespace WH_APP_GUI
                 {
                     CreateRequiredTablesBTN.IsEnabled = false;
                     CreateCheckBoxes(FeaturesDisplayG);
-                    LoginAsAdmin.IsEnabled = false;
                 }
             }
             catch (Exception ex)
@@ -461,7 +463,6 @@ namespace WH_APP_GUI
         }
         private void CreateRequiredTablesBTN_Click(object sender, RoutedEventArgs e)
         {
-            LoginAsAdmin.IsEnabled = true;
             RegisterEmployee.IsEnabled = true;
             ImportEmployees.IsEnabled = true;
             manageRoles.IsEnabled = true;
@@ -472,12 +473,18 @@ namespace WH_APP_GUI
             /*Required*/
             Controller.CreateDefaultTablesWithMigrationInsert();
 
+            if (SQL.Tables().Contains("migrations") && SQL.Tables().Contains(Tables.staff.actual_name))
+            {
+                SQL.SqlCommand($"INSERT INTO `{Tables.staff.actual_name}`(`name`, `email`, `password`, `role_id`) VALUES ('{SAdminName}', '{SAdminEmail}', '{SAdminPassword}', 1)");
+                MessageBox.Show("You have been registered as an Admin", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                User.SetCurrentUser(SAdminEmail, SAdminPassword);
+            }
+
             if (Controller.IsMigrationContainsAllDefaultTables())
             {
                 CreateRequiredTablesBTN.IsEnabled = false;
                 CreateCheckBoxes(FeaturesDisplayG);
-
-                Tables.addRequriedTablesToTables();
             }
 
             MessageBox.Show("Requierd tables and Feature tables created and filled with the datas.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -515,54 +522,29 @@ namespace WH_APP_GUI
             {
                 MessageBox.Show("The actions has been successfully completed", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-        }
 
-        private void LoginAsAdmin_Click(object sender, RoutedEventArgs e)
-        {
-            try
+            if (! FirstOpen())
             {
-                if (SQL.Tables().Contains("migrations") && SQL.Tables().Contains(Tables.staff.actual_name))
-                {
-                    if (SQL.FindOneDataFromQuery($"SELECT email FROM {Tables.staff.actual_name} WHERE email = '{SAdminEmail}'").ToString() != string.Empty || SQL.FindOneDataFromQuery($"SELECT email FROM {Tables.employees.actual_name} WHERE email = '{SAdminEmail}'").ToString() != string.Empty)
-                    {
-                        MessageBox.Show("A person with this email already exist!", "Invalid email", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    else
-                    {
-                        SQL.SqlCommand($"INSERT INTO `{Tables.staff.actual_name}`(`name`, `email`, `password`, `role_id`) VALUES ('{SAdminName}', '{SAdminEmail}', '{SAdminPassword}', 1)");
-                        MessageBox.Show("You have been registered as an Admin", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                        LoginAsAdmin.IsEnabled = false;
-
-                        User.SetCurrentUser(SAdminEmail, SAdminPassword);
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteError(ex);
-                throw;
+                MainWindow currentWindow = Window.GetWindow(this) as MainWindow;
+                Home newHome = new Home();
+                currentWindow.content.Navigate(newHome);
             }
         }
 
         private void RegisterEmployee_Click(object sender, RoutedEventArgs e)
         {
-            CloseBeforeOpen();
+            CreateEmployee createEmployee = new CreateEmployee(new AdminHomePage());
+            AdminContent.Content = null;
+            AdminContent.Navigate(createEmployee);
+            AdminContent.Visibility = Visibility.Visible;
+        }
 
-            ManagedatabaseGrid.Visibility = Visibility.Collapsed;
-            EmployeeStatus.Items.Clear();
-            EmployeeStatus.Items.Add("Dont belongs to a warehouse");
-            EmployeeStatus.Items.Add("Belongs to a warehouse");
-
-            EmployeeRole.IsEnabled = false;
-
-            Role_Id = new Dictionary<string, int>();
-            for (int i = 0; i < Tables.roles.database.Rows.Count; i++)
-            {
-                Role_Id.Add(Tables.roles.database.Rows[i]["role"].ToString(), (int)Tables.roles.database.Rows[i]["id"]);
-            }
-
-            RegisterEmployeDatas.Visibility = Visibility.Visible;
+        private void RegisterStaff_Click(object sender, RoutedEventArgs e)
+        {
+            CreateStaffPage createStaffPage = new CreateStaffPage(new AdminHomePage());
+            AdminContent.Content = null;
+            AdminContent.Navigate(createStaffPage);
+            AdminContent.Visibility = Visibility.Visible;
         }
         private void ImportEmployees_Click(object sender, RoutedEventArgs e)
         {
@@ -652,7 +634,7 @@ namespace WH_APP_GUI
                 EmployeeRole.Items.Clear();
                 for (int i = 0; i < Tables.roles.database.Rows.Count; i++)
                 {
-                    if ((bool)Tables.roles.database.Rows[i]["in_warehouse"])
+                    if (! (bool)Tables.roles.database.Rows[i]["in_warehouse"])
                     {
                         EmployeeRole.Items.Add(Tables.roles.database.Rows[i]["role"]);
                     }
@@ -663,7 +645,7 @@ namespace WH_APP_GUI
                 EmployeeRole.Items.Clear();
                 for (int i = 0; i < Tables.roles.database.Rows.Count; i++)
                 {
-                    if (!(bool)Tables.roles.database.Rows[i]["in_warehouse"])
+                    if ((bool)Tables.roles.database.Rows[i]["in_warehouse"])
                     {
                         EmployeeRole.Items.Add(Tables.roles.database.Rows[i]["role"]);
                     }
@@ -973,6 +955,29 @@ namespace WH_APP_GUI
         {
             CloseBeforeOpen();
             CancelRoleCreationM();
+        }
+
+        private void ToTheApp_Click(object sender, RoutedEventArgs e)
+        {
+            SAdminName = string.Empty;
+            SAdminEmail = string.Empty;
+            SAdminPassword = string.Empty;
+
+            MainWindow currentWindow = Window.GetWindow(this) as MainWindow;
+            Home newHome = new Home();
+            currentWindow.content.Navigate(newHome);
+        }
+
+        private bool FirstOpen()
+        {
+            if (SAdminName != string.Empty && SAdminEmail != string.Empty && SAdminPassword != string.Empty)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

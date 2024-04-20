@@ -30,7 +30,7 @@ namespace WH_APP_GUI.carsFolder
             car = Tables.cars.database.NewRow();
             plate_number.ValueDataType = typeof(string);
             type.ValueDataType = typeof(string);
-            km.ValueDataType = typeof(decimal);
+            km.ValueDataType = typeof(double);
 
            
             car["ready"] = true;
