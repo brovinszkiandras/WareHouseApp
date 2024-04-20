@@ -28,7 +28,7 @@ namespace WH_APP_GUI
             GetNames();
             fill();
             setupAutoIncrement();
-
+           
         }
 
         public table(string actualname)
@@ -37,7 +37,7 @@ namespace WH_APP_GUI
             GetNames();
             fill();
             setupAutoIncrement();
-
+           
         }
 
         public void setupAutoIncrement()
@@ -73,7 +73,7 @@ namespace WH_APP_GUI
         public void fill()
         {
             adapter = new MySqlDataAdapter($"SELECT * FROM {actual_name}", SQL.con);
-            
+
             adapter.AcceptChangesDuringUpdate = true;
 
             SQL.con.Open();
@@ -139,7 +139,7 @@ namespace WH_APP_GUI
                 //}
 
 
-                adapter.Update(database);
+            adapter.Update(database);
 
                 if(database.GetChanges() != null)
                 {

@@ -76,8 +76,9 @@
             <ColumnDefinition Width="3.5*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
+        
+            <Grid  Grid.Column="1">
+                <Grid.RowDefinitions>
             <RowDefinition Height="0.5*"></RowDefinition>
             <RowDefinition Height="6*"></RowDefinition>
         </Grid.RowDefinitions>
@@ -94,9 +95,10 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
-
+                   
                 </Grid.RowDefinitions>
 
+            
                 <StackPanel>
                     <Label Content="Product name: " Style="{StaticResource mylabelStyle}"></Label>
                     <ComboBox Background="#FF5b00"
@@ -112,19 +114,19 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-
+            
                 <StackPanel Grid.Row="1">
                     <Label Content="Quantity of items:" Style="{StaticResource mylabelStyle}"></Label>
                     <xctk:ValueRangeTextBox Style="{StaticResource MyTextBoxStyle}" Name="qty" Text="{Binding Path=[qty]}"></xctk:ValueRangeTextBox>
-                    
+            
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
                     <Label Content="Shelf: " Style="{StaticResource mylabelStyle}"></Label>
-                    <ComboBox Background="#FF5b00"
-                    Foreground="White"
-                    BorderBrush="Black"
-                    BorderThickness="0,0,0,10"
+                <ComboBox Background="#FF5b00"
+                          Foreground="White"
+                          BorderBrush="Black"
+                          BorderThickness="0,0,0,10"
                     Name="shelf_id"
                     SelectionChanged="shelf_id_SelectionChanged">
 
@@ -133,9 +135,9 @@
                                 <ComboBoxItem Content="{Binding Path=[name]}" Style="{StaticResource comboboxItemStyle}"></ComboBoxItem>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
-                    </ComboBox>
+                </ComboBox>
                 </StackPanel>
-
+           
                 <StackPanel Orientation="Horizontal" Grid.Row="3">
                     <Label Content="Is in a box:" Style="{StaticResource mylabelStyle}"></Label>
                     <CheckBox IsChecked="True" x:Name="is_in_a_box" Unchecked="is_in_a_box_Unchecked" Checked="CheckBox_Checked" FontSize="17" VerticalContentAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource MahApps.Brushes.CheckBox}"></CheckBox>
@@ -169,7 +171,7 @@
                 </StackPanel>
 
                 <Button x:Name="Save" Click="Save_Click" Background="YellowGreen" Panel.ZIndex="1" Content="Save" FontSize="17" Grid.Row="8"></Button>
-            </Grid>
+        </Grid>
         </ScrollViewer>
            
         

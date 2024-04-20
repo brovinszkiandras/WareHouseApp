@@ -6,33 +6,20 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WH_APP_GUI.Product"
         mc:Ignorable="d"
-        Title="ProductsPage" Height="450" Width="800">
+        Title="ProductsPage"
+        d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid>
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Background="Black">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="8*"/>
-            </Grid.RowDefinitions>
-            <Label Content="User name:" Foreground="White" Grid.Row="0"/>
-            <Label Name="AdminNameDisplay" Content="User name display" Grid.Row="1" Foreground="White" BorderThickness="0,0,0,1" BorderBrush="White"/>
-            <Label Content="User email:" Foreground="White" Grid.Row="2"/>
-            <Label Content="User email display" Name="AdminEmailDisplay" Grid.Row="3" Foreground="White" BorderThickness="0,0,0,1" BorderBrush="White"/>
 
-            <Button Content="Add Product" Grid.Row="4" Name="AddProducts" Click="AddProducts_Click" Height="30" Width="150" Background="Black" Foreground="White" BorderThickness="1" BorderBrush="White"/>
-            <Button Content="Back" Grid.Row="5" Name="BackToHomePage" Click="BackToHomePage_Click" Height="30" Width="150" Background="Black" Foreground="White" BorderThickness="1" BorderBrush="White"/>
-        </Grid>
-        <Grid x:Name="Display" Grid.Column="1" Grid.ColumnSpan="2">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Add Product" Name="AddProducts" Click="AddProducts_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+        </StackPanel>
+
+        <Grid x:Name="Display" Grid.Column="1">
 
             <Grid Name="ProductsDisplay" Visibility="Collapsed">
                 <ScrollViewer Name="ProductsDiaplay">
@@ -40,5 +27,7 @@
                 </ScrollViewer>
             </Grid>
         </Grid>
+
+        <Frame x:Name="ProductsContent" Grid.ColumnSpan="2" Visibility="Collapsed"/>
     </Grid>
 </Page>

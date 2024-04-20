@@ -18,10 +18,13 @@ using System.Windows.Media.Imaging;
 
 namespace WH_APP_GUI.Product
 {
-    public partial class CreateProduct : Window
+    public partial class CreateProduct : Page
     {
-        public CreateProduct()
+        private static Type PreviousPageType;
+        public CreateProduct(Page previousPage)
         {
+            PreviousPageType = previousPage.GetType();
+
             InitializeComponent();
 
             name.ValueDataType = typeof(string);
@@ -147,15 +150,29 @@ namespace WH_APP_GUI.Product
 
                 Tables.products.database.Rows.Add(product);
                 Tables.products.updateChanges();
+                Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been created {product["name"]} product.");
 
                 MessageBox.Show("Product created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close();
+                //this.Close();
+
+                //ProductsPage productsPage = new ProductsPage();
+                //Navigation.content2.Navigate(productsPage);
+
+                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                Navigation.content2.Navigate(previousPage);
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //this.Close();
+
+            //ProductsPage productsPage = new ProductsPage();
+            //Navigation.content2.Navigate(productsPage);
+
+            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+            Navigation.content2.Navigate(previousPage);
+
         }
     }
 }

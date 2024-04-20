@@ -21,13 +21,15 @@ namespace WH_APP_GUI
     {
         public Home()
         {
-           InitializeComponent();
+            InitializeComponent();
             Navigation.RemoveParent();
             Grid.SetColumn(Navigation.content2, 1);
             Grid.SetRow(Navigation.content2, 1);
             Navigation.content2.Background = Brushes.WhiteSmoke;
             alapgrid.Children.Add(Navigation.content2);
 
+            UserNameDisplay.Content = User.currentUser["name"].ToString();
+            UserEmailDisplay.Content = User.currentUser["email"].ToString();
            
             string[] inspectionItems = new string[]
             {
@@ -46,7 +48,7 @@ namespace WH_APP_GUI
             #region Show Permission btns
             int indexOfGrid = 1;
 
-            if (User.DoesHavePermission(inspectionItems[0]))
+            if (User.DoesHavePermission("Inspect all Warehouses"))
             {
                 Button btn = new Button();
                 btn.Content = "Warehouses";
@@ -57,7 +59,7 @@ namespace WH_APP_GUI
                 indexOfGrid++;
             }
 
-            if (User.DoesHavePermission(inspectionItems[1]))
+            if (User.DoesHavePermission("Inspect all Employees"))
             {
                 Button btn = new Button();
                 btn.Content = "Employees";
@@ -69,7 +71,7 @@ namespace WH_APP_GUI
                 indexOfGrid++;
             }
 
-            if (User.DoesHavePermission(inspectionItems[2]))
+            if (User.DoesHavePermission("Inspect all Orders"))
             {
                 Button btn = new Button();
                 btn.Content = "Orders";
@@ -81,7 +83,7 @@ namespace WH_APP_GUI
                 indexOfGrid++;
             }
 
-            if (User.DoesHavePermission(inspectionItems[3]))
+            if (User.DoesHavePermission("Inspect Products"))
             {
                 Button btn = new Button();
                 btn.Content = "Products";
@@ -93,7 +95,7 @@ namespace WH_APP_GUI
                 indexOfGrid++;
             }
 
-            if (User.DoesHavePermission(inspectionItems[4]))
+            if (User.DoesHavePermission("Inspect Staff"))
             {
                 Button btn = new Button();
                 btn.Content = "Staffs";
@@ -105,7 +107,7 @@ namespace WH_APP_GUI
                 indexOfGrid++;
             }
 
-            if (User.DoesHavePermission(inspectionItems[5]) && Tables.features.isFeatureInUse("Fleet") == true)
+            if (User.DoesHavePermission("Inspect all Transport") && Tables.features.isFeatureInUse("Fleet") == true)
             {
                 Button btn = new Button();
                 btn.Content = "Transports";
@@ -117,7 +119,7 @@ namespace WH_APP_GUI
                 indexOfGrid++;
             }
 
-            if (User.DoesHavePermission(inspectionItems[6]) && Tables.features.isFeatureInUse("Fleet") == true)
+            if (User.DoesHavePermission("Inspect all Car") && Tables.features.isFeatureInUse("Fleet") == true)
             {
                 Button btn = new Button();
                 btn.Content = "Cars";
@@ -129,7 +131,7 @@ namespace WH_APP_GUI
                 indexOfGrid++;
             }
 
-            if (User.DoesHavePermission(inspectionItems[7]) && Tables.features.isFeatureInUse("Forklift") == true)
+            if (User.DoesHavePermission("Inspect all Forklift") && Tables.features.isFeatureInUse("Forklift") == true)
             {
                 Button btn = new Button();
                 btn.Content = "Forklifts";
@@ -137,11 +139,18 @@ namespace WH_APP_GUI
                 btn.Style = (Style)this.Resources["ElegantButtonStyle"];
                 Grid.SetRow(btn, indexOfGrid);
                 Menu.Children.Add(btn);
-
-                indexOfGrid++;
             }
 
-            if (User.DoesHavePermission(inspectionItems[8]))
+            if (User.DoesHavePermission("Inspect Log") && Tables.features.isFeatureInUse("Log") == true)
+            {
+                Button btn = new Button();
+                btn.Content = "Log";
+                btn.Click += InspectLog_Click;
+                btn.Style = (Style)this.Resources["ElegantButtonStyle"];
+                Menu.Children.Add(btn);
+            }
+
+            if (User.DoesHavePermission("Access to Database"))
             {
                 Button btn = new Button();
                 btn.Content = "Settings";
@@ -168,7 +177,7 @@ namespace WH_APP_GUI
             // this.Hide();
             // warehousesPage.Show();
             Navigation.content2.Content = null;
-            Navigation.content2.Navigate(new Uri("WarehousesPage.xaml", UriKind.Relative));
+            Navigation.content2.Navigate(new Uri("Warehouse/WarehousesPage.xaml", UriKind.Relative));
         }
 
         private void InspectAllEmployees_Click(object sender, RoutedEventArgs e)
@@ -236,6 +245,15 @@ namespace WH_APP_GUI
             //forkliftsPage.Show();
             Navigation.content2.Content = null;
             Navigation.content2.Navigate(new Uri("Forklift/ForkliftsPage.xaml", UriKind.Relative));
+        }
+
+        private void InspectLog_Click(object sender, RoutedEventArgs e)
+        {
+            //ForkliftsPage forkliftsPage = new ForkliftsPage();
+            //this.Hide();
+            //forkliftsPage.Show();
+            Navigation.content2.Content = null;
+            Navigation.content2.Navigate(new Uri("LogDisplay.xaml", UriKind.Relative));
         }
 
         private void Database_Click(object sender, RoutedEventArgs e)

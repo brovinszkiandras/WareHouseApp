@@ -371,27 +371,37 @@ namespace WH_APP_GUI
             return false;
         }
 
-        static public bool ContainsIllegalRegexWithExceptions(string input, string[] exceptions)
+        static public bool ContainsIllegalRegexWithExceptions(string input, char[] exceptions)
         {
-            string[] illegalPatterns = {
-                @"\s",
-                @"[\W&&[^_]]",
-                @"\b(select|insert|update|delete|table)\b",
-                @"[!@#$%^&*()+=\[\]{};':"",.<>?/\\|~`]",
-                "[áéűó]"
+            char[] problematicCharacters = {
+                '\'', '\"', ';', '(', ')', ' ',
+                '[', ']', '{', '}', '=', '<', '>', ',',
+                '+', '-', '*', '/', '%', '&', '|', '^', '~', '!',
+                '\\', '\n', '\r', '\t'
             };
 
-            foreach (var pattern in illegalPatterns)
+            for (int i = 0; i < input.Length; i++)
             {
-                if (! exceptions.Contains(pattern))
+                if (problematicCharacters.Contains(input[i]) && !exceptions.Contains(input[i]))
                 {
                     if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase))
                     {
-                        return true;
-                    }
+                    return true;
                 }
             }
+            }
 
+            string[] problematicWords = {
+                "insert", "delete", "update", "select", "drop", "create"
+            };
+
+            for (int i = 0; i < problematicWords.Length; i++)
+            {
+                if (input.Contains(problematicWords[i]))
+                {
+                    return true;
+                }
+            }
             return false;
         }
 

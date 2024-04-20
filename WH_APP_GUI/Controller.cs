@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -104,7 +105,7 @@ namespace WH_APP_GUI
                 /*EMPLOYEES*/
                 SQL.SqlCommand($"CREATE TABLE {TableNames[2]} (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), email VARCHAR(255) UNIQUE, password VARCHAR(255), role_id INT, warehouse_id INT, profile_picture VARCHAR(255) DEFAULT 'DefaultEmployeeProfile.png', FOREIGN KEY (role_id) REFERENCES roles(id), FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id));");
                 /*PRODUCTS*/
-                SQL.SqlCommand($"CREATE TABLE {TableNames[3]} (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), buying_price DOUBLE, selling_price DOUBLE, width DOUBLE, heigth DOUBLE, length DOUBLE, description TEXT, image VARCHAR(255) DEFAULT 'DefaultProductImage.png');");
+                SQL.SqlCommand($"CREATE TABLE {TableNames[3]} (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), buying_price DOUBLE, selling_price DOUBLE, description TEXT, image VARCHAR(255) DEFAULT 'DefaultProductImage.png');");
                 /*ORDERS*/
                 SQL.SqlCommand($"CREATE TABLE {TableNames[4]} (id INT PRIMARY KEY AUTO_INCREMENT, qty INT, order_date DATETIME, address VARCHAR(255), status VARCHAR(255), product_id INT, user_name VARCHAR(255), payment_method VARCHAR(255), FOREIGN KEY (product_id) REFERENCES {TableNames[3]}(id) ON DELETE CASCADE);");
 
@@ -117,7 +118,7 @@ namespace WH_APP_GUI
                 /*SECTOR*/
                 SQL.SqlCommand($"CREATE TABLE sector (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) UNIQUE, length DOUBLE, width DOUBLE, area DOUBLE, area_in_use DOUBLE DEFAULT 0, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id) ON DELETE CASCADE);");
                 /*SHELF*/
-                SQL.SqlCommand($"CREATE TABLE shelf (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), length DOUBLE, actual_length DOUBLE, width DOUBLE, sector_id INT, startXindex INT, startYindex INT, orientation VARCHAR(20), FOREIGN KEY (sector_id) REFERENCES sector(id) ON DELETE CASCADE);");
+                SQL.SqlCommand($"CREATE TABLE shelf (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), number_of_levels INT, length DOUBLE, actual_length DOUBLE, width DOUBLE, sector_id INT, startXindex INT, startYindex INT, orientation VARCHAR(20), FOREIGN KEY (sector_id) REFERENCES sector(id) ON DELETE CASCADE);");
                 /*LEVEL OF SHELF*/
                 SQL.SqlCommand($"CREATE TABLE level_of_shelf (id INT PRIMARY KEY AUTO_INCREMENT, upper_space DOUBLE, weight_capacity DOUBLE, shelf_id INT, FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE CASCADE);");
 
@@ -247,6 +248,7 @@ namespace WH_APP_GUI
                             Tables.Value();
                         }
                     }
+
                     Tables.features.getFeature("Date log")["in_use"] = true;
                     Tables.features.updateChanges();
                 }
@@ -352,7 +354,7 @@ namespace WH_APP_GUI
                 try
                 {
                     string employeesActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'employees'");
-                    SQL.SqlCommand($"CREATE TABLE LOG (id INT PRIMARY KEY AUTO_INCREMENT, employee_id INT, log_message TEXT, updated_at TIMESTAMP DEFAULT NOW(), FOREIGN KEY (employee_id) REFERENCES {employeesActualName}(id) ON DELETE CASCADE);");
+                    SQL.SqlCommand($"CREATE TABLE LOG (id INT PRIMARY KEY AUTO_INCREMENT, email VARCHAR(255), log_message TEXT, updated_at TIMESTAMP DEFAULT NOW());");
 
                     if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'log'") == string.Empty)
                     {
@@ -401,7 +403,7 @@ namespace WH_APP_GUI
                     SQL.SqlCommand($"ALTER TABLE {Tables.employees.actual_name} ADD payment DOUBLE;");
                     SQL.SqlCommand($"ALTER TABLE {Tables.warehouses.actual_name} ADD total_value DOUBLE, ADD total_spending DOUBLE, ADD total_income DOUBLE;");
 
-                    SQL.SqlCommand($"CREATE TABLE revenue_a_day (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, date DATETIME, total_expenditure DOUBLE, total_income DOUBLE, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id));");
+                    SQL.SqlCommand($"CREATE TABLE revenue_a_day (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, date DATE, total_expenditure DOUBLE, total_income DOUBLE, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
 
                     if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'revenue_a_day'") == string.Empty)
                     {
@@ -429,7 +431,7 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} ADD weight DOUBLE, ADD volume DOUBLE(10,2);");
+                    SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} ADD weight DOUBLE, ADD volume DOUBLE, ADD width DOUBLE, ADD heigth DOUBLE, ADD length DOUBLE;");
                     SQL.SqlCommand($"ALTER TABLE cars ADD storage DOUBLE DEFAULT 0, ADD carrying_capacity DOUBLE DEFAULT 0;");
                     SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} ADD sum_volume DOUBLE;");
 
@@ -705,7 +707,7 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} DROP `weight`, DROP `volume`;");
+                    SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} DROP `weight`, DROP `volume`, DROP `width`, DROP `heigth`, DROP `length`;");
                     SQL.SqlCommand($"ALTER TABLE {Tables.cars.actual_name} DROP `storage`, DROP `carrying_capacity`;");
                     SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} DROP `sum_volume`;");
 
@@ -818,12 +820,27 @@ namespace WH_APP_GUI
         {
             try
             {
-                SQL.SqlCommand($"CREATE TABLE {WarehouseName} (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, product_id INT, qty INT, shelf_id INT, width DOUBLE, height DOUBLE, length DOUBLE, on_shelf_level INT, is_in_box BOOLEAN, FOREIGN KEY (product_id) REFERENCES {Tables.products.actual_name}(id) ON DELETE CASCADE, FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE CASCADE);");
+                if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Storage'"))
+                {
+                    SQL.SqlCommand($"CREATE TABLE {WarehouseName} (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, product_id INT, qty INT, shelf_id INT, width DOUBLE, height DOUBLE, length DOUBLE, on_shelf_level INT, is_in_box BOOLEAN, FOREIGN KEY (product_id) REFERENCES {Tables.products.actual_name}(id) ON DELETE CASCADE, FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE CASCADE);");
+                }
+                else
+                {
+                    SQL.SqlCommand($"CREATE TABLE {WarehouseName} (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, product_id INT, qty INT, shelf_id INT, on_shelf_level INT, is_in_box BOOLEAN, FOREIGN KEY (product_id) REFERENCES {Tables.products.actual_name}(id) ON DELETE CASCADE, FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE CASCADE);");
+                }
             }
             catch (Exception ex)
             {
                 Debug.WriteError(ex);
                 throw;
+            }
+        }
+
+        public static void LogWrite(string email, string message)
+        {
+            if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Log'"))
+            {
+                SQL.SqlCommand($"INSERT INTO `log`(`email`, `log_message`) VALUES ('{email}', '{message}');");
             }
         }
     }

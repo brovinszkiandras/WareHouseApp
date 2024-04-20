@@ -18,5 +18,6 @@
             <ComboBox Name="forkliftFilter" BorderBrush="Black" SelectionChanged="forkliftFilter_SelectionChanged" Margin="10"/>
         </StackPanel>
         <StackPanel x:Name="DisplayForkliftsStackPanel" Grid.Column="1"/>
+        <Frame x:Name="ForkliftContent" Grid.ColumnSpan="2" Visibility="Collapsed"/>
     </Grid>
 </Page>

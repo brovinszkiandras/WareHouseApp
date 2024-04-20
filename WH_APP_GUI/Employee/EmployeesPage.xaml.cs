@@ -14,6 +14,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WH_APP_GUI.Employee;
 
 namespace WH_APP_GUI
 {
@@ -24,9 +25,23 @@ namespace WH_APP_GUI
             InitializeComponent();
 
             Ini_warehouse_id();
+            Ini_role_id();
 
             DisplayEmployeesStackpanel.Children.Clear();
             InitializeAllEmployees(DisplayEmployeesStackpanel);
+        }
+        private static Type PreviousPageType;
+        public EmployeesPage(Page previousPage)
+        {
+            InitializeComponent();
+
+            Ini_warehouse_id();
+            Ini_role_id();
+
+            DisplayEmployeesStackpanel.Children.Clear();
+            InitializeAllEmployees(DisplayEmployeesStackpanel);
+
+            PreviousPageType = previousPage.GetType();
         }
 
         private Dictionary<string, DataRow> warehouse_id_Dictionary = new Dictionary<string, DataRow>();
@@ -169,9 +184,10 @@ namespace WH_APP_GUI
             Button btn = sender as Button;
             if (btn.Tag != null)
             {
-                EditEmployeePage editEmployeePage = new EditEmployeePage(btn.Tag as DataRow);
-                editEmployeePage.Show();
-                editEmployeePage.Closing += CloseEditWindow;
+                EditEmployeePage editEmployee = new EditEmployeePage(new EmployeesPage(), btn.Tag as DataRow);
+                Content.Content = null;
+                Content.Navigate(editEmployee);
+                Content.Visibility = Visibility.Visible;
             }
         }
         void CloseEditWindow(object sender, EventArgs e)
@@ -181,15 +197,12 @@ namespace WH_APP_GUI
         }
         private void AddNewEmployee_Click(object sender, RoutedEventArgs e)
         {
-            EmployeesDisplay.Visibility = Visibility.Collapsed;
-
-            name.ValueDataType = typeof(string);
-            email.ValueDataType = typeof(string);
-
-            Ini_role_id();
-            Ini_warehouse_id();
-
-            RegisterEmployeDatas.Visibility = Visibility.Visible;
+            CreateEmployee createEmployee = new CreateEmployee(new EmployeesPage());
+            Content.Content = null;
+            Content.Navigate(createEmployee);
+            Content.Visibility = Visibility.Visible;
+            //createEmployee.Show();
+            //createEmployee.Closing += CloseEditWindow;
         }
 
         private void deleteEmployee_Click(object sender, RoutedEventArgs e)
@@ -311,40 +324,12 @@ namespace WH_APP_GUI
             InitializeAllEmployees(DisplayEmployeesStackpanel);
         }
 
-        private void profile_picture_Click(object sender, RoutedEventArgs e)
+        private void Back_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Title = "Choose Image";
-            openFileDialog.Filter = "Image|*.jpg;*.jpeg;*.png;*.gif;*.bmp|All File|*.*";
-
-            if (openFileDialog.ShowDialog() == true)
+            if (PreviousPageType != null)
             {
-                try
-                {
-                    string selectedFilePath = openFileDialog.FileName;
-                    string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
-
-                    if (!Directory.Exists(targetDirectory))
-                    {
-                        Directory.CreateDirectory(targetDirectory);
-                    }
-
-                    string fileName = Path.GetFileName(selectedFilePath);
-                    string targetFilePath = Path.Combine(targetDirectory, fileName);
-
-                    File.Copy(selectedFilePath, targetFilePath, true);
-
-                    BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
-                    ImageDisplay.Source = bitmap;
-
-                    profile_picture.Tag = fileName;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error during the Image browsing: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    Debug.WriteError(ex);
-                    throw;
-                }
+                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                Navigation.content2.Navigate(previousPage);
             }
         }
     }

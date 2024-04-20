@@ -16,10 +16,14 @@ using System.Windows.Media.Imaging;
 
 namespace WH_APP_GUI.Staff
 {
-    public partial class EditStaffPage : Window
+    public partial class EditStaffPage : Page
     {
-        public EditStaffPage(DataRow staff)
+        
+        private static Type PreviousPageType;
+        public EditStaffPage(Page previousPage, DataRow staff)
         {
+            PreviousPageType = previousPage.GetType();
+
             InitializeComponent();
 
             PasswordReset.Tag = staff;
@@ -33,6 +37,7 @@ namespace WH_APP_GUI.Staff
             email.Text = staff["email"].ToString();
 
             Ini_role_id();
+
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -122,15 +127,26 @@ namespace WH_APP_GUI.Staff
                     staff["email"] = email.Text;
                     staff["role_id"] = role_id_Dictionary[role_id.SelectedItem.ToString()]["id"];
 
+                    Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {staff["name"]} staff.");
                     MessageBox.Show("Staff updated");
-                    this.Close();
+                    //this.Close();
+                    //StaffPage staffPage = new StaffPage();
+                    //Navigation.content2.Navigate(staffPage);
+
+                    Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                    Navigation.content2.Navigate(previousPage);
                 }
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //this.Close();
+            //StaffPage staffPage = new StaffPage();
+            //Navigation.content2.Navigate(staffPage);
+
+            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+            Navigation.content2.Navigate(previousPage);
         }
 
         private void PasswordReset_Click(object sender, RoutedEventArgs e)

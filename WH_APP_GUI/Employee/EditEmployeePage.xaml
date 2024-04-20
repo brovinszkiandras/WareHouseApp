@@ -1,4 +1,4 @@
-﻿<Window x:Class="WH_APP_GUI.EditEmployeePage"
+﻿<Page x:Class="WH_APP_GUI.EditEmployeePage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,38 +6,49 @@
         xmlns:local="clr-namespace:WH_APP_GUI"
         mc:Ignorable="d"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="EditEmployeePage" Height="450" Width="800">
-    <Grid>
+        Title="EditEmployeePage"
+        d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="0" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <StackPanel Grid.Column="1">
+            <Button Name="profile_picture" Grid.Row="1" Click="profile_picture_Click" Width="100" Height="100"/>
+            <Grid x:Name="DatasgGRID">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
             <Button Name="profile_picture" Grid.Row="1" Click="profile_picture_Click"/>
         </Grid>
-        
-        <StackPanel Grid.Column="1">
-            <Label Content="Name: "/>
-            <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
-            <Label Content="Email: "  />
-            <xctk:ValueRangeTextBox Name="email" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
+
+                <Label Content="Name: " Margin="5" Grid.Column="0" Grid.Row="0"/>
+                <Label Content="Email: " Margin="5" Grid.Column="0" Grid.Row="1"/>
+                <Label Content="Role: " Margin="5" Grid.Column="0" Grid.Row="2"/>
+                <Label Content="Warehouse: " Margin="5" Grid.Column="0" Grid.Row="3"/>
+                <Label Content="Payment: " Name="paymentLBL" Margin="5" Grid.Column="0" Grid.Row="4"/>
+
+                <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="0"/>
+                <xctk:ValueRangeTextBox Name="email" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="1"/>
+                <ComboBox Name="role_id" Margin="5" Grid.Column="1" Grid.Row="2"/>
+                <ComboBox Name="warehouse_id" Margin="5" Grid.Column="1" Grid.Row="3"/>
+                <xctk:ValueRangeTextBox Name="payment" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="4"/>
+                
+            </Grid>
+            <Button Content="Activity" Name="activity" Click="activity_Click" Margin="5"/>
             <Button Content="Reset Password" Name="PasswordReset" BorderBrush="Black" Margin="5" Click="PasswordReset_Click"/>
-            <Label Content="Role: "/>
-            <ComboBox Name="role_id"/>
-            <Label Content="Warehouse: "/>
-            <ComboBox Name="warehouse_id"/>
-            <Button Content="Activity" Name="activity" Click="activity_Click"/>
-            <Label Content="Payment: " Name="paymentLBL"/>
-            <xctk:ValueRangeTextBox Name="payment" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
-            <Button Content="Done" Name="DoneEmployeeUpdate" Click="DoneEmployeeUpdate_Click"/>
-            <Button Content="Cancel" Name="Cancel" Click="Cancel_Click"/>
+            <Button Content="Done" Name="DoneEmployeeUpdate" Click="DoneEmployeeUpdate_Click" Margin="5"/>
+            <Button Content="Cancel" Name="Cancel" Click="Cancel_Click" Margin="5"/>
         </StackPanel>
     </Grid>
-</Window>
+</Page>

@@ -109,13 +109,55 @@ namespace WH_APP_GUI
             if (Emali.Text != string.Empty && Password.Text != string.Empty)
             {
                 string hpsw = Hash.HashPassword(Password.Text);
-                User.SetCurrentUser(Emali.Text, hpsw);
-                if (User.currentUser != null)
+
+                List<string> employees = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM {Tables.employees.actual_name}"));
+                List<string> staffs = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM {Tables.staff.actual_name}"));
+
+                if (employees.Contains(Emali.Text))
                 {
-                    LogIn.Visibility = Visibility.Visible;
-                    content.Visibility = Visibility.Visible;
-                    content.Content = null;
-                    content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM {Tables.employees.actual_name} WHERE email = '{Emali.Text}'");
+
+                    if (datasOfUser[0][4] != "" || datasOfUser[0][5] != "")
+                    {
+                        User.SetCurrentUser(Emali.Text, hpsw);
+                        Controller.LogWrite(User.currentUser["email"].ToString(),"The user has been logged in to the application");
+                        if (User.currentUser != null)
+                        {
+                            LogIn.Visibility = Visibility.Visible;
+                            content.Visibility = Visibility.Visible;
+                            content.Content = null;
+                            content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Entry blocked. The user's data is either incomplete or non-existent.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
+                }
+                else if (staffs.Contains(Emali.Text))
+                {
+                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM {Tables.staff.actual_name} WHERE email = '{Emali.Text}'");
+
+                    if (datasOfUser[0][4] != "")
+                    {
+                        User.SetCurrentUser(Emali.Text, hpsw);
+                        if (User.currentUser != null)
+                        {
+                            LogIn.Visibility = Visibility.Visible;
+                            content.Visibility = Visibility.Visible;
+                            content.Content = null;
+                            content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Entry blocked. The user's data is either incomplete or non-existent.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("This person not existing!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else

@@ -17,9 +17,10 @@ using System.Xml.Linq;
 
 namespace WH_APP_GUI.Forklift
 {
-    public partial class EditForkliftPage : Window
+    public partial class EditForkliftPage : Page
     {
-        public EditForkliftPage(DataRow forklift)
+        private static Type PreviousPageType;
+        public EditForkliftPage(Page previousPage, DataRow forklift)
         {
             InitializeComponent();
             IniWarehouses();
@@ -85,16 +86,25 @@ namespace WH_APP_GUI.Forklift
                     forklift["operating_hours"] = operating_hours.Text;
 
                     Tables.forklifts.updateChanges();
+                    Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {forklift["type"]}[{forklift["id"]}] forklift.");
 
                     MessageBox.Show("Product updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
+                    //this.Close();
+                    //ForkliftsPage forkliftsPage = new ForkliftsPage();
+                    //Navigation.content2.Navigate(forkliftsPage);
+                    Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                    Navigation.content2.Navigate(previousPage);
                 }
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //this.Close();
+            //ForkliftsPage forkliftsPage = new ForkliftsPage();
+            //Navigation.content2.Navigate(forkliftsPage);
+            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+            Navigation.content2.Navigate(previousPage);
         }
     }
 }

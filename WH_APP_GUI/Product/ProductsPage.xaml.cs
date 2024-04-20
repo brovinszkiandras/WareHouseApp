@@ -12,6 +12,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WH_APP_GUI.Forklift;
 
 namespace WH_APP_GUI.Product
 {
@@ -144,9 +145,12 @@ namespace WH_APP_GUI.Product
             DataRow product = (sender as Button).Tag as DataRow;
             if (product != null)
             {
-                EditProductPage editProductPage = new EditProductPage(product);
-                editProductPage.Show();
-                editProductPage.Closing += CloseAndDisplay;
+                EditProductPage editProductPage = new EditProductPage(new ProductsPage(), product);
+                //editProductPage.Show();
+                //editProductPage.Closing += CloseAndDisplay;
+                ProductsContent.Content = null;
+                ProductsContent.Navigate(editProductPage);
+                ProductsContent.Visibility = Visibility.Visible;
 
             }
         }
@@ -167,9 +171,12 @@ namespace WH_APP_GUI.Product
         }
         private void AddProducts_Click(object sender, RoutedEventArgs e)
         {
-            CreateProduct createProductPage = new CreateProduct();
-            createProductPage.Show();
-            createProductPage.Closing += CloseAndDisplay;
+            CreateProduct createProduct = new CreateProduct(new ProductsPage());
+            //editProductPage.Show();
+            //editProductPage.Closing += CloseAndDisplay;
+            ProductsContent.Content = null;
+            ProductsContent.Navigate(createProduct);
+            ProductsContent.Visibility = Visibility.Visible;
         }
     }
 }

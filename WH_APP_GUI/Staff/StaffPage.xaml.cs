@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using WH_APP_GUI.Employee;
 
 namespace WH_APP_GUI.Staff
 {
@@ -23,13 +24,33 @@ namespace WH_APP_GUI.Staff
             InitializeComponent();
             DisplayStaffsStackpanel.Children.Clear();
             InitializeAllStaffs(DisplayStaffsStackpanel);
+            Ini_role_id();
+            Back.Visibility = Visibility.Collapsed;
+        }
+        private static Type PreviousPageType;
+        public StaffPage(Page previousPage)
+        {
+            InitializeComponent();
+            DisplayStaffsStackpanel.Children.Clear();
+            InitializeAllStaffs(DisplayStaffsStackpanel);
+            Ini_role_id();
+            Back.Visibility = Visibility.Visible;
 
-            for (int i = 0; i < Tables.roles.database.Rows.Count; i++)
+            PreviousPageType = previousPage.GetType();
+        }
+
+        private Dictionary<string, DataRow> role_id_Dictionary = new Dictionary<string, DataRow>();
+        private void Ini_role_id()
+        {
+            role_id_Dictionary.Clear();
+            StaffRoles.Items.Clear();
+
+            foreach (DataRow role in Tables.roles.database.Rows)
             {
-                if (!SQL.BoolQuery($"SELECT in_warehouse FROM {Tables.roles.actual_name} WHERE role = '{Tables.roles.database.Rows[i]["role"]}'"))
+                if (! (bool)role["in_warehouse"])
                 {
-                    Role_Id.Add(Tables.roles.database.Rows[i]["role"].ToString(), (int)Tables.roles.database.Rows[i]["id"]);
-                    StaffRoles.Items.Add(Tables.roles.database.Rows[i]["role"].ToString());
+                    role_id_Dictionary.Add(role["role"].ToString(), role);
+                    StaffRoles.Items.Add(role["role"].ToString());
                 }
             }
         }
@@ -154,9 +175,12 @@ namespace WH_APP_GUI.Staff
         public Dictionary<string, int> Role_Id = new Dictionary<string, int>();
         private void AddNewStaff_Click(object sender, RoutedEventArgs e)
         {
-            CreateStaffPage createStaffPage = new CreateStaffPage();
-            createStaffPage.Show();
-            createStaffPage.Closing += CloseAndDisplay;
+            CreateStaffPage createStaffPage = new CreateStaffPage(new StaffPage());
+            //createStaffPage.Show();
+            //createStaffPage.Closing += CloseAndDisplay;
+            StaffContent.Content = null;
+            StaffContent.Navigate(createStaffPage);
+            StaffContent.Visibility = Visibility.Visible;
         }
 
         void CloseAndDisplay(object sender, EventArgs e)
@@ -183,9 +207,12 @@ namespace WH_APP_GUI.Staff
             DataRow staff = (sender as Button).Tag as DataRow;
             if (staff != null)
             {
-                EditStaffPage editStaffPage = new EditStaffPage(staff);
-                editStaffPage.Show();
-                editStaffPage.Closing += CloseAndDisplay;
+                EditStaffPage editStaffPage = new EditStaffPage(new StaffPage(), staff);
+                //editStaffPage.Show();
+                //editStaffPage.Closing += CloseAndDisplay;
+                StaffContent.Content = null;
+                StaffContent.Navigate(editStaffPage);
+                StaffContent.Visibility = Visibility.Visible;
             }
         }
 
@@ -233,7 +260,16 @@ namespace WH_APP_GUI.Staff
             if (StaffRoles.SelectedIndex != -1)
             {
                 DisplayStaffsStackpanel.Children.Clear();
-                InitializeStaffsByRole(DisplayStaffsStackpanel, Tables.roles.database.Select($"id = {Role_Id[StaffRoles.SelectedItem.ToString()]}")[0]);
+                InitializeStaffsByRole(DisplayStaffsStackpanel, Tables.roles.database.Select($"id = {role_id_Dictionary [StaffRoles.SelectedItem.ToString()]}")[0]);
+            }
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (PreviousPageType != null)
+            {
+                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                Navigation.content2.Navigate(previousPage);
             }
         }
     }

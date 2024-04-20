@@ -19,7 +19,8 @@
         <StackPanel HorizontalAlignment="Center" Margin="0, 20">
             <Button Content="Add new staff" Name="AddNewStaff" Click="AddNewStaff_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
             <Button Content="All Staffs" Name="AllStaffs" Click="AllStaffs_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
-            <ComboBox Name="StaffRoles" BorderBrush="Black" SelectionChanged="StaffRoles_SelectionChanged"/>
+            <ComboBox Name="StaffRoles" BorderBrush="Black" SelectionChanged="StaffRoles_SelectionChanged" Margin="5"/>
+            <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
         </StackPanel>
 
         <Grid x:Name="Display" Grid.Column="1">
@@ -31,5 +32,6 @@
                 </ScrollViewer>
             </Grid>
         </Grid>
+        <Frame x:Name="StaffContent" Grid.ColumnSpan="3" Visibility="Collapsed"/>
     </Grid>
 </Page>

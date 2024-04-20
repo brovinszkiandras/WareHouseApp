@@ -18,48 +18,10 @@
             <Button Content="Add new employee" Name="AddNewEmployee" Click="AddNewEmployee_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
             <Button Content="All Employees" Name="AllEmployees" Click="AllEmployees_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
             <ComboBox Name="EmployeeWarehouses" BorderBrush="Black" SelectionChanged="EmployeeWarehouses_SelectionChanged" Margin="5"/>
+            <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
         </StackPanel>
-        
-        <Grid x:Name="Display" Grid.Column="1">
-            <StackPanel x:Name="RegisterEmployeDatas" Visibility="Collapsed" Background="White">
-
-                <Label Content="Employee Name:" VerticalContentAlignment="Bottom"/>
-                <xctk:ValueRangeTextBox x:Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
-
-                <Label Content="Employee Email:" VerticalContentAlignment="Bottom"/>
-                <xctk:ValueRangeTextBox x:Name="email" BorderBrush="Black" SelectionBrush="Black" Margin="5"/>
-
-                <Label Content="Employee Profile Picture:" VerticalContentAlignment="Bottom"/>
-                <Button x:Name="profile_picture" Content="Choose Picture" BorderBrush="Black" Margin="5" Click="profile_picture_Click"/>
-                <Image x:Name="ImageDisplay" Width="75" Height="75"/>
-
-                <Label Content="Employees Warehouse:" VerticalContentAlignment="Bottom"/>
-                <ComboBox Name="warehouse_id" BorderBrush="Black" Margin="5">
-                    <ComboBox.Background>
-                        <LinearGradientBrush EndPoint="0,1">
-                            <GradientStop Color="#FFF0F0F0"/>
-                            <GradientStop Color="White" Offset="1"/>
-                        </LinearGradientBrush>
-                    </ComboBox.Background>
-                </ComboBox>
-
-                <Label Content="Employee Role:" VerticalContentAlignment="Bottom"/>
-                <ComboBox Name="role_id" BorderBrush="Black" Margin="5">
-                    <ComboBox.Background>
-                        <LinearGradientBrush EndPoint="0,1">
-                            <GradientStop Color="#FFF0F0F0"/>
-                            <GradientStop Color="White" Offset="1"/>
-                        </LinearGradientBrush>
-                    </ComboBox.Background>
-                </ComboBox>
-
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-                    <Button x:Name="RegisterEmployeeWithDatas" Content="Register Employee" Background="White" BorderBrush="Black" Click="RegisterEmployeeWithDatas_Click" Margin="10"/>
-                    <Button x:Name="Cancel" Content="Cancel" Background="White" BorderBrush="Black" Click="Cancel_Click" Margin="10"/>
-                </StackPanel>
-            </StackPanel>
         </Grid>
-
+        
         <Grid Name="EmployeesDisplay" Grid.Column="1" Visibility="Collapsed" Background="White">
             <ScrollViewer Name="DisplayEmployees" Visibility="Visible" HorizontalAlignment="Center" Margin="20">
                 <StackPanel Name="DisplayEmployeesStackpanel" Orientation="Vertical">
@@ -67,5 +29,7 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
+
+        <Frame Grid.ColumnSpan="2" Name="Content" Visibility="Collapsed"/>
     </Grid>
 </Page>

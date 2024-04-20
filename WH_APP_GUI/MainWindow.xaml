@@ -74,18 +74,18 @@
 
             <Label Content="Name:" Name="NameLBL" VerticalContentAlignment="Bottom" Margin="0,10,0,0"/>
             <Border Padding="5" x:Name="NameBorder" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
-                <TextBox x:Name="Name" BorderThickness="0" BorderBrush="Transparent"/>
+                <TextBox x:Name="Name" BorderBrush="Transparent"/>
             </Border>
 
             <Label Content="Emali:" VerticalContentAlignment="Bottom" Margin="0,10,0,0"/>
             <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
-                <TextBox x:Name="Emali" BorderThickness="0" Text="micimacko@tigris.com" BorderBrush="Transparent"/>
+                <TextBox x:Name="Emali" Text="micimacko@tigris.com" BorderBrush="Transparent"/>
             </Border>
 
             <Label Content="Password:" VerticalContentAlignment="Bottom" Margin="0,10,0,0"/>
 
             <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
-                <TextBox x:Name="Password" BorderThickness="0" Text="malacka" BorderBrush="Transparent"/>
+                <TextBox x:Name="Password" Text="malacka" BorderBrush="Transparent"/>
             </Border>
 
             <Button Content="Login" x:Name="Login_button" Click="Login_Click" Margin="50, 10" Visibility="Collapsed"/>
@@ -96,12 +96,12 @@
 
             <Label Content="Enter the datasource:" Margin="0,10,0,0"/>
             <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
-                <TextBox x:Name="DataSourceFU" BorderThickness="0" BorderBrush="White"/>
+                <TextBox x:Name="DataSourceFU" BorderBrush="White"/>
             </Border>
 
             <Label Content="Enter the port number:" Margin="0,10,0,0"/>
             <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
-                <TextBox x:Name="portFU" BorderThickness="0" BorderBrush="White"/>
+                <TextBox x:Name="portFU" BorderBrush="White"/>
             </Border>
 
             <Label Content="Enter the username of the database:" Margin="0,10,0,0"/>
@@ -111,11 +111,11 @@
 
             <Label Content="Enter the password to the database:" Margin="0,10,0,0"/>
             <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
-                <TextBox x:Name="passwrdFU" BorderThickness="0" BorderBrush="White"/>
+                <TextBox x:Name="passwrdFU" BorderBrush="White"/>
             </Border>
             <Label Content="Enter the database name:" Margin="0,10,0,0"/>
             <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
-                <TextBox x:Name="DatabaseNameFU" BorderThickness="0" BorderBrush="White"/>
+                <TextBox x:Name="DatabaseNameFU" BorderBrush="White"/>
             </Border>
 
             <Button Content="Confirm" x:Name="ConfirmDBdatas" Click="ConfirmDBdatas_Click" Margin="50, 30"/>

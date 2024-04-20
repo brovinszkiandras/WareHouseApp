@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WH_APP_GUI.transport"
         mc:Ignorable="d"
-        Title="TransportsPage">
+        Title="TransportsPage"
+        d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         
         <Grid Grid.Row="1" Name="mainGrid" Grid.Column="1">

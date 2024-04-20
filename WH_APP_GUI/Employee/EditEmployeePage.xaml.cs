@@ -17,10 +17,13 @@ using System.Windows.Media.Imaging;
 
 namespace WH_APP_GUI
 {
-    public partial class EditEmployeePage : Window
+    public partial class EditEmployeePage : Page
     {
-        public EditEmployeePage(DataRow employee)
+        private static Type PreviousPageType;
+        public EditEmployeePage(Page previousPage, DataRow employee)
         {
+            PreviousPageType = previousPage.GetType();
+
             InitializeComponent();
             IniWarehouses();
             IniRoles();
@@ -107,7 +110,11 @@ namespace WH_APP_GUI
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //EmployeesPage employeesPage = new EmployeesPage();
+            //Navigation.content2.Navigate(employeesPage);
+
+            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+            Navigation.content2.Navigate(previousPage);
         }
 
         private void PasswordReset_Click(object sender, RoutedEventArgs e)
@@ -167,8 +174,13 @@ namespace WH_APP_GUI
                     }
 
                     Tables.employees.updateChanges();
-                    
-                    this.Close();
+                    Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {employee["name"]} employee.");
+                    MessageBox.Show("The employee has been updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    //EmployeesPage employeesPage = new EmployeesPage();
+                    //Navigation.content2.Navigate(employeesPage);
+                    Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                    Navigation.content2.Navigate(previousPage);
                 }
             }
         }

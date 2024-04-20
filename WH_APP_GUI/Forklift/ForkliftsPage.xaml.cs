@@ -12,6 +12,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WH_APP_GUI.Employee;
 using WH_APP_GUI.Forklift;
 
 namespace WH_APP_GUI
@@ -109,6 +110,8 @@ namespace WH_APP_GUI
 
                 Button deleteButton = new Button();
                 deleteButton.Content = "Delete";
+                deleteButton.Tag = Tables.warehouses.getForklifts(warehouse)[i];
+                deleteButton.Click += deleteForklift_Click;
 
                 Button editButton = new Button();
                 editButton.Content = "Edit";
@@ -128,9 +131,10 @@ namespace WH_APP_GUI
 
         private void AddNewforklift_Click(object sender, RoutedEventArgs e)
         {
-            CreateFrokliftPage createFrokliftPage = new CreateFrokliftPage();
-            createFrokliftPage.Show();
-            createFrokliftPage.Closing += CloseAndDisplay;
+            CreateFrokliftPage createFrokliftPage = new CreateFrokliftPage(new ForkliftsPage());
+            ForkliftContent.Content = null;
+            ForkliftContent.Navigate(createFrokliftPage);
+            ForkliftContent.Visibility = Visibility.Visible;
         }
         
         private void editForklift_Click(object sender, RoutedEventArgs e)
@@ -138,9 +142,24 @@ namespace WH_APP_GUI
             DataRow forklift = (sender as Button).Tag as DataRow;
             if (forklift != null)
             {
-                EditForkliftPage editForkliftPage = new EditForkliftPage(forklift);
-                editForkliftPage.Show();
-                editForkliftPage.Closing += CloseAndDisplay;
+                EditForkliftPage editForkliftPage = new EditForkliftPage(new ForkliftsPage(), forklift);
+                ForkliftContent.Content = null;
+                ForkliftContent.Navigate(editForkliftPage);
+                ForkliftContent.Visibility = Visibility.Visible;
+            }
+        }
+        private void deleteForklift_Click(object sender, RoutedEventArgs e)
+        {
+            DataRow forklift = (sender as Button).Tag as DataRow;
+            if (forklift != null)
+            {
+                forklift.Delete();
+                Tables.forklifts.updateChanges();
+
+                DisplayForkliftsStackPanel.Children.Clear();
+                DisplayAllForklifts(DisplayForkliftsStackPanel);
+
+                MessageBox.Show("Product deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

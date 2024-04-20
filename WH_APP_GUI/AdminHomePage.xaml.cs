@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WH_APP_GUI.Employee;
+using WH_APP_GUI.Staff;
 
 namespace WH_APP_GUI
 {
@@ -531,22 +533,18 @@ namespace WH_APP_GUI
 
         private void RegisterEmployee_Click(object sender, RoutedEventArgs e)
         {
-            CloseBeforeOpen();
+            CreateEmployee createEmployee = new CreateEmployee(new AdminHomePage());
+            AdminContent.Content = null;
+            AdminContent.Navigate(createEmployee);
+            AdminContent.Visibility = Visibility.Visible;
+        }
 
-            ManagedatabaseGrid.Visibility = Visibility.Collapsed;
-            EmployeeStatus.Items.Clear();
-            EmployeeStatus.Items.Add("Dont belongs to a warehouse");
-            EmployeeStatus.Items.Add("Belongs to a warehouse");
-
-            EmployeeRole.IsEnabled = false;
-
-            Role_Id = new Dictionary<string, int>();
-            for (int i = 0; i < Tables.roles.database.Rows.Count; i++)
-            {
-                Role_Id.Add(Tables.roles.database.Rows[i]["role"].ToString(), (int)Tables.roles.database.Rows[i]["id"]);
-            }
-
-            RegisterEmployeDatas.Visibility = Visibility.Visible;
+        private void RegisterStaff_Click(object sender, RoutedEventArgs e)
+        {
+            CreateStaffPage createStaffPage = new CreateStaffPage(new AdminHomePage());
+            AdminContent.Content = null;
+            AdminContent.Navigate(createStaffPage);
+            AdminContent.Visibility = Visibility.Visible;
         }
         private void ImportEmployees_Click(object sender, RoutedEventArgs e)
         {

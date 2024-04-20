@@ -13,13 +13,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WH_APP_GUI.Product;
 
 namespace WH_APP_GUI.Staff
 {
-    public partial class CreateStaffPage : Window
+    public partial class CreateStaffPage : Page
     {
-        public CreateStaffPage()
+        private static Type PreviousPageType;
+        public CreateStaffPage(Page previousPage)
         {
+            PreviousPageType = previousPage.GetType();
+
             InitializeComponent();
 
             name.ValueDataType = typeof(string);
@@ -103,14 +107,23 @@ namespace WH_APP_GUI.Staff
                 Tables.staff.database.Rows.Add(staff);
                 Tables.staff.updateChanges();
 
+                Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been created {staff["name"]} staff.");
+
                 MessageBox.Show("Staff created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close();
+                //this.Close();
+                //StaffPage staffPage = new StaffPage();
+                //Navigation.content2.Navigate(staffPage);
+                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                Navigation.content2.Navigate(previousPage);
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //StaffPage staffPage = new StaffPage();
+            //Navigation.content2.Navigate(staffPage);
+            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+            Navigation.content2.Navigate(previousPage);
         }
     }
 }

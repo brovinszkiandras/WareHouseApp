@@ -18,11 +18,14 @@ using MySqlConnector;
 
 namespace WH_APP_GUI.Product
 {
-    public partial class EditProductPage : Window
+    public partial class EditProductPage : Page
     {
+        private static Type PreviousPageType;
         public DataRow product;
-        public EditProductPage(DataRow product)
+        public EditProductPage(Page previousPage, DataRow product)
         {
+            PreviousPageType = previousPage.GetType();
+
             InitializeComponent();
 
             MessageBox.Show(product["id"].ToString());
@@ -80,7 +83,17 @@ namespace WH_APP_GUI.Product
             length.ValueDataType = typeof(double);
             description.ValueDataType = typeof(string);
 
-           
+            MessageBox.Show(product["id"].ToString());
+
+            name.Text = product["name"].ToString();
+            buying_price.Text = product["buying_price"].ToString();
+            selling_price.Text = product["selling_price"].ToString();
+            width.Text = product["width"].ToString();
+            heigth.Text = product["heigth"].ToString();
+            length.Text = product["length"].ToString();
+            description.Text = product["description"].ToString();
+
+            Done.Tag = product;
 
             if (SQL.BoolQuery("SElECT in_use FROM feature WHERE name = 'Storage'"))
             {
@@ -178,15 +191,27 @@ namespace WH_APP_GUI.Product
 
                 Tables.products.updateChanges();
 
+                Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {product["name"]} product.");
+
                 Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully created a new sector");
 
-               this.Close();
+                //ProductsPage productsPage = new ProductsPage();
+                //Navigation.content2.Navigate(productsPage);
+                ////this.Close();
+                ///
+                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                Navigation.content2.Navigate(previousPage);
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //this.Close();
+            //ProductsPage productsPage = new ProductsPage();
+            //Navigation.content2.Navigate(productsPage);
+
+            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+            Navigation.content2.Navigate(previousPage);
         }
 
         private void CalculateVolume(string widthStr, string heightStr, string lengthStr)

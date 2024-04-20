@@ -14,13 +14,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Xml.Linq;
+using WH_APP_GUI.Product;
 
 namespace WH_APP_GUI.Forklift
 {
-    public partial class CreateFrokliftPage : Window
+    public partial class CreateFrokliftPage : Page
     {
-        public CreateFrokliftPage()
+        private Type PreviousPageType;
+        public CreateFrokliftPage(Page previousPage)
         {
+            PreviousPageType = previousPage.GetType();
+
             InitializeComponent();
             IniWarehouses();
             IniStatuses();
@@ -77,14 +81,27 @@ namespace WH_APP_GUI.Forklift
                 Tables.forklifts.database.Rows.Add(forklift);
                 Tables.forklifts.updateChanges();
 
+                Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been created {forklift["type"]}[{forklift["id"]}] forklift.");
+
                 MessageBox.Show("Forklift created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close();
+
+                //ForkliftsPage forkliftsPage = new ForkliftsPage();
+                //Navigation.content2.Navigate(forkliftsPage);
+                //this.Close();
+
+                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                Navigation.content2.Navigate(previousPage);
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //this.Close();
+            //ForkliftsPage forkliftsPage = new ForkliftsPage();
+            //Navigation.content2.Navigate(forkliftsPage);
+
+            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+            Navigation.content2.Navigate(previousPage);
         }
     }
 }

@@ -1,0 +1,34 @@
+﻿<Page x:Class="WH_APP_GUI.Warehouse.WarehousesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:local="clr-namespace:WH_APP_GUI.Warehouse"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="WarehousesPage">
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel Margin="10">
+            <Button Content="Add new warehouse" Name="AddNewWarehouse" Click="AddNewWarehouse_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+
+            <ScrollViewer Name="DisplayWarehouses" Visibility="Visible">
+                <StackPanel Name="DisplayWarehousesStackpanel" Orientation="Vertical" Visibility="Visible">
+
+                </StackPanel>
+            </ScrollViewer>
+        </StackPanel>
+
+        <Grid x:Name="Display" Grid.Column="1">
+
+            
+        </Grid>
+        <Frame x:Name="WarehouseContent" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+    </Grid>
+</Page>
