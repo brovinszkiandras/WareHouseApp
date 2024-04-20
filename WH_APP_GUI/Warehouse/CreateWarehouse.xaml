@@ -21,7 +21,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Image Name="WarehouseImage" Margin="20" Grid.Column="1"/>
+        <Image Name="WarehouseImage" Margin="20" Grid.Column="1" MaxHeight="100" MaxWidth="100"/>
 
         <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>

@@ -153,7 +153,7 @@ namespace WH_APP_GUI
             }
         }
 
-        private void DoneEmployeeUpdate_Click(object sender, RoutedEventArgs e)
+        private void Done_Click(object sender, RoutedEventArgs e)
         {
             DataRow employee = (sender as Button).Tag as  DataRow;
             if (employee != null)

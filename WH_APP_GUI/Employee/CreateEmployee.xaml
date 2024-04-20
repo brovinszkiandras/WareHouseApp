@@ -21,7 +21,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Button Name="profile_picture" Click="profile_picture_Click" Margin="20" Grid.Column="1"/>
+        <Button Name="profile_picture" Click="profile_picture_Click" Margin="20" Grid.Column="1" MaxHeight="100" MaxWidth="100"/>
 
         <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
