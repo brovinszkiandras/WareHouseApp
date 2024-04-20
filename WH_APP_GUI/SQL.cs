@@ -371,39 +371,39 @@ namespace WH_APP_GUI
             return false;
         }
 
-        static public bool ContainsIllegalRegexWithExceptions(string input, char[] exceptions)
-        {
-            char[] problematicCharacters = {
-                '\'', '\"', ';', '(', ')', ' ',
-                '[', ']', '{', '}', '=', '<', '>', ',',
-                '+', '-', '*', '/', '%', '&', '|', '^', '~', '!',
-                '\\', '\n', '\r', '\t'
-            };
+        //static public bool ContainsIllegalRegexWithExceptions(string input, char[] exceptions)
+        //{
+        //    char[] problematicCharacters = {
+        //        '\'', '\"', ';', '(', ')', ' ',
+        //        '[', ']', '{', '}', '=', '<', '>', ',',
+        //        '+', '-', '*', '/', '%', '&', '|', '^', '~', '!',
+        //        '\\', '\n', '\r', '\t'
+        //    };
 
-            for (int i = 0; i < input.Length; i++)
-            {
-                if (problematicCharacters.Contains(input[i]) && !exceptions.Contains(input[i]))
-                {
-                    if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase))
-                    {
-                    return true;
-                }
-            }
-            }
+        //    for (int i = 0; i < input.Length; i++)
+        //    {
+        //        if (problematicCharacters.Contains(input[i]) && !exceptions.Contains(input[i]))
+        //        {
+        //            if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase))
+        //            {
+        //            return true;
+        //        }
+        //    }
+        //    }
 
-            string[] problematicWords = {
-                "insert", "delete", "update", "select", "drop", "create"
-            };
+        //    string[] problematicWords = {
+        //        "insert", "delete", "update", "select", "drop", "create"
+        //    };
 
-            for (int i = 0; i < problematicWords.Length; i++)
-            {
-                if (input.Contains(problematicWords[i]))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        //    for (int i = 0; i < problematicWords.Length; i++)
+        //    {
+        //        if (input.Contains(problematicWords[i]))
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
         public static List<string> GetElementOfListArray(List<string[]> ListWithArray)
         {

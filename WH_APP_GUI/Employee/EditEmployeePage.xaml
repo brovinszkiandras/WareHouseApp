@@ -15,7 +15,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1">
-            <Button Name="profile_picture" Grid.Row="1" Click="profile_picture_Click" Width="100" Height="100"/>
+            
             <Grid x:Name="DatasgGRID">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -29,23 +29,24 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-            <Button Name="profile_picture" Grid.Row="1" Click="profile_picture_Click"/>
-        </Grid>
-
-                <Label Content="Name: " Margin="5" Grid.Column="0" Grid.Row="0"/>
-                <Label Content="Email: " Margin="5" Grid.Column="0" Grid.Row="1"/>
-                <Label Content="Role: " Margin="5" Grid.Column="0" Grid.Row="2"/>
-                <Label Content="Warehouse: " Margin="5" Grid.Column="0" Grid.Row="3"/>
-                <Label Content="Payment: " Name="paymentLBL" Margin="5" Grid.Column="0" Grid.Row="4"/>
-
-                <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="0"/>
-                <xctk:ValueRangeTextBox Name="email" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="1"/>
-                <ComboBox Name="role_id" Margin="5" Grid.Column="1" Grid.Row="2"/>
-                <ComboBox Name="warehouse_id" Margin="5" Grid.Column="1" Grid.Row="3"/>
-                <xctk:ValueRangeTextBox Name="payment" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="4"/>
-                
+                <Button Name="profile_picture" Grid.Row="1" Click="profile_picture_Click"/>
             </Grid>
-            <Button Content="Activity" Name="activity" Click="activity_Click" Margin="5"/>
+
+            <Label Content="Name: " Margin="5" Grid.Column="0" Grid.Row="0"/>
+            <Label Content="Email: " Margin="5" Grid.Column="0" Grid.Row="1"/>
+            <Label Content="Role: " Margin="5" Grid.Column="0" Grid.Row="2"/>
+            <Label Content="Warehouse: " Margin="5" Grid.Column="0" Grid.Row="3"/>
+            <Label Content="Payment: " Name="paymentLBL" Margin="5" Grid.Column="0" Grid.Row="4"/>
+
+            <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="0"/>
+            <xctk:ValueRangeTextBox Name="email" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="1"/>
+            <ComboBox Name="role_id" Margin="5" Grid.Column="1" Grid.Row="2"/>
+            <ComboBox Name="warehouse_id" Margin="5" Grid.Column="1" Grid.Row="3"/>
+            <xctk:ValueRangeTextBox Name="payment" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="4"/>
+
+        </StackPanel>
+        <StackPanel>
+        <Button Content="Activity" Name="activity" Click="activity_Click" Margin="5"/>
             <Button Content="Reset Password" Name="PasswordReset" BorderBrush="Black" Margin="5" Click="PasswordReset_Click"/>
             <Button Content="Done" Name="DoneEmployeeUpdate" Click="DoneEmployeeUpdate_Click" Margin="5"/>
             <Button Content="Cancel" Name="Cancel" Click="Cancel_Click" Margin="5"/>

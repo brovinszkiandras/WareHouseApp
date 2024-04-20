@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -47,13 +46,11 @@ namespace WH_APP_GUI
         private Dictionary<string, DataRow> warehouse_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_warehouse_id()
         {
-            warehouse_id.Items.Clear();
             EmployeeWarehouses.Items.Clear();
             warehouse_id_Dictionary.Clear();
 
             foreach (DataRow warehouse in Tables.warehouses.database.Rows)
             {
-                warehouse_id.Items.Add(warehouse["name"].ToString());
                 EmployeeWarehouses.Items.Add(warehouse["name"].ToString());
                 warehouse_id_Dictionary.Add(warehouse["name"].ToString(), warehouse);
             }
@@ -61,14 +58,12 @@ namespace WH_APP_GUI
         private Dictionary<string, DataRow> role_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_role_id()
         {
-            role_id.Items.Clear();
             role_id_Dictionary.Clear();
 
             foreach (DataRow role in Tables.roles.database.Rows)
             {
                 if ((bool)role["in_warehouse"])
                 {
-                    role_id.Items.Add(role["role"].ToString());
                     role_id_Dictionary.Add(role["role"].ToString(), role);
                 }
             }
@@ -190,11 +185,6 @@ namespace WH_APP_GUI
                 Content.Visibility = Visibility.Visible;
             }
         }
-        void CloseEditWindow(object sender, EventArgs e)
-        {
-            DisplayEmployeesStackpanel.Children.Clear();
-            InitializeAllEmployees(DisplayEmployeesStackpanel);
-        }
         private void AddNewEmployee_Click(object sender, RoutedEventArgs e)
         {
             CreateEmployee createEmployee = new CreateEmployee(new EmployeesPage());
@@ -240,73 +230,6 @@ namespace WH_APP_GUI
             }
         }
 
-        private void RegisterEmployeeWithDatas_Click(object sender, RoutedEventArgs e)
-        {
-            if (Tables.staff.database.Select($"email = '{email.Text}'").Length == 0 && Tables.employees.database.Select($"email = '{email.Text}'").Length == 0)
-            {
-                string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
-                string HashedPassword = Hash.HashPassword(password);
-                /*DEBUG*/
-                MessageBox.Show("Employees Page: " + password);
-                MessageBox.Show("Employees Page: " + HashedPassword);
-                /*DEBUG*/
-
-                DataRow employee = Tables.employees.database.NewRow();
-                if (!Validation.ValidateTextbox(name, employee) && !Validation.ValidateTextbox(email, employee) && role_id.SelectedIndex != -1 && warehouse_id.SelectedIndex != -1)
-                {
-                    string imageSrc;
-                    if (profile_picture.Tag != null)
-                    {
-                        imageSrc = profile_picture.Tag.ToString();
-                    }
-                    else
-                    {
-                        imageSrc = "DefaultEmployeeProfile.png";
-                    }
-                    employee["name"] = name.Text;
-                    employee["email"] = email.Text;
-                    employee["password"] = HashedPassword;
-                    MessageBox.Show(role_id_Dictionary[role_id.SelectedItem.ToString()]["id"].ToString());
-                    employee["role_id"] = role_id_Dictionary[role_id.SelectedItem.ToString()]["id"];
-                    MessageBox.Show(warehouse_id_Dictionary[warehouse_id.SelectedItem.ToString()]["id"].ToString());
-                    employee["warehouse_id"] = warehouse_id_Dictionary[warehouse_id.SelectedItem.ToString()]["id"];
-                    employee["profile_picture"] = imageSrc;
-
-                    Tables.employees.database.Rows.Add(employee);
-                    Tables.employees.updateChanges();
-                    
-
-                    MessageBox.Show("New employees has been added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    EmployeesDisplay.Visibility = Visibility.Visible;
-                    DisplayEmployeesStackpanel.Children.Clear();
-                    InitializeAllEmployees(DisplayEmployeesStackpanel);
-
-                    CancelF();
-                }
-            }
-            else
-            {
-                MessageBox.Show("A person with this email alreday exist!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-        public void CancelF()
-        {
-            RegisterEmployeDatas.Visibility = Visibility.Collapsed;
-            name.Text = string.Empty;
-            email.Text = string.Empty;
-            role_id.SelectedIndex = -1;
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            CancelF();
-
-            EmployeesDisplay.Visibility = Visibility.Visible;
-            DisplayEmployeesStackpanel.Children.Clear();
-            InitializeAllEmployees(DisplayEmployeesStackpanel);
-        }
-
         private void EmployeeWarehouses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (EmployeeWarehouses.SelectedIndex != -1)
@@ -319,7 +242,6 @@ namespace WH_APP_GUI
         private void AllEmployees_Click(object sender, RoutedEventArgs e)
         {
             EmployeeWarehouses.SelectedIndex = -1;
-            CancelF();
             DisplayEmployeesStackpanel.Children.Clear();
             InitializeAllEmployees(DisplayEmployeesStackpanel);
         }

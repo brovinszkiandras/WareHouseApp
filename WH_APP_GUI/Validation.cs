@@ -16,11 +16,11 @@ namespace WH_APP_GUI
     {
         public static bool ValidateTextbox(ValueRangeTextBox textBox, DataRow context)
         {
-            
+
             bool HasError = false;
             DataTable contextTable = context.Table;
-            
-            if(textBox.Visibility == Visibility.Visible)
+
+            if (textBox.Visibility == Visibility.Visible)
             {
                 if (textBox.Text.Length == 0)
                 {
@@ -62,7 +62,7 @@ namespace WH_APP_GUI
                     DataRow[] matchingRows = contextTable.Select($"{textBox.Name} = '{textBox.Value}'");
                     if (matchingRows.Length != 0)
                     {
-                      
+
                         if ((int)matchingRows[0]["id"] != (int)context["id"])
                         {
                             Xceed.Wpf.Toolkit.MessageBox.Show($"An element with this {textBox.Name} already exists");
@@ -77,40 +77,30 @@ namespace WH_APP_GUI
                 }
             }
 
-            
+
             return HasError;
         }
 
         public static bool ValidateCombobox(ComboBox combobox, DataRow context)
         {
-            if ( combobox.Visibility == Visibility.Visible)
+            if (combobox.Visibility == Visibility.Visible)
             {
                 bool HasError = false;
                 DataTable contextTable = context.Table;
                 if (combobox.SelectedIndex == -1)
                 {
-                    if (contextTable.Columns[combobox.Name].AllowDBNull == false) 
+                    if (contextTable.Columns[combobox.Name].AllowDBNull == false)
                     {
-                        textBox.Text = context[textBox.Name].ToString();
-
-                        Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot contain special characters");
                         HasError = true;
                         MessageBox.Show($"{combobox.Name} must be selected");
                     }
-                    else if(textBox.Name != "email" && SQL.ContainsIllegalRegexWithExceptions(textBox.Text, Name_exceptions) && (textBox.ValueDataType != typeof(int) && textBox.ValueDataType != (typeof(double))))
-                    {
-                        textBox.Text = context[textBox.Name].ToString();
-
-                        Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot contain special characters");
-                        HasError = true;
-                    }
-                return HasError;
                 }
+                return HasError;
+            }
             else
             {
                 return false;
-            }        
-            return HasError;
+            }
         }
     }
 }
