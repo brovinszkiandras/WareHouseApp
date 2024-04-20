@@ -1,0 +1,112 @@
+﻿<Page x:Class="WH_APP_GUI.WarehouseTableFolder.WarehouseProductsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WH_APP_GUI.WarehouseTableFolder"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="WarehouseProductsPage">
+
+	<Grid Background="White">
+		<Grid Background="LightYellow">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="1.5*"></RowDefinition>
+				<RowDefinition Height="7*"></RowDefinition>
+			</Grid.RowDefinitions>
+			<Grid Background="DarkMagenta">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto"></ColumnDefinition>
+					<ColumnDefinition Width="*"></ColumnDefinition>
+					<ColumnDefinition Width="*"></ColumnDefinition>
+					<ColumnDefinition Width="*"></ColumnDefinition>
+					<ColumnDefinition Width="*"></ColumnDefinition>
+					<ColumnDefinition Width="auto"></ColumnDefinition>
+					<ColumnDefinition Width="*"></ColumnDefinition>
+					<ColumnDefinition Width="*"></ColumnDefinition>
+					<ColumnDefinition Width="*"></ColumnDefinition>
+					<ColumnDefinition Width="*"></ColumnDefinition>
+					<ColumnDefinition Width="*"></ColumnDefinition>
+
+				</Grid.ColumnDefinitions>
+
+				<Label Content="Product Name"
+       Foreground="White"
+       FontSize="15"
+       VerticalAlignment="Center"
+       HorizontalContentAlignment="Center"></Label>
+				<Label Content="Quantity"
+       Foreground="White"
+       Grid.Column="1" VerticalAlignment="Center"
+       FontSize="15"
+       HorizontalContentAlignment="Center"></Label>
+				<Label Content="Shelf"
+        Foreground="White"
+        Grid.Column="2"
+        VerticalAlignment="Center"
+        FontSize="15"
+        HorizontalContentAlignment="Center"></Label>
+
+				<Label Content="Width"
+       Foreground="White" Grid.Column="3"
+       VerticalAlignment="Center" FontSize="13"
+       HorizontalContentAlignment="Center"></Label>
+				<Label Content="Length"
+       Foreground="White"
+       Grid.Column="4"
+       VerticalAlignment="Center"
+       FontSize="13"
+       HorizontalContentAlignment="Center"></Label>
+
+				<Label Content="Height"
+                Foreground="White"
+                Grid.Column="5"
+               VerticalAlignment="Center"
+                FontSize="13"
+                HorizontalContentAlignment="Center"></Label>
+
+				<Label Content="Level of shelf"
+                Foreground="White"
+                Grid.Column="6"
+                VerticalAlignment="Center"
+                FontSize="13"
+                HorizontalContentAlignment="Center"></Label>
+
+				<Label Content="In a box"
+                Foreground="White"
+                Grid.Column="7"
+                VerticalAlignment="Center"
+                FontSize="13"
+                HorizontalContentAlignment="Center"></Label>
+
+
+				<Button Grid.Column="10" Background="DarkMagenta" Foreground="White" Name="Create" Content="Create new" Click="Create_Click"></Button>
+
+			</Grid>
+
+			<ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+				<Grid Background="Black" x:Name="productGrid">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+						<ColumnDefinition Width="*"></ColumnDefinition>
+
+					</Grid.ColumnDefinitions>
+
+					<Grid.RowDefinitions>
+
+					</Grid.RowDefinitions>
+				</Grid>
+			</ScrollViewer>
+
+		</Grid>
+	</Grid>
+</Page>

@@ -1,0 +1,95 @@
+﻿<Controls:MetroWindow x:Class="WH_APP_GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      Title="Főablak" FontFamily="Trade Gothic LT" TitleForeground="White"
+                      MinWidth="800" MinHeight="600" WindowTitleBrush="#FFCE5E34"
+                      BorderThickness="0"
+                      SizeChanged="FoOldal_SizeChanged"  
+                      ResizeMode="CanResizeWithGrip"
+                      WindowStartupLocation="CenterScreen">
+
+   
+    <Controls:MetroWindow.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WH_APP_GUI;component/DefaultStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+
+
+
+    </Controls:MetroWindow.Resources>
+<<<<<<< HEAD
+
+
+ 
+
+=======
+    
+>>>>>>> 97738a1822522987f4aa6731be06a4845f37bd3a
+    <WindowChrome.WindowChrome>
+        <WindowChrome CornerRadius="30"/>
+    </WindowChrome.WindowChrome>
+
+    <Grid Name="alapgrid" Visibility="Visible" Background="PapayaWhip">
+
+        <StackPanel x:Name="LogIn" Orientation="Vertical" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <Label Content="Name:" Name="NameLBL" VerticalContentAlignment="Bottom" Margin="0,10,0,0"/>
+            <Border Padding="5" x:Name="NameBorder" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
+                <TextBox x:Name="Name" BorderBrush="Transparent"/>
+            </Border>
+
+            <Label Content="Emali:" VerticalContentAlignment="Bottom" Margin="0,10,0,0"/>
+            <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
+                <TextBox x:Name="Emali" Text="Laci@gmail.com" BorderBrush="Transparent"/>
+            </Border>
+
+            <Label Content="Password:" VerticalContentAlignment="Bottom" Margin="0,10,0,0"/>
+
+            <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
+                <TextBox x:Name="Password" Text="123456" BorderBrush="Transparent"/>
+            </Border>
+
+            <Button Content="Login" x:Name="Login_button" Click="Login_Click" Margin="50, 10" Visibility="Collapsed"/>
+            <Button Content="Register As Admin" x:Name="RegisterAsAdmin" Grid.Row="7" Click="RegisterAsAdmin_Click" Margin="50, 10"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" x:Name="DatabaseSet" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <Label Content="Enter the datasource:" Margin="0,10,0,0"/>
+            <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
+                <TextBox x:Name="DataSourceFU" BorderBrush="White"/>
+            </Border>
+
+            <Label Content="Enter the port number:" Margin="0,10,0,0"/>
+            <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
+                <TextBox x:Name="portFU" BorderBrush="White"/>
+            </Border>
+
+            <Label Content="Enter the username of the database:" Margin="0,10,0,0"/>
+            <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
+                <TextBox x:Name="usernameFU" BorderBrush="White"/>
+            </Border>
+
+            <Label Content="Enter the password to the database:" Margin="0,10,0,0"/>
+            <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
+                <TextBox x:Name="passwrdFU" BorderBrush="White"/>
+            </Border>
+            <Label Content="Enter the database name:" Margin="0,10,0,0"/>
+            <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
+                <TextBox x:Name="DatabaseNameFU" BorderBrush="White"/>
+            </Border>
+
+            <Button Content="Confirm" x:Name="ConfirmDBdatas" Click="ConfirmDBdatas_Click" Margin="50, 30"/>
+        </StackPanel>
+
+        <Frame Name="content" Navigating="content_Navigating" Background="WhiteSmoke" Visibility="Collapsed"/>
+    </Grid>
+</Controls:MetroWindow>

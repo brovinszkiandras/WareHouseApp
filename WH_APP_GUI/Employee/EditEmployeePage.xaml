@@ -1,0 +1,51 @@
+﻿<Page x:Class="WH_APP_GUI.EditEmployeePage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WH_APP_GUI"
+        mc:Ignorable="d"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="EditEmployeePage" Height="450" Width="800">
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1">
+            <Button Name="profile_picture" Grid.Row="1" Click="profile_picture_Click" Width="100" Height="100"/>
+            <Grid x:Name="DatasgGRID">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Name: " Margin="5" Grid.Column="0" Grid.Row="0"/>
+                <Label Content="Email: " Margin="5" Grid.Column="0" Grid.Row="1"/>
+                <Label Content="Role: " Margin="5" Grid.Column="0" Grid.Row="2"/>
+                <Label Content="Warehouse: " Margin="5" Grid.Column="0" Grid.Row="3"/>
+                <Label Content="Payment: " Name="paymentLBL" Margin="5" Grid.Column="0" Grid.Row="4"/>
+
+                <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="0"/>
+                <xctk:ValueRangeTextBox Name="email" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="1"/>
+                <ComboBox Name="role_id" Margin="5" Grid.Column="1" Grid.Row="2"/>
+                <ComboBox Name="warehouse_id" Margin="5" Grid.Column="1" Grid.Row="3"/>
+                <xctk:ValueRangeTextBox Name="payment" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="4"/>
+                
+            </Grid>
+            <Button Content="Activity" Name="activity" Click="activity_Click" Margin="5"/>
+            <Button Content="Reset Password" Name="PasswordReset" BorderBrush="Black" Margin="5" Click="PasswordReset_Click"/>
+            <Button Content="Done" Name="DoneEmployeeUpdate" Click="DoneEmployeeUpdate_Click" Margin="5"/>
+            <Button Content="Cancel" Name="Cancel" Click="Cancel_Click" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Page>

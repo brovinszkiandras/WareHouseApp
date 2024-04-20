@@ -1,0 +1,95 @@
+﻿<Page x:Class="WH_APP_GUI.transport.TransportsPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WH_APP_GUI.transport"
+        mc:Ignorable="d"
+        Title="TransportsPage">
+    <Grid>
+        
+        <Grid Grid.Row="1" Name="mainGrid" Grid.Column="1">
+            
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"></RowDefinition>
+                <RowDefinition Height="7*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Background="DarkMagenta">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Driver"
+                       Foreground="White"
+                       FontSize="15"
+                       VerticalAlignment="Center"
+                       HorizontalContentAlignment="Center"></Label>
+                <Label Content="Car"
+                       Foreground="White"
+                       Grid.Column="1" VerticalAlignment="Center"
+                       FontSize="15"
+                       HorizontalContentAlignment="Center"></Label>
+                <TextBlock
+                    Grid.Column="2"
+                    Foreground="White"
+                    TextWrapping="Wrap"
+                    FontSize="15"
+                    Text="Status"
+                    VerticalAlignment="Center"></TextBlock>
+                
+                <Label Content="Starting date"
+                       Foreground="White" Grid.Column="3"
+                       VerticalAlignment="Center" FontSize="13"
+                       HorizontalContentAlignment="Center"></Label>
+                <Label Content="Ending date"
+                       Foreground="White"
+                       Grid.Column="4"
+                       VerticalAlignment="Center"
+                       FontSize="13"
+                       HorizontalContentAlignment="Center"></Label>
+                <Label Content="Dock"
+                       Foreground="White"
+                       Grid.Column="5"
+                       FontSize="15"
+                       VerticalAlignment="Center"
+                       HorizontalContentAlignment="Center"></Label>
+
+                <Button Grid.Column="8" Background="DarkMagenta" Foreground="White" Name="Create" Content="Create new" Click="Create_Click"></Button>
+                
+            </Grid>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                <Grid Background="Black" x:Name="transportGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+
+                    </Grid.RowDefinitions>
+                </Grid>
+            </ScrollViewer>
+
+            
+        </Grid>
+        
+        
+    </Grid>
+</Page>

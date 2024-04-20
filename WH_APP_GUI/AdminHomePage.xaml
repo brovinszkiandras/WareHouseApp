@@ -1,0 +1,128 @@
+﻿<Page x:Class="WH_APP_GUI.AdminHomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WH_APP_GUI"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AdminHomePage">
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel HorizontalAlignment="Center">
+            <Button Margin="30, 5" Content="Register a new Employee" Name="RegisterEmployee" Click="RegisterEmployee_Click"  Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Margin="30, 5" Content="Register a new Staff" Name="RegisterStaff" Click="RegisterStaff_Click"  Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Margin="30, 5" Content="Import Employees" Name="ImportEmployees" Click="ImportEmployees_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Margin="30, 5" Content="Manage Database" Name="ManageDatabase" Click="ManageDatabase_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Margin="30, 5" Content="Manage Roles" Name="manageRoles" Click="manageRoles_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Content="To the app" Name="ToTheApp" Visibility="Collapsed" Margin="30, 5" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="ToTheApp_Click"/>
+        </StackPanel>
+        
+        <Grid x:Name="Display" Grid.Column="1" Background="White" Visibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+            <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="RegisterEmployeDatas" Visibility="Collapsed" Grid.Row="1">
+
+                <Label Content="The employee belongs to a warehouse?" VerticalContentAlignment="Bottom"/>
+                <ComboBox Name="EmployeeStatus" BorderBrush="Black" SelectionChanged="EmployeeStatus_SelectionChanged" Margin="10"/>
+
+                <Label Content="Employee Name:" VerticalContentAlignment="Bottom"/>
+                <TextBox x:Name="EmployeeName" SelectionBrush="Black" BorderBrush="Black" Margin="10"/>
+
+                <Label Content="Employee Email:" VerticalContentAlignment="Bottom"/>
+                <TextBox x:Name="EmployeeEmail" BorderBrush="Black" SelectionBrush="Black" Margin="10"/>
+
+                <Label Content="Employee Role:" VerticalContentAlignment="Bottom"/>
+                <ComboBox Name="EmployeeRole" BorderBrush="Black" Margin="10">
+                    <ComboBox.Background>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="#FFF0F0F0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ComboBox.Background>
+                </ComboBox>
+
+                <Button x:Name="RegisterEmployeeWithDatas" Content="Register Employee" Background="White" BorderBrush="Black" Click="RegisterEmployeeWithDatas_Click" Margin="30"/>
+            </StackPanel>
+
+            <StackPanel Grid.ColumnSpan="2" x:Name="ManagedatabaseGrid" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1">
+                
+                <Label Content="Enter the datasource:"/>
+                <TextBox x:Name="DataSourceFU" Margin="10" BorderBrush="Black" SelectionBrush="Black"/>
+                
+                <Label Content="Enter the port number:"/>
+                <TextBox x:Name="portFU" Margin="10" BorderBrush="Black" SelectionBrush="Black"/>
+                
+                <Label Content="Enter the username of the database:"/>
+                <TextBox x:Name="usernameFU" Margin="10" BorderBrush="Black" SelectionBrush="Black"/>
+                
+                <Label Content="Enter the password to the database:"/>
+                <TextBox x:Name="passwrdFU" Margin="10" BorderBrush="Black" SelectionBrush="Black"/>
+                
+                <Label Content="Enter the database name:"/>
+                <TextBox x:Name="DatabaseNameFU" Margin="10" BorderBrush="Black" SelectionBrush="Black"/>
+
+                <Button Content="Confirm" x:Name="ConfirmDBdatas" Click="ConfirmDBdatas_Click" Background="White" BorderBrush="Black" Margin="30"/>
+            </StackPanel>
+
+            <StackPanel Grid.ColumnSpan="2" x:Name="ManageRoleGrid" Visibility="Collapsed">
+
+                <Button Content="Add Role" Name="AddRole" Background="Black" Foreground="White" BorderThickness="1" BorderBrush="White" Click="AddRole_Click"/>
+                <Button Content="Cancel" Name="CancelRoles" Background="Black" Foreground="White" BorderThickness="1" BorderBrush="White" Click="CancelRoles_Click"/>
+
+
+                <StackPanel Grid.ColumnSpan="2" Visibility="Collapsed" x:Name="AddRoleGrid" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label Content="Role name:"/>
+                    <TextBox Name="NewRoleName" BorderBrush="Black" SelectionBrush="Black" Margin="10"/>
+                    
+                    <Label Content="Role description:"/>
+                    <TextBox Name="NewRoleDescription" BorderBrush="Black" SelectionBrush="Black" Margin="10"/>
+                    
+                    <Label Content="This role belongs to a warehouse?"/>
+                    <CheckBox x:Name="Is_Belongst_To_Warehouse" Content="Yes, belongs to a warehouse"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="Add" Name="AddNewRoleBTN" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="AddNewRoleBTN_Click" Margin="10"/>
+                            <Button Content="Cancel" Name="CancelRoleCreation" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="CancelRoleCreation_Click" Margin="10"/>
+                    </StackPanel>
+                    
+                </StackPanel>
+            </StackPanel>
+            
+            <ScrollViewer x:Name="RolesScrollViewer" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible" Grid.Row="1">
+                <StackPanel Orientation="Vertical" Name="RolesStackpanel">
+                </StackPanel>
+            </ScrollViewer>
+
+            <ScrollViewer Grid.Column="1" x:Name="PermmissionsScrollViewer" HorizontalAlignment="Center" Visibility="Collapsed" Grid.Row="1" Margin="20">
+                <StackPanel Orientation="Vertical" Name="PermissonsStackpanel">
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <StackPanel  Grid.Column="2">
+            <Button Margin="30" Content="Create required tables" Name="CreateRequiredTablesBTN" IsEnabled="True" BorderBrush="Black" Background="White" Foreground="Black" Click="CreateRequiredTablesBTN_Click"/>
+            
+            <StackPanel x:Name="FeaturesDisplay" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                <StackPanel Name="FeaturesDisplayG" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <Button Margin="30" Content="Create Fetures" Name="IncludeFeture" Click="IncludeFeture_Click" BorderBrush="Black" Background="White" Foreground="Black" BorderThickness="1"/>
+        </StackPanel>
+        <Frame x:Name="AdminContent" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+    </Grid>
+</Page>
