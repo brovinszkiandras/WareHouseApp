@@ -1,0 +1,49 @@
+﻿<Window x:Class="WH_APP_GUI.Staff.EditStaffPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:WH_APP_GUI.Staff"
+        mc:Ignorable="d"
+        Title="EditStaffPage" Height="450" Width="800">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1">
+                <Button Name="profile_picture" Height="150" Width="150" BorderBrush="Black" Margin="5" Click="profile_picture_Click"/>
+                <Grid x:Name="DatasgGRID">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0"/>
+                    <Label Content="Email:" Margin="5" Grid.Column="0" Grid.Row="1"/>
+                    <Label Content="Role:" Margin="5" Grid.Column="0" Grid.Row="2"/>
+
+                    <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
+                    <xctk:ValueRangeTextBox Name="email" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
+                    <ComboBox Name="role_id" Grid.Column="1" Grid.Row="2" BorderBrush="Black" Margin="5"/>
+                </Grid>
+                <Button Content="Reset Password" Name="PasswordReset" BorderBrush="Black" Margin="5" Click="PasswordReset_Click"/>
+                <Button Name="Done" Content="Done" BorderBrush="Black" Margin="5" Click="Done_Click"/>
+                <Button Name="Cancel" Content="Cancel" BorderBrush="Black" Margin="5" Click="Cancel_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,41 @@
+﻿<Page x:Class="WH_APP_GUI.sectors.CreateSectorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:local="clr-namespace:WH_APP_GUI.sectors"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="CreateSectorPage">
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="6*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="1" 
+               Foreground="Black" 
+               FontSize="30" 
+               Content="Create Sector"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center"></Label>
+        
+        <StackPanel x:Name="sectorPanel" Grid.Column="1" Grid.Row="1">
+            <Label FontSize="17" Content="Name:"></Label>
+            <xctk:ValueRangeTextBox Name="name" FontSize="17" Text="{Binding Path=[name]}"></xctk:ValueRangeTextBox>
+            <Label FontSize="17" Content="Length: "></Label>
+            <xctk:ValueRangeTextBox Name="length" FontSize="17" Text="{Binding Path=[length]}"></xctk:ValueRangeTextBox>
+            <Label FontSize="17" Content="Width: "></Label>
+            <xctk:ValueRangeTextBox Name="width" FontSize="17" Text="{Binding Path=[width]}"></xctk:ValueRangeTextBox>
+            <Button FontSize="17" Content="Save" Name="save" Click="Button_Click"></Button>
+        </StackPanel>
+    </Grid>
+</Page>

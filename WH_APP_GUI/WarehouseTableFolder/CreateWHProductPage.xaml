@@ -1,0 +1,177 @@
+﻿<Page x:Class="WH_APP_GUI.WarehouseTableFolder.CreateWHProductPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WH_APP_GUI.WarehouseTableFolder"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      mc:Ignorable="d" 
+      d:DesignHeight="650" d:DesignWidth="600"
+      Title="CreateWHProductPage">
+
+    <Page.Resources>
+        <Style x:Key="MyTextBoxStyle" x:Name="MyTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate x:Name="mytextbox" TargetType="{x:Type TextBox}">
+                        <Border x:Name="Border" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="Border" Value="black"></Setter>
+                                <!--<Setter Property="Background" TargetName="Border" Value="#FF5F1F"></Setter>-->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="#FF5b00"></Setter>
+            <Setter Property="CaretBrush" Value="White"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="BorderBrush" Value="Black"></Setter>
+            <Setter Property="BorderThickness" Value="0,0,0,8"></Setter>
+            <Setter Property="Width" Value="auto"></Setter>
+            <Setter Property="Height" Value="auto"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="White"></Setter>
+                    <Setter Property="Foreground" Value="Black"></Setter>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Background" Value="#FF5b00"></Setter>
+                    <Setter Property="Foreground" Value="White"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Label" x:Key="mylabelStyle">
+            <Setter Property="Background" Value="#1F1F1F"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="FontWeight" Value="UltraBlack"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="Width" Value="auto"></Setter>
+            <Setter Property="Height" Value="auto"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+
+            
+        </Style>
+
+        <Style x:Key="comboboxItemStyle" TargetType="ComboBoxItem">
+            <Setter Property="Background" Value="#FF5b00"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="BorderBrush" Value="Gold"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+        </Style>
+           
+        
+    </Page.Resources>
+    <Grid Background="#1F1F1F">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="3.5*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="6*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1">
+            <Grid x:Name="productGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+
+                </Grid.RowDefinitions>
+
+                <StackPanel>
+                    <Label Content="Product name: " Style="{StaticResource mylabelStyle}"></Label>
+                    <ComboBox Background="#FF5b00"
+                  Foreground="White"
+                  BorderBrush="Black"
+                  BorderThickness="0,0,0,10"
+                  Name="product_id" SelectionChanged="product_id_SelectionChanged">
+
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ComboBoxItem Content="{Binding Path=[name]}" Style="{StaticResource comboboxItemStyle}"></ComboBoxItem>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1">
+                    <Label Content="Quantity of items:" Style="{StaticResource mylabelStyle}"></Label>
+                    <xctk:ValueRangeTextBox Style="{StaticResource MyTextBoxStyle}" Name="qty" Text="{Binding Path=[qty]}"></xctk:ValueRangeTextBox>
+                    
+                </StackPanel>
+
+                <StackPanel Grid.Row="2">
+                    <Label Content="Shelf: " Style="{StaticResource mylabelStyle}"></Label>
+                    <ComboBox Background="#FF5b00"
+                    Foreground="White"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,10"
+                    Name="shelf_id"
+                    SelectionChanged="shelf_id_SelectionChanged">
+
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ComboBoxItem Content="{Binding Path=[name]}" Style="{StaticResource comboboxItemStyle}"></ComboBoxItem>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="3">
+                    <Label Content="Is in a box:" Style="{StaticResource mylabelStyle}"></Label>
+                    <CheckBox IsChecked="True" x:Name="is_in_a_box" Unchecked="is_in_a_box_Unchecked" Checked="CheckBox_Checked" FontSize="17" VerticalContentAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource MahApps.Brushes.CheckBox}"></CheckBox>
+                </StackPanel>
+
+
+
+                <StackPanel Grid.Row="4">
+                    <Label Name="widhtLabel" Content="Box width:" Style="{StaticResource mylabelStyle}"></Label>
+                    <xctk:ValueRangeTextBox Name="width" Text="{Binding Path=[width]}"  Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="5">
+                    <Label Name="heightLabel" Content="Box height:" Style="{StaticResource mylabelStyle}"></Label>
+                    <xctk:ValueRangeTextBox Name="height" Text="{Binding Path=[height]}"  Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="6">
+                    <Label Name="lengthLabel" Content="Box length:" Style="{StaticResource mylabelStyle}"></Label>
+                    <xctk:ValueRangeTextBox Name="length" Text="{Binding Path=[length]}" Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="7">
+                    <Label  Content="Shelf level:" Style="{StaticResource mylabelStyle}"></Label>
+                    <ComboBox IsEnabled="False" Panel.ZIndex="2" Background="#FF5b00"
+                    Foreground="White"
+                    BorderBrush="Black"
+                     BorderThickness="0,0,0,10"
+                    Name="on_shelf_level" SelectionChanged="on_shelf_level_SelectionChanged">
+                    </ComboBox>
+                </StackPanel>
+
+                <Button x:Name="Save" Click="Save_Click" Background="YellowGreen" Panel.ZIndex="1" Content="Save" FontSize="17" Grid.Row="8"></Button>
+            </Grid>
+        </ScrollViewer>
+           
+        
+    </Grid>
+</Page>
