@@ -1,0 +1,212 @@
+﻿using MahApps.Metro.IconPacks;
+using Microsoft.Maps.MapControl.WPF;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using WH_APP_GUI.Forklift;
+using WH_APP_GUI.WarehouseTableFolder;
+
+namespace WH_APP_GUI.Warehouse
+{
+    public partial class WarehousesPage : Page
+    {
+        public WarehousesPage()
+        {
+            InitializeComponent();
+            DisplayWarehousesOnPanel(DisplayWarehousesStackpanel);
+        }
+        public void DisplayWarehousesOnPanel(Panel panel)
+        {
+            panel.Children.Clear();
+            panel.Visibility = Visibility.Visible;
+            for (int i = 0; i < Tables.warehouses.database.Rows.Count; i++)
+            {
+                Grid grid = new Grid();
+                grid.Height = 150;
+
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+
+                Border border = new Border();
+                border.BorderBrush = Brushes.Black;
+                border.BorderThickness = new Thickness(1);
+                Grid.SetColumnSpan(border, 3);
+                grid.Children.Add(border);
+
+                PackIconMaterial icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Warehouse };
+                icon.Height = 50;
+                icon.Width = 50;
+                icon.SetValue(Grid.RowSpanProperty, 3);
+                grid.Children.Add(icon);
+
+                Label label = new Label();
+                label.Content = Tables.warehouses.database.Rows[i]["name"];
+                Grid.SetColumn(label, 1);
+                grid.Children.Add(label);
+
+                Grid innerGrid = new Grid();
+                innerGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                innerGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                Grid.SetColumn(innerGrid, 2);
+                grid.Children.Add(innerGrid);
+
+                Button inspectButton = new Button();
+                inspectButton.Tag = Tables.warehouses.database.Rows[i];
+                inspectButton.Content = "Inspect Warehouse";
+                inspectButton.Click += inspect_warehouse_Click;
+                inspectButton.Margin = new Thickness(5);
+                Grid.SetRow(inspectButton, 0);
+                innerGrid.Children.Add(inspectButton);
+
+                Button deleteButton = new Button();
+                deleteButton.Content = "Delete Warehouse";
+                deleteButton.Tag = Tables.warehouses.database.Rows[i];
+                deleteButton.Click += delete_warehouse_Click;
+                deleteButton.Margin = new Thickness(5);
+                Grid.SetRow(deleteButton, 1);
+                innerGrid.Children.Add(deleteButton);
+
+                panel.Children.Add(grid);
+            }
+        }
+
+        private void AddNewWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+            CreateWarehouse createWarehouse = new CreateWarehouse(new WarehousesPage());
+            WarehouseContent.Content = null;
+            WarehouseContent.Navigate(createWarehouse);
+            WarehouseContent.Visibility = Visibility.Visible;
+        }
+        
+        private void Cancel()
+        {
+            DisplayWarehouses.Visibility = Visibility.Visible;
+            DisplayWarehousesStackpanel.Visibility = Visibility.Visible;
+            AddNewWarehouse.Visibility = Visibility.Visible;
+            DisplayWarehousesOnPanel(DisplayWarehousesStackpanel);
+        }
+        private void CancelCreation_Click(object sender, RoutedEventArgs e)
+        {
+            Cancel();
+        }
+        public DataRow SelectedWarehouse = null;
+        public Map terkep = new Map();
+        private void inspect_warehouse_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            SelectedWarehouse = btn.Tag as DataRow;
+            if (SelectedWarehouse != null)
+            {
+                InspectWarehouse inspectWarehouse = new InspectWarehouse(new WarehousesPage(), SelectedWarehouse);
+                WarehouseContent.Content = null;
+                WarehouseContent.Navigate(inspectWarehouse);
+                WarehouseContent.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void delete_warehouse_Click(object sender, RoutedEventArgs e)
+        {
+
+            Button btn = sender as Button;
+            DataRow warehouse = btn.Tag as DataRow;
+            if (warehouse != null)
+            {
+                try
+                {
+                    foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
+                    {
+                        employee["warehouse_id"] = null;
+                    }
+                    Tables.employees.updateChanges();
+
+                    if ((bool)Tables.features.getFeature("Dock")["in_use"] == true)
+                    {
+                        foreach (DataRow dock in Tables.warehouses.getDocks(warehouse))
+                        {
+                            dock.Delete();
+                        }
+                    }
+                    Tables.docks.updateChanges();
+
+                    SQL.SqlCommand($"DROP TABLE `{warehouse["name"]}`");
+                    warehouse.Delete();
+                    Tables.warehouses.updateChanges();
+
+                    foreach (DataRow sector in Tables.warehouses.getSectors(warehouse))
+                    {
+                        sector.Delete();
+                    }
+                    Tables.sector.Refresh();
+
+                    DisplayWarehousesOnPanel(DisplayWarehousesStackpanel);
+
+                    MessageBox.Show("Warehouse has been deleted", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteError(ex);
+                    throw;
+                }
+            }
+        }
+
+        private void SectorsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+            //if (SelectedWarehouse != null)
+            //{
+            //    sectorIndexWindow sectorIndexWindow = new sectorIndexWindow();
+            //    Navigation.content2.Navigate(sectorIndexWindow);
+            //}
+        }
+
+        private void EmployeesInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+            EmployeesPage employeesPage = new EmployeesPage(new WarehousesPage());
+            Navigation.content2.Navigate(employeesPage);
+        }
+
+        private void OrdersInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ProductsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+            WarehouseProductsPage page = new WarehouseProductsPage();
+            Navigation.content2.Navigate(page);
+        }
+
+        private void FleetInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DocksInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ForkliftInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Back_AllWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+    }
+}
