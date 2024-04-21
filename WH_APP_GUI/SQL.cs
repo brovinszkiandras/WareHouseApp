@@ -438,9 +438,32 @@ namespace WH_APP_GUI
                 string formattedDateTimeString = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
 
                 // Update the value in the DataRow with the formatted datetime string
-                MessageBox.Show("parsed it");
+                MessageBox.Show("Parsed it");
 
                return formattedDateTimeString;
+            }
+            else
+            {
+                MessageBox.Show("Could not parse it");
+
+                return null;
+            }
+        }
+
+        public static string convertShordDateTocorrectFormat(DateTime date)
+        {
+            string datetimestring = date.ToString();
+
+            // Adjust the format specifier to match the actual format of your datetime string
+            if (DateTime.TryParseExact(datetimestring, "yyyy. MM. dd.", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue))
+            {
+                // Convert the datetime value to the desired format
+                string formattedDateTimeString = dateTimeValue.ToString("yyyy-MM-dd");
+
+                // Update the value in the DataRow with the formatted datetime string
+                MessageBox.Show("Parsed it");
+
+                return formattedDateTimeString;
             }
             else
             {

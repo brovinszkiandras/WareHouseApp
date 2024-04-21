@@ -98,13 +98,14 @@ namespace WH_APP_GUI.Product
                 thirdStackPanel.Orientation = Orientation.Vertical;
                 stackPanelInsideGrid.Children.Add(thirdStackPanel);
 
-                thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["width"].ToString() });
-                thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["heigth"].ToString() });
-                thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["length"].ToString() });
+                
                 if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Storage'"))
                 {
                     thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["weight"].ToString() });
                     thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["volume"].ToString() });
+                    thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["width"].ToString() });
+                    thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["heigth"].ToString() });
+                    thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["length"].ToString() });
                 }
 
                 StackPanel fourthStackPanel = new StackPanel();

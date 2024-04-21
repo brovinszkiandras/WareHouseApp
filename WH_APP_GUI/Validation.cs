@@ -19,7 +19,7 @@ namespace WH_APP_GUI
 
             bool HasError = false;
             DataTable contextTable = context.Table;
-
+           
             if (textBox.Visibility == Visibility.Visible)
             {
                 if (textBox.Text.Length == 0)
@@ -39,11 +39,11 @@ namespace WH_APP_GUI
                     //    context[textBox.Name] = null;
                     //}
                 }
-                else if (SQL.ContainsAllIllegalRegex(textBox.Text) == true)
+                else if (textBox.Text.Contains("'") || textBox.Text.Contains('"'))
                 {
                     textBox.Text = context[textBox.Name].ToString();
 
-                    Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot contain special characters");
+                    Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot contain ' and \" characters");
                     HasError = true;
 
                 }
@@ -56,6 +56,7 @@ namespace WH_APP_GUI
                     HasError = true;
 
                 }
+               
                 else if (contextTable.Columns[textBox.Name].Unique == true)
                 {
 

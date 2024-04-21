@@ -241,7 +241,7 @@ namespace WH_APP_GUI
             shelfBuilder.isAShelfBeingCreated = false;
             Tables.shelf.database.Rows.Add(shelfBuilder.newShelf);
             
-            Tables.sector.database.AcceptChanges();
+            Tables.sector.updateChanges();
 
             Tables.shelf.updateChanges();
 

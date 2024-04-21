@@ -14,19 +14,17 @@
 				<RowDefinition Height="1.5*"></RowDefinition>
 				<RowDefinition Height="7*"></RowDefinition>
 			</Grid.RowDefinitions>
-			<Grid Background="DarkMagenta">
+			<Grid Background="DarkMagenta" Name="labelsGrid">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="auto"></ColumnDefinition>
 					<ColumnDefinition Width="*"></ColumnDefinition>
 					<ColumnDefinition Width="*"></ColumnDefinition>
 					<ColumnDefinition Width="*"></ColumnDefinition>
 					<ColumnDefinition Width="*"></ColumnDefinition>
-					<ColumnDefinition Width="auto"></ColumnDefinition>
 					<ColumnDefinition Width="*"></ColumnDefinition>
 					<ColumnDefinition Width="*"></ColumnDefinition>
 					<ColumnDefinition Width="*"></ColumnDefinition>
-					<ColumnDefinition Width="*"></ColumnDefinition>
-					<ColumnDefinition Width="*"></ColumnDefinition>
+					
 
 				</Grid.ColumnDefinitions>
 
@@ -40,41 +38,23 @@
        Grid.Column="1" VerticalAlignment="Center"
        FontSize="15"
        HorizontalContentAlignment="Center"></Label>
-				<Label Content="Shelf"
+                <Label Content="Shelf"
         Foreground="White"
         Grid.Column="2"
         VerticalAlignment="Center"
         FontSize="15"
         HorizontalContentAlignment="Center"></Label>
 
-				<Label Content="Width"
-       Foreground="White" Grid.Column="3"
-       VerticalAlignment="Center" FontSize="13"
-       HorizontalContentAlignment="Center"></Label>
-				<Label Content="Length"
-       Foreground="White"
-       Grid.Column="4"
-       VerticalAlignment="Center"
-       FontSize="13"
-       HorizontalContentAlignment="Center"></Label>
-
-				<Label Content="Height"
+                <Label Content="Level of shelf"
                 Foreground="White"
-                Grid.Column="5"
-               VerticalAlignment="Center"
-                FontSize="13"
-                HorizontalContentAlignment="Center"></Label>
-
-				<Label Content="Level of shelf"
-                Foreground="White"
-                Grid.Column="6"
+                Grid.Column="3"
                 VerticalAlignment="Center"
                 FontSize="13"
                 HorizontalContentAlignment="Center"></Label>
 
 				<Label Content="In a box"
                 Foreground="White"
-                Grid.Column="7"
+                Grid.Column="4"
                 VerticalAlignment="Center"
                 FontSize="13"
                 HorizontalContentAlignment="Center"></Label>
@@ -95,9 +75,7 @@
 						<ColumnDefinition Width="*"></ColumnDefinition>
 						<ColumnDefinition Width="*"></ColumnDefinition>
 						<ColumnDefinition Width="*"></ColumnDefinition>
-						<ColumnDefinition Width="*"></ColumnDefinition>
-						<ColumnDefinition Width="*"></ColumnDefinition>
-						<ColumnDefinition Width="*"></ColumnDefinition>
+						
 
 					</Grid.ColumnDefinitions>
 

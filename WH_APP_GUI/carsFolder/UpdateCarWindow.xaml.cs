@@ -186,7 +186,6 @@ namespace WH_APP_GUI
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             bool thereIsAnError = false;
-            string formattedText = last_exam.Text;
 
             foreach (var gridElement in carsGrid.Children)
             {
@@ -214,9 +213,9 @@ namespace WH_APP_GUI
             {
 
 
-                car["last_service"] = new MySqlDateTime((DateTime)last_service.Value);
-                car["last_exam"] = new MySqlDateTime((DateTime)last_exam.Value);
-                // Xceed.Wpf.Toolkit.MessageBox.Show(car["last_exam"].ToString());
+                //car["last_service"] = SQL.convertShordDateTocorrectFormat((DateTime)car["last_service"]);
+                //car["last_exam"] = SQL.convertShordDateTocorrectFormat((DateTime)car["last_exam"]);
+                
                 Tables.cars.updateChanges();
                 Xceed.Wpf.Toolkit.MessageBox.Show($"Car number {car["id"]} has been updated");
 

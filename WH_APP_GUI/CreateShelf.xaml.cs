@@ -44,9 +44,9 @@ namespace WH_APP_GUI
             }
             else if (Visual.orientation == Orientation.Vertical)
             {
-
+                Visual.orientation = Orientation.Horizontal;
                 change_orientation.Content = "Orientation: Horizontal";
-                maxWidth.Content += "max " + Visual.sizeHorizontally.ToString();
+                maxWidth.Content = "max " + Visual.sizeHorizontally.ToString();
 
             }
 

@@ -85,7 +85,7 @@ namespace WH_APP_GUI.Staff
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            DataRow staff = Tables.products.database.NewRow();
+            DataRow staff = Tables.staff.database.NewRow();
 
             if (!Validation.ValidateTextbox(name, staff) && !Validation.ValidateTextbox(email, staff))
             {

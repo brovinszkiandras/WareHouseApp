@@ -103,17 +103,6 @@ namespace WH_APP_GUI
             
             SQL.con.Close();
         }
-        public void insert(List<string> data)
-        {
-            DataRow row = database.NewRow();
-            for (int i = 0; i < data.Count; i++)
-            {
-                row[i + 1] = data[i];
-                Console.WriteLine(i);
-            }
-            database.Rows.Add(row);
-            updateChanges();
-        }
 
         public DataRow findById(int id)
         {
@@ -126,31 +115,19 @@ namespace WH_APP_GUI
             using (MySqlCommandBuilder commandBuilder = new MySqlCommandBuilder(adapter))
             {
 
-                //Console.WriteLine("Generated SQL commands:");
-                //MessageBox.Show("Insert Command: " + commandBuilder.GetInsertCommand().CommandText);
-                //MessageBox.Show("Update Command: " + commandBuilder.GetUpdateCommand().CommandText);
-                //MessageBox.Show("Delete Command: " + commandBuilder.GetDeleteCommand().CommandText);
-
-                //foreach (MySqlParameter parameter in commandBuilder.GetUpdateCommand().Parameters)
-                //{
-                //    parameter.SourceVersion = DataRowVersion.Current;
-                //    parameter.Precision = 10;
-                //    MessageBox.Show($"Parameter: {parameter.ParameterName}, MysqlDatatype: {parameter.MySqlDbType} Type: {parameter.DbType},Column: {parameter.SourceColumn}, Value: {parameter.Value}");
-                //}
-
-
-            adapter.Update(database);
-
-                if(database.GetChanges() != null)
+                
+                if(Tables.features.isFeatureInUse("Date log") == true)
                 {
-                    MessageBox.Show("there are still changes");
+                    UpdateDatelog();
                 }
 
-                // Display the SQL commands
+                adapter.Update(database);
+
+               
 
             }
 
-            //RefreshEverything();
+            
 
            
         }
@@ -161,11 +138,41 @@ namespace WH_APP_GUI
 
             adapter.Fill(database);
         }
+
+        public void UpdateDatelog()
+        {
+            if(database.GetChanges() != null)
+            {
+                MessageBox.Show("There are cahnges");
+                if (database.Columns["updated_at"] != null)
+                {
+                    MessageBox.Show("There is a datelog column");
+                    foreach (DataRow row in database.GetChanges().Rows)
+                    {
+                        if(row.RowState == DataRowState.Modified)
+                        {
+                            MessageBox.Show("This row is modified");
+                            DataRow originalRow = findById((int)row["id"]);
+                            originalRow["updated_at"] = SQL.convertDateToCorrectFormat(DateTime.Now);
+                           
+                        }
+                    }
+                }
+            }
+            
+        }
     }
 
     class staff : table
     {
-        public staff() : base() { }
+        public staff() : base() 
+        {
+            if (Tables.features.isFeatureInUse("Date log") == true)
+            {
+                database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+            }
+        }
 
         public DataRow getRole(DataRow person)
         {
@@ -209,6 +216,12 @@ namespace WH_APP_GUI
             database.Columns["length"].AllowDBNull=false;
             database.Columns["width"].AllowDBNull=false;
             database.Columns["height"].AllowDBNull=false;
+
+            if (Tables.features.isFeatureInUse("Date log") == true)
+            {
+                database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+            }
         }
 
         public DataRow[] getEmployees(DataRow warehouse)
@@ -286,7 +299,12 @@ namespace WH_APP_GUI
             database.Columns["password"].AllowDBNull = false;
             database.Columns["role_id"].AllowDBNull = false;
             database.Columns["warehouse_id"].AllowDBNull = true;
-           
+
+            if (Tables.features.isFeatureInUse("Date log") == true)
+            {
+                database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+            }
         }
 
 
@@ -307,36 +325,26 @@ namespace WH_APP_GUI
 
         public products() : base()
         {
-            int year = DateTime.Now.Year;
-            int month = DateTime.Now.Month;
-            int day = DateTime.Now.Day;
-
-            int hour = DateTime.Now.Hour;
-            int minute = DateTime.Now.Minute;
-            int second = DateTime.Now.Second;
-
             database.Columns["name"].AllowDBNull = false;
             database.Columns["buying_price"].AllowDBNull = false;
             database.Columns["selling_price"].AllowDBNull = false;
             database.Columns["description"].AllowDBNull = true;
 
-
-
-            // Update the value in the DataTable with correctly formatted DateTime object
-
-            MySqlDateTime dateTime = new MySqlDateTime(DateTime.Now);
           
 
-            MessageBox.Show(dateTime.GetDateTime().ToString());
+            if(Tables.features.isFeatureInUse("Storage") == true)
+            {
+                database.Columns["width"].AllowDBNull = false;
+                database.Columns["heigth"].AllowDBNull = false;
+                database.Columns["length"].AllowDBNull = false;
+                database.Columns["weight"].AllowDBNull = false;
+            }
 
-
-            //database.Columns["created_at"].DefaultValue = new MySqlDateTime(DateTime.Now);
-
-
-            //database.Columns["updated_at"].DefaultValue = new MySqlDateTime(DateTime.Now);
-
-
-
+            if(Tables.features.isFeatureInUse("Date log") == true)
+            {
+                database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+            }
         }
 
         public DataRow[] getOrders(DataRow product)
@@ -352,6 +360,12 @@ namespace WH_APP_GUI
             database.Columns["role"].Unique = true;
             database.Columns["role"].AllowDBNull = false;
             database.Columns["description"].AllowDBNull = false;
+
+            if (Tables.features.isFeatureInUse("Date log") == true)
+            {
+                database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+            }
         }
 
         public DataRow[] getStaff(DataRow role)
@@ -463,6 +477,8 @@ namespace WH_APP_GUI
     {
         public warehouse(string actualname) : base(actualname)
         {
+            database.TableName = actualname;
+
             database.Columns["product_id"].AllowDBNull = false;
             database.Columns["qty"].AllowDBNull = false;
             database.Columns["shelf_id"].AllowDBNull=false;

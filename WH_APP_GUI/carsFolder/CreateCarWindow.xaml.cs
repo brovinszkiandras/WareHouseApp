@@ -176,7 +176,6 @@ namespace WH_APP_GUI.carsFolder
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             bool thereIsAnError = false;
-            string formattedText = last_exam.Text;
 
             foreach (var gridElement in carsGrid.Children)
             {
@@ -205,9 +204,8 @@ namespace WH_APP_GUI.carsFolder
             if (thereIsAnError == false)
             {
 
-                // Xceed.Wpf.Toolkit.MessageBox.Show(car["last_exam"].ToString());
-                //car["last_service"] = new MySqlDateTime((DateTime)last_service.Value);
-                //car["last_exam"] = new MySqlDateTime((DateTime)last_exam.Value);
+                //car["last_service"] = SQL.con((DateTime)car["last_service"]);
+                //car["last_exam"] = SQL.convertDateToCorrectFormat((DateTime)car["last_exam"]);
                 Tables.cars.database.Rows.Add(car);
                 Tables.cars.updateChanges();
                 Xceed.Wpf.Toolkit.MessageBox.Show($"A new car has been created");

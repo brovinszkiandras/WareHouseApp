@@ -52,12 +52,11 @@
                 </StackPanel>
                 <StackPanel Grid.Row="4">
                     <Label FontSize="17" Content="last service*"></Label>
-                    <xctk:DateTimePicker InputValidationError="last_exam_InputValidationError" Format="ShortDate" FontSize="17" Value="{Binding Path=[last_service]}" Name="last_service"></xctk:DateTimePicker>
+                    <DatePicker SelectedDate="{Binding Path=[last_service]}" SelectedDateFormat="Short"></DatePicker>
                 </StackPanel>
                 <StackPanel Grid.Row="5">
                     <Label FontSize="17" Content="last exam*"></Label>
-                    <xctk:DateTimePicker InputValidationError="last_exam_InputValidationError" Format="ShortDate" FontSize="17" Value="{Binding Path=[last_exam]}" Name="last_exam"></xctk:DateTimePicker>
-
+                    <DatePicker SelectedDate="{Binding Path=[last_exam]}" SelectedDateFormat="Short"></DatePicker>
                 </StackPanel>
                 <Button  Click="Button_Click" Grid.Row="10" FontSize="17" Content="Save"></Button>
             </Grid>

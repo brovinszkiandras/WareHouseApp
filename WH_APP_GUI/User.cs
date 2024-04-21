@@ -12,6 +12,7 @@ namespace WH_APP_GUI
     {
         public static DataRow currentUser;
         public static DataRow tempWarehouse;
+        private static warehouse WHTable;
         public static void SetCurrentUser(string email, string password) //hased psw
         {
             //if (Tables.staff.database.Select($"email = '{email}' AND password = '{password}'").Length != 0)
@@ -93,14 +94,20 @@ namespace WH_APP_GUI
             {
                 return tempWarehouse;
             }
+
+            
         }
 
         public static warehouse WarehouseTable()
         {
-            warehouse warehouse = new warehouse(Warehouse()["name"].ToString());
-            if(warehouse != null)
+            if(WHTable == null)
             {
-                return warehouse;
+                WHTable = new warehouse(Warehouse()["name"].ToString());
+            }
+
+            if (WHTable != null)
+            {
+                return WHTable;
             }
             else
             {

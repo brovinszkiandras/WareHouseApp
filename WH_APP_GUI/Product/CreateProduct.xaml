@@ -29,22 +29,22 @@
                     <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
             <Label Content="Buying Price:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
             <Label Content="Selling Price:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Width:" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Heigth:" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Length:" Margin="5" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+            <Label Content="Width:" Name="widthLabel" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+            <Label Content="Heigth:" Name="heigthLabel" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+            <Label Content="Length:" Name="lengthLabel" Margin="5" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
             <Label Content="Description:" Margin="5" Grid.Column="0" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
             <Label Content="Weight:" Name="WeightLBL" Margin="5" Grid.Column="0" Grid.Row="7" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
 

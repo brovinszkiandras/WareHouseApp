@@ -118,7 +118,7 @@ namespace WH_APP_GUI
                 /*SECTOR*/
                 SQL.SqlCommand($"CREATE TABLE sector (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) UNIQUE, length DOUBLE, width DOUBLE, area DOUBLE, area_in_use DOUBLE DEFAULT 0, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id) ON DELETE CASCADE);");
                 /*SHELF*/
-                SQL.SqlCommand($"CREATE TABLE shelf (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), number_of_levels INT, length DOUBLE, actual_length DOUBLE, width DOUBLE, sector_id INT, startXindex INT, startYindex INT, orientation VARCHAR(20), FOREIGN KEY (sector_id) REFERENCES sector(id) ON DELETE CASCADE);");
+                SQL.SqlCommand($"CREATE TABLE shelf (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), number_of_levels INT DEFAULT 1 NOT NULL, length DOUBLE, actual_length DOUBLE, width DOUBLE, sector_id INT, startXindex INT, startYindex INT, orientation VARCHAR(20), FOREIGN KEY (sector_id) REFERENCES sector(id) ON DELETE CASCADE);");
                 /*LEVEL OF SHELF*/
                 SQL.SqlCommand($"CREATE TABLE level_of_shelf (id INT PRIMARY KEY AUTO_INCREMENT, upper_space DOUBLE, weight_capacity DOUBLE, shelf_id INT, FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE CASCADE);");
 
@@ -435,6 +435,23 @@ namespace WH_APP_GUI
                     SQL.SqlCommand($"ALTER TABLE cars ADD storage DOUBLE DEFAULT 0, ADD carrying_capacity DOUBLE DEFAULT 0;");
                     SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} ADD sum_volume DOUBLE;");
 
+                    foreach (DataRow warehosue in Tables.warehouses.database.Rows)
+                    {
+                        SQL.SqlCommand($"ALTER TABLE ezegywarehosue " +
+                            $"ADD width DOUBLE DEFAULT 0," +
+                            $"ADD height DOUBLE DEFAULT 0," +
+                            $"ADD length DOUBLE DEFAULT 0;");
+                        foreach (DataTable warehosueTable in Tables.databases.Tables)
+                        {
+                            if (warehosueTable.TableName == warehosue["name"].ToString())
+                            {
+                                warehosueTable.Columns.Add("width");
+                                warehosueTable.Columns.Add("height");
+                                warehosueTable.Columns.Add("length");
+                            }
+                        }
+                    }
+
                     Tables.features.getFeature("Storage")["in_use"] = true;
                     Tables.features.updateChanges();
 
@@ -447,9 +464,7 @@ namespace WH_APP_GUI
                     Debug.WriteError(ex);
                     throw;
                 }
-                //Tables.cars.Refresh();
-                //Tables.cars.database.Columns["storage"].AllowDBNull = false;
-                //Tables.cars.database.Columns["carrying_capacity"].AllowDBNull = false;
+                
             }
         }
 
@@ -710,6 +725,21 @@ namespace WH_APP_GUI
                     SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} DROP `weight`, DROP `volume`, DROP `width`, DROP `heigth`, DROP `length`;");
                     SQL.SqlCommand($"ALTER TABLE {Tables.cars.actual_name} DROP `storage`, DROP `carrying_capacity`;");
                     SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} DROP `sum_volume`;");
+
+                    foreach (DataRow warehosue in Tables.warehouses.database.Rows)
+                    {
+                        SQL.SqlCommand($"ALTER TABLE {warehosue["name"]} DROP width, DROP height, DROP length");
+                        foreach (DataTable warehosueTable in Tables.databases.Tables)
+                        {
+                            if(warehosueTable.TableName == warehosue["name"].ToString())
+                            {
+                                warehosueTable.Columns.Remove("width");
+                                warehosueTable.Columns.Remove("height");
+                                warehosueTable.Columns.Remove("lenght");
+                            }
+                        }
+                    }
+
 
                     Tables.features.getFeature("Storage")["in_use"] = false;
                     Tables.features.updateChanges();

@@ -136,24 +136,24 @@
            
                 <StackPanel Orientation="Horizontal" Grid.Row="3">
                     <Label Content="Is in a box:" Style="{StaticResource mylabelStyle}"></Label>
-                    <CheckBox IsChecked="True" x:Name="is_in_a_box" Unchecked="is_in_a_box_Unchecked" Checked="CheckBox_Checked" FontSize="17" VerticalContentAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource MahApps.Brushes.CheckBox}"></CheckBox>
+                    <CheckBox IsChecked="{Binding Path=[is_in_box]}" x:Name="is_in_a_box" Unchecked="is_in_a_box_Unchecked" Checked="CheckBox_Checked" FontSize="17" VerticalContentAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource MahApps.Brushes.CheckBox}"></CheckBox>
                 </StackPanel>
 
 
 
                 <StackPanel Grid.Row="4">
-                    <Label Name="widhtLabel" Content="Box width:" Style="{StaticResource mylabelStyle}"></Label>
-                    <xctk:ValueRangeTextBox Name="width" Text="{Binding Path=[width]}"  Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
+                    <Label Name="widhtLabel" Content="Box width (cm):" Style="{StaticResource mylabelStyle}"></Label>
+                    <xctk:ValueRangeTextBox Name="width" Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
                 </StackPanel>
 
                 <StackPanel Grid.Row="5">
-                    <Label Name="heightLabel" Content="Box height:" Style="{StaticResource mylabelStyle}"></Label>
-                    <xctk:ValueRangeTextBox Name="height" Text="{Binding Path=[height]}"  Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
+                    <Label Name="heightLabel" Content="Box height (cm):" Style="{StaticResource mylabelStyle}"></Label>
+                    <xctk:ValueRangeTextBox Name="height" Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
                 </StackPanel>
 
                 <StackPanel Grid.Row="6">
-                    <Label Name="lengthLabel" Content="Box length:" Style="{StaticResource mylabelStyle}"></Label>
-                    <xctk:ValueRangeTextBox Name="length" Text="{Binding Path=[length]}" Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
+                    <Label Name="lengthLabel" Content="Box length (cm):" Style="{StaticResource mylabelStyle}"></Label>
+                    <xctk:ValueRangeTextBox Name="length"  Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
                 </StackPanel>
 
                 <StackPanel Grid.Row="7">
@@ -169,7 +169,7 @@
                 <Button x:Name="Save" Click="Save_Click" Background="YellowGreen" Panel.ZIndex="1" Content="Save" FontSize="17" Grid.Row="8"></Button>
         </Grid>
         </ScrollViewer>
-           
+        
         
     </Grid>
 </Page>

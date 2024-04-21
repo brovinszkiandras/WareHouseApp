@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,12 +25,54 @@ namespace WH_APP_GUI.WarehouseTableFolder
     /// </summary>
     public partial class CreateWHProductPage : Page
     {
-        DataRow warehouseProduct;
+       private DataRow warehouseProduct;
+
+        private void CheckifProductsFitInbox()
+        {
+            MessageBox.Show(warehouseProduct["width"].ToString());
+                double boxvolume = (double)warehouseProduct["width"]
+               * (double)warehouseProduct["height"]
+               * (double)warehouseProduct["length"];
+
+                double productsFullVolume = (double)User.WarehouseTable().getProduct(warehouseProduct)["volume"]
+                    * (int)warehouseProduct["qty"];
+
+                if (boxvolume < productsFullVolume)
+                {
+                    MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("The prouducts dont fit inside the box\n" +
+                        $"Full volume of products: {productsFullVolume} cm3\n" +
+                        $"Volume of the box: {boxvolume} cm3\n" +
+                        $"Are you sure you want to proceed?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        
+                    if(result == MessageBoxResult.Yes)
+                    {
+                        updateDatabase();
+                    }
+                }
+            else
+            {
+                updateDatabase();
+            }
+
+
+
+
+        }
+
+        private void updateDatabase()
+        {
+            User.WarehouseTable().database.Rows.Add(warehouseProduct);
+            User.WarehouseTable().updateChanges();
+            Xceed.Wpf.Toolkit.MessageBox.Show($"A new product has been added to the warehouse");
+            WarehouseProductsPage page = new WarehouseProductsPage();
+            Navigation.content2.Navigate(page);
+        }
         public CreateWHProductPage()
         {
             InitializeComponent();
 
             warehouseProduct = User.WarehouseTable().database.NewRow();
+            warehouseProduct["is_in_box"] = true;
 
             this.DataContext = warehouseProduct;
 
@@ -45,6 +88,35 @@ namespace WH_APP_GUI.WarehouseTableFolder
             }
 
             shelf_id.ItemsSource = shelfs;
+
+            if(Tables.features.isFeatureInUse("Storage") == false)
+            {
+                width.Visibility = Visibility.Collapsed;
+                height.Visibility = Visibility.Collapsed;
+                length.Visibility = Visibility.Collapsed;
+
+                widhtLabel.Visibility = Visibility.Collapsed;
+                heightLabel.Visibility = Visibility.Collapsed;
+                lengthLabel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                MessageBox.Show("True");
+                Binding widthBinding = new Binding("[width]");
+                widthBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                width.SetBinding(TextBox.TextProperty, widthBinding);
+                Binding lengthBinding = new Binding("[length]");
+                lengthBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                length.SetBinding(TextBox.TextProperty, lengthBinding);
+                Binding heightBinding = new Binding("[height]");
+                heightBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                height.SetBinding(TextBox.TextProperty, heightBinding);
+            }
+
+            qty.ValueDataType = typeof(string);
+            width.ValueDataType = typeof(double);
+            height.ValueDataType = typeof(double);
+            length.ValueDataType = typeof(double);
         }
 
         private void shelf_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -66,24 +138,28 @@ namespace WH_APP_GUI.WarehouseTableFolder
         {
             if(this.IsLoaded == true)
             {
-                widhtLabel.Content = "Box width";
-                heightLabel.Content = "Box height";
-                lengthLabel.Content = "Box length";
-
-                if (product_id.SelectedIndex > -1)
+                if(Tables.features.isFeatureInUse("Storage") == true)
                 {
-                    DataRowView selectedItem = product_id.SelectedItem as DataRowView;
-                    DataRow product = selectedItem.Row;
+                    widhtLabel.Content = "Box width (cm)";
+                    heightLabel.Content = "Box height (cm)";
+                    lengthLabel.Content = "Box length (cm)";
 
                     width.IsEnabled = true;
                     height.IsEnabled = true;
                     length.IsEnabled = true;
+                    if (product_id.SelectedIndex > -1)
+                    {
+                        DataRowView selectedItem = product_id.SelectedItem as DataRowView;
+                        DataRow product = selectedItem.Row;
+
+                        
 
 
-                    width.Clear();
-                    height.Clear();
-                    length.Clear();
+                        width.Clear();
+                        height.Clear();
+                        length.Clear();
 
+                    }
                 }
             }
            
@@ -93,23 +169,26 @@ namespace WH_APP_GUI.WarehouseTableFolder
         {
             if (this.IsLoaded == true)
             {
-                widhtLabel.Content = "Product's width";
-                heightLabel.Content = "Product's height";
-                lengthLabel.Content = "Product's length";
-
-                width.IsEnabled = false;
-                height.IsEnabled = false;
-                length.IsEnabled = false;
-
-                if (product_id.SelectedIndex > -1)
+                if (Tables.features.isFeatureInUse("Storage") == true)
                 {
-                    DataRowView selectedItem = product_id.SelectedItem as DataRowView;
-                    DataRow product = selectedItem.Row;
-                    
+                    widhtLabel.Content = "Product's width";
+                    heightLabel.Content = "Product's height";
+                    lengthLabel.Content = "Product's length";
 
-                    width.Text = product["width"].ToString();
-                    height.Text = product["heigth"].ToString();
-                    length.Text = product["length"].ToString();
+                    width.IsEnabled = false;
+                    height.IsEnabled = false;
+                    length.IsEnabled = false;
+
+                    if (product_id.SelectedIndex > -1)
+                    {
+                        DataRowView selectedItem = product_id.SelectedItem as DataRowView;
+                        DataRow product = selectedItem.Row;
+
+
+                        width.Text = product["width"].ToString();
+                        height.Text = product["heigth"].ToString();
+                        length.Text = product["length"].ToString();
+                    }
                 }
             }
         }
@@ -120,7 +199,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
             {
                 DataRowView selectedItem = product_id.SelectedItem as DataRowView;
                 DataRow product = selectedItem.Row;
-                if (is_in_a_box.IsChecked == false) {
+                if (is_in_a_box.IsChecked == false && Tables.features.isFeatureInUse("Storage") == true) {
                     width.Text = product["width"].ToString();
                     height.Text = product["heigth"].ToString();
                     length.Text = product["length"].ToString();
@@ -176,13 +255,15 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
             if (thereIsAnError == false)
             {
-                User.WarehouseTable().database.Rows.Add(warehouseProduct);
-                User.WarehouseTable().updateChanges();
-                Xceed.Wpf.Toolkit.MessageBox.Show($"A new product has been added to the warehouse");
+                if (Tables.features.isFeatureInUse("Storage"))
+                {
+                    CheckifProductsFitInbox();
+                }
+                else
+                {
+                    updateDatabase();
+                }
                
-
-                WarehouseProductsPage page = new WarehouseProductsPage();
-                Navigation.content2.Navigate( page );
             }
         }
     }

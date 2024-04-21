@@ -30,6 +30,7 @@ namespace WH_APP_GUI
             newShelf["startXindex"] = Grid.GetColumn(button);
             newShelf["startYindex"] = Grid.GetRow(button);
             newShelf["width"] = slotWidth;
+            newShelf["number_of_levels"] = 1;
             lastXindex = currentXindex;
             lastYindex = currentYindex;
 

@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WH_APP_GUI.sectors;
 using WH_APP_GUI.WarehouseTableFolder;
 
 namespace WH_APP_GUI.Warehouse
@@ -80,7 +81,8 @@ namespace WH_APP_GUI.Warehouse
 
         private void SectorsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
-
+            sectorIndexWindow page = new sectorIndexWindow();
+            Navigation.content2.Navigate(page);
         }
 
         private void EmployeesInspectToWarehouse_Click(object sender, RoutedEventArgs e)

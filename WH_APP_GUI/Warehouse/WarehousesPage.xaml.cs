@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WH_APP_GUI.Forklift;
+using WH_APP_GUI.sectors;
 using WH_APP_GUI.WarehouseTableFolder;
 
 namespace WH_APP_GUI.Warehouse

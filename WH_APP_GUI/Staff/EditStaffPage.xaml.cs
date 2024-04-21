@@ -20,10 +20,12 @@ namespace WH_APP_GUI.Staff
     {
         
         private static Type PreviousPageType;
-        public EditStaffPage(Page previousPage, DataRow staff)
+        private DataRow staff;
+        public EditStaffPage(Page previousPage, DataRow Staff)
         {
             PreviousPageType = previousPage.GetType();
 
+            this.staff = Staff;
             InitializeComponent();
 
             PasswordReset.Tag = staff;
@@ -118,10 +120,10 @@ namespace WH_APP_GUI.Staff
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            DataRow staff = (sender as Button).Tag as DataRow;
+            
             if (staff != null)
             {
-                if (!Validation.ValidateTextbox(name, staff) && Validation.ValidateTextbox(email, staff))
+                if (!Validation.ValidateTextbox(name, staff) && !Validation.ValidateTextbox(email, staff))
                 {
                     staff["name"] = name.Text;
                     staff["email"] = email.Text;
@@ -129,9 +131,8 @@ namespace WH_APP_GUI.Staff
 
                     Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {staff["name"]} staff.");
                     MessageBox.Show("Staff updated");
-                    //this.Close();
-                    //StaffPage staffPage = new StaffPage();
-                    //Navigation.content2.Navigate(staffPage);
+                    
+                    Tables.staff.updateChanges();
 
                     Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
                     Navigation.content2.Navigate(previousPage);

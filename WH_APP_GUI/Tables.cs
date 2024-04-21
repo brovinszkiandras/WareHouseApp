@@ -12,6 +12,7 @@ namespace WH_APP_GUI
     class Tables
     {
         public static DataSet databases = new DataSet();
+        public static feature features;
         public static dock docks;
         public static orders orders;
         public static employees employees;
@@ -24,7 +25,6 @@ namespace WH_APP_GUI
         public static roles roles;
         public static transports transports;
         public static cars cars;
-        public static feature features;
         public static Sector sector;
         public static shelf shelf;
         public static forklift forklifts;
@@ -52,6 +52,7 @@ namespace WH_APP_GUI
 
         public static void addRequriedTablesToTables()
         {
+            features = new feature("feature");
             staff = new staff();
             warehouses = new warehouses();
             employees = new employees();
@@ -59,7 +60,6 @@ namespace WH_APP_GUI
             products = new products();
             roles = new roles();
             permissions = new permission();
-            features = new feature("feature");
             sector = new Sector("sector");
             shelf = new shelf("shelf");
 
