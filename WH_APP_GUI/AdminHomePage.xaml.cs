@@ -652,6 +652,34 @@ namespace WH_APP_GUI
                 }
             }
         }
+        private void AdminHome_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.02;
+
+            }
+            foreach (var child in FeaturesDisplayG.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+
+            }
+
+            RegisterEmployee.FontSize = e.NewSize.Height * 0.02;
+            RegisterStaff.FontSize = e.NewSize.Height * 0.02;
+            ImportEmployees.FontSize = e.NewSize.Height * 0.02;
+            ManageDatabase.FontSize = e.NewSize.Height * 0.02;
+            manageRoles.FontSize = e.NewSize.Height * 0.02;
+            ToTheApp.FontSize = e.NewSize.Height * 0.02;
+            AddRole.FontSize = e.NewSize.Height * 0.02;
+            CancelRoles.FontSize = e.NewSize.Height * 0.02;
+            AddNewRoleBTN.FontSize = e.NewSize.Height * 0.02;
+            CancelRoleCreation.FontSize = e.NewSize.Height * 0.02;
+            CreateRequiredTablesBTN.FontSize = e.NewSize.Height * 0.02;
+            IncludeFeture.FontSize = e.NewSize.Height * 0.02;
+            
+        }
+
         private static DataRow SelectedRole = null;
         private void DisplayRoles(Panel panel)
         {
@@ -666,13 +694,12 @@ namespace WH_APP_GUI
                 btn.Content = Tables.roles.database.Rows[i]["role"];
                 btn.Tag = Tables.roles.database.Rows[i];
 
-                btn.Height = 30;
-                btn.Background = Brushes.Black;
-                btn.Foreground = Brushes.White;
+                btn.Background = Brushes.White;
+                btn.Foreground = Brushes.Black;
                 btn.BorderThickness = new Thickness(1);
-                btn.BorderBrush = Brushes.White;
+                btn.BorderBrush = Brushes.Black;
                 btn.Click += RoleButton_Click;
-
+                btn.Margin = new Thickness(5);
                 panel.Children.Add(btn);
             }
         }
@@ -691,18 +718,16 @@ namespace WH_APP_GUI
                 {
                     StackPanel stackPanel = new StackPanel();
                     stackPanel.Orientation = Orientation.Horizontal;
-                    stackPanel.HorizontalAlignment = HorizontalAlignment.Center;
-                    stackPanel.VerticalAlignment = VerticalAlignment.Center;
+                    stackPanel.HorizontalAlignment = HorizontalAlignment.Right;
+                    stackPanel.VerticalAlignment = VerticalAlignment.Top;
 
                     Label content = new Label();
                     content.Content = Tables.permissions.database.Rows[i]["name"];
-                    content.Height = 30;
-                    content.Width = 125;
-                    content.Background = Brushes.Black;
-                    content.Foreground = Brushes.White;
+                    content.Background = Brushes.White;
+                    content.Foreground = Brushes.Black;
                     content.BorderThickness = new Thickness(1);
-                    content.BorderBrush = Brushes.White;
-
+                    content.HorizontalAlignment = HorizontalAlignment.Left;
+                    content.Margin = new Thickness(5);
                     stackPanel.Children.Add(content);
 
                     if (Tables.roles.getPermission(role).Contains(Tables.permissions.database.Rows[i]))
@@ -710,13 +735,13 @@ namespace WH_APP_GUI
                         Button on = new Button();
                         on.Tag = Tables.permissions.database.Rows[i];
                         on.Click += btnOff_Click;
-                        on.Width = 125;
                         on.Content = "On";
-                        on.Height = 30;
-                        on.Background = new SolidColorBrush(Color.FromRgb(20, 63, 148));
-                        on.Foreground = Brushes.White;
+                        on.Background = Brushes.Green;
+                        on.Foreground = Brushes.Black;
                         on.BorderThickness = new Thickness(1);
-                        on.BorderBrush = Brushes.White;
+                        on.BorderBrush = Brushes.Black;
+                        on.HorizontalAlignment = HorizontalAlignment.Right;
+                        on.Margin = new Thickness(5);
                         stackPanel.Children.Add(on);
                     }
                     else
@@ -724,13 +749,13 @@ namespace WH_APP_GUI
                         Button off = new Button();
                         off.Tag = Tables.permissions.database.Rows[i];
                         off.Click += btnOn_Click;
-                        off.Width = 125;
                         off.Content = "Off";
-                        off.Height = 30;
-                        off.Background = new SolidColorBrush(Color.FromRgb(115, 0, 0));
-                        off.Foreground = Brushes.White;
+                        off.Background = Brushes.Red;
+                        off.Foreground = Brushes.Black;
                         off.BorderThickness = new Thickness(1);
-                        off.BorderBrush = Brushes.White;
+                        off.BorderBrush = Brushes.Black;
+                        off.HorizontalAlignment = HorizontalAlignment.Right;
+                        off.Margin = new Thickness(5);
                         stackPanel.Children.Add(off);
                     }
 
@@ -755,18 +780,16 @@ namespace WH_APP_GUI
             {
                 StackPanel stackPanel = new StackPanel();
                 stackPanel.Orientation = Orientation.Horizontal;
-                stackPanel.HorizontalAlignment = HorizontalAlignment.Center;
-                stackPanel.VerticalAlignment = VerticalAlignment.Center;
+                stackPanel.HorizontalAlignment = HorizontalAlignment.Right;
+                stackPanel.VerticalAlignment = VerticalAlignment.Top;
 
                 Label content = new Label();
                 content.Content = Tables.permissions.database.Rows[i]["name"];
-                content.Height = 30;
-                content.Width = 125;
-                content.Background = Brushes.Black;
-                content.Foreground = Brushes.White;
+                content.Background = Brushes.White;
+                content.Foreground = Brushes.Black;
                 content.BorderThickness = new Thickness(1);
-                content.BorderBrush = Brushes.White;
-
+                content.HorizontalAlignment = HorizontalAlignment.Left;
+                content.Margin = new Thickness(5);
                 stackPanel.Children.Add(content);
 
                 if (Tables.roles.getPermission(role).Contains(Tables.permissions.database.Rows[i]))
@@ -774,13 +797,13 @@ namespace WH_APP_GUI
                     Button on = new Button();
                     on.Tag = Tables.permissions.database.Rows[i];
                     on.Click += btnOff_Click;
-                    on.Width = 125;
                     on.Content = "On";
-                    on.Height = 30;
-                    on.Background = new SolidColorBrush(Color.FromRgb(20, 63, 148));
-                    on.Foreground = Brushes.White;
+                    on.Background = Brushes.Green;
+                    on.Foreground = Brushes.Black;
                     on.BorderThickness = new Thickness(1);
-                    on.BorderBrush = Brushes.White;
+                    on.BorderBrush = Brushes.Black;
+                    on.HorizontalAlignment = HorizontalAlignment.Right;
+                    on.Margin = new Thickness(5);
                     stackPanel.Children.Add(on);
                 }
                 else
@@ -788,13 +811,13 @@ namespace WH_APP_GUI
                     Button off = new Button();
                     off.Tag = Tables.permissions.database.Rows[i];
                     off.Click += btnOn_Click;
-                    off.Width = 125;
                     off.Content = "Off";
-                    off.Height = 30;
-                    off.Background = new SolidColorBrush(Color.FromRgb(115, 0, 0));
-                    off.Foreground = Brushes.White;
+                    off.Background = Brushes.Red;
+                    off.Foreground = Brushes.Black;
                     off.BorderThickness = new Thickness(1);
-                    off.BorderBrush = Brushes.White;
+                    off.BorderBrush = Brushes.Black;
+                    off.HorizontalAlignment = HorizontalAlignment.Right;
+                    off.Margin = new Thickness(5);
                     stackPanel.Children.Add(off);
                 }
 
@@ -947,8 +970,8 @@ namespace WH_APP_GUI
             NewRoleDescription.Text = string.Empty;
             Is_Belongst_To_Warehouse.IsChecked = false;
 
-            RolesScrollViewer.Visibility = Visibility.Visible;
-            PermmissionsScrollViewer.Visibility = Visibility.Visible;
+            RolesScrollViewer.Visibility = Visibility.Collapsed;
+            PermmissionsScrollViewer.Visibility = Visibility.Collapsed;
         }
 
         private void CancelRoleCreation_Click(object sender, RoutedEventArgs e)

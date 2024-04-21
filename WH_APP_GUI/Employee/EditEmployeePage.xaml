@@ -7,23 +7,24 @@
         mc:Ignorable="d"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="EditEmployeePage"
-        d:DesignHeight="450" d:DesignWidth="800">
+        d:DesignHeight="450" d:DesignWidth="800"
+        SizeChanged="Page_SizeChanged">
 
-    <Grid Background="White">
+    <Grid Background="White" Name="alapgrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Button Name="profile_picture" Margin="20" Grid.Column="1" MaxHeight="100" MaxWidth="100"/>
+        <Button Name="profile_picture" Margin="20" Grid.Column="1"/>
 
-        <Grid x:Name="DatasgGRID"  Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
+        <Grid x:Name="DatasgGRID"  Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>

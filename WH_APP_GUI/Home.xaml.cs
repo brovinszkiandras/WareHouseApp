@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,8 +24,10 @@ namespace WH_APP_GUI
         {
             InitializeComponent();
             Navigation.RemoveParent();
+
             Grid.SetColumn(Navigation.content2, 1);
             Grid.SetRow(Navigation.content2, 1);
+
             Navigation.content2.Background = Brushes.WhiteSmoke;
             alapgrid.Children.Add(Navigation.content2);
 
@@ -53,10 +56,12 @@ namespace WH_APP_GUI
 
             if (User.DoesHavePermission("Inspect all Orders"))
             {
-                Button btn = new Button();
+                Button btn = new Button();  
+                
                 btn.Content = "Orders";
                 btn.Click += InspectAllOrders_Click;
                 btn.Style = (Style)this.Resources["ElegantButtonStyle"];
+                btn.Tag = "Orders";
                 Menu.Children.Add(btn);
             }
 
@@ -124,6 +129,15 @@ namespace WH_APP_GUI
             }
 
             #endregion
+        }
+
+        private void menucolum_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Button btn = sender as Button;
+            foreach (Button child in Menu.Children)
+            {
+                    child.Content += btn.Tag.ToString();
+            }
         }
         private void Home_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -225,5 +239,6 @@ namespace WH_APP_GUI
             Navigation.content2.Content = null;
             Navigation.content2.Navigate(new Uri("AdminHomePage.xaml", UriKind.Relative));
         }
+
     }
 }

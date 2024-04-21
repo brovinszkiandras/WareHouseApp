@@ -6,22 +6,27 @@
       xmlns:local="clr-namespace:WH_APP_GUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="AdminHomePage">
+      Title="AdminHomePage"
+      SizeChanged="AdminHome_SizeChanged">
 
-    <Grid Background="White">
+    <Grid Background="White" Name="alapgrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel HorizontalAlignment="Center">
-            <Button Margin="30, 5" Content="Register a new Employee" Name="RegisterEmployee" Click="RegisterEmployee_Click"  Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
-            <Button Margin="30, 5" Content="Register a new Staff" Name="RegisterStaff" Click="RegisterStaff_Click"  Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
-            <Button Margin="30, 5" Content="Import Employees" Name="ImportEmployees" Click="ImportEmployees_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
-            <Button Margin="30, 5" Content="Manage Database" Name="ManageDatabase" Click="ManageDatabase_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
-            <Button Margin="30, 5" Content="Manage Roles" Name="manageRoles" Click="manageRoles_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
-            <Button Content="To the app" Name="ToTheApp" Visibility="Collapsed" Margin="30, 5" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="ToTheApp_Click"/>
+            <Button Margin="20, 5" Content="Register a new Employee" Name="RegisterEmployee" Click="RegisterEmployee_Click"  Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Margin="20, 5" Content="Register a new Staff" Name="RegisterStaff" Click="RegisterStaff_Click"  Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Margin="20, 5" Content="Import Employees" Name="ImportEmployees" Click="ImportEmployees_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Margin="20, 5" Content="Manage Database" Name="ManageDatabase" Click="ManageDatabase_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Margin="20, 5" Content="Manage Roles" Name="manageRoles" Click="manageRoles_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Button Margin="20, 5" Content="To the app" Name="ToTheApp" Visibility="Collapsed" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="ToTheApp_Click"/>
+            <ScrollViewer Margin="0, 40" x:Name="RolesScrollViewer" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" Name="RolesStackpanel">
+                </StackPanel>
+            </ScrollViewer>
         </StackPanel>
         
         <Grid x:Name="Display" Grid.Column="1" Background="White" Visibility="Visible">
@@ -81,8 +86,8 @@
 
             <StackPanel Grid.ColumnSpan="2" x:Name="ManageRoleGrid" Visibility="Collapsed">
 
-                <Button Content="Add Role" Name="AddRole" Background="Black" Foreground="White" BorderThickness="1" BorderBrush="White" Click="AddRole_Click"/>
-                <Button Content="Cancel" Name="CancelRoles" Background="Black" Foreground="White" BorderThickness="1" BorderBrush="White" Click="CancelRoles_Click"/>
+                <Button Content="Add Role" Name="AddRole" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="AddRole_Click"/>
+                <Button Content="Cancel" Name="CancelRoles" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="CancelRoles_Click"/>
 
 
                 <StackPanel Grid.ColumnSpan="2" Visibility="Collapsed" x:Name="AddRoleGrid" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -102,26 +107,20 @@
                     
                 </StackPanel>
             </StackPanel>
-            
-            <ScrollViewer x:Name="RolesScrollViewer" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible" Grid.Row="1">
-                <StackPanel Orientation="Vertical" Name="RolesStackpanel">
-                </StackPanel>
-            </ScrollViewer>
 
-            <ScrollViewer Grid.Column="1" x:Name="PermmissionsScrollViewer" HorizontalAlignment="Center" Visibility="Collapsed" Grid.Row="1" Margin="20">
+            <ScrollViewer x:Name="PermmissionsScrollViewer" HorizontalAlignment="Center" Visibility="Collapsed" Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 10">
                 <StackPanel Orientation="Vertical" Name="PermissonsStackpanel">
                 </StackPanel>
             </ScrollViewer>
+           
         </Grid>
 
         <StackPanel  Grid.Column="2">
-            <Button Margin="30" Content="Create required tables" Name="CreateRequiredTablesBTN" IsEnabled="True" BorderBrush="Black" Background="White" Foreground="Black" Click="CreateRequiredTablesBTN_Click"/>
+            <Button Margin="20" Content="Create required tables" Name="CreateRequiredTablesBTN" IsEnabled="True" BorderBrush="Black" Background="White" Foreground="Black" Click="CreateRequiredTablesBTN_Click"/>
             
-            <StackPanel x:Name="FeaturesDisplay" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-                <StackPanel Name="FeaturesDisplayG" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </StackPanel>
+                <StackPanel Name="FeaturesDisplayG" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
 
-            <Button Margin="30" Content="Create Fetures" Name="IncludeFeture" Click="IncludeFeture_Click" BorderBrush="Black" Background="White" Foreground="Black" BorderThickness="1"/>
+                <Button Margin="20" Content="Create Fetures" Name="IncludeFeture" Click="IncludeFeture_Click" BorderBrush="Black" Background="White" Foreground="Black" BorderThickness="1"/>
         </StackPanel>
         <Frame x:Name="AdminContent" Grid.ColumnSpan="2" Visibility="Collapsed"/>
     </Grid>

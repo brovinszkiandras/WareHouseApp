@@ -19,6 +19,15 @@ namespace WH_APP_GUI
 {
     public partial class EditEmployeePage : Page
     {
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.02;
+
+            }
+            profile_picture.Height = e.NewSize.Height * 0.4; profile_picture.Width = e.NewSize.Height * 0.4;
+        }
         private static Type PreviousPageType;
         public EditEmployeePage(Page previousPage, DataRow employee)
         {
@@ -37,7 +46,7 @@ namespace WH_APP_GUI
             warehouse_id.SelectedItem = Tables.employees.getWarehouse(employee)["name"];
             PasswordReset.Tag = employee;
             activity.Tag = employee;
-            DoneEmployeeUpdate.Tag = employee;
+            Done.Tag = employee;
             profile_picture.Tag = employee;
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
