@@ -57,8 +57,6 @@ namespace WH_APP_GUI
                 SQL.SqlCommand($"ALTER TABLE {actual_name} AUTO_INCREMENT = 1;");
                 database.Columns["id"].AutoIncrementSeed = 1;
             }
-
-           
         }
 
         public void GetNames()
@@ -138,13 +136,12 @@ namespace WH_APP_GUI
                 //    MessageBox.Show($"Parameter: {parameter.ParameterName}, MysqlDatatype: {parameter.MySqlDbType} Type: {parameter.DbType},Column: {parameter.SourceColumn}, Value: {parameter.Value}");
                 //}
 
+                adapter.Update(database);
 
-            adapter.Update(database);
-
-                if(database.GetChanges() != null)
-                {
-                    MessageBox.Show("there are still changes");
-                }
+                //if(database.GetChanges() != null)
+                //{
+                //    MessageBox.Show("there are still changes");
+                //}
 
                 // Display the SQL commands
 
@@ -185,7 +182,6 @@ namespace WH_APP_GUI
     }
     class cities : table
     {
-
         public cities() : base()
         {
 
@@ -198,9 +194,6 @@ namespace WH_APP_GUI
     }
     class warehouses : table
     {
-
-
-
         public warehouses() : base()
         {
             
@@ -220,8 +213,7 @@ namespace WH_APP_GUI
         {
             return Relations.childRelation("orderWarehouse", warehouse);
         }
-        
-
+       
         public DataRow getCity(DataRow warehouse)
         {
             return Relations.parentRelation("warehouseCity", warehouse);
@@ -273,7 +265,6 @@ namespace WH_APP_GUI
             return Relations.parentRelation("orderWarehouse", order);
         }
        
-
         public DataRow getProduct(DataRow order)
         {
             return Relations.parentRelation("orderProduct", order);
@@ -293,12 +284,8 @@ namespace WH_APP_GUI
             database.Columns["email"].AllowDBNull = false;
             database.Columns["password"].AllowDBNull = false;
             database.Columns["role_id"].AllowDBNull = false;
-            database.Columns["warehouse_id"].AllowDBNull = true;
-           
+            database.Columns["warehouse_id"].AllowDBNull = true;        
         }
-
-
-
         public DataRow getWarehouse(DataRow employee)
         {
             return Relations.parentRelation("employeeWarehouse", employee);
@@ -311,8 +298,6 @@ namespace WH_APP_GUI
     }
     class products : table
     {
-
-
         public products() : base()
         {
             int year = DateTime.Now.Year;
@@ -328,23 +313,15 @@ namespace WH_APP_GUI
             database.Columns["selling_price"].AllowDBNull = false;
             database.Columns["description"].AllowDBNull = true;
 
-
-
             // Update the value in the DataTable with correctly formatted DateTime object
 
             MySqlDateTime dateTime = new MySqlDateTime(DateTime.Now);
           
 
-            MessageBox.Show(dateTime.GetDateTime().ToString());
-
-
             //database.Columns["created_at"].DefaultValue = new MySqlDateTime(DateTime.Now);
 
 
             //database.Columns["updated_at"].DefaultValue = new MySqlDateTime(DateTime.Now);
-
-
-
         }
 
         public DataRow[] getOrders(DataRow product)
@@ -354,7 +331,6 @@ namespace WH_APP_GUI
     }
     class roles : table
     {
-
         public roles() : base()
         {
             database.Columns["role"].Unique = true;
@@ -379,7 +355,6 @@ namespace WH_APP_GUI
     }
     class permission : table
     {
-
         public permission() : base()
         {
 
@@ -408,9 +383,7 @@ namespace WH_APP_GUI
             database.Columns["type"].AllowDBNull = false;
             database.Columns["km"].AllowDBNull = true;
             database.Columns["last_service"].AllowDBNull = true;
-            database.Columns["last_exam"].AllowDBNull = true;
-
-           
+            database.Columns["last_exam"].AllowDBNull = true; 
         }
 
         public DataRow[] getTransports(DataRow car)
@@ -425,8 +398,7 @@ namespace WH_APP_GUI
             database.Columns["employee_id"].AllowDBNull = false;
             database.Columns["car_id"].AllowDBNull=false;
             database.Columns["status"].AllowDBNull = false;
-            database.Columns["end_date"].AllowDBNull = true;
-            
+            database.Columns["end_date"].AllowDBNull = true;       
         }
 
         public DataRow getEmployee(DataRow transport)

@@ -6,10 +6,8 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WH_APP_GUI"
         mc:Ignorable="d"
-            d:DesignHeight="450" d:DesignWidth="800"
+        d:DesignHeight="450" d:DesignWidth="800"
         Title="EmployeesPage">
-    
-    
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -19,7 +17,7 @@
         <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Content="Add new employee" Name="AddNewEmployee" Click="AddNewEmployee_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
             <Button Content="All Employees" Name="AllEmployees" Click="AllEmployees_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
-            <ComboBox Name="EmployeeWarehouses" BorderBrush="Black" SelectionChanged="EmployeeWarehouses_SelectionChanged" Margin="5"/>
+            <ComboBox Name="EmployeeWarehouses" Visibility="Collapsed" BorderBrush="Black" SelectionChanged="EmployeeWarehouses_SelectionChanged" Margin="5"/>
             <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
         </StackPanel>
         

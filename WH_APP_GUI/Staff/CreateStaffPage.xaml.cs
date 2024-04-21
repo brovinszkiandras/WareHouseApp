@@ -19,11 +19,8 @@ namespace WH_APP_GUI.Staff
 {
     public partial class CreateStaffPage : Page
     {
-        private static Type PreviousPageType;
-        public CreateStaffPage(Page previousPage)
+        public CreateStaffPage()
         {
-            PreviousPageType = previousPage.GetType();
-
             InitializeComponent();
 
             name.ValueDataType = typeof(string);
@@ -85,45 +82,41 @@ namespace WH_APP_GUI.Staff
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            DataRow staff = Tables.products.database.NewRow();
+            DataRow staff = Tables.staff.database.NewRow();
 
             if (!Validation.ValidateTextbox(name, staff) && !Validation.ValidateTextbox(email, staff))
             {
-                staff["name"] = name.Text;
-                staff["email"] = email.Text;
-                staff["profile_picture"] = profile_picture.Tag != null ? profile_picture.Tag.ToString() : "DefaultStaffProfilePicture.png";
-                staff["role_id"] = role_id_Dictionary[role_id.SelectedItem.ToString()]["id"];
+                if (role_id.SelectedIndex != -1)
+                {
+                    staff["name"] = name.Text;
+                    staff["email"] = email.Text;
+                    staff["profile_picture"] = profile_picture.Tag != null ? profile_picture.Tag.ToString() : "DefaultStaffProfilePicture.png";
+                    staff["role_id"] = role_id_Dictionary[role_id.SelectedItem.ToString()]["id"];
 
-                string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
-                string HashedPassword = Hash.HashPassword(password);
-                staff["password"] = HashedPassword;
-                Tables.employees.updateChanges();
+                    string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
+                    string HashedPassword = Hash.HashPassword(password);
+                    staff["password"] = HashedPassword;
+                    Tables.employees.updateChanges();
 
-                /*DEBUG*/
-                MessageBox.Show("Create Staff Page: " + password);
-                MessageBox.Show("Create Staff Page: " + HashedPassword);
-                /*DEBUG*/
+                    /*DEBUG*/
+                    MessageBox.Show("Create Staff Page: " + password);
+                    MessageBox.Show("Create Staff Page: " + HashedPassword);
+                    /*DEBUG*/
 
-                Tables.staff.database.Rows.Add(staff);
-                Tables.staff.updateChanges();
+                    Tables.staff.database.Rows.Add(staff);
+                    Tables.staff.updateChanges();
 
-                Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been created {staff["name"]} staff.");
+                    Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been created {staff["name"]} staff.");
+                    MessageBox.Show("Staff created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                MessageBox.Show("Staff created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                //this.Close();
-                //StaffPage staffPage = new StaffPage();
-                //Navigation.content2.Navigate(staffPage);
-                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                Navigation.content2.Navigate(previousPage);
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }          
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //StaffPage staffPage = new StaffPage();
-            //Navigation.content2.Navigate(staffPage);
-            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-            Navigation.content2.Navigate(previousPage);
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
     }
 }

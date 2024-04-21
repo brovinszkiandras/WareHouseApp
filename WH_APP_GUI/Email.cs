@@ -11,17 +11,10 @@ namespace WH_APP_GUI
     internal class Email
     {
         private static SmtpClient client = new SmtpClient("smtp.gmail.com", 587); // Gmail SMTP server and port
-
-        static Email()
-        {
-            
-        }
-
-
         public static void send(string emailAddressTosend, string subject, string body)
         {
             client.EnableSsl = true; // Enable SSL/TLS
-            client.Credentials = new NetworkCredential("horreumperfectum@gmail.com", "rfrj hsyw nplz voqo"); // Your Gmail credentials
+            client.Credentials = new NetworkCredential("horreumperfectum@gmail.com", "rfrj hsyw nplz voqo"); // Your Gmail and api key
 
             MailMessage message = new MailMessage();
             message.From = new MailAddress("horreumperfectum@gmail.com"); // Sender's email address
@@ -31,8 +24,6 @@ namespace WH_APP_GUI
 
             // Send the email
             client.Send(message);
-
-            Console.WriteLine("Email sent successfully!");
         }
     }
 }

@@ -20,11 +20,8 @@ namespace WH_APP_GUI.Forklift
 {
     public partial class CreateFrokliftPage : Page
     {
-        private Type PreviousPageType;
-        public CreateFrokliftPage(Page previousPage)
+        public CreateFrokliftPage()
         {
-            PreviousPageType = previousPage.GetType();
-
             InitializeComponent();
             IniWarehouses();
             IniStatuses();
@@ -85,23 +82,13 @@ namespace WH_APP_GUI.Forklift
 
                 MessageBox.Show("Forklift created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                //ForkliftsPage forkliftsPage = new ForkliftsPage();
-                //Navigation.content2.Navigate(forkliftsPage);
-                //this.Close();
-
-                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                Navigation.content2.Navigate(previousPage);
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //this.Close();
-            //ForkliftsPage forkliftsPage = new ForkliftsPage();
-            //Navigation.content2.Navigate(forkliftsPage);
-
-            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-            Navigation.content2.Navigate(previousPage);
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
     }
 }

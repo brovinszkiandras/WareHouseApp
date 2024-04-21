@@ -18,12 +18,8 @@ namespace WH_APP_GUI.Staff
 {
     public partial class EditStaffPage : Page
     {
-        
-        private static Type PreviousPageType;
-        public EditStaffPage(Page previousPage, DataRow staff)
+        public EditStaffPage(DataRow staff)
         {
-            PreviousPageType = previousPage.GetType();
-
             InitializeComponent();
 
             PasswordReset.Tag = staff;
@@ -37,7 +33,6 @@ namespace WH_APP_GUI.Staff
             email.Text = staff["email"].ToString();
 
             Ini_role_id();
-
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -128,25 +123,16 @@ namespace WH_APP_GUI.Staff
                     staff["role_id"] = role_id_Dictionary[role_id.SelectedItem.ToString()]["id"];
 
                     Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {staff["name"]} staff.");
-                    MessageBox.Show("Staff updated");
-                    //this.Close();
-                    //StaffPage staffPage = new StaffPage();
-                    //Navigation.content2.Navigate(staffPage);
+                    MessageBox.Show("Staff has been updated successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                    Navigation.content2.Navigate(previousPage);
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
                 }
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //this.Close();
-            //StaffPage staffPage = new StaffPage();
-            //Navigation.content2.Navigate(staffPage);
-
-            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-            Navigation.content2.Navigate(previousPage);
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
 
         private void PasswordReset_Click(object sender, RoutedEventArgs e)

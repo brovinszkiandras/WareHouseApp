@@ -27,6 +27,16 @@ namespace WH_APP_GUI.Staff
             Ini_role_id();
             Back.Visibility = Visibility.Collapsed;
         }
+        private DataRow WarehouseFromPage;
+        public StaffPage(DataRow warehouseFromPage)
+        {
+            InitializeComponent();
+            DisplayStaffsStackpanel.Children.Clear();
+            InitializeAllStaffs(DisplayStaffsStackpanel);
+            Ini_role_id();
+            Back.Visibility = Visibility.Collapsed;
+            WarehouseFromPage = warehouseFromPage;
+        }
         private static Type PreviousPageType;
         public StaffPage(Page previousPage)
         {
@@ -175,12 +185,15 @@ namespace WH_APP_GUI.Staff
         public Dictionary<string, int> Role_Id = new Dictionary<string, int>();
         private void AddNewStaff_Click(object sender, RoutedEventArgs e)
         {
-            CreateStaffPage createStaffPage = new CreateStaffPage(new StaffPage());
-            //createStaffPage.Show();
-            //createStaffPage.Closing += CloseAndDisplay;
-            StaffContent.Content = null;
-            StaffContent.Navigate(createStaffPage);
-            StaffContent.Visibility = Visibility.Visible;
+            if (WarehouseFromPage != null)
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateStaffPage"));
+                Navigation.ReturnParam = WarehouseFromPage;
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateStaffPage"));
+            }
         }
 
         void CloseAndDisplay(object sender, EventArgs e)
@@ -207,12 +220,15 @@ namespace WH_APP_GUI.Staff
             DataRow staff = (sender as Button).Tag as DataRow;
             if (staff != null)
             {
-                EditStaffPage editStaffPage = new EditStaffPage(new StaffPage(), staff);
-                //editStaffPage.Show();
-                //editStaffPage.Closing += CloseAndDisplay;
-                StaffContent.Content = null;
-                StaffContent.Navigate(editStaffPage);
-                StaffContent.Visibility = Visibility.Visible;
+                if (WarehouseFromPage != null)
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("EditStaffPage"), staff);
+                    Navigation.ReturnParam = WarehouseFromPage;
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("EditStaffPage"), staff);
+                }
             }
         }
 

@@ -20,11 +20,8 @@ namespace WH_APP_GUI.Product
 {
     public partial class CreateProduct : Page
     {
-        private static Type PreviousPageType;
-        public CreateProduct(Page previousPage)
+        public CreateProduct()
         {
-            PreviousPageType = previousPage.GetType();
-
             InitializeComponent();
 
             name.ValueDataType = typeof(string);
@@ -105,37 +102,19 @@ namespace WH_APP_GUI.Product
                 product["created_at"] = DateTime.Now;
                 product["updated_at"] = DateTime.Now;
                 File.WriteAllText("datetimeValue", product["created_at"].ToString());
-                MessageBox.Show(product["created_at"].ToString());
                 string dateTimeString = product["created_at"].ToString();
                 string updatedString = product["updated_at"].ToString();
 
-                // Adjust the format specifier to match the actual format of your datetime string
                 if (DateTime.TryParseExact(dateTimeString, "yyyy. MM. dd. H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue))
                 {
-                    // Convert the datetime value to the desired format
                     string formattedDateTime = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
-
-                    // Update the value in the DataRow with the formatted datetime string
-                    MessageBox.Show("parsed it");
                     product["created_at"] = formattedDateTime;
-                }
-                else
-                {
-                    MessageBox.Show("Could not parse it");
                 }
 
                 if (DateTime.TryParseExact(updatedString, "yyyy. MM. dd. H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue2))
                 {
-                    // Convert the datetime value to the desired format
                     string formattedDateTime = dateTimeValue2.ToString("yyyy-MM-dd HH:mm:ss");
-
-                    // Update the value in the DataRow with the formatted datetime string
-                    MessageBox.Show("parsed it");
                     product["updated_at"] = formattedDateTime;
-                }
-                else
-                {
-                    MessageBox.Show("Could not parse it");
                 }
 
 
@@ -151,28 +130,15 @@ namespace WH_APP_GUI.Product
                 Tables.products.database.Rows.Add(product);
                 Tables.products.updateChanges();
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been created {product["name"]} product.");
-
                 MessageBox.Show("Product created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                //this.Close();
 
-                //ProductsPage productsPage = new ProductsPage();
-                //Navigation.content2.Navigate(productsPage);
-
-                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                Navigation.content2.Navigate(previousPage);
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //this.Close();
-
-            //ProductsPage productsPage = new ProductsPage();
-            //Navigation.content2.Navigate(productsPage);
-
-            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-            Navigation.content2.Navigate(previousPage);
-
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
     }
 }

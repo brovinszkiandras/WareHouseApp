@@ -19,11 +19,8 @@ namespace WH_APP_GUI.Employee
 {
     public partial class CreateEmployee : Page
     {
-        private static Type PreviousPageType;
-        public CreateEmployee(Page previousPage)
+        public CreateEmployee()
         {
-            PreviousPageType = previousPage.GetType();
-
             InitializeComponent();
             IniWarehouses();
             IniRoles();
@@ -89,23 +86,13 @@ namespace WH_APP_GUI.Employee
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has created {employee["name"]} employee.");
                 MessageBox.Show("Employee has successfully created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                //EmployeesPage employeesPage = new EmployeesPage();
-                //Navigation.content2.Navigate(employeesPage);
-
-                //EmployeesPage employeesPage = new EmployeesPage();
-
-                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                Navigation.content2.Navigate(previousPage);
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //EmployeesPage employeesPage = new EmployeesPage();
-            //Navigation.content2.Navigate(employeesPage);
-
-            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-            Navigation.content2.Navigate(previousPage);
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
 
         private void profile_picture_Click(object sender, RoutedEventArgs e)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Security;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WH_APP_GUI.Employee;
+using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI
 {
@@ -23,29 +25,32 @@ namespace WH_APP_GUI
         {
             InitializeComponent();
 
+            Back.Visibility = Visibility.Collapsed;
+
             Ini_warehouse_id();
             Ini_role_id();
 
             DisplayEmployeesStackpanel.Children.Clear();
             InitializeAllEmployees(DisplayEmployeesStackpanel);
         }
-        private static Type PreviousPageType;
-        public EmployeesPage(Page previousPage)
+        private DataRow WarehouseFromPage;
+        //itt nem kell bekérni az előző oldalt mert elég csak a raktárat átadni, abból meg lehet mondani hogy az egy inspect warehouse page
+        public EmployeesPage(DataRow warehouse)
         {
             InitializeComponent();
 
-            Ini_warehouse_id();
-            Ini_role_id();
-
             DisplayEmployeesStackpanel.Children.Clear();
-            InitializeAllEmployees(DisplayEmployeesStackpanel);
+            AllEmployees.Visibility = Visibility.Collapsed;
+            AddNewEmployee.Visibility = Visibility.Visible;
 
-            PreviousPageType = previousPage.GetType();
+            WarehouseFromPage = warehouse;
+            InitializeEmployeesInWarehouse(DisplayEmployeesStackpanel, warehouse);
         }
 
         private Dictionary<string, DataRow> warehouse_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_warehouse_id()
         {
+            EmployeeWarehouses.Visibility = Visibility.Visible;
             EmployeeWarehouses.Items.Clear();
             warehouse_id_Dictionary.Clear();
 
@@ -87,15 +92,13 @@ namespace WH_APP_GUI
                 employeelabel.BorderBrush = Brushes.Black;
                 employeelabel.BorderThickness = new Thickness(0, 0, 0, 1);
                 panel.Children.Add(employeelabel);
-
             }
 
-            for (int i = 0; i < Tables.warehouses.getEmployees(warehouse).Length; i++)
+            foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
             {
                 StackPanel mainStackPanel = new StackPanel();
                 mainStackPanel.Height = 100;
                 mainStackPanel.Orientation = Orientation.Horizontal;
-
 
                 Image image = new Image();
                 image.Width = 80;
@@ -104,7 +107,7 @@ namespace WH_APP_GUI
                 string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
                 if (Directory.Exists(targetDirectory))
                 {
-                    string imageFileName = Tables.warehouses.getEmployees(warehouse)[i]["profile_picture"].ToString();
+                    string imageFileName = employee["profile_picture"].ToString();
                     string imagePath = Path.Combine(targetDirectory, imageFileName);
 
                     if (File.Exists(imagePath))
@@ -123,17 +126,17 @@ namespace WH_APP_GUI
                 leftStackPanel.Width = 350;
 
                 Label nameLabel = new Label();
-                nameLabel.Content = Tables.warehouses.getEmployees(warehouse)[i]["name"];
+                nameLabel.Content = employee["name"];
                 nameLabel.BorderBrush = System.Windows.Media.Brushes.Black;
                 nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
 
                 Label emailLabel = new Label();
-                emailLabel.Content = Tables.warehouses.getEmployees(warehouse)[i]["email"];
+                emailLabel.Content = employee["email"];
                 emailLabel.BorderBrush = System.Windows.Media.Brushes.Black;
                 emailLabel.BorderThickness = new Thickness(0, 0, 0, 1);
 
                 Label roleLabel = new Label();
-                roleLabel.Content = Tables.employees.getRole(Tables.warehouses.getEmployees(warehouse)[i])["role"];
+                roleLabel.Content = Tables.employees.getRole(employee)["role"];
                 roleLabel.BorderBrush = System.Windows.Media.Brushes.Black;
                 roleLabel.BorderThickness = new Thickness(0, 0, 0, 1);
 
@@ -145,11 +148,11 @@ namespace WH_APP_GUI
                 rightStackPanel.Orientation = Orientation.Vertical;
                 rightStackPanel.Width = 130;
 
-                if (User.currentUser != Tables.warehouses.getEmployees(warehouse)[i])
+                if (User.currentUser != employee)
                 {
                     Button deleteButton = new Button();
                     deleteButton.Content = "Delete";
-                    deleteButton.Tag = Tables.employees.database.Rows[i];
+                    deleteButton.Tag = employee;
                     deleteButton.Click += deleteEmployee_Click;
                     rightStackPanel.Children.Add(deleteButton);
                 }
@@ -157,12 +160,12 @@ namespace WH_APP_GUI
                 Button editButton = new Button();
                 editButton.Content = "Edit";
                 editButton.Click += EditEmployee_Click;
-                editButton.Tag = Tables.employees.database.Rows[i];
+                editButton.Tag = employee;
 
                 Button resetPasswordButton = new Button();
                 resetPasswordButton.Content = "Reset Password";
                 resetPasswordButton.Click += resetPassword_Click;
-                resetPasswordButton.Tag = Tables.employees.database.Rows[i];
+                resetPasswordButton.Tag = employee;
 
                 rightStackPanel.Children.Add(editButton);
                 rightStackPanel.Children.Add(resetPasswordButton);
@@ -176,23 +179,31 @@ namespace WH_APP_GUI
         }
         private void EditEmployee_Click(object sender, RoutedEventArgs e)
         {
-            Button btn = sender as Button;
-            if (btn.Tag != null)
+            DataRow employee = (sender as Button).Tag as DataRow;
+            if (employee != null)
             {
-                EditEmployeePage editEmployee = new EditEmployeePage(new EmployeesPage(), btn.Tag as DataRow);
-                Content.Content = null;
-                Content.Navigate(editEmployee);
-                Content.Visibility = Visibility.Visible;
+                if (WarehouseFromPage != null)
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);
+                    Navigation.ReturnParam = WarehouseFromPage;
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);   
+                }
             }
         }
         private void AddNewEmployee_Click(object sender, RoutedEventArgs e)
         {
-            CreateEmployee createEmployee = new CreateEmployee(new EmployeesPage());
-            Content.Content = null;
-            Content.Navigate(createEmployee);
-            Content.Visibility = Visibility.Visible;
-            //createEmployee.Show();
-            //createEmployee.Closing += CloseEditWindow;
+            if (WarehouseFromPage != null)
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateEmployee"));   
+                Navigation.ReturnParam = WarehouseFromPage;
+            }
+            else
+            {
+                Navigation.ReturnParam = WarehouseFromPage;
+            }
         }
 
         private void deleteEmployee_Click(object sender, RoutedEventArgs e)
@@ -245,13 +256,19 @@ namespace WH_APP_GUI
             DisplayEmployeesStackpanel.Children.Clear();
             InitializeAllEmployees(DisplayEmployeesStackpanel);
         }
-
         private void Back_Click(object sender, RoutedEventArgs e)
         {
-            if (PreviousPageType != null)
+            if (Navigation.PreviousPage != null)
             {
-                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                Navigation.content2.Navigate(previousPage);
+                if (WarehouseFromPage != null)
+                {
+                    Navigation.PreviousPage = new InspectWarehouse(WarehouseFromPage);
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), WarehouseFromPage);
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
             }
         }
     }

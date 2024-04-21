@@ -234,6 +234,15 @@
       <DependentUpon>UpdateCarWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controller.cs" />
+    <Compile Include="Dock\CreateDockPage.xaml.cs">
+      <DependentUpon>CreateDockPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dock\DockPage.xaml.cs">
+      <DependentUpon>DockPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dock\EditDockPage.xaml.cs">
+      <DependentUpon>EditDockPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Employee\CreateEmployee.xaml.cs">
       <DependentUpon>CreateEmployee.xaml</DependentUpon>
     </Compile>
@@ -260,9 +269,6 @@
     </Compile>
     <Compile Include="Employee\EditEmployeePage.xaml.cs">
       <DependentUpon>EditEmployeePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Product\ProductsPage.xaml.cs">
-      <DependentUpon>ProductsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Staff\CreateStaffPage.xaml.cs">
       <DependentUpon>CreateStaffPage.xaml</DependentUpon>
@@ -349,6 +355,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="carsFolder\UpdateCarWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dock\CreateDockPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dock\DockPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dock\EditDockPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

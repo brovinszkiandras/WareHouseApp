@@ -21,13 +21,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Height="auto" Content="Warehouse name" Name="WarehouseNameDisplay" BorderBrush="Black" BorderThickness="0,0,0,2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"/>
-        <Grid Name="MapDisplay" Grid.Row="1"/>
+        <Label Height="auto" Content="Warehouse name - City name" Name="WarehouseNameDisplay" BorderBrush="Black" BorderThickness="0,0,0,2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"/>
 
-        <Border Name="RevenueBorder" BorderBrush="Black" BorderThickness="2" Grid.Row="2" Visibility="Visible">
-            <ScrollViewer Grid.Row="2">
-                <StackPanel>
-                    <Grid Name="Statistic">
+        <ScrollViewer Grid.Row="1" Grid.RowSpan="2" VerticalScrollBarVisibility="Hidden">
+            <StackPanel>
+                <Grid Name="MapDisplay" MinHeight="250"/>
+                <Border Name="RevenueBorder" BorderBrush="Black" BorderThickness="2" Grid.Row="2" Visibility="Visible">
+<!--            <ScrollViewer Grid.Row="2">  -->
+                    <StackPanel>
+                        <Grid Name="Statistic">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
@@ -46,18 +48,22 @@
                         <ProgressBar Name="WarehouseTotalIncome" Value="70" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" BorderThickness="0,0,2,2" BorderBrush="Black" Background="{x:Null}"/>
                         <Label Content="Warehouse total spending" Grid.Column="0" Grid.Row="0" BorderThickness="2,0,0,1" BorderBrush="Black"/>
                         <Label Content="Warehouse total income" Grid.Column="0" Grid.Row="1" BorderThickness="2,0,0,2" BorderBrush="Black"/>
+                        <Label Name="WarehouseTotalSpendingLBL" Content="Warehouse total spending - Ft" Grid.Column="1" Grid.Row="0"/>
+                        <Label Name="WarehouseTotalIncomeLBL" Content="Warehouse total income - Ft" Grid.Column="1" Grid.Row="1"/>
 
                         <ProgressBar Name="ProductsTotalSellingPrice" Value="50" Orientation="Horizontal" Grid.Column="1" Grid.Row="2" BorderThickness="0,0,2,1" BorderBrush="Black" Background="{x:Null}"/>
                         <ProgressBar Name="ProductsTotalBuyingPrice" Value="20" Orientation="Horizontal" Grid.Column="1" Grid.Row="3" BorderThickness="0,0,2,2" BorderBrush="Black" Background="{x:Null}"/>
                         <Label Content="Products total selling price" Grid.Column="0" Grid.Row="2" BorderThickness="2,0,0,1" BorderBrush="Black"/>
                         <Label Content="products total buying price" Grid.Column="0" Grid.Row="3" BorderThickness="2,0,0,2" BorderBrush="Black"/>
+                        <Label Name="ProductsTotalSellingPriceLBL" Content="Total selling price - Ft" Grid.Column="1" Grid.Row="2"/>
+                        <Label Name="ProductsTotalBuyingPriceLBL" Content="Total buying price - Ft" Grid.Column="1" Grid.Row="3"/>
 
                         <ProgressBar Name="SpendingByDay" Value="90" Orientation="Horizontal" Grid.Column="1" Grid.Row="4" BorderThickness="1,0,2,1" BorderBrush="Black" Background="{x:Null}"/>
                         <ProgressBar Name="IncomeByDay" Value="85" Orientation="Horizontal" Grid.Column="1" Grid.Row="5" BorderThickness="1,0,2,2" BorderBrush="Black" Background="{x:Null}"/>
                         <ComboBox Grid.Column="0" Grid.Row="4" Grid.RowSpan="2" VerticalAlignment="Center" Margin="5"/>
                         <Border Grid.Column="0" Grid.Row="4" Grid.RowSpan="2" BorderThickness="2,0,0,2" BorderBrush="Black"/>
-                        <Label Content="Spending" Grid.Column="1" Grid.Row="4"/>
-                        <Label Content="Income" Grid.Column="1" Grid.Row="5"/>
+                        <Label Name="SpendingLBL" Content="Spending - Ft" Grid.Column="1" Grid.Row="4"/>
+                        <Label Name="IncomeLBL" Content="Income - Ft" Grid.Column="1" Grid.Row="5"/>
                     </Grid>
                     <Grid Name="RevenueDisplay" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="7">
                         <Grid.ColumnDefinitions>
@@ -85,20 +91,23 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
 
                         <ComboBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="20" Margin="5"/>
                         <Label Content="Spending:" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" FontSize="9"/>
                         <Label Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="5" Background="Red" Margin="5" BorderBrush="Black" BorderThickness="2"/>
-                        <Label Content="Income:" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" FontSize="9"/>
-                        <Label Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="5" Background="Green" Margin="5" BorderBrush="Black" BorderThickness="2"/>
+                        <Label Content="Income:" Grid.Row="1" Grid.Column="9" Grid.ColumnSpan="2" HorizontalAlignment="Right" FontSize="9"/>
+                        <Label Grid.Row="1" Grid.Column="11" Grid.ColumnSpan="5" Background="Green" Margin="5" BorderBrush="Black" BorderThickness="2"/>
                     </Grid>
                 </StackPanel>
-            </ScrollViewer>
-        </Border>
+<!--            </ScrollViewer>  -->
+            </Border>
+        </StackPanel>
+
+        </ScrollViewer>
         <Border Name="NoRevenue" BorderBrush="Black" BorderThickness="2" Grid.Row="2" Visibility="Collapsed" Background="White">
             <Label Content="There is no expenditure nor income yet" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Border>
@@ -114,5 +123,6 @@
             <Button Margin="20, 5" Content="Forklift" Name="ForkliftInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="ForkliftInspectToWarehouse_Click"/>
             <Button Margin="20, 5" Content="back" Name="back_all_Warehouse" Click="Back_AllWarehouse_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
         </StackPanel>
+        <Frame Name="InspectWarehouseContent" Visibility="Collapsed" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3"/>
     </Grid>
 </Page>

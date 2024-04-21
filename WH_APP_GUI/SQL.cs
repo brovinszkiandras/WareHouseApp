@@ -435,14 +435,13 @@ namespace WH_APP_GUI
                 string formattedDateTimeString = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
 
                 // Update the value in the DataRow with the formatted datetime string
-                MessageBox.Show("parsed it");
+                //MessageBox.Show("parsed it");
 
                return formattedDateTimeString;
             }
             else
             {
-                MessageBox.Show("Could not parse it");
-
+                //MessageBox.Show("Could not parse it");
                 return null;
             }
         }

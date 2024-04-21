@@ -19,8 +19,7 @@ namespace WH_APP_GUI.Forklift
 {
     public partial class EditForkliftPage : Page
     {
-        private static Type PreviousPageType;
-        public EditForkliftPage(Page previousPage, DataRow forklift)
+        public EditForkliftPage(DataRow forklift)
         {
             InitializeComponent();
             IniWarehouses();
@@ -89,22 +88,15 @@ namespace WH_APP_GUI.Forklift
                     Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {forklift["type"]}[{forklift["id"]}] forklift.");
 
                     MessageBox.Show("Product updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //this.Close();
-                    //ForkliftsPage forkliftsPage = new ForkliftsPage();
-                    //Navigation.content2.Navigate(forkliftsPage);
-                    Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                    Navigation.content2.Navigate(previousPage);
+
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
                 }
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //this.Close();
-            //ForkliftsPage forkliftsPage = new ForkliftsPage();
-            //Navigation.content2.Navigate(forkliftsPage);
-            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-            Navigation.content2.Navigate(previousPage);
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
     }
 }
