@@ -6,17 +6,26 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WH_APP_GUI.Staff"
         mc:Ignorable="d"
-        Title="EditStaffPage" Height="450" Width="800">
+        Title="EditStaffPage"
+        d:DesignHeight="450" d:DesignWidth="800">
+    
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="1">
-            <Button Name="profile_picture" Height="150" Width="150" BorderBrush="Black" Margin="5" Click="profile_picture_Click"/>
-            <Grid x:Name="DatasgGRID">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Button Name="profile_picture" BorderBrush="Black" Click="profile_picture_Click" Margin="20" Grid.Column="1"/>
+
+        <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
@@ -31,17 +40,20 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0"/>
-                <Label Content="Email:" Margin="5" Grid.Column="0" Grid.Row="1"/>
-                <Label Content="Role:" Margin="5" Grid.Column="0" Grid.Row="2"/>
+            <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+            <Label Content="Email:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+            <Label Content="Role:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
 
-                <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
-                <xctk:ValueRangeTextBox Name="email" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
-                <ComboBox Name="role_id" Grid.Column="1" Grid.Row="2" BorderBrush="Black" Margin="5"/>
+            <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
+            <xctk:ValueRangeTextBox Name="email" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
+            <ComboBox Name="role_id" Grid.Column="1" Grid.Row="2" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
             </Grid>
-            <Button Content="Reset Password" Name="PasswordReset" BorderBrush="Black" Margin="5" Click="PasswordReset_Click"/>
-            <Button Name="Done" Content="Done" BorderBrush="Black" Margin="5" Click="Done_Click"/>
-            <Button Name="Cancel" Content="Cancel" BorderBrush="Black" Margin="5" Click="Cancel_Click"/>
+
+        <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
+            <Button Name="PasswordReset" Content="Reset Password" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="PasswordReset_Click" Padding="40, 10"/>
+            <Button Name="Done" Content="Done" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="Done_Click" Padding="40, 10"/>
+            <Button Name="Cancel" Content="Cancel" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Padding="40, 10" Click="Cancel_Click"/>
+
         </StackPanel>
     </Grid>
 </Page>

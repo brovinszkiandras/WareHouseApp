@@ -5,30 +5,33 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WH_APP_GUI"
       mc:Ignorable="d"
-      Title="Home" MinWidth="800" MinHeight="600" Background="Black">
+      Title="Home" MinWidth="800" MinHeight="600" Background="Black"
+                            SizeChanged="Home_SizeChanged" >
+
     <Page.Resources>
         <Style TargetType="Button" x:Key="ElegantButtonStyle">
-            <Setter Property="Background" Value="#FFFFE135"/>
-            <Setter Property="Foreground" Value="#FFFFFFFF"/>
-            <Setter Property="BorderBrush" Value="#FFFFFFFF"/>
-            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Background" Value="#FFEBD2"/>
+            <Setter Property="Foreground" Value="#FFA364"/>
+            <Setter Property="BorderBrush" Value="#273248"/>
+            <Setter Property="BorderThickness" Value="3"/>
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="1,5"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}">
+                                 BorderBrush="{TemplateBinding BorderBrush}"
+                                 BorderThickness="{TemplateBinding BorderThickness}"
+                                 CornerRadius="5">
                             <ContentPresenter HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Content="{TemplateBinding Content}"/>
+                           VerticalAlignment="Center"
+                           Content="{TemplateBinding Content}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FFFFFF"/>
-                                <Setter Property="Foreground" Value="#FFFFE135"/>
+                                <Setter Property="Margin" Value="12,5"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter Property="Background" Value="#FFF0E68C"/>
@@ -53,26 +56,35 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+
+        <ResourceDictionary x:Key="alma">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WH_APP_GUI;component/DefaultStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Name="alapgrid" Background="PapayaWhip">
+    <Grid Name="alapgrid" Background="#FFEBD2">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="10" Grid.ColumnSpan="2">
-            <Label Content="User name:" Foreground="Black" Margin="20"/>
+        <StackPanel Name="Header" Orientation="Horizontal" Margin="10" Grid.ColumnSpan="2">
+            <Label Content="User name:" Margin="20"/>
             <Label Name="UserNameDisplay" Content="User name display" Foreground="Black" BorderThickness="0,0,0,1" Margin="20"/>
             <Label Content="User email:" Foreground="Black" Margin="20"/>
             <Label Content="User email display" Name="UserEmailDisplay" Foreground="Black" BorderThickness="0,0,0,1" Margin="20"/>
         </StackPanel>
 
-        <StackPanel Name="Menu" Orientation="Vertical" Grid.Row="1" Background="PapayaWhip" Margin="20">
+        <StackPanel Name="Menu" Grid.Row="1" Background="PapayaWhip" Margin="20">
         </StackPanel>
     </Grid>
 </Page>

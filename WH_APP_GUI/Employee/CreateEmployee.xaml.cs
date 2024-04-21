@@ -62,7 +62,7 @@ namespace WH_APP_GUI.Employee
             }
         }
 
-        private void DoneEmployeeUpdate_Click(object sender, RoutedEventArgs e)
+        private void Done_Click(object sender, RoutedEventArgs e)
         {
             DataRow employee = Tables.employees.database.NewRow();
 

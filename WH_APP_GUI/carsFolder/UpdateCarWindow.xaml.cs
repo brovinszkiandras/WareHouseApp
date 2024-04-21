@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlConnector;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -212,6 +213,9 @@ namespace WH_APP_GUI
             if (thereIsAnError == false)
             {
 
+
+                car["last_service"] = new MySqlDateTime((DateTime)last_service.Value);
+                car["last_exam"] = new MySqlDateTime((DateTime)last_exam.Value);
                 // Xceed.Wpf.Toolkit.MessageBox.Show(car["last_exam"].ToString());
                 Tables.cars.updateChanges();
                 Xceed.Wpf.Toolkit.MessageBox.Show($"Car number {car["id"]} has been updated");
@@ -228,13 +232,13 @@ namespace WH_APP_GUI
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            foreach (DataColumn column in Tables.cars.database.Columns)
-            {
-                if (car[column, DataRowVersion.Original] != null)
-                {
-                    car[column] = car[column, DataRowVersion.Original];
-                }
-            }
+            //foreach (DataColumn column in Tables.cars.database.Columns)
+            //{
+            //    if (car[column, DataRowVersion.Original] != null)
+            //    {
+            //        car[column] = car[column, DataRowVersion.Original];
+            //    }
+            //}
         }
     }
 }

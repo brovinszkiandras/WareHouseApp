@@ -172,6 +172,7 @@ namespace WH_APP_GUI.Staff
                 }
             }
         }
+        public Dictionary<string, int> Role_Id = new Dictionary<string, int>();
         private void AddNewStaff_Click(object sender, RoutedEventArgs e)
         {
             CreateStaffPage createStaffPage = new CreateStaffPage(new StaffPage());

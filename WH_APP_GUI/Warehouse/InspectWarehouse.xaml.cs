@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WH_APP_GUI.WarehouseTableFolder;
 
 namespace WH_APP_GUI.Warehouse
 {

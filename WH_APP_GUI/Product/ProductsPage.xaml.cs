@@ -12,7 +12,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using WH_APP_GUI.Product;
+using WH_APP_GUI.Forklift;
 
 namespace WH_APP_GUI.Product
 {

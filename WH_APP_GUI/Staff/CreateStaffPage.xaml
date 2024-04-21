@@ -6,16 +6,24 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WH_APP_GUI.Staff"
         mc:Ignorable="d"
-        Title="CreateStaffPage" Height="450" Width="800">
+        Title="CreateStaffPage"
+        d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="1">
-            <Button Name="profile_picture" Height="150" Width="150" BorderBrush="Black" Margin="5" Click="profile_picture_Click"/>
-            <Grid x:Name="DatasgGRID">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Button Name="profile_picture" Margin="20" Grid.Column="1" Click="profile_picture_Click"/>
+        
+        <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -24,7 +32,12 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
                 <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0"/>
                 <Label Content="Email:" Margin="5" Grid.Column="0" Grid.Row="1"/>
@@ -34,8 +47,11 @@
                 <xctk:ValueRangeTextBox Name="email" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
                 <ComboBox Name="role_id" Grid.Column="1" Grid.Row="2" BorderBrush="Black" Margin="5"/>
             </Grid>
-            <Button Name="Done" Content="Done" BorderBrush="Black" Margin="5" Click="Done_Click"/>
-            <Button Name="Cancel" Content="Cancel" BorderBrush="Black" Margin="5" Click="Cancel_Click"/>
+                
+        <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
+            <Button Name="Done" Content="Done" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="Done_Click" Padding="40, 10"/>
+            <Button Name="Cancel" Content="Cancel" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Padding="40, 10" Click="Cancel_Click"/>
         </StackPanel>
+                
     </Grid>
 </Page>

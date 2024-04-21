@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -94,18 +96,54 @@ namespace WH_APP_GUI.Product
             {
                 product["name"] = name.Text;
                 product["image"] = image.Tag != null ? image.Tag.ToString() : "DefaultProductImage.png";
-                product["buying_price"] = buying_price.Text;
-                product["selling_price"] = selling_price.Text;
-                product["width"] = width.Text;
-                product["heigth"] = heigth.Text;
-                product["length"] = length.Text;
-                product["description"] = description.Text;
+                product["buying_price"] = double.Parse(buying_price.Text);
+                product["selling_price"] = double.Parse(selling_price.Text);
+                product["width"] = double.Parse(width.Text);
+                product["heigth"] = double.Parse(heigth.Text);
+                product["length"] = double.Parse(length.Text);
+                product["description"] = description.Text.ToString();
+                product["created_at"] = DateTime.Now;
+                product["updated_at"] = DateTime.Now;
+                File.WriteAllText("datetimeValue", product["created_at"].ToString());
+                MessageBox.Show(product["created_at"].ToString());
+                string dateTimeString = product["created_at"].ToString();
+                string updatedString = product["updated_at"].ToString();
+
+                // Adjust the format specifier to match the actual format of your datetime string
+                if (DateTime.TryParseExact(dateTimeString, "yyyy. MM. dd. H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue))
+                {
+                    // Convert the datetime value to the desired format
+                    string formattedDateTime = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    // Update the value in the DataRow with the formatted datetime string
+                    MessageBox.Show("parsed it");
+                    product["created_at"] = formattedDateTime;
+                }
+                else
+                {
+                    MessageBox.Show("Could not parse it");
+                }
+
+                if (DateTime.TryParseExact(updatedString, "yyyy. MM. dd. H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue2))
+                {
+                    // Convert the datetime value to the desired format
+                    string formattedDateTime = dateTimeValue2.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    // Update the value in the DataRow with the formatted datetime string
+                    MessageBox.Show("parsed it");
+                    product["updated_at"] = formattedDateTime;
+                }
+                else
+                {
+                    MessageBox.Show("Could not parse it");
+                }
+
 
                 if (SQL.BoolQuery("SElECT in_use FROM feature WHERE name = 'Storage'"))
                 {
                     if (!Validation.ValidateTextbox(weight, product))
                     {
-                        product["weight"] = weight.Text;
+                        product["weight"] = double.Parse(weight.Text);
                         product["volume"] = double.Parse(width.Text) * double.Parse(heigth.Text) * double.Parse(length.Text);
                     }
                 }

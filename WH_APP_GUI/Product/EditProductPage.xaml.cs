@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xceed.Wpf.Toolkit.Primitives;
+using MySqlConnector;
 
 namespace WH_APP_GUI.Product
 {
@@ -27,8 +28,52 @@ namespace WH_APP_GUI.Product
 
             InitializeComponent();
 
+            MessageBox.Show(product["id"].ToString());
+            
+
             this.product = product;
+
             this.DataContext = product;
+
+
+            foreach (DataColumn column in Tables.products.database.Columns)
+            {
+                Type columnType = column.DataType.GetType();
+                if (!Equals(product[column, DataRowVersion.Original], product[column, DataRowVersion.Current]))
+                {
+                    // If any column's original value is different from the current value, return false
+                    MessageBox.Show("Not equal: " + column.ColumnName);
+                }
+            }
+
+            //string message = "";
+            //foreach (DataColumn column in Tables.products.database.Columns)
+            //{
+            //    message += product[column.ColumnName, DataRowVersion.Original] + "\n";
+            //}
+            //MessageBox.Show(message);
+
+            //string message2 = "";
+            //foreach (DataColumn column in Tables.products.database.Columns)
+            //{
+            //    message2 += product[column.ColumnName, DataRowVersion.Current] + "\n";
+            //}
+            //MessageBox.Show(message2);
+
+           
+
+
+            //string message4 = "";
+            //foreach (DataColumn column in Tables.products.database.Columns)
+            //{
+            //    if (product[column.ColumnName, DataRowVersion.Default] != null)
+            //    {
+            //        message4 += product[column.ColumnName, DataRowVersion.Default] + "\n";
+            //    }
+            //}
+            //MessageBox.Show(message4);
+
+            
 
             name.ValueDataType = typeof(string);
             buying_price.ValueDataType = typeof(double);
@@ -134,6 +179,16 @@ namespace WH_APP_GUI.Product
             }
             if (hasError == false)
             {
+
+               
+
+
+
+
+
+
+
+
                 Tables.products.updateChanges();
 
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {product["name"]} product.");

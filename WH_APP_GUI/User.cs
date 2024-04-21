@@ -14,6 +14,21 @@ namespace WH_APP_GUI
         public static DataRow tempWarehouse;
         public static void SetCurrentUser(string email, string password) //hased psw
         {
+            //if (Tables.staff.database.Select($"email = '{email}' AND password = '{password}'").Length != 0)
+            //{
+            //    //TODO: index out of range exeption
+            //    //MessageBox.Show(password);
+            //    //for (int i = 0; i < Tables.staff.database.Rows.Count; i++)
+            //    //{
+            //    //    MessageBox.Show(Tables.staff.database.Rows[i]["name"].ToString());
+            //    //    if (Tables.staff.database.Rows[i]["password"].ToString() == password)
+            //    //    {
+            //    //        MessageBox.Show("Bingó");
+            //    //    }
+            //    //}
+            //    currentUser = Tables.staff.database.Select($"'email' = '{email}' AND password = '{password}'")[0];
+            //}
+
             Tables.staff.Refresh();
             Tables.employees.Refresh();
 
@@ -36,6 +51,7 @@ namespace WH_APP_GUI
             {
                 try
                 {
+                    //Employee login crahsing...and not becuse of the password, note: Technicaly this else if does not run down for some reason, always just the else
                     currentUser = matchingRowsInEmployees[0];
                 }
                 catch (Exception ex)

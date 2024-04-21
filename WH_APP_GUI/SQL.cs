@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,8 @@ namespace WH_APP_GUI
                 returnList.Add(lis[i][0]);
             }
             return returnList;
+
+            
         }
         public static bool IsDatabasetxtExist()
         {
@@ -419,6 +422,29 @@ namespace WH_APP_GUI
             }
 
             return returnList;
+        }
+
+        public static string convertDateToCorrectFormat(DateTime date)
+        {
+            string datetimestring = date.ToString();
+
+            // Adjust the format specifier to match the actual format of your datetime string
+            if (DateTime.TryParseExact(datetimestring, "yyyy. MM. dd. H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue))
+            {
+                // Convert the datetime value to the desired format
+                string formattedDateTimeString = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
+
+                // Update the value in the DataRow with the formatted datetime string
+                MessageBox.Show("parsed it");
+
+               return formattedDateTimeString;
+            }
+            else
+            {
+                MessageBox.Show("Could not parse it");
+
+                return null;
+            }
         }
     }
 }

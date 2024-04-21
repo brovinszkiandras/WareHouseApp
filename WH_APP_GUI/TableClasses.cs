@@ -3,11 +3,15 @@ using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics.Metrics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace WH_APP_GUI
 {
@@ -50,6 +54,7 @@ namespace WH_APP_GUI
             }
             else
             {
+                SQL.SqlCommand($"ALTER TABLE {actual_name} AUTO_INCREMENT = 1;");
                 database.Columns["id"].AutoIncrementSeed = 1;
             }
 
@@ -68,6 +73,8 @@ namespace WH_APP_GUI
         public void fill()
         {
             adapter = new MySqlDataAdapter($"SELECT * FROM {actual_name}", SQL.con);
+
+            adapter.AcceptChangesDuringUpdate = true;
 
             SQL.con.Open();
 
@@ -93,7 +100,7 @@ namespace WH_APP_GUI
 
             adapter.Fill(database);
 
-            database.AcceptChanges();
+            
             SQL.con.Close();
         }
         public void insert(List<string> data)
@@ -116,14 +123,43 @@ namespace WH_APP_GUI
 
         public void updateChanges()
         {
-            MySqlCommandBuilder builder = new MySqlCommandBuilder(adapter);
+            using (MySqlCommandBuilder commandBuilder = new MySqlCommandBuilder(adapter))
+            {
+
+                //Console.WriteLine("Generated SQL commands:");
+                //MessageBox.Show("Insert Command: " + commandBuilder.GetInsertCommand().CommandText);
+                //MessageBox.Show("Update Command: " + commandBuilder.GetUpdateCommand().CommandText);
+                //MessageBox.Show("Delete Command: " + commandBuilder.GetDeleteCommand().CommandText);
+
+                //foreach (MySqlParameter parameter in commandBuilder.GetUpdateCommand().Parameters)
+                //{
+                //    parameter.SourceVersion = DataRowVersion.Current;
+                //    parameter.Precision = 10;
+                //    MessageBox.Show($"Parameter: {parameter.ParameterName}, MysqlDatatype: {parameter.MySqlDbType} Type: {parameter.DbType},Column: {parameter.SourceColumn}, Value: {parameter.Value}");
+                //}
+
 
             adapter.Update(database);
 
+                if(database.GetChanges() != null)
+                {
+                    MessageBox.Show("there are still changes");
+                }
 
-            database.AcceptChanges();
+                // Display the SQL commands
 
+            }
 
+            //RefreshEverything();
+
+           
+        }
+
+        public void RefreshEverything()
+        {
+            database = new DataTable();
+
+            adapter.Fill(database);
         }
     }
 
@@ -258,7 +294,11 @@ namespace WH_APP_GUI
             database.Columns["password"].AllowDBNull = false;
             database.Columns["role_id"].AllowDBNull = false;
             database.Columns["warehouse_id"].AllowDBNull = true;
+           
         }
+
+
+
         public DataRow getWarehouse(DataRow employee)
         {
             return Relations.parentRelation("employeeWarehouse", employee);
@@ -275,13 +315,35 @@ namespace WH_APP_GUI
 
         public products() : base()
         {
-            database.Columns["name"].Unique = false;
-            database.Columns["name"].AllowDBNull=false;
+            int year = DateTime.Now.Year;
+            int month = DateTime.Now.Month;
+            int day = DateTime.Now.Day;
+
+            int hour = DateTime.Now.Hour;
+            int minute = DateTime.Now.Minute;
+            int second = DateTime.Now.Second;
+
+            database.Columns["name"].AllowDBNull = false;
             database.Columns["buying_price"].AllowDBNull = false;
             database.Columns["selling_price"].AllowDBNull = false;
             database.Columns["description"].AllowDBNull = true;
-            //database.Columns["created_at"].DefaultValue = DateTime.Now;
-            //database.Columns["updated_at"].DefaultValue = DateTime.Now;
+
+
+
+            // Update the value in the DataTable with correctly formatted DateTime object
+
+            MySqlDateTime dateTime = new MySqlDateTime(DateTime.Now);
+          
+
+            MessageBox.Show(dateTime.GetDateTime().ToString());
+
+
+            //database.Columns["created_at"].DefaultValue = new MySqlDateTime(DateTime.Now);
+
+
+            //database.Columns["updated_at"].DefaultValue = new MySqlDateTime(DateTime.Now);
+
+
 
         }
 
@@ -347,6 +409,8 @@ namespace WH_APP_GUI
             database.Columns["km"].AllowDBNull = true;
             database.Columns["last_service"].AllowDBNull = true;
             database.Columns["last_exam"].AllowDBNull = true;
+
+           
         }
 
         public DataRow[] getTransports(DataRow car)
@@ -411,6 +475,13 @@ namespace WH_APP_GUI
             database.Columns["qty"].AllowDBNull = false;
             database.Columns["shelf_id"].AllowDBNull=false;
             database.Columns["on_shelf_level"].AllowDBNull = false;
+
+            if (Tables.features.isFeatureInUse("Storage"))
+            {
+                database.Columns["width"].AllowDBNull = false;
+                database.Columns["height"].AllowDBNull = false;
+                database.Columns["length"].AllowDBNull = false;
+            }
         }
 
         public DataRow getProduct(DataRow item)

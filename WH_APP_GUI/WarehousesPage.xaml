@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WH_APP_GUI"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Unloaded="Page_Unloaded"
         Title="WarehousesPage"
@@ -30,19 +31,19 @@
             <StackPanel Name="AddNewWarehouseDisplay" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
 
                 <Label Content="Warehouse Name:" Name="WHnameLBL" VerticalAlignment="Bottom"/>
-                <TextBox Name="WarehouseName" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
+                <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
 
                 <Label Content="Warehouse Length:" Name="WHlenghtLBL" VerticalAlignment="Bottom" Visibility="Collapsed"/>
-                <TextBox Name="WarehouseLength" BorderBrush="Black" SelectionBrush="Black" Visibility="Collapsed" Margin="5"/>
+                <xctk:ValueRangeTextBox Name="length" BorderBrush="Black" SelectionBrush="Black" Visibility="Collapsed" Margin="5"/>
 
                 <Label Content="Warehouse Width:" Name="WHwidthLBL" VerticalAlignment="Bottom" Visibility="Collapsed"/>
-                <TextBox Name="WarehouseWidth" SelectionBrush="Black" BorderBrush="Black" Visibility="Collapsed" Margin="5"/>
+                <xctk:ValueRangeTextBox Name="width" SelectionBrush="Black" BorderBrush="Black" Visibility="Collapsed" Margin="5"/>
 
                 <Label Content="Warehouse Height:" Name="WHheightLBL" VerticalAlignment="Bottom" Visibility="Collapsed"/>
-                <TextBox Name="WarehouseHeight" SelectionBrush="Black" BorderBrush="Black" Visibility="Collapsed" Margin="5"/>
+                <xctk:ValueRangeTextBox Name="height" SelectionBrush="Black" BorderBrush="Black" Visibility="Collapsed" Margin="5"/>
 
                 <Label Content="City:" Name="WHcityLBL" VerticalAlignment="Bottom" Visibility="Collapsed"/>
-                <ComboBox Name="CityID" BorderBrush="Black" Visibility="Visible" Margin="5"/>
+                <ComboBox Name="city_id" BorderBrush="Black" Visibility="Visible" Margin="5"/>
 
                 <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
                     <Button Content="Create Warehouse" Name="CreateWarehouse" Click="CreateWarehouse_Click" Margin="10"/>

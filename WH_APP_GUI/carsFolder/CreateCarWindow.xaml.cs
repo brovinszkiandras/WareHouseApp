@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlConnector;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -205,7 +206,8 @@ namespace WH_APP_GUI.carsFolder
             {
 
                 // Xceed.Wpf.Toolkit.MessageBox.Show(car["last_exam"].ToString());
-               
+                //car["last_service"] = new MySqlDateTime((DateTime)last_service.Value);
+                //car["last_exam"] = new MySqlDateTime((DateTime)last_exam.Value);
                 Tables.cars.database.Rows.Add(car);
                 Tables.cars.updateChanges();
                 Xceed.Wpf.Toolkit.MessageBox.Show($"A new car has been created");

@@ -18,6 +18,7 @@ namespace WH_APP_GUI.Staff
 {
     public partial class EditStaffPage : Page
     {
+        
         private static Type PreviousPageType;
         public EditStaffPage(Page previousPage, DataRow staff)
         {
@@ -36,6 +37,7 @@ namespace WH_APP_GUI.Staff
             email.Text = staff["email"].ToString();
 
             Ini_role_id();
+
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))

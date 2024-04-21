@@ -7,7 +7,8 @@
         xmlns:local="clr-namespace:WH_APP_GUI"
         mc:Ignorable="d"
         Unloaded="Page_Unloaded"
-        Title="UpdateCarWindow">
+        Title="UpdateCarWindow"
+        d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -51,11 +52,11 @@
                 </StackPanel>
                 <StackPanel Grid.Row="4">
                     <Label FontSize="17" Content="last service*"></Label>
-                    <xctk:DateTimePicker InputValidationError="last_exam_InputValidationError" Format="LongDate" FontSize="17" Value="{Binding Path=[last_service]}" Name="last_service"></xctk:DateTimePicker>
+                    <xctk:DateTimePicker InputValidationError="last_exam_InputValidationError" Format="ShortDate" FontSize="17" Value="{Binding Path=[last_service]}" Name="last_service"></xctk:DateTimePicker>
                 </StackPanel>
                 <StackPanel Grid.Row="5">
                     <Label FontSize="17" Content="last exam*"></Label>
-                    <xctk:DateTimePicker InputValidationError="last_exam_InputValidationError" Format="LongDate" FontSize="17" Value="{Binding Path=[last_exam]}" Name="last_exam"></xctk:DateTimePicker>
+                    <xctk:DateTimePicker InputValidationError="last_exam_InputValidationError" Format="ShortDate" FontSize="17" Value="{Binding Path=[last_exam]}" Name="last_exam"></xctk:DateTimePicker>
 
                 </StackPanel>
                 <Button  Click="Button_Click" Grid.Row="10" FontSize="17" Content="Save"></Button>

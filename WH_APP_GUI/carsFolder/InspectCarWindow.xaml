@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WH_APP_GUI.carsFolder"
         mc:Ignorable="d"
-        Title="InspectCarWindow" Height="400" Width="600">
+        Title="InspectCarWindow"
+        d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>

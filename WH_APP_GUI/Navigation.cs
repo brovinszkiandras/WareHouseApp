@@ -17,6 +17,7 @@ namespace WH_APP_GUI
                 Grid parentGrid = content2.Parent as Grid;
                 parentGrid.Children.Remove(content2);
             }
+            
         }
     }
 }

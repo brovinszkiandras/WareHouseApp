@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using Xceed.Wpf.Toolkit.Primitives;
 
 namespace WH_APP_GUI
@@ -15,15 +16,14 @@ namespace WH_APP_GUI
     {
         public static bool ValidateTextbox(ValueRangeTextBox textBox, DataRow context)
         {
-            
+
             bool HasError = false;
             DataTable contextTable = context.Table;
-            
-            if(textBox.Visibility == Visibility.Visible)
+
+            if (textBox.Visibility == Visibility.Visible)
             {
                 if (textBox.Text.Length == 0)
                 {
-
                     if (contextTable.Columns[textBox.Name].AllowDBNull == false)
                     {
                         // Xceed.Wpf.Toolkit.MessageBox.Show(context[textBox.Name, DataRowVersion.Original].ToString());
@@ -42,10 +42,8 @@ namespace WH_APP_GUI
                 {
                     Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} must be a {textBox.ValueDataType.Name}");
 
-
                     textBox.Text = context[textBox.Name].ToString();
                     HasError = true;
-
                 }
                 else if (contextTable.Columns[textBox.Name].Unique == true && textBox.Name != "email")
                 {
@@ -77,7 +75,7 @@ namespace WH_APP_GUI
                         Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot contain special characters");
                         HasError = true;
                     }
-                    else if(textBox.Name != "email" && SQL.ContainsIllegalRegexWithExceptions(textBox.Text, Name_exceptions) && (textBox.ValueDataType != typeof(int) && textBox.ValueDataType != (typeof(double))))
+                    else if (textBox.Name != "email" && SQL.ContainsIllegalRegexWithExceptions(textBox.Text, Name_exceptions) && (textBox.ValueDataType != typeof(int) && textBox.ValueDataType != (typeof(double))))
                     {
                         textBox.Text = context[textBox.Name].ToString();
 
@@ -85,8 +83,30 @@ namespace WH_APP_GUI
                         HasError = true;
                     }
                 }
-            }        
+            }
             return HasError;
+        }
+        public static bool ValidateCombobox(ComboBox combobox, DataRow context)
+        {
+            if (combobox.Visibility == Visibility.Visible)
+            {
+                bool HasError = false;
+                DataTable contextTable = context.Table;
+                if (combobox.SelectedIndex == -1)
+                {
+                    if (contextTable.Columns[combobox.Name].AllowDBNull == false)
+                    {
+                        HasError = true;
+                        MessageBox.Show($"{combobox.Name} must be selected");
+                    }
+                }
+                return HasError;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
+

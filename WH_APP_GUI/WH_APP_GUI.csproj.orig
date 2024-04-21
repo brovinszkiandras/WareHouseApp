@@ -234,44 +234,17 @@
       <DependentUpon>UpdateCarWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controller.cs" />
-    <Compile Include="Employee\CreateEmployee.xaml.cs">
-      <DependentUpon>CreateEmployee.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forklift\CreateFrokliftPage.xaml.cs">
-      <DependentUpon>CreateFrokliftPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forklift\EditForkliftPage.xaml.cs">
-      <DependentUpon>EditForkliftPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CreateShelf.xaml.cs">
       <DependentUpon>CreateShelf.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LogDisplay.xaml.cs">
-      <DependentUpon>LogDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Product\CreateProduct.xaml.cs">
-      <DependentUpon>CreateProduct.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Product\EditProductPage.xaml.cs">
-      <DependentUpon>EditProductPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Product\ProductsPage.xaml.cs">
-      <DependentUpon>ProductsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Employee\EditEmployeePage.xaml.cs">
+    <Compile Include="EditEmployeePage.xaml.cs">
       <DependentUpon>EditEmployeePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Product\ProductsPage.xaml.cs">
-      <DependentUpon>ProductsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Staff\CreateStaffPage.xaml.cs">
-      <DependentUpon>CreateStaffPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Email.cs" />
-    <Compile Include="Employee\EmployeesPage.xaml.cs">
+    <Compile Include="EmployeesPage.xaml.cs">
       <DependentUpon>EmployeesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forklift\ForkliftsPage.xaml.cs">
+    <Compile Include="ForkliftsPage.xaml.cs">
       <DependentUpon>ForkliftsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Hash.cs" />
@@ -281,6 +254,9 @@
     <Compile Include="Navigation.cs" />
     <Compile Include="OrdersPage.xaml.cs">
       <DependentUpon>OrdersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProductsPage.xaml.cs">
+      <DependentUpon>ProductsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Relations.cs" />
     <Compile Include="sectors\CreateSectorPage.xaml.cs">
@@ -297,10 +273,7 @@
     </Compile>
     <Compile Include="shelfBuilder.cs" />
     <Compile Include="SQL.cs" />
-    <Compile Include="Staff\EditStaffPage.xaml.cs">
-      <DependentUpon>EditStaffPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Staff\StaffPage.xaml.cs">
+    <Compile Include="StaffPage.xaml.cs">
       <DependentUpon>StaffPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="TableClasses.cs" />
@@ -317,19 +290,7 @@
     <Compile Include="User.cs" />
     <Compile Include="Validation.cs" />
     <Compile Include="Visual.cs" />
-    <Compile Include="WarehouseTableFolder\CreateWHProductPage.xaml.cs">
-      <DependentUpon>CreateWHProductPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WarehouseTableFolder\WarehouseProductsPage.xaml.cs">
-      <DependentUpon>WarehouseProductsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Warehouse\CreateWarehouse.xaml.cs">
-      <DependentUpon>CreateWarehouse.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Warehouse\InspectWarehouse.xaml.cs">
-      <DependentUpon>InspectWarehouse.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Warehouse\WarehousesPage.xaml.cs">
+    <Compile Include="WarehousesPage.xaml.cs">
       <DependentUpon>WarehousesPage.xaml</DependentUpon>
     </Compile>
     <Page Include="AdminHomePage.xaml">
@@ -352,51 +313,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Employee\CreateEmployee.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forklift\CreateFrokliftPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forklift\EditForkliftPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="CreateShelf.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LogDisplay.xaml">
+<<<<<<< HEAD
+    <Page Include="DefaultStyles.xaml">
+=======
+    <Page Include="EditEmployeePage.xaml">
+>>>>>>> 97738a1822522987f4aa6731be06a4845f37bd3a
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Product\CreateProduct.xaml">
+    <Page Include="EmployeesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Product\EditProductPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Product\ProductsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Employee\EditEmployeePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Staff\CreateStaffPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Employee\EmployeesPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forklift\ForkliftsPage.xaml">
+    <Page Include="ForkliftsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -421,6 +354,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="sectors\CreateSectorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -437,11 +374,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Staff\EditStaffPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Staff\StaffPage.xaml">
+    <Page Include="StaffPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -457,23 +390,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WarehouseTableFolder\CreateWHProductPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WarehouseTableFolder\WarehouseProductsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Warehouse\CreateWarehouse.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Warehouse\InspectWarehouse.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Warehouse\WarehousesPage.xaml">
+    <Page Include="WarehousesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -505,6 +422,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
