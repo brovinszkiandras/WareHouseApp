@@ -158,7 +158,7 @@ namespace WH_APP_GUI
 
         private void InspectAllOrders_Click(object sender, RoutedEventArgs e)
         {
-            Navigation.OpenPage(Navigation.GetTypeByName("OrdersPage"));
+            Navigation.OpenPage(Navigation.GetTypeByName("AllOrdersPage"));
         }
 
         private void InspectProducts_Click(object sender, RoutedEventArgs e)

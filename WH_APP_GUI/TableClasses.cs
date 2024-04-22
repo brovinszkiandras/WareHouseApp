@@ -120,14 +120,7 @@ namespace WH_APP_GUI
                 }
 
                 adapter.Update(database);
-
-               
-
             }
-
-            
-
-           
         }
 
         public void RefreshEverything()

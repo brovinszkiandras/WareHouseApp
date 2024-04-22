@@ -32,10 +32,6 @@ namespace WH_APP_GUI
         static public void Ini()
         {
             addRequriedTablesToTables();
-            if ((bool)features.database.Select("name = 'City'")[0]["in_use"])
-            {
-                addCityTableToTables();
-            }
             if ((bool)features.database.Select("name = 'Fleet'")[0]["in_use"])
             {
                 addFleetTablesToTables();
@@ -62,6 +58,7 @@ namespace WH_APP_GUI
             permissions = new permission();
             sector = new Sector("sector");
             shelf = new shelf("shelf");
+            cities = new cities();
 
             Relations.makeRelation("staffRole", roles.database, staff.database, "id", "role_id");
             Relations.makeRelation("employeeRole", roles.database, employees.database, "id", "role_id");
@@ -69,7 +66,7 @@ namespace WH_APP_GUI
             Relations.makeRelation("orderProduct", products.database, orders.database, "id", "product_id");
             Relations.makeRelation("shelfSector", sector.database, shelf.database, "id", "sector_id");
             Relations.makeRelation("sectorWarehouse", warehouses.database, sector.database, "id", "warehouse_id");
-
+            Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
         }
 
         public static void addFleetTablesToTables()
@@ -80,15 +77,6 @@ namespace WH_APP_GUI
             Relations.makeRelation("transportCar", cars.database, transports.database, "id", "car_id");
             Relations.makeRelation("orderTransport", transports.database, orders.database, "id", "transport_id");
 
-        }
-
-        public static void addCityTableToTables()
-        {
-            cities = new cities();
-
-            Tables.orders.Refresh();
-            Tables.warehouses.Refresh();
-            Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
         }
 
         public static void addDockTableToTables()

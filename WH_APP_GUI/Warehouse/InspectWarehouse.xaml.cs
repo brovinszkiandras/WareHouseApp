@@ -40,26 +40,23 @@ namespace WH_APP_GUI.Warehouse
         }
         private void Ini_City()
         {
-            if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'City'"))
-            {
-                terkep.IsEnabled = true;
-                MapDisplay.Children.Add(terkep);
-                terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
+            terkep.IsEnabled = true;
+            MapDisplay.Children.Add(terkep);
+            terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
 
-                MapPolyline polyline = new MapPolyline();
-                polyline.Stroke = new SolidColorBrush(Colors.Black);
-                polyline.StrokeThickness = 5;
-                polyline.Opacity = 0.7;
+            MapPolyline polyline = new MapPolyline();
+            polyline.Stroke = new SolidColorBrush(Colors.Black);
+            polyline.StrokeThickness = 5;
+            polyline.Opacity = 0.7;
 
-                double lat = double.Parse(Tables.warehouses.getCity(Warehouse)["latitude"].ToString());
-                double lon = double.Parse(Tables.warehouses.getCity(Warehouse)["longitude"].ToString());
+            double lat = double.Parse(Tables.warehouses.getCity(Warehouse)["latitude"].ToString());
+            double lon = double.Parse(Tables.warehouses.getCity(Warehouse)["longitude"].ToString());
 
-                terkep.Center = new Location(lat, lon);
-                terkep.ZoomLevel = 10;
+            terkep.Center = new Location(lat, lon);
+            terkep.ZoomLevel = 10;
 
-                terkep.Children.Add(polyline);
-                terkep.IsEnabled = false;
-            }
+            terkep.Children.Add(polyline);
+            terkep.IsEnabled = false;
         }
         private void Ini_Revnue_A_Day()
         {
@@ -70,8 +67,8 @@ namespace WH_APP_GUI.Warehouse
                 NoRevenue.Visibility = Visibility.Collapsed;
 
                 string MaxValue = Warehouse["total_value"].ToString();
-                string SellingPrice = SQL.FindOneDataFromQuery($"SELECT SUM(products.selling_price) FROM {Warehouse["name"]} INNER JOIN {Tables.products.actual_name} ON wh1.product_id = products.id");
-                string BuyingPrice = SQL.FindOneDataFromQuery($"SELECT SUM(products.buying_price) FROM {Warehouse["name"]} INNER JOIN {Tables.products.actual_name} ON wh1.product_id = products.id");
+                string SellingPrice = SQL.FindOneDataFromQuery($"SELECT SUM(products.selling_price) FROM {Warehouse["name"]} INNER JOIN {Tables.products.actual_name} ON {Warehouse["name"]}.product_id = {Tables.products.actual_name}.id");
+                string BuyingPrice = SQL.FindOneDataFromQuery($"SELECT SUM(products.buying_price) FROM {Warehouse["name"]} INNER JOIN {Tables.products.actual_name} ON {Warehouse["name"]}.product_id = {Tables.products.actual_name}.id");
 
                 double WarehouseMaxValue = MaxValue != "" ? double.Parse(MaxValue) : 0;
                 double AllSellingPrice = SellingPrice != "" ? double.Parse(SellingPrice) : 0;
@@ -79,11 +76,13 @@ namespace WH_APP_GUI.Warehouse
 
                 WarehouseTotalSpending.Maximum = WarehouseMaxValue;
                 WarehouseTotalSpendingLBL.Content = Warehouse["total_spending"] + " - Ft";
-                WarehouseTotalSpending.Value = double.Parse(Warehouse["total_spending"].ToString());
+                bool ValidateWarehouseTotalSpending = Warehouse["total_spending"].ToString() != "" ? true : false;
+                WarehouseTotalSpending.Value = ValidateWarehouseTotalSpending ? double.Parse(Warehouse["total_spending"].ToString()) : 0;
 
                 WarehouseTotalIncome.Maximum = WarehouseMaxValue;
                 WarehouseTotalIncomeLBL.Content = Warehouse["total_income"] + " - Ft";
-                WarehouseTotalIncome.Value = double.Parse(Warehouse["total_income"].ToString());
+                bool ValidateWarehouseTotalIncome = Warehouse["total_income"].ToString() != "" ? true : false;
+                WarehouseTotalIncome.Value = ValidateWarehouseTotalIncome ? double.Parse(Warehouse["total_income"].ToString()) : 0;
 
                 ProductsTotalSellingPrice.Maximum = WarehouseMaxValue;
                 ProductsTotalSellingPrice.Value = AllSellingPrice;

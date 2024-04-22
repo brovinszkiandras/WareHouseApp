@@ -79,13 +79,13 @@
 
             <Label Content="Emali:" VerticalContentAlignment="Bottom" Margin="0,10,0,0"/>
             <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
-                <TextBox x:Name="Emali" Text="micimacko@tigris.com" BorderBrush="Transparent"/>
+                <TextBox x:Name="Emali" Text="admin.bozo@example.com" BorderBrush="Transparent"/>
             </Border>
 
             <Label Content="Password:" VerticalContentAlignment="Bottom" Margin="0,10,0,0"/>
 
             <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="White" BorderBrush="White" Margin="0,0,0,10">
-                <TextBox x:Name="Password" Text="malacka" BorderBrush="Transparent"/>
+                <TextBox x:Name="Password" Text="123456" BorderBrush="Transparent"/>
             </Border>
 
             <Button Content="Login" x:Name="Login_button" Click="Login_Click" Margin="50, 10" Visibility="Collapsed"/>

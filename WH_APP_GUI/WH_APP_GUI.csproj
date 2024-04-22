@@ -258,6 +258,9 @@
     <Compile Include="LogDisplay.xaml.cs">
       <DependentUpon>LogDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Order\AllOrdersPage.xaml.cs">
+      <DependentUpon>AllOrdersPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Product\CreateProduct.xaml.cs">
       <DependentUpon>CreateProduct.xaml</DependentUpon>
     </Compile>
@@ -285,9 +288,6 @@
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
     <Compile Include="Navigation.cs" />
-    <Compile Include="OrdersPage.xaml.cs">
-      <DependentUpon>OrdersPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Relations.cs" />
     <Compile Include="sectors\CreateSectorPage.xaml.cs">
       <DependentUpon>CreateSectorPage.xaml</DependentUpon>
@@ -393,6 +393,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Order\AllOrdersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Product\CreateProduct.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -438,10 +442,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="OrdersPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="sectors\CreateSectorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -95,30 +95,6 @@ namespace WH_APP_GUI
         }
     }
 
-    class CityFeature : FeatureCheckbox
-    {
-        public CityFeature(string FeatureName) : base(FeatureName) { }
-
-        public override void ActivateFeature()
-        {
-            if (this.IsChecked == true)
-            {
-                Controller.City();
-                this.CanBeCreated = false;
-                Tables.warehouses.Refresh();
-                Tables.cities.Refresh();
-            }
-        }
-
-        public override void DisableFeature()
-        {
-            if (this.IsChecked != true)
-            {
-                Controller.CityOff();
-                this.CanBeCreated = true;
-            }
-        }
-    }
     class LogFeature : FeatureCheckbox
     {
         public LogFeature(string FeatureName) : base(FeatureName) { }
@@ -292,7 +268,7 @@ namespace WH_APP_GUI
             if (this.IsChecked == true)
             {
                 Controller.Dock();
-                this.CanBeCreated = false;
+                this.CanBeCreated = true;
             }
         }
         public override void DisableFeature()
@@ -310,7 +286,7 @@ namespace WH_APP_GUI
                 if (bool.Parse(SQL.FindOneDataFromQuery($"SELECT in_use FROM feature WHERE name = '{this.FeatureNameInDataBase}'")))
                 {
                     this.IsChecked = true;
-                    CanBeCreated = false;
+                    CanBeCreated = true;
                 }
                 else if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Fleet';"))
                 {
@@ -320,12 +296,12 @@ namespace WH_APP_GUI
                 {
                     this.IsChecked = false;
                     this.CanBeCreated = true;
-                    this.IsEnabled = false;
+                    this.IsEnabled = true;
                 }
             }
             else
             {
-                this.IsEnabled = false;
+                this.IsEnabled = true;
             }
         }
     }
@@ -418,10 +394,6 @@ namespace WH_APP_GUI
             FleetFeature FleetCBXexe = new FleetFeature("Fleet");
             FleetCBXexe.Content = "Include Fleet feature";
             Display.Children.Add(FleetCBXexe);
-
-            CityFeature CityCBXexe = new CityFeature("City");
-            CityCBXexe.Content = "Include City feature";
-            Display.Children.Add(CityCBXexe);
 
             LogFeature LogCBXexe = new LogFeature("Log");
             LogCBXexe.Content = "Include Log feature";
