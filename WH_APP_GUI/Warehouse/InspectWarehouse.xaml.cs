@@ -46,7 +46,7 @@ namespace WH_APP_GUI.Warehouse
         {
             if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'City'"))
             {
-                terkep.IsEnabled = false;
+                terkep.IsEnabled = true;
                 MapDisplay.Children.Add(terkep);
                 terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
 
@@ -62,7 +62,7 @@ namespace WH_APP_GUI.Warehouse
                 terkep.ZoomLevel = 10;
 
                 terkep.Children.Add(polyline);
-                terkep.IsEnabled = false;
+                
             }
         }
         private void Ini_Revnue_A_Day()
@@ -209,6 +209,16 @@ namespace WH_APP_GUI.Warehouse
                 WarehousesPage warehousesPage = new WarehousesPage();
                 Navigation.content2.Navigate(warehousesPage);
             }
+        }
+
+        private void MapDisplay_MouseEnter(object sender, MouseEventArgs e)
+        {
+            mainScrollviewer.CanContentScroll = false;
+        }
+
+        private void MapDisplay_MouseLeave(object sender, MouseEventArgs e)
+        {
+            mainScrollviewer.CanContentScroll = true;
         }
     }
 }
