@@ -8,17 +8,7 @@
         Title="CarsPage"
         d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="8*"></ColumnDefinition>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="6*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-        </Grid.RowDefinitions>
+        
 
         <Grid Grid.Row="1" Grid.Column="1">
 
@@ -27,26 +17,25 @@
                 <RowDefinition Height="1*"></RowDefinition>
                 <RowDefinition Height="7*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid Margin="5">
+            <Grid Background="DarkMagenta">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="2*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                    
                 </Grid.ColumnDefinitions>
 
-                <Label Content="Plate number" Foreground="Black" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
-                <Label Content="Type" Foreground="Black" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
-                <Label Content="Ready" Foreground="Black" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                <Label Content="Plate number" Foreground="White" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                <Label Content="Type" Foreground="White" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                <Label Content="Ready" Foreground="White" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
                
-                <Button Grid.Column="5" Foreground="Black" Name="Create" Content="Create new" Click="Create_Click"></Button>
+                <Button Grid.Column="5" Background="DarkMagenta" Foreground="White" Name="Create" Content="Create new" Click="Create_Click"></Button>
             </Grid>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Background="WhiteSmoke">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Background="Black">
                 <Grid x:Name="carsGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
