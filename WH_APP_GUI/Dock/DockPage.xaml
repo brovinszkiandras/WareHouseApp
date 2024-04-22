@@ -21,7 +21,7 @@
         </StackPanel>
 
 
-        <Grid Name="DockDisplayGRID" Grid.Column="1" Visibility="Collapsed" Background="White">
+        <Grid Name="DockDisplayGRID" Grid.Column="1" Visibility="Visible" Background="White">
             <ScrollViewer Name="DockDisplaySCROLL" Visibility="Visible" HorizontalAlignment="Center" Margin="20">
                 <StackPanel Name="DockDisplaySTACK" Orientation="Vertical">
 

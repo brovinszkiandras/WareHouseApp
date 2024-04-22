@@ -114,6 +114,15 @@ namespace WH_APP_GUI
                 Menu.Children.Add(btn);
             }
 
+            if (User.DoesHavePermission("Modify all Dock") && Tables.features.isFeatureInUse("Dock") == true)
+            {
+                Button btn = new Button();
+                btn.Content = "Dock";
+                btn.Click += InspectDock_Click;
+                btn.Style = (Style)this.Resources["ElegantButtonStyle"];
+                Menu.Children.Add(btn);
+            }
+
             if (User.DoesHavePermission("Access to Database"))
             {
                 Button btn = new Button();
@@ -134,96 +143,57 @@ namespace WH_APP_GUI
         }
         private void InspectAllWarehouses_Click(object sender, RoutedEventArgs e)
         {
-            // WarehousesPage warehousesPage = new WarehousesPage();
-            // this.Hide();
-            // warehousesPage.Show();
-            Navigation.content2.Content = null;
-            Navigation.content2.Navigate(new Uri("Warehouse/WarehousesPage.xaml", UriKind.Relative));
+            Navigation.OpenPage(Navigation.GetTypeByName("WarehousesPage"));
         }
 
         private void InspectAllEmployees_Click(object sender, RoutedEventArgs e)
         {
-            //EmployeesPage employeesPage = new EmployeesPage();
-            //this.Hide();
-            //employeesPage.Show();
-            Navigation.content2.Content = null;
-            Navigation.content2.Navigate(new Uri("Employee/EmployeesPage.xaml", UriKind.Relative));
+            Navigation.OpenPage(Navigation.GetTypeByName("EmployeesPage"));
         }
 
         private void InspectAllOrders_Click(object sender, RoutedEventArgs e)
         {
-            //OrdersPage ordersPage = new OrdersPage();
-            //this.Hide();
-            //ordersPage.Show();
-            Navigation.content2.Content = null;
-            Navigation.content2.Navigate(new Uri("OrdersPage.xaml", UriKind.Relative));
+            Navigation.OpenPage(Navigation.GetTypeByName("OrdersPage"));
         }
 
         private void InspectProducts_Click(object sender, RoutedEventArgs e)
         {
-            //    ProductsPage productsPage = new ProductsPage();
-            //    this.Hide();
-            //    productsPage.Show();
-            Navigation.content2.Content = null;
-            Navigation.content2.Navigate(new Uri("Product/ProductsPage.xaml", UriKind.Relative));
+            Navigation.OpenPage(Navigation.GetTypeByName("ProductsPage"));
         }
 
         private void InspectAllStaff_Click(object sender, RoutedEventArgs e)
         {
-            //StaffPage staffPage = new StaffPage();
-            //this.Hide();
-            //staffPage.Show();
-           // StaffPage staffPage = new StaffPage();
-            Navigation.content2.Content = null;
-            Navigation.content2.Navigate(new Uri("Staff/StaffPage.xaml", UriKind.Relative));
+            Navigation.OpenPage(Navigation.GetTypeByName("StaffPage"));
         }
 
         private void InspectAllCars_Click(object sender, RoutedEventArgs e)
         {
-            //CarsPage carsPage = new CarsPage();
-            //this.Hide();
-            //carsPage.Show();
-            Navigation.content2.Content = null;
-            CarsPage carsPage = new CarsPage();
-            Navigation.content2.Navigate(carsPage);
-       
+            Navigation.OpenPage(Navigation.GetTypeByName("CarsPage"));
         }
 
         private void InspectAllTransport_Click(object sender, RoutedEventArgs e)
         {
-            //TransportsPage transportsPage = new TransportsPage();
-            //this.Hide();
-            //transportsPage.Show();
-            TransportsPage transportsPage = new TransportsPage();
-            Navigation.content2.Content = null;
-            Navigation.content2.Navigate(transportsPage);
+            Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
         }
 
         private void InspectAllForkliftst_Click(object sender, RoutedEventArgs e)
         {
-            //ForkliftsPage forkliftsPage = new ForkliftsPage();
-            //this.Hide();
-            //forkliftsPage.Show();
-            Navigation.content2.Content = null;
-            Navigation.content2.Navigate(new Uri("Forklift/ForkliftsPage.xaml", UriKind.Relative));
+            Navigation.OpenPage(Navigation.GetTypeByName("ForkliftsPage"));
         }
 
         private void InspectLog_Click(object sender, RoutedEventArgs e)
         {
-            //ForkliftsPage forkliftsPage = new ForkliftsPage();
-            //this.Hide();
-            //forkliftsPage.Show();
-            Navigation.content2.Content = null;
-            Navigation.content2.Navigate(new Uri("LogDisplay.xaml", UriKind.Relative));
+            Navigation.OpenPage(Navigation.GetTypeByName("LogDisplay"));
+        }
+
+        private void InspectDock_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.GetTypeByName("DockPage"));
         }
 
         private void Database_Click(object sender, RoutedEventArgs e)
         {
-            //AdminHomePage adminHomePage = new AdminHomePage();
-            //this.Hide();
-            //adminHomePage.Show();
-            Navigation.content2.Content = null;
-            Navigation.content2.Navigate(new Uri("AdminHomePage.xaml", UriKind.Relative));
+            Navigation.OpenPage(Navigation.GetTypeByName("AdminHomePage"));
         }
     }
 }

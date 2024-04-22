@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,15 +13,80 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WH_APP_GUI.Dock
 {
     public partial class EditDockPage : Page
     {
-        public EditDockPage()
+        private DataRow dock;
+        public EditDockPage(DataRow dock)
         {
             InitializeComponent();
-        }        
+            IniPicture();
+            IniWarehouses();
+            IsInUseDock((bool)dock["free"]);
+            name.ValueDataType = typeof(string);
+            name.Text = dock["name"].ToString();
+            warehouse_id.SelectedItem = Tables.docks.getWarehouse(dock)["name"];
+            this.dock = dock;
+        }
+
+        private void IniPicture()
+        {
+            string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
+            if (Directory.Exists(targetDirectory))
+            {
+                string imageFileName = "DockDefaultImage.png";
+                string imagePath = Path.Combine(targetDirectory, imageFileName);
+                if (File.Exists(imagePath))
+                {
+                    string fileName = Path.GetFileName(imagePath);
+                    string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                    BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+                    image.Source = bitmap;
+                }
+            }
+        }
+
+        private Dictionary<string, DataRow> Warehouses = new Dictionary<string, DataRow>();
+        private void IniWarehouses()
+        {
+            Warehouses.Clear();
+            warehouse_id.Items.Clear();
+            foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+            {
+                Warehouses.Add(warehouse["name"].ToString(), warehouse);
+                warehouse_id.Items.Add(warehouse["name"].ToString());
+            }
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
+        }
+        private void IsInUseDock(bool is_in_use)
+        {
+            InUse.Content = is_in_use ? "Free" : "In use";
+            InUse.Background = is_in_use ? Brushes.Blue : Brushes.Red;
+        }
+        private void InUse_Click(object sender, RoutedEventArgs e)
+        {
+            bool IsInUse = bool.Parse(dock["free"].ToString()) ? false : true;
+            dock["free"] = IsInUse;
+            Tables.docks.updateChanges();
+            IsInUseDock(IsInUse);
+        }
+
+        private void Done_Click(object sender, RoutedEventArgs e)
+        {
+            if (! Validation.ValidateTextbox(name, dock) && ! Validation.ValidateCombobox(warehouse_id, dock))
+            {
+                dock["name"] = name.Text;
+                dock["warehouse_id"] = Warehouses[warehouse_id.SelectedItem.ToString()]["id"];
+                Tables.docks.updateChanges();
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            }
+        }
     }
 }

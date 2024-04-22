@@ -177,7 +177,7 @@ namespace WH_APP_GUI.Warehouse
 
         private void DocksInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
-
+            Navigation.OpenPage(Navigation.GetTypeByName("DockPage"), Warehouse);
         }
 
         private void ForkliftInspectToWarehouse_Click(object sender, RoutedEventArgs e)

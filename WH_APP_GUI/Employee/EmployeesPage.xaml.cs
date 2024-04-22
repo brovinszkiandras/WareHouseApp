@@ -92,89 +92,99 @@ namespace WH_APP_GUI
                 employeelabel.BorderBrush = Brushes.Black;
                 employeelabel.BorderThickness = new Thickness(0, 0, 0, 1);
                 panel.Children.Add(employeelabel);
-            }
 
-            foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
-            {
-                StackPanel mainStackPanel = new StackPanel();
-                mainStackPanel.Height = 100;
-                mainStackPanel.Orientation = Orientation.Horizontal;
-
-                Image image = new Image();
-                image.Width = 80;
-                image.Height = 80;
-
-                string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
-                if (Directory.Exists(targetDirectory))
+                foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
                 {
-                    string imageFileName = employee["profile_picture"].ToString();
-                    string imagePath = Path.Combine(targetDirectory, imageFileName);
+                    StackPanel mainStackPanel = new StackPanel();
+                    mainStackPanel.Height = 100;
+                    mainStackPanel.Orientation = Orientation.Horizontal;
 
-                    if (File.Exists(imagePath))
+                    Image image = new Image();
+                    image.Width = 80;
+                    image.Height = 80;
+
+                    string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
+                    if (Directory.Exists(targetDirectory))
                     {
-                        string fileName = Path.GetFileName(imagePath);
-                        string targetFilePath = Path.Combine(targetDirectory, fileName);
+                        string imageFileName = employee["profile_picture"].ToString();
+                        string imagePath = Path.Combine(targetDirectory, imageFileName);
 
-                        BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+                        if (File.Exists(imagePath))
+                        {
+                            string fileName = Path.GetFileName(imagePath);
+                            string targetFilePath = Path.Combine(targetDirectory, fileName);
 
-                        image.Source = bitmap;
+                            BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+
+                            image.Source = bitmap;
+                        }
+                        else
+                        {
+                            imageFileName = "DefaultEmployeeProfile.png";
+                            string fileName = Path.GetFileName(imagePath);
+                            string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                            BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+
+                            image.Source = bitmap;
+                        }
                     }
+
+                    StackPanel leftStackPanel = new StackPanel();
+                    leftStackPanel.Orientation = Orientation.Vertical;
+                    leftStackPanel.Width = 350;
+
+                    Label nameLabel = new Label();
+                    nameLabel.Content = employee["name"];
+                    nameLabel.BorderBrush = System.Windows.Media.Brushes.Black;
+                    nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+
+                    Label emailLabel = new Label();
+                    emailLabel.Content = employee["email"];
+                    emailLabel.BorderBrush = System.Windows.Media.Brushes.Black;
+                    emailLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+
+                    Label roleLabel = new Label();
+                    roleLabel.Content = Tables.employees.getRole(employee)["role"];
+                    roleLabel.BorderBrush = System.Windows.Media.Brushes.Black;
+                    roleLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+
+                    leftStackPanel.Children.Add(nameLabel);
+                    leftStackPanel.Children.Add(emailLabel);
+                    leftStackPanel.Children.Add(roleLabel);
+
+                    StackPanel rightStackPanel = new StackPanel();
+                    rightStackPanel.Orientation = Orientation.Vertical;
+                    rightStackPanel.Width = 130;
+
+                    if (User.currentUser != employee)
+                    {
+                        Button deleteButton = new Button();
+                        deleteButton.Content = "Delete";
+                        deleteButton.Tag = employee;
+                        deleteButton.Click += deleteEmployee_Click;
+                        rightStackPanel.Children.Add(deleteButton);
+                    }
+
+                    Button editButton = new Button();
+                    editButton.Content = "Edit";
+                    editButton.Click += EditEmployee_Click;
+                    editButton.Tag = employee;
+
+                    Button resetPasswordButton = new Button();
+                    resetPasswordButton.Content = "Reset Password";
+                    resetPasswordButton.Click += resetPassword_Click;
+                    resetPasswordButton.Tag = employee;
+
+                    rightStackPanel.Children.Add(editButton);
+                    rightStackPanel.Children.Add(resetPasswordButton);
+
+                    mainStackPanel.Children.Add(image);
+                    mainStackPanel.Children.Add(leftStackPanel);
+                    mainStackPanel.Children.Add(rightStackPanel);
+
+                    panel.Children.Add(mainStackPanel);
                 }
-
-                StackPanel leftStackPanel = new StackPanel();
-                leftStackPanel.Orientation = Orientation.Vertical;
-                leftStackPanel.Width = 350;
-
-                Label nameLabel = new Label();
-                nameLabel.Content = employee["name"];
-                nameLabel.BorderBrush = System.Windows.Media.Brushes.Black;
-                nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                Label emailLabel = new Label();
-                emailLabel.Content = employee["email"];
-                emailLabel.BorderBrush = System.Windows.Media.Brushes.Black;
-                emailLabel.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                Label roleLabel = new Label();
-                roleLabel.Content = Tables.employees.getRole(employee)["role"];
-                roleLabel.BorderBrush = System.Windows.Media.Brushes.Black;
-                roleLabel.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                leftStackPanel.Children.Add(nameLabel);
-                leftStackPanel.Children.Add(emailLabel);
-                leftStackPanel.Children.Add(roleLabel);
-
-                StackPanel rightStackPanel = new StackPanel();
-                rightStackPanel.Orientation = Orientation.Vertical;
-                rightStackPanel.Width = 130;
-
-                if (User.currentUser != employee)
-                {
-                    Button deleteButton = new Button();
-                    deleteButton.Content = "Delete";
-                    deleteButton.Tag = employee;
-                    deleteButton.Click += deleteEmployee_Click;
-                    rightStackPanel.Children.Add(deleteButton);
-                }
-
-                Button editButton = new Button();
-                editButton.Content = "Edit";
-                editButton.Click += EditEmployee_Click;
-                editButton.Tag = employee;
-
-                Button resetPasswordButton = new Button();
-                resetPasswordButton.Content = "Reset Password";
-                resetPasswordButton.Click += resetPassword_Click;
-                resetPasswordButton.Tag = employee;
-
-                rightStackPanel.Children.Add(editButton);
-                rightStackPanel.Children.Add(resetPasswordButton);
-
-                mainStackPanel.Children.Add(image);
-                mainStackPanel.Children.Add(leftStackPanel);
-                mainStackPanel.Children.Add(rightStackPanel);
-
-                panel.Children.Add(mainStackPanel);
             }
         }
         private void EditEmployee_Click(object sender, RoutedEventArgs e)

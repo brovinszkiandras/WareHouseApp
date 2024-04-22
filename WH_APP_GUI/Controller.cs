@@ -494,7 +494,7 @@ namespace WH_APP_GUI
                         SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('dock', 'dock', 'Dock');");
                     }
 
-                    SQL.SqlCommand($"CREATE TABLE DOCK (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), free BOOLEAN, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES {warehousesActualName}(id) ON DELETE CASCADE);");
+                    SQL.SqlCommand($"CREATE TABLE DOCK (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), free BOOLEAN DEFAULT TRUE, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES {warehousesActualName}(id) ON DELETE CASCADE);");
                     SQL.SqlCommand($"ALTER TABLE {transportsActualName} ADD dock_id INT, ADD CONSTRAINT fk_dock_id FOREIGN KEY (dock_id) REFERENCES DOCK (id) ON DELETE CASCADE;");
                     Tables.features.getFeature("Dock")["in_use"] = true;
                     Tables.features.updateChanges();

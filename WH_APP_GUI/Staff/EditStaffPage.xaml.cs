@@ -95,10 +95,12 @@ namespace WH_APP_GUI.Staff
                         string targetFilePath = Path.Combine(targetDirectory, fileName);
 
                         File.Copy(selectedFilePath, targetFilePath, true);
-
                         BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
 
-                        staff["password"] = fileName;
+                        ImageBrush brush = new ImageBrush(bitmap);
+
+                        profile_picture.Background = brush;
+                        staff["profile_picture"] = fileName;
                         Tables.staff.updateChanges();
                     }
                     catch (Exception ex)
@@ -116,7 +118,7 @@ namespace WH_APP_GUI.Staff
             DataRow staff = (sender as Button).Tag as DataRow;
             if (staff != null)
             {
-                if (!Validation.ValidateTextbox(name, staff) && Validation.ValidateTextbox(email, staff))
+                if (!Validation.ValidateTextbox(name, staff) && ! Validation.ValidateTextbox(email, staff))
                 {
                     staff["name"] = name.Text;
                     staff["email"] = email.Text;
@@ -124,6 +126,7 @@ namespace WH_APP_GUI.Staff
 
                     Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {staff["name"]} staff.");
                     MessageBox.Show("Staff has been updated successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Tables.staff.updateChanges();
 
                     Navigation.OpenPage(Navigation.PreviousPage.GetType());
                 }

@@ -96,7 +96,7 @@ namespace WH_APP_GUI.Staff
                 stafflabel.BorderThickness = new Thickness(0, 0, 0, 1);
                 panel.Children.Add(stafflabel);
 
-                for (int i = 0; i < Tables.roles.getStaff(role).Length; i++)
+                foreach (DataRow staff in Tables.roles.getStaff(role))
                 {
                     StackPanel mainStackPanel = new StackPanel();
                     mainStackPanel.Height = 100;
@@ -111,11 +111,22 @@ namespace WH_APP_GUI.Staff
                     string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
                     if (Directory.Exists(targetDirectory))
                     {
-                        string imageFileName = Tables.roles.getStaff(role)[i]["profile_picture"].ToString();
+                        string imageFileName = staff["profile_picture"].ToString();
                         string imagePath = Path.Combine(targetDirectory, imageFileName);
 
                         if (File.Exists(imagePath))
                         {
+                            string fileName = Path.GetFileName(imagePath);
+                            string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                            BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+
+                            image.Source = bitmap;
+                        }
+                        else
+                        {
+                            imageFileName = "DefaultStaffProfilePicture.png";
+                            imagePath = Path.Combine(targetDirectory, imageFileName);
                             string fileName = Path.GetFileName(imagePath);
                             string targetFilePath = Path.Combine(targetDirectory, fileName);
 
@@ -130,18 +141,18 @@ namespace WH_APP_GUI.Staff
                     leftStackPanel.Width = 350;
 
                     Label nameLabel = new Label();
-                    nameLabel.Content = "Name: " + Tables.roles.getStaff(role)[i]["name"];
-                    nameLabel.BorderBrush = System.Windows.Media.Brushes.Black;
+                    nameLabel.Content = "Name: " + staff["name"];
+                    nameLabel.BorderBrush = Brushes.Black;
                     nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
 
                     Label emailLabel = new Label();
-                    emailLabel.Content = "Email: " + Tables.roles.getStaff(role)[i]["email"];
-                    emailLabel.BorderBrush = System.Windows.Media.Brushes.Black;
+                    emailLabel.Content = "Email: " + staff["email"];
+                    emailLabel.BorderBrush = Brushes.Black;
                     emailLabel.BorderThickness = new Thickness(0, 0, 0, 1);
 
                     Label roleLabel = new Label();
                     roleLabel.Content = "Role: " + role["role"];
-                    roleLabel.BorderBrush = System.Windows.Media.Brushes.Black;
+                    roleLabel.BorderBrush = Brushes.Black;
                     roleLabel.BorderThickness = new Thickness(0, 0, 0, 1);
 
                     leftStackPanel.Children.Add(nameLabel);
@@ -152,26 +163,26 @@ namespace WH_APP_GUI.Staff
                     rightStackPanel.Orientation = Orientation.Vertical;
                     rightStackPanel.Width = 130;
 
-                    if (User.currentUser != Tables.roles.getStaff(role)[i])
+                    if (User.currentUser != staff)
                     {
                         Button deleteButton = new Button();
                         deleteButton.Content = "Delete";
                         deleteButton.Click += deleteStaff_Click;
-                        deleteButton.Tag = Tables.roles.getStaff(role)[i];
+                        deleteButton.Tag = staff;
                         rightStackPanel.Children.Add(deleteButton);
-                    }
 
-                    Button resetPasswordButton = new Button();
-                    resetPasswordButton.Content = "Reset Password";
-                    resetPasswordButton.Click += resetPassword_Click;
-                    resetPasswordButton.Tag = Tables.roles.getStaff(role)[i];
+                        Button resetPasswordButton = new Button();
+                        resetPasswordButton.Content = "Reset Password";
+                        resetPasswordButton.Click += resetPassword_Click;
+                        resetPasswordButton.Tag = staff;
+                        rightStackPanel.Children.Add(resetPasswordButton);
+                    }
 
                     Button editButton = new Button();
                     editButton.Content = "Edit Staff";
                     editButton.Click += editStaff_Click;
-                    editButton.Tag = Tables.roles.getStaff(role)[i];
+                    editButton.Tag = staff;
 
-                    rightStackPanel.Children.Add(resetPasswordButton);
                     rightStackPanel.Children.Add(editButton);
 
                     mainStackPanel.Children.Add(image);

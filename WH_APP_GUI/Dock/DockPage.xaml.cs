@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using WH_APP_GUI.Employee;
+using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI.Dock
 {
@@ -23,6 +24,22 @@ namespace WH_APP_GUI.Dock
         {
             InitializeComponent();
             IniWarehouses();
+            InitializeAllDocks(DockDisplaySTACK);
+            Back.Visibility = Visibility.Collapsed;
+            DocksByWarehouses.Visibility = Visibility.Visible;
+            AllDocks.Visibility = Visibility.Visible;
+        }
+        private DataRow WarehouseFromPage = null;
+        public DockPage(DataRow warehouseFromPage)
+        {
+            InitializeComponent();
+            IniWarehouses();
+            InitializeDocksInWarehouse(DockDisplaySTACK, warehouseFromPage);
+
+            WarehouseFromPage = warehouseFromPage;
+            DocksByWarehouses.Visibility = Visibility.Collapsed;
+            Back.Visibility = Visibility.Visible;
+            AllDocks.Visibility = Visibility.Collapsed;
         }
         private Dictionary<string, DataRow> Warehouses = new Dictionary<string, DataRow>();
         private void IniWarehouses()
@@ -37,6 +54,7 @@ namespace WH_APP_GUI.Dock
         }
         public void InitializeAllDocks(Panel panel)
         {
+            panel.Children.Clear();
             for (int i = 0; i < Tables.warehouses.database.Rows.Count; i++)
             {
                 InitializeDocksInWarehouse(panel, Tables.warehouses.database.Rows[i]);
@@ -47,7 +65,7 @@ namespace WH_APP_GUI.Dock
             DockDisplaySTACK.Visibility = Visibility.Visible;
             panel.Visibility = Visibility.Visible;
 
-            if (Tables.warehouses.getEmployees(warehouse).Length > 0)
+            if (Tables.warehouses.getDocks(warehouse).Length > 0)
             {
                 Label employeelabel = new Label();
                 employeelabel.Content = $"Docks in {warehouse["name"]}:";
@@ -150,15 +168,28 @@ namespace WH_APP_GUI.Dock
             DataRow dock = (sender as Button).Tag as DataRow;
             if (dock != null)
             {
-
+                if (WarehouseFromPage != null)
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("EditDockPage"), dock);
+                    Navigation.ReturnParam = WarehouseFromPage;
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("EditDockPage"), dock);
+                }
             }
         }
         private void AddNewDock_Click(object sender, RoutedEventArgs e)
         {
-            CreateDockPage createDockPage = new CreateDockPage();
-            DockContent.Content = null;
-            DockContent.Navigate(createDockPage);
-            DockContent.Visibility = Visibility.Visible;
+            if (WarehouseFromPage != null)
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateDockPage"));
+                Navigation.ReturnParam = WarehouseFromPage;
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateDockPage"));
+            }
         }
         private void isDockFree_Click(object sender, RoutedEventArgs e)
         {
@@ -166,12 +197,24 @@ namespace WH_APP_GUI.Dock
             if (dock != null)
             {
                 dock["free"] = bool.Parse(dock["free"].ToString()) ? false : true;
+                Tables.docks.updateChanges();
                 InitializeAllDocks(DockDisplaySTACK);
             }
         }
         private void Back_Click(object sender, RoutedEventArgs e)
         {
-            //
+            if (Navigation.PreviousPage != null)
+            {
+                if (WarehouseFromPage != null)
+                {
+                    Navigation.PreviousPage = new InspectWarehouse(WarehouseFromPage);
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), WarehouseFromPage);
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
+            }
         }
 
         private void DockByWarehouses_SelectionChanged(object sender, SelectionChangedEventArgs e)

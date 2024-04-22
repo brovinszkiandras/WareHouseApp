@@ -38,7 +38,11 @@ namespace WH_APP_GUI
         {
             try
             {
-                PreviousPage = (content2.Content as Page).NavigationService.Content as Page;
+                if (content2.Content as Page != null)
+                {
+                    PreviousPage = (content2.Content as Page).NavigationService.Content as Page;
+                }
+                
                 if (page != null)
                 {
                     if (ReturnParam != null)
@@ -50,6 +54,7 @@ namespace WH_APP_GUI
                     {
                         Page toPage = (Page)Activator.CreateInstance(page);
                         content2.Navigate(toPage);
+                        Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been opened this page: {page.Name}.");
                     }
                 }
             }
@@ -73,6 +78,7 @@ namespace WH_APP_GUI
 
                 Page ToPage = (Page)constructor.Invoke(constructorParameters);
                 content2.Navigate(ToPage);
+                Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been opened this page: {Page.Name}.");
             }
             catch (Exception ex)
             {

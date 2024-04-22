@@ -7,13 +7,23 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="LogDisplay" Height="450" Width="800">
-    <Grid>
-        <ListBox x:Name="Logs" BorderBrush="Black" BorderThickness="2">
-            <ListBox.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
-            </ListBox.Resources>
-        </ListBox>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="5" VerticalAlignment="Center">
+            <Label Content="Search by email:" VerticalAlignment="Center"/>
+            <ComboBox Name="LogsByEmail" Grid.Column="2" Margin="5" MinWidth="120" SelectionChanged="LogsByEmail_SelectionChanged"/>
+        </StackPanel>
+        <Button x:Name="ClearLog" Content="Clear Logs" Grid.Column="1" Margin="5" Click="ClearLog_Click"/>
+        <ListBox x:Name="Logs" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"/>
+        <Label Name="NotFoundLogs" Visibility="Collapsed" Content="This user doesn't have a history recorded yet" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White"/>
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="2"/>
     </Grid>
 </Page>
