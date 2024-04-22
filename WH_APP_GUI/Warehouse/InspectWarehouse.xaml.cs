@@ -21,6 +21,10 @@ namespace WH_APP_GUI.Warehouse
 {
     public partial class InspectWarehouse : Page
     {
+        private void inspectWarehouse_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            MapDisplay.Height = e.NewSize.Height * 0.4;
+        }
         private Map terkep = new Map();
         private Type PreviousPageType;
         private DataRow Warehouse;
@@ -42,7 +46,7 @@ namespace WH_APP_GUI.Warehouse
         {
             if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'City'"))
             {
-                terkep.IsEnabled = true;
+                terkep.IsEnabled = false;
                 MapDisplay.Children.Add(terkep);
                 terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
 
@@ -66,12 +70,11 @@ namespace WH_APP_GUI.Warehouse
             List<string[]> revenue_a_day = SQL.SqlQuery($"SELECT `date`, `total_expenditure`, `total_income` FROM `revenue_a_day` WHERE `warehouse_id` = {Warehouse["id"]} GROUP BY `date`;");
             if (revenue_a_day.Count() > 0)
             {
-                RevenueBorder.Visibility = Visibility.Visible;
                 NoRevenue.Visibility = Visibility.Collapsed;
 
                 string MaxValue = Warehouse["total_value"].ToString();
-                string SellingPrice = SQL.FindOneDataFromQuery($"SELECT SUM(products.selling_price) FROM {Warehouse["name"]} INNER JOIN {Tables.products.actual_name} ON wh1.product_id = products.id");
-                string BuyingPrice = SQL.FindOneDataFromQuery($"SELECT SUM(products.buying_price) FROM {Warehouse["name"]} INNER JOIN {Tables.products.actual_name} ON wh1.product_id = products.id");
+                string SellingPrice = SQL.FindOneDataFromQuery($"SELECT SUM(products.selling_price) FROM {Warehouse["name"]} INNER JOIN {Tables.products.actual_name} ON {Warehouse["name"]}.product_id = {Tables.products.actual_name}.id");
+                string BuyingPrice = SQL.FindOneDataFromQuery($"SELECT SUM(products.buying_price) FROM {Warehouse["name"]} INNER JOIN {Tables.products.actual_name} ON {Warehouse["name"]}.product_id = {Tables.products.actual_name}.id");
 
                 double WarehouseMaxValue = MaxValue != "" ? double.Parse(MaxValue) : 0;
                 double AllSellingPrice = SellingPrice != "" ? double.Parse(SellingPrice) : 0;
@@ -79,11 +82,13 @@ namespace WH_APP_GUI.Warehouse
 
                 WarehouseTotalSpending.Maximum = WarehouseMaxValue;
                 WarehouseTotalSpendingLBL.Content = Warehouse["total_spending"] + " - Ft";
-                WarehouseTotalSpending.Value = double.Parse(Warehouse["total_spending"].ToString());
+                bool ValidateWarehouseTotalSpending = Warehouse["total_spending"].ToString() != "" ? true : false;
+                WarehouseTotalSpending.Value = ValidateWarehouseTotalSpending ? double.Parse(Warehouse["total_spending"].ToString()) : 0;
 
                 WarehouseTotalIncome.Maximum = WarehouseMaxValue;
                 WarehouseTotalIncomeLBL.Content = Warehouse["total_income"] + " - Ft";
-                WarehouseTotalIncome.Value = double.Parse(Warehouse["total_income"].ToString());
+                bool ValidateWarehouseTotalIncome = Warehouse["total_income"].ToString() != "" ? true : false;
+                WarehouseTotalIncome.Value = ValidateWarehouseTotalIncome ? double.Parse(Warehouse["total_income"].ToString()) : 0;
 
                 ProductsTotalSellingPrice.Maximum = WarehouseMaxValue;
                 ProductsTotalSellingPrice.Value = AllSellingPrice;
@@ -141,7 +146,6 @@ namespace WH_APP_GUI.Warehouse
             }
             else
             {
-                RevenueBorder.Visibility = Visibility.Collapsed;
                 NoRevenue.Visibility = Visibility.Visible;
             }
         }
