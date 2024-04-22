@@ -20,11 +20,8 @@ namespace WH_APP_GUI.Product
 {
     public partial class CreateProduct : Page
     {
-        private static Type PreviousPageType;
-        public CreateProduct(Page previousPage)
+        public CreateProduct()
         {
-            PreviousPageType = previousPage.GetType();
-
             InitializeComponent();
 
             name.ValueDataType = typeof(string);
@@ -157,28 +154,15 @@ namespace WH_APP_GUI.Product
                 Tables.products.database.Rows.Add(product);
                 Tables.products.updateChanges();
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been created {product["name"]} product.");
-
                 MessageBox.Show("Product created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                //this.Close();
 
-                //ProductsPage productsPage = new ProductsPage();
-                //Navigation.content2.Navigate(productsPage);
-
-                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                Navigation.content2.Navigate(previousPage);
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //this.Close();
-
-            //ProductsPage productsPage = new ProductsPage();
-            //Navigation.content2.Navigate(productsPage);
-
-            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-            Navigation.content2.Navigate(previousPage);
-
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
     }
 }

@@ -23,6 +23,13 @@ namespace WH_APP_GUI.Product
             InitializeComponent();
             DisplayAllProducts(ProductsDiaplayStackPanel);
         }
+        private DataRow WarehouseFromPage;
+        public ProductsPage(DataRow warehouseFromPage)
+        {
+            InitializeComponent();
+            DisplayAllProducts(ProductsDiaplayStackPanel);
+            WarehouseFromPage = warehouseFromPage;
+        }
         public void DisplayAllProducts(Panel panel)
         {
             panel.Children.Clear();
@@ -146,13 +153,15 @@ namespace WH_APP_GUI.Product
             DataRow product = (sender as Button).Tag as DataRow;
             if (product != null)
             {
-                EditProductPage editProductPage = new EditProductPage(new ProductsPage(), product);
-                //editProductPage.Show();
-                //editProductPage.Closing += CloseAndDisplay;
-                ProductsContent.Content = null;
-                ProductsContent.Navigate(editProductPage);
-                ProductsContent.Visibility = Visibility.Visible;
-
+                if (WarehouseFromPage != null)
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("EditProductPage"), product);
+                    Navigation.ReturnParam = WarehouseFromPage;
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("EditProductPage"), product);
+                }          
             }
         }
         void CloseAndDisplay(object sender, EventArgs e)
@@ -163,21 +172,17 @@ namespace WH_APP_GUI.Product
         {
             DisplayAllProducts(ProductsDiaplayStackPanel);
         }
-
-        private void BackToHomePage_Click(object sender, RoutedEventArgs e)
-        {
-            //HomePage homePage = new HomePage();
-            //this.Hide();
-            //homePage.Show();
-        }
         private void AddProducts_Click(object sender, RoutedEventArgs e)
         {
-            CreateProduct createProduct = new CreateProduct(new ProductsPage());
-            //editProductPage.Show();
-            //editProductPage.Closing += CloseAndDisplay;
-            ProductsContent.Content = null;
-            ProductsContent.Navigate(createProduct);
-            ProductsContent.Visibility = Visibility.Visible;
+            if (WarehouseFromPage != null)
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateProduct"));
+                Navigation.ReturnParam = WarehouseFromPage;
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateProduct"));
+            }
         }
     }
 }

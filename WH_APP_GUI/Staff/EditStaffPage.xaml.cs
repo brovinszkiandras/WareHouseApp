@@ -18,12 +18,10 @@ namespace WH_APP_GUI.Staff
 {
     public partial class EditStaffPage : Page
     {
-        
-        private static Type PreviousPageType;
         private DataRow staff;
-        public EditStaffPage(Page previousPage, DataRow Staff)
+        public EditStaffPage(DataRow Staff)
         {
-            PreviousPageType = previousPage.GetType();
+            //PreviousPageType = previousPage.GetType();
 
             this.staff = Staff;
             InitializeComponent();
@@ -39,7 +37,6 @@ namespace WH_APP_GUI.Staff
             email.Text = staff["email"].ToString();
 
             Ini_role_id();
-
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -102,10 +99,12 @@ namespace WH_APP_GUI.Staff
                         string targetFilePath = Path.Combine(targetDirectory, fileName);
 
                         File.Copy(selectedFilePath, targetFilePath, true);
-
                         BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
 
-                        staff["password"] = fileName;
+                        ImageBrush brush = new ImageBrush(bitmap);
+
+                        profile_picture.Background = brush;
+                        staff["profile_picture"] = fileName;
                         Tables.staff.updateChanges();
                     }
                     catch (Exception ex)
@@ -134,20 +133,14 @@ namespace WH_APP_GUI.Staff
                     
                     Tables.staff.updateChanges();
 
-                    Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                    Navigation.content2.Navigate(previousPage);
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
                 }
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //this.Close();
-            //StaffPage staffPage = new StaffPage();
-            //Navigation.content2.Navigate(staffPage);
-
-            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-            Navigation.content2.Navigate(previousPage);
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
 
         private void PasswordReset_Click(object sender, RoutedEventArgs e)

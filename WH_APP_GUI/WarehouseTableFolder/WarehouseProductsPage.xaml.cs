@@ -134,7 +134,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
                 productGrid.Children.Add(is_in_box);
 
                 Button add = new Button();
-                add.Content = "Add";
+                add.Content = "Quantity";
                 add.FontSize = 15;
                 add.Foreground = Brushes.White;
                 add.Background = Brushes.Green;

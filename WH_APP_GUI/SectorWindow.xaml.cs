@@ -26,6 +26,7 @@ namespace WH_APP_GUI
 
             MessageBox.Show(Visual.sector["id"].ToString());
 
+
             this.DataContext = Visual.sector;
 
             Visual.initalizeGrid(boxGrid);

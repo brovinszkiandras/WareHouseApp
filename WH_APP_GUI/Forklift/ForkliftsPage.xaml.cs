@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WH_APP_GUI.Employee;
 using WH_APP_GUI.Forklift;
+using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI
 {
@@ -24,6 +25,17 @@ namespace WH_APP_GUI
             InitializeComponent();
             Ini_warehouse_id();
             DisplayAllForklifts(DisplayForkliftsStackPanel);
+            Back.Visibility = Visibility.Collapsed;
+        }
+        private DataRow WarehouseFromPage;
+        public ForkliftsPage(DataRow warehouse)
+        {
+            WarehouseFromPage = warehouse;
+            InitializeComponent();
+            forkliftFilter.Visibility = Visibility.Collapsed;
+            Allforklift.Visibility = Visibility.Collapsed;
+            Ini_warehouse_id();
+            DisplayForkliftsInWarehouse(DisplayForkliftsStackPanel, warehouse);
         }
         private Dictionary<string, DataRow> warehouse_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_warehouse_id()
@@ -131,10 +143,15 @@ namespace WH_APP_GUI
 
         private void AddNewforklift_Click(object sender, RoutedEventArgs e)
         {
-            CreateFrokliftPage createFrokliftPage = new CreateFrokliftPage(new ForkliftsPage());
-            ForkliftContent.Content = null;
-            ForkliftContent.Navigate(createFrokliftPage);
-            ForkliftContent.Visibility = Visibility.Visible;
+            if (WarehouseFromPage != null)
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateFrokliftPage"));
+                Navigation.ReturnParam = WarehouseFromPage;
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateFrokliftPage"));
+            }
         }
         
         private void editForklift_Click(object sender, RoutedEventArgs e)
@@ -142,10 +159,15 @@ namespace WH_APP_GUI
             DataRow forklift = (sender as Button).Tag as DataRow;
             if (forklift != null)
             {
-                EditForkliftPage editForkliftPage = new EditForkliftPage(new ForkliftsPage(), forklift);
-                ForkliftContent.Content = null;
-                ForkliftContent.Navigate(editForkliftPage);
-                ForkliftContent.Visibility = Visibility.Visible;
+                if (WarehouseFromPage != null)
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("EditForkliftPage"), forklift);
+                    Navigation.ReturnParam = WarehouseFromPage;
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("EditForkliftPage"), forklift);
+                }
             }
         }
         private void deleteForklift_Click(object sender, RoutedEventArgs e)
@@ -162,22 +184,10 @@ namespace WH_APP_GUI
                 MessageBox.Show("Product deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
-        void CloseAndDisplay(object sender, EventArgs e)
-        {
-            DisplayForkliftsStackPanel.Children.Clear();
-            DisplayAllForklifts(DisplayForkliftsStackPanel);
-        }
         private void Allforklift_Click(object sender, RoutedEventArgs e)
         {
             DisplayForkliftsStackPanel.Children.Clear();
             DisplayAllForklifts(DisplayForkliftsStackPanel);
-        }
-        private void BackToHomePage_Click(object sender, RoutedEventArgs e)
-        {
-            //HomePage homePage = new HomePage();
-            //this.Hide();
-            //homePage.Show();
         }
         private void forkliftFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -185,6 +195,22 @@ namespace WH_APP_GUI
             {
                 DisplayForkliftsStackPanel.Children.Clear();
                 DisplayForkliftsInWarehouse(DisplayForkliftsStackPanel, warehouse_id_Dictionary[forkliftFilter.SelectedItem.ToString()]);
+            }
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                if (WarehouseFromPage != null)
+                {
+                    Navigation.PreviousPage = new InspectWarehouse(WarehouseFromPage);
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), WarehouseFromPage);
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
             }
         }
     }

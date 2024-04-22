@@ -24,13 +24,12 @@ namespace WH_APP_GUI
             {
                 if (textBox.Text.Length == 0)
                 {
-
                     if (contextTable.Columns[textBox.Name].AllowDBNull == false)
                     {
                         // Xceed.Wpf.Toolkit.MessageBox.Show(context[textBox.Name, DataRowVersion.Original].ToString());
 
                         textBox.Text = context[textBox.Name].ToString();
-                        Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot be emtpy");
+                        MessageBox.Show($"{textBox.Name} cannot be emtpy", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         HasError = true;
 
                     }
@@ -49,39 +48,65 @@ namespace WH_APP_GUI
                 }
                 else if (textBox.HasParsingError == true)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} must be a {textBox.ValueDataType.Name}");
-
+                    MessageBox.Show($"{textBox.Name} must be a {textBox.ValueDataType.Name}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                     textBox.Text = context[textBox.Name].ToString();
                     HasError = true;
-
                 }
                
                 else if (contextTable.Columns[textBox.Name].Unique == true)
                 {
-
                     DataRow[] matchingRows = contextTable.Select($"{textBox.Name} = '{textBox.Value}'");
                     if (matchingRows.Length != 0)
                     {
-
+                        MessageBox.Show(matchingRows[0]["id"].ToString());
+                        MessageBox.Show(context["id"].ToString());
                         if ((int)matchingRows[0]["id"] != (int)context["id"])
                         {
-                            Xceed.Wpf.Toolkit.MessageBox.Show($"An element with this {textBox.Name} already exists");
+                            MessageBox.Show($"An element with this {textBox.Name} already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             HasError = true;
                         }
                     }
                 }
                 else if (textBox.IsValueOutOfRange == true)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} must be smaller or equal to {textBox.MaxValue}");
+                    MessageBox.Show($"{textBox.Name} must be smaller or equal to {textBox.MaxValue}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     HasError = true;
                 }
+                else
+                {
+                    char[] Email_exceptions = { '@', '.' };
+                    char[] Name_exceptions = { ' ', '-' };
+                    if (textBox.Name == "email" && SQL.ContainsIllegalRegexWithExceptions(textBox.Text, Email_exceptions))
+                    {
+                        textBox.Text = context[textBox.Name].ToString();
+
+                        MessageBox.Show($"{textBox.Name} cannot contain special characters", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        HasError = true;
+                    }
+                    else if (textBox.Name != "email" && SQL.ContainsIllegalRegexWithExceptions(textBox.Text, Name_exceptions) && (textBox.ValueDataType != typeof(int) && textBox.ValueDataType != (typeof(double))))
+                    {
+                        textBox.Text = context[textBox.Name].ToString();
+
+                        MessageBox.Show($"{textBox.Name} cannot contain special characters", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        HasError = true;
+                    }
+                    else if(textBox.Name == "email")
+                    {
+                        DataRow[] matchingRows = contextTable.Select($"{textBox.Name} = '{textBox.Value}'");
+                        if (matchingRows.Length != 0)
+                        {
+                            if ((int)matchingRows[0]["id"] != (int)context["id"])
+                            {
+                                MessageBox.Show($"An element with this {textBox.Name} already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                HasError = true;
+                            }
+                        }
+                    }
+                }
             }
-
-
             return HasError;
         }
-
         public static bool ValidateCombobox(ComboBox combobox, DataRow context)
         {
             if (combobox.Visibility == Visibility.Visible)
@@ -93,7 +118,7 @@ namespace WH_APP_GUI
                     if (contextTable.Columns[combobox.Name].AllowDBNull == false)
                     {
                         HasError = true;
-                        MessageBox.Show($"{combobox.Name} must be selected");
+                        MessageBox.Show($"{combobox.Name} must be selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 return HasError;
@@ -105,3 +130,4 @@ namespace WH_APP_GUI
         }
     }
 }
+

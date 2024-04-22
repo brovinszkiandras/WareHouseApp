@@ -19,14 +19,12 @@ namespace WH_APP_GUI.Employee
 {
     public partial class CreateEmployee : Page
     {
-        private static Type PreviousPageType;
-        public CreateEmployee(Page previousPage)
+        public CreateEmployee()
         {
-            PreviousPageType = previousPage.GetType();
-
             InitializeComponent();
             IniWarehouses();
             IniRoles();
+            IniPicture();
 
             profile_picture.Height = this.Height * 0.25;
             profile_picture.Width = this.Height * 0.25;
@@ -44,6 +42,25 @@ namespace WH_APP_GUI.Employee
             {
                 Warehouses.Add(warehouse["name"].ToString(), warehouse);
                 warehouse_id.Items.Add(warehouse["name"].ToString());
+            }
+        }
+        private void IniPicture()
+        {
+            string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
+            if (Directory.Exists(targetDirectory))
+            {
+                string imageFileName = "DefaultEmployeeProfile.png";
+                string imagePath = Path.Combine(targetDirectory, imageFileName);
+                if (File.Exists(imagePath))
+                {
+                    string fileName = Path.GetFileName(imagePath);
+                    string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                    BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+                    ImageBrush brush = new ImageBrush(bitmap);
+
+                    profile_picture.Background = brush;
+                }
             }
         }
         private Dictionary<string, DataRow> Roles = new Dictionary<string, DataRow>();
@@ -103,18 +120,14 @@ namespace WH_APP_GUI.Employee
 
                 //Email.send($"{employee["email"]}","Welcome to the company",text);
 
-                Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                Navigation.content2.Navigate(previousPage);
+                //Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                //Navigation.content2.Navigate(previousPage);
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //EmployeesPage employeesPage = new EmployeesPage();
-            //Navigation.content2.Navigate(employeesPage);
-
-            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-            Navigation.content2.Navigate(previousPage);
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
 
         private void profile_picture_Click(object sender, RoutedEventArgs e)

@@ -19,11 +19,8 @@ namespace WH_APP_GUI
 {
     public partial class EditEmployeePage : Page
     {
-        private static Type PreviousPageType;
-        public EditEmployeePage(Page previousPage, DataRow employee)
+        public EditEmployeePage(DataRow employee)
         {
-            PreviousPageType = previousPage.GetType();
-
             InitializeComponent();
             IniWarehouses();
             IniRoles();
@@ -37,7 +34,7 @@ namespace WH_APP_GUI
             warehouse_id.SelectedItem = Tables.employees.getWarehouse(employee)["name"];
             PasswordReset.Tag = employee;
             activity.Tag = employee;
-            DoneEmployeeUpdate.Tag = employee;
+            Done.Tag = employee;
             profile_picture.Tag = employee;
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
@@ -110,11 +107,7 @@ namespace WH_APP_GUI
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //EmployeesPage employeesPage = new EmployeesPage();
-            //Navigation.content2.Navigate(employeesPage);
-
-            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-            Navigation.content2.Navigate(previousPage);
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
 
         private void PasswordReset_Click(object sender, RoutedEventArgs e)
@@ -153,7 +146,7 @@ namespace WH_APP_GUI
             }
         }
 
-        private void DoneEmployeeUpdate_Click(object sender, RoutedEventArgs e)
+        private void Done_Click(object sender, RoutedEventArgs e)
         {
             DataRow employee = (sender as Button).Tag as  DataRow;
             if (employee != null)
@@ -177,10 +170,7 @@ namespace WH_APP_GUI
                     Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {employee["name"]} employee.");
                     MessageBox.Show("The employee has been updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    //EmployeesPage employeesPage = new EmployeesPage();
-                    //Navigation.content2.Navigate(employeesPage);
-                    Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                    Navigation.content2.Navigate(previousPage);
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
                 }
             }
         }

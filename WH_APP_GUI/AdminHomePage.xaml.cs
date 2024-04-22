@@ -533,18 +533,12 @@ namespace WH_APP_GUI
 
         private void RegisterEmployee_Click(object sender, RoutedEventArgs e)
         {
-            CreateEmployee createEmployee = new CreateEmployee(new AdminHomePage());
-            AdminContent.Content = null;
-            AdminContent.Navigate(createEmployee);
-            AdminContent.Visibility = Visibility.Visible;
+            Navigation.OpenPage(Navigation.GetTypeByName("CreateEmployee"));
         }
 
         private void RegisterStaff_Click(object sender, RoutedEventArgs e)
         {
-            CreateStaffPage createStaffPage = new CreateStaffPage(new AdminHomePage());
-            AdminContent.Content = null;
-            AdminContent.Navigate(createStaffPage);
-            AdminContent.Visibility = Visibility.Visible;
+            Navigation.OpenPage(Navigation.GetTypeByName("CreateStaffPage"));
         }
         private void ImportEmployees_Click(object sender, RoutedEventArgs e)
         {

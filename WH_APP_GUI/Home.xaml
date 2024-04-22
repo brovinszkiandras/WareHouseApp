@@ -34,6 +34,7 @@
                                 <Setter Property="Margin" Value="12,5"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FFF0E68C"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -56,14 +57,7 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        <ResourceDictionary x:Key="alma">
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/WH_APP_GUI;component/DefaultStyles.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        
     </Page.Resources>
 
     <Grid Name="alapgrid" Background="#FFEBD2">

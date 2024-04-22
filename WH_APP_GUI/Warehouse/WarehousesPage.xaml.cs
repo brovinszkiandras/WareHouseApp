@@ -3,9 +3,11 @@ using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,7 +16,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WH_APP_GUI.Forklift;
 using WH_APP_GUI.sectors;
 using WH_APP_GUI.WarehouseTableFolder;
@@ -36,6 +37,7 @@ namespace WH_APP_GUI.Warehouse
             {
                 Grid grid = new Grid();
                 grid.Height = 150;
+                grid.Margin = new Thickness(5);
 
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
@@ -47,11 +49,31 @@ namespace WH_APP_GUI.Warehouse
                 Grid.SetColumnSpan(border, 3);
                 grid.Children.Add(border);
 
-                PackIconMaterial icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Warehouse };
-                icon.Height = 50;
-                icon.Width = 50;
-                icon.SetValue(Grid.RowSpanProperty, 3);
-                grid.Children.Add(icon);
+                Image image = new Image();
+                image.Width = 100;
+                image.Height = 100;
+                image.HorizontalAlignment = HorizontalAlignment.Left;
+                image.SetValue(Grid.RowSpanProperty, 3);
+
+                string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
+                if (Directory.Exists(targetDirectory))
+                {
+                    string imageFileName = "WarehouseDefaultPicture.png";
+                    string imagePath = Path.Combine(targetDirectory, imageFileName);
+
+                    if (File.Exists(imagePath))
+                    {
+                        string fileName = Path.GetFileName(imagePath);
+                        string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                        BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+
+                        image.Source = bitmap;
+                    }
+                }
+                image.Margin = new Thickness(5);
+                image.SetValue(Grid.RowSpanProperty, 3);
+                grid.Children.Add(image);
 
                 Label label = new Label();
                 label.Content = Tables.warehouses.database.Rows[i]["name"];
@@ -111,16 +133,12 @@ namespace WH_APP_GUI.Warehouse
             SelectedWarehouse = btn.Tag as DataRow;
             if (SelectedWarehouse != null)
             {
-                InspectWarehouse inspectWarehouse = new InspectWarehouse(new WarehousesPage(), SelectedWarehouse);
-                WarehouseContent.Content = null;
-                WarehouseContent.Navigate(inspectWarehouse);
-                WarehouseContent.Visibility = Visibility.Visible;
+                Navigation.OpenPage(Navigation.GetTypeByName("InspectWarehouse"), SelectedWarehouse);
             }
         }
 
         private void delete_warehouse_Click(object sender, RoutedEventArgs e)
         {
-
             Button btn = sender as Button;
             DataRow warehouse = btn.Tag as DataRow;
             if (warehouse != null)
@@ -162,52 +180,6 @@ namespace WH_APP_GUI.Warehouse
                     throw;
                 }
             }
-        }
-
-        private void SectorsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
-        {
-            //if (SelectedWarehouse != null)
-            //{
-            //    sectorIndexWindow sectorIndexWindow = new sectorIndexWindow();
-            //    Navigation.content2.Navigate(sectorIndexWindow);
-            //}
-        }
-
-        private void EmployeesInspectToWarehouse_Click(object sender, RoutedEventArgs e)
-        {
-            EmployeesPage employeesPage = new EmployeesPage(new WarehousesPage());
-            Navigation.content2.Navigate(employeesPage);
-        }
-
-        private void OrdersInspectToWarehouse_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ProductsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
-        {
-            WarehouseProductsPage page = new WarehouseProductsPage();
-            Navigation.content2.Navigate(page);
-        }
-
-        private void FleetInspectToWarehouse_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void DocksInspectToWarehouse_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ForkliftInspectToWarehouse_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Back_AllWarehouse_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

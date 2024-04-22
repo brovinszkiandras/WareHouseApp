@@ -57,8 +57,6 @@ namespace WH_APP_GUI
                 SQL.SqlCommand($"ALTER TABLE {actual_name} AUTO_INCREMENT = 1;");
                 database.Columns["id"].AutoIncrementSeed = 1;
             }
-
-           
         }
 
         public void GetNames()
@@ -192,7 +190,6 @@ namespace WH_APP_GUI
     }
     class cities : table
     {
-
         public cities() : base()
         {
 
@@ -205,9 +202,6 @@ namespace WH_APP_GUI
     }
     class warehouses : table
     {
-
-
-
         public warehouses() : base()
         {
             
@@ -229,8 +223,11 @@ namespace WH_APP_GUI
             return Relations.childRelation("employeeWarehouse", warehouse);
         }
 
-        
-
+        public DataRow[] getOrders(DataRow warehouse)
+        {
+            return Relations.childRelation("orderWarehouse", warehouse);
+        }
+       
         public DataRow getCity(DataRow warehouse)
         {
             return Relations.parentRelation("warehouseCity", warehouse);
@@ -277,8 +274,11 @@ namespace WH_APP_GUI
 
         }
 
+        public DataRow getWarehouse(DataRow order)
+        {
+            return Relations.parentRelation("orderWarehouse", order);
+        }
        
-
         public DataRow getProduct(DataRow order)
         {
             return Relations.parentRelation("orderProduct", order);
@@ -321,8 +321,6 @@ namespace WH_APP_GUI
     }
     class products : table
     {
-
-
         public products() : base()
         {
             database.Columns["name"].AllowDBNull = false;
@@ -354,7 +352,6 @@ namespace WH_APP_GUI
     }
     class roles : table
     {
-
         public roles() : base()
         {
             database.Columns["role"].Unique = true;
@@ -385,7 +382,6 @@ namespace WH_APP_GUI
     }
     class permission : table
     {
-
         public permission() : base()
         {
 
@@ -414,9 +410,7 @@ namespace WH_APP_GUI
             database.Columns["type"].AllowDBNull = false;
             database.Columns["km"].AllowDBNull = true;
             database.Columns["last_service"].AllowDBNull = true;
-            database.Columns["last_exam"].AllowDBNull = true;
-
-           
+            database.Columns["last_exam"].AllowDBNull = true; 
         }
 
         public DataRow[] getTransports(DataRow car)
@@ -431,8 +425,7 @@ namespace WH_APP_GUI
             database.Columns["employee_id"].AllowDBNull = false;
             database.Columns["car_id"].AllowDBNull=false;
             database.Columns["status"].AllowDBNull = false;
-            database.Columns["end_date"].AllowDBNull = true;
-            
+            database.Columns["end_date"].AllowDBNull = true;       
         }
 
         public DataRow getEmployee(DataRow transport)

@@ -111,6 +111,8 @@
                     </ComboBox>
                 </StackPanel>
             
+
+            
                 <StackPanel Grid.Row="1">
                     <Label Content="Quantity of items:" Style="{StaticResource mylabelStyle}"></Label>
                     <xctk:ValueRangeTextBox Style="{StaticResource MyTextBoxStyle}" Name="qty" Text="{Binding Path=[qty]}"></xctk:ValueRangeTextBox>
