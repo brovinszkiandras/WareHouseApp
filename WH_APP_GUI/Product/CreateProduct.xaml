@@ -20,7 +20,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Button Name="image" BorderBrush="Black" Margin="20" Click="image_Click" Grid.Row="1"/>
+        <Button Name="image" BorderBrush="Black" Margin="20" Click="image_Click" Grid.Row="1" MaxHeight="100" MaxWidth="100"/>
 
         <Grid Grid.Column="1" Grid.RowSpan="2" Margin="20">
             <Grid.ColumnDefinitions>

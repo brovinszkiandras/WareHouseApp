@@ -70,6 +70,19 @@
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
 
+<<<<<<< HEAD
+        <StackPanel Name="Header" Orientation="Horizontal" Margin="10" Grid.ColumnSpan="2">
+            <Label Content="User name:" Margin="20"/>
+            <Label Name="UserNameDisplay" Content="User name display" Foreground="Black" BorderThickness="0,0,0,1" Margin="20"/>
+            <Label Content="User email:" Foreground="Black" Margin="20"/>
+            <Label Content="User email display" Name="UserEmailDisplay" Foreground="Black" BorderThickness="0,0,0,1" Margin="20"/>
+        </StackPanel>
+
+        <StackPanel MouseEnter="Menu_MouseEnter" MouseLeave="Menu_MouseLeave" Name="Menu" Grid.Row="1" Background="PapayaWhip" Margin="20">
+        </StackPanel>
+
+        
+=======
         <StackPanel Name="Menu" Grid.Row="1" Background="PapayaWhip" Margin="20">
         </StackPanel>
 
@@ -80,5 +93,6 @@
             <Label Content="User email display" Name="UserEmailDisplay" Foreground="Black" BorderThickness="0,0,0,1" Margin="20, 5"/>
         </StackPanel>
 
+>>>>>>> origin/solyom
     </Grid>
 </Page>

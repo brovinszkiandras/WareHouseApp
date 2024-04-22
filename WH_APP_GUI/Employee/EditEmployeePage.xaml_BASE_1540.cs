@@ -19,18 +19,11 @@ namespace WH_APP_GUI
 {
     public partial class EditEmployeePage : Page
     {
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (var child in alapgrid.Children)
-            {
-                FontSize = e.NewSize.Height * 0.02;
-
-            }
-            profile_picture.Height = e.NewSize.Height * 0.4; profile_picture.Width = e.NewSize.Height * 0.4;
-        }
         private static Type PreviousPageType;
         public EditEmployeePage(Page previousPage, DataRow employee)
         {
+            PreviousPageType = previousPage.GetType();
+
             InitializeComponent();
             IniWarehouses();
             IniRoles();
@@ -44,7 +37,7 @@ namespace WH_APP_GUI
             warehouse_id.SelectedItem = Tables.employees.getWarehouse(employee)["name"];
             PasswordReset.Tag = employee;
             activity.Tag = employee;
-            Done.Tag = employee;
+            DoneEmployeeUpdate.Tag = employee;
             profile_picture.Tag = employee;
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
@@ -117,7 +110,11 @@ namespace WH_APP_GUI
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            //EmployeesPage employeesPage = new EmployeesPage();
+            //Navigation.content2.Navigate(employeesPage);
+
+            Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+            Navigation.content2.Navigate(previousPage);
         }
 
         private void PasswordReset_Click(object sender, RoutedEventArgs e)
@@ -156,7 +153,7 @@ namespace WH_APP_GUI
             }
         }
 
-        private void Done_Click(object sender, RoutedEventArgs e)
+        private void DoneEmployeeUpdate_Click(object sender, RoutedEventArgs e)
         {
             DataRow employee = (sender as Button).Tag as  DataRow;
             if (employee != null)
@@ -180,7 +177,10 @@ namespace WH_APP_GUI
                     Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {employee["name"]} employee.");
                     MessageBox.Show("The employee has been updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                    //EmployeesPage employeesPage = new EmployeesPage();
+                    //Navigation.content2.Navigate(employeesPage);
+                    Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
+                    Navigation.content2.Navigate(previousPage);
                 }
             }
         }

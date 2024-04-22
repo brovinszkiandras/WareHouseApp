@@ -19,6 +19,9 @@ namespace WH_APP_GUI
 {
     public partial class EditEmployeePage : Page
     {
+<<<<<<< HEAD
+        public EditEmployeePage(DataRow employee)
+=======
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             foreach (var child in alapgrid.Children)
@@ -30,6 +33,7 @@ namespace WH_APP_GUI
         }
         private static Type PreviousPageType;
         public EditEmployeePage(Page previousPage, DataRow employee)
+>>>>>>> origin/solyom
         {
             InitializeComponent();
             IniWarehouses();

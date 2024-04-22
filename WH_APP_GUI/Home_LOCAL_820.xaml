@@ -63,22 +63,23 @@
     <Grid Name="alapgrid" Background="#FFEBD2">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="menucolum" Width="*" MouseEnter="menucolum_MouseEnter"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Name="Menu" Grid.Row="1" Background="PapayaWhip" Margin="20">
+        <StackPanel Name="Header" Orientation="Horizontal" Margin="10" Grid.ColumnSpan="2">
+            <Label Content="User name:" Margin="20"/>
+            <Label Name="UserNameDisplay" Content="User name display" Foreground="Black" BorderThickness="0,0,0,1" Margin="20"/>
+            <Label Content="User email:" Foreground="Black" Margin="20"/>
+            <Label Content="User email display" Name="UserEmailDisplay" Foreground="Black" BorderThickness="0,0,0,1" Margin="20"/>
         </StackPanel>
 
-        <StackPanel Name="Header" Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center">
-            <Label Content="User name:" Margin="20, 5"/>
-            <Label Name="UserNameDisplay" Content="User name display" Foreground="Black" BorderThickness="0,0,0,1" Margin="20, 5"/>
-            <Label Content="User email:" Foreground="Black" Margin="20, 5"/>
-            <Label Content="User email display" Name="UserEmailDisplay" Foreground="Black" BorderThickness="0,0,0,1" Margin="20, 5"/>
+        <StackPanel MouseEnter="Menu_MouseEnter" MouseLeave="Menu_MouseLeave" Name="Menu" Grid.Row="1" Background="PapayaWhip" Margin="20">
         </StackPanel>
 
+        
     </Grid>
 </Page>

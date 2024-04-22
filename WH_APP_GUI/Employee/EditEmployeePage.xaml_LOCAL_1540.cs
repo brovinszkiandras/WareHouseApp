@@ -19,17 +19,7 @@ namespace WH_APP_GUI
 {
     public partial class EditEmployeePage : Page
     {
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (var child in alapgrid.Children)
-            {
-                FontSize = e.NewSize.Height * 0.02;
-
-            }
-            profile_picture.Height = e.NewSize.Height * 0.4; profile_picture.Width = e.NewSize.Height * 0.4;
-        }
-        private static Type PreviousPageType;
-        public EditEmployeePage(Page previousPage, DataRow employee)
+        public EditEmployeePage(DataRow employee)
         {
             InitializeComponent();
             IniWarehouses();

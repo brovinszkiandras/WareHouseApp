@@ -34,7 +34,6 @@
                                 <Setter Property="Margin" Value="12,5"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#FFF0E68C"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -56,8 +55,6 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-
-        
     </Page.Resources>
 
     <Grid Name="alapgrid" Background="#FFEBD2">
