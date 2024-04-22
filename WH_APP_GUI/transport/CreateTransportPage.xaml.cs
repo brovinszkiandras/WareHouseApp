@@ -26,7 +26,7 @@ namespace WH_APP_GUI.transport
         {
             InitializeComponent();
             transport["status"] = "Docking";
-            transport["start_date"] = DateTime.Now;
+            transport["start_date"] = SQL.convertDateToCorrectFormat(DateTime.Now);
            // transport["is_transported"] = false;
 
 
@@ -177,6 +177,9 @@ namespace WH_APP_GUI.transport
             }
             else
             {
+                transport["start_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["start_date"]);
+                transport["end_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["end_date"]);
+
                 Tables.transports.database.Rows.Add(transport);
                 Tables.transports.updateChanges();
                 Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully created a new transport");

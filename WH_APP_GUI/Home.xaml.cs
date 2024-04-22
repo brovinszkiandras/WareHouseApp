@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.IconPacks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WH_APP_GUI.carsFolder;
 using WH_APP_GUI.transport;
+using Xceed.Wpf.Toolkit;
 
 namespace WH_APP_GUI
 {
@@ -73,10 +75,13 @@ namespace WH_APP_GUI
 
             if (User.DoesHavePermission("Inspect all Orders"))
             {
-                Button btn = new Button();
-                btn.Content = "Orders";
+
+                PackIconMaterial icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Warehouse };
+                IconButton btn = new IconButton();
+                btn.Content = icon + "alma";
                 btn.Click += InspectAllOrders_Click;
                 btn.Style = (Style)this.Resources["ElegantButtonStyle"];
+                btn.Tag = "Alma";
                 Grid.SetRow(btn, indexOfGrid);
                 Menu.Children.Add(btn);
 
@@ -263,6 +268,36 @@ namespace WH_APP_GUI
             //adminHomePage.Show();
             Navigation.content2.Content = null;
             Navigation.content2.Navigate(new Uri("AdminHomePage.xaml", UriKind.Relative));
+        }
+
+        private void Menu_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Button button = sender as Button;
+            foreach (Button children in Menu.Children)
+            {
+                if (children.Tag != null)
+                {
+
+                    children.Content += children.Tag.ToString();
+
+                }
+            }
+        }
+
+        private void Menu_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Button button = sender as Button;
+
+            foreach (Button children in Menu.Children)
+            {
+                if (children.Tag != null)
+                {
+                    string originalString = children.Content.ToString();
+                    string stringtToRemove = children.Tag.ToString();
+
+                    children.Content = originalString.Replace(stringtToRemove, "");
+                }
+            }
         }
     }
 }

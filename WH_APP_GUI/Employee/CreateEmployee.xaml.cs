@@ -94,14 +94,14 @@ namespace WH_APP_GUI.Employee
 
                 //EmployeesPage employeesPage = new EmployeesPage();
 
-                string text = $"Subject: Welcome to the company! Your Login Credentials Inside\r\n\r\n" +
-                    $"Dear {employee["name"]},\r\n\r\nWe are thrilled to welcome you to the company." +
-                    $" We are excited to have you on board and look forward to your contributions to our company." +
-                    $"\r\n\r\nAs a new member of our team, you will need access to our company's applications. " +
-                    $"Below, you will find your login credentials:\r\n\r\n" +
-                    $"Username/Email: {employee["email"]}\r\nPassword: {password}\r\n";
+                //string text = $"Subject: Welcome to the company! Your Login Credentials Inside\r\n\r\n" +
+                //    $"Dear {employee["name"]},\r\n\r\nWe are thrilled to welcome you to the company." +
+                //    $" We are excited to have you on board and look forward to your contributions to our company." +
+                //    $"\r\n\r\nAs a new member of our team, you will need access to our company's applications. " +
+                //    $"Below, you will find your login credentials:\r\n\r\n" +
+                //    $"Username/Email: {employee["email"]}\r\nPassword: {password}\r\n";
 
-                Email.send($"{employee["email"]}","Welcome to the company",text);
+                //Email.send($"{employee["email"]}","Welcome to the company",text);
 
                 Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
                 Navigation.content2.Navigate(previousPage);

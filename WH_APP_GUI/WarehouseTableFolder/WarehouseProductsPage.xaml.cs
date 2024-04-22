@@ -133,17 +133,17 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
                 productGrid.Children.Add(is_in_box);
 
-                Button inspect = new Button();
-                inspect.Content = "Inspect";
-                inspect.FontSize = 15;
-                inspect.Foreground = Brushes.White;
-                inspect.Background = Brushes.Green;
-                inspect.Tag = product["id"];
+                Button add = new Button();
+                add.Content = "Add";
+                add.FontSize = 15;
+                add.Foreground = Brushes.White;
+                add.Background = Brushes.Green;
+                add.Tag = product["id"];
                 //inspect.Click += Inspect_Click;
-                Grid.SetRow(inspect, lastRow);
-                Grid.SetColumn(inspect, productGrid.ColumnDefinitions.Count - 3);
+                Grid.SetRow(add, lastRow);
+                Grid.SetColumn(add, productGrid.ColumnDefinitions.Count - 3);
 
-                productGrid.Children.Add(inspect);
+                productGrid.Children.Add(add);
 
 
                 if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
@@ -266,7 +266,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
             Navigation.content2.Navigate(page);
         }
 
-        private void Details_Click(object sender, RoutedEventArgs e)
+        private void Add_Click(object sender, RoutedEventArgs e)
         {
             Button button = e.Source as Button;
             DataRow car = Tables.cars.database.Select($"id = {button.Tag}")[0];

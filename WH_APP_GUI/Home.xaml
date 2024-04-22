@@ -83,7 +83,9 @@
             <Label Content="User email display" Name="UserEmailDisplay" Foreground="Black" BorderThickness="0,0,0,1" Margin="20"/>
         </StackPanel>
 
-        <StackPanel Name="Menu" Grid.Row="1" Background="PapayaWhip" Margin="20">
+        <StackPanel MouseEnter="Menu_MouseEnter" MouseLeave="Menu_MouseLeave" Name="Menu" Grid.Row="1" Background="PapayaWhip" Margin="20">
         </StackPanel>
+
+        
     </Grid>
 </Page>

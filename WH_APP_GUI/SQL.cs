@@ -438,7 +438,7 @@ namespace WH_APP_GUI
                 string formattedDateTimeString = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
 
                 // Update the value in the DataRow with the formatted datetime string
-                MessageBox.Show("Parsed it");
+                
 
                return formattedDateTimeString;
             }
@@ -461,7 +461,7 @@ namespace WH_APP_GUI
                 string formattedDateTimeString = dateTimeValue.ToString("yyyy-MM-dd");
 
                 // Update the value in the DataRow with the formatted datetime string
-                MessageBox.Show("Parsed it");
+              
 
                 return formattedDateTimeString;
             }

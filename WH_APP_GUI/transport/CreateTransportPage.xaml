@@ -50,12 +50,12 @@
 
             <StackPanel Grid.Row="2">
                 <Label Content="Start date" FontSize="17"></Label>
-                <xctk:DateTimePicker InputValidationError="start_date_InputValidationError" FontSize="17" Value="{Binding Path=[start_date]}" Name="start_date" />
+                <xctk:DateTimePicker TimeFormat="Custom" TimeFormatString="yyyy-MM-dd HH:mm:ss" Format="Custom" FormatString="yyyy-MM-dd HH:mm:ss" InputValidationError="start_date_InputValidationError" FontSize="17" Value="{Binding Path=[start_date]}" Name="start_date" />
             </StackPanel>
 
             <StackPanel Grid.Row="3">
                 <Label Content="End date" FontSize="17"></Label>
-                <xctk:DateTimePicker InputValidationError="start_date_InputValidationError" FontSize="17" Value="{Binding Path=[end_date]}" Name="end_date" />
+                <xctk:DateTimePicker TimeFormat="Custom" TimeFormatString="yyyy-MM-dd HH:mm:ss" Format="Custom" FormatString="yyyy-MM-dd HH:mm:ss" InputValidationError="start_date_InputValidationError" FontSize="17" Value="{Binding Path=[end_date]}" Name="end_date" />
             </StackPanel>
 
             <StackPanel Grid.Row="4">
