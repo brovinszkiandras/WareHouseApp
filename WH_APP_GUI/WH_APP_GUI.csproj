@@ -326,6 +326,9 @@
     <Compile Include="WarehouseTableFolder\CreateWHProductPage.xaml.cs">
       <DependentUpon>CreateWHProductPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WarehouseTableFolder\EditWHProductPage.xaml.cs">
+      <DependentUpon>EditWHProductPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WarehouseTableFolder\WarehouseProductsPage.xaml.cs">
       <DependentUpon>WarehouseProductsPage.xaml</DependentUpon>
     </Compile>
@@ -479,6 +482,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WarehouseTableFolder\CreateWHProductPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WarehouseTableFolder\EditWHProductPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

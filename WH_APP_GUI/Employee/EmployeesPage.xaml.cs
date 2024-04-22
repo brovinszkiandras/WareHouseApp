@@ -212,7 +212,7 @@ namespace WH_APP_GUI
             }
             else
             {
-                Navigation.ReturnParam = WarehouseFromPage;
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateEmployee"));
             }
         }
 

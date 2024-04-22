@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WH_APP_GUI.WarehouseTableFolder"
+        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="WHProudctQuantityPage" Height="200" Width="450">
     <Window.Resources>
@@ -80,7 +81,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1">
             <Label Content="Quantity:" Style="{StaticResource mylabelStyle}"></Label>
-            <xctk:ValueRangeTextBox Text="{Binding Path=[qty]}" Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
+            <xctk:ValueRangeTextBox Name="qty" Text="{Binding Path=[qty]}" Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
         </StackPanel>
         <Button Grid.Row="2" Name="Save" Click="Save_Click" Background="YellowGreen" FontSize="17" Content="Save"></Button>
     </Grid>

@@ -91,12 +91,20 @@ namespace WH_APP_GUI
 
         private void ConfirmDBdatas_Click(object sender, RoutedEventArgs e)
         {
-            if (DataSourceFU.Text != string.Empty && portFU.Text != string.Empty && usernameFU.Text != string.Empty && DatabaseNameFU.Text != string.Empty)
+            if (Validation.ValidateSQLNaming(DatabaseNameFU.Text, "Database name") == true &&  DataSourceFU.Text != string.Empty && portFU.Text != string.Empty && usernameFU.Text != string.Empty && DatabaseNameFU.Text != string.Empty)
             {
-                SQL.CreateDatabaseConnectionDatas(DataSourceFU.Text, int.Parse(portFU.Text), usernameFU.Text, passwrdFU.Text, DatabaseNameFU.Text);
-                SQL.FillStaticDatabaseValues();
-                DatabaseSet.Visibility = Visibility.Collapsed;
-                LogIn.Visibility = Visibility.Visible;
+                try
+                {
+                    SQL.CreateDatabaseConnectionDatas(DataSourceFU.Text, int.Parse(portFU.Text), usernameFU.Text, passwrdFU.Text, DatabaseNameFU.Text);
+                    SQL.FillStaticDatabaseValues();
+                    DatabaseSet.Visibility = Visibility.Collapsed;
+                    LogIn.Visibility = Visibility.Visible;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Couldnt connect to the specified database");
+                }
+
             }
             else
             {

@@ -139,7 +139,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
                 add.Foreground = Brushes.White;
                 add.Background = Brushes.Green;
                 add.Tag = product["id"];
-                //inspect.Click += Inspect_Click;
+                add.Click += Add_Click;
                 Grid.SetRow(add, lastRow);
                 Grid.SetColumn(add, productGrid.ColumnDefinitions.Count - 3);
 
@@ -153,7 +153,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
                     edit.FontSize = 15;
                     edit.Foreground = Brushes.White;
                     edit.Background = Brushes.Green;
-                    //edit.Click += Edit_Click;
+                    edit.Click += Edit_Click;
                     edit.Tag = product["id"];
 
                     Grid.SetRow(edit, lastRow);
@@ -254,10 +254,10 @@ namespace WH_APP_GUI.WarehouseTableFolder
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             Button button = e.Source as Button;
-            DataRow car = Tables.cars.database.Select($"id = {button.Tag}")[0];
-            UpdateCarWindow updateCarWindow = new UpdateCarWindow(car);
+            DataRow product = User.WarehouseTable().database.Select($"id = {button.Tag}")[0];
+            EditWHProductPage page = new EditWHProductPage(product);
 
-            Navigation.content2.Navigate(updateCarWindow);
+            Navigation.content2.Navigate(page);
         }
 
         private void Create_Click(object sender, RoutedEventArgs e)
@@ -269,9 +269,10 @@ namespace WH_APP_GUI.WarehouseTableFolder
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             Button button = e.Source as Button;
-            DataRow car = Tables.cars.database.Select($"id = {button.Tag}")[0];
-            InspectCarWindow inspectCarWindow = new InspectCarWindow(car);
-            inspectCarWindow.ShowDialog();
+            DataRow product = User.WarehouseTable().database.Select($"id = {button.Tag}")[0];
+            WHProudctQuantityPage page = new WHProudctQuantityPage(product);
+
+            page.ShowDialog();
         }
     }
 }

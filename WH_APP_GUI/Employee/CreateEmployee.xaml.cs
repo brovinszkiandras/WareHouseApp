@@ -83,7 +83,7 @@ namespace WH_APP_GUI.Employee
         {
             DataRow employee = Tables.employees.database.NewRow();
 
-            if (! Validation.ValidateTextbox(name, employee) && ! Validation.ValidateTextbox(email, employee) && role_id.SelectedIndex != -1 && warehouse_id.SelectedIndex != -1)
+            if (! Validation.ValidateTextbox(name, employee) && ! Validation.validateEmail(email.Text) && role_id.SelectedIndex != -1 && warehouse_id.SelectedIndex != -1)
             {
                 string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
                 string HashedPassword = Hash.HashPassword(password);

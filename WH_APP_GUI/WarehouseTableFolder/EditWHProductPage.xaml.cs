@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Net;
-using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,40 +13,37 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WH_APP_GUI.carsFolder;
 using Xceed.Wpf.Toolkit.Primitives;
 
 namespace WH_APP_GUI.WarehouseTableFolder
 {
     /// <summary>
-    /// Interaction logic for CreateWHProductPage.xaml
+    /// Interaction logic for EditWHProductPage.xaml
     /// </summary>
-    public partial class CreateWHProductPage : Page
+    public partial class EditWHProductPage : Page
     {
-       private DataRow warehouseProduct;
-
         private void CheckifProductsFitInbox()
         {
             MessageBox.Show(warehouseProduct["width"].ToString());
-                double boxvolume = (double)warehouseProduct["width"]
-               * (double)warehouseProduct["height"]
-               * (double)warehouseProduct["length"];
+            double boxvolume = (double)warehouseProduct["width"]
+           * (double)warehouseProduct["height"]
+           * (double)warehouseProduct["length"];
 
-                double productsFullVolume = (double)User.WarehouseTable().getProduct(warehouseProduct)["volume"]
-                    * (int)warehouseProduct["qty"];
+            double productsFullVolume = (double)User.WarehouseTable().getProduct(warehouseProduct)["volume"]
+                * (int)warehouseProduct["qty"];
 
-                if (boxvolume < productsFullVolume)
+            if (boxvolume < productsFullVolume)
+            {
+                MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("The prouducts dont fit inside the box\n" +
+                    $"Full volume of products: {productsFullVolume} cm3\n" +
+                    $"Volume of the box: {boxvolume} cm3\n" +
+                    $"Are you sure you want to proceed?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
                 {
-                    MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("The prouducts dont fit inside the box\n" +
-                        $"Full volume of products: {productsFullVolume} cm3\n" +
-                        $"Volume of the box: {boxvolume} cm3\n" +
-                        $"Are you sure you want to proceed?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        
-                    if(result == MessageBoxResult.Yes)
-                    {
-                        updateDatabase();
-                    }
+                    updateDatabase();
                 }
+            }
             else
             {
                 updateDatabase();
@@ -61,35 +56,43 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
         private void updateDatabase()
         {
-            User.WarehouseTable().database.Rows.Add(warehouseProduct);
+           
             User.WarehouseTable().updateChanges();
-            Xceed.Wpf.Toolkit.MessageBox.Show($"A new product has been added to the warehouse");
+            Xceed.Wpf.Toolkit.MessageBox.Show($"The product has been updated");
             WarehouseProductsPage page = new WarehouseProductsPage();
             Navigation.content2.Navigate(page);
         }
-        public CreateWHProductPage()
+
+        private DataRow warehouseProduct;
+        public EditWHProductPage(DataRow WarehouseProduct)
         {
             InitializeComponent();
 
-            warehouseProduct = User.WarehouseTable().database.NewRow();
-            warehouseProduct["is_in_box"] = true;
+            this.warehouseProduct = WarehouseProduct;
 
             this.DataContext = warehouseProduct;
 
-            product_id.ItemsSource = Tables.products.database.DefaultView;
+            product_id.ItemsSource = Tables.products.database.Rows;
+            product_id.SelectedItem = User.WarehouseTable().getProduct(warehouseProduct);
+            
+
+            
 
             List<DataRow> shelfs = new List<DataRow>();
             foreach (DataRow sector in Tables.warehouses.getSectors(User.Warehouse()))
             {
-               foreach (DataRow shelf in Tables.sector.getShelfs(sector)) 
+                foreach (DataRow shelf in Tables.sector.getShelfs(sector))
                 {
-                  shelfs.Add(shelf);
+                    shelfs.Add(shelf);
                 }
             }
 
             shelf_id.ItemsSource = shelfs;
+            shelf_id.SelectedItem = User.WarehouseTable().getShelf(warehouseProduct);
 
-            if(Tables.features.isFeatureInUse("Storage") == false)
+            on_shelf_level.SelectedItem = (int)warehouseProduct["on_shelf_level"];
+
+            if (Tables.features.isFeatureInUse("Storage") == false)
             {
                 width.Visibility = Visibility.Collapsed;
                 height.Visibility = Visibility.Collapsed;
@@ -121,11 +124,11 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
         private void shelf_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(shelf_id.SelectedIndex > -1)
+            if (shelf_id.SelectedIndex > -1)
             {
                 on_shelf_level.IsEnabled = true;
                 DataRow shelf = shelf_id.SelectedItem as DataRow;
-                
+
                 for (int i = 0; i < (int)shelf["number_of_levels"]; i++)
                 {
                     on_shelf_level.Items.Add(i + 1);
@@ -136,9 +139,9 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if(this.IsLoaded == true)
+            if (this.IsLoaded == true)
             {
-                if(Tables.features.isFeatureInUse("Storage") == true)
+                if (Tables.features.isFeatureInUse("Storage") == true)
                 {
                     widhtLabel.Content = "Box width (cm)";
                     heightLabel.Content = "Box height (cm)";
@@ -149,10 +152,10 @@ namespace WH_APP_GUI.WarehouseTableFolder
                     length.IsEnabled = true;
                     if (product_id.SelectedIndex > -1)
                     {
-                        DataRowView selectedItem = product_id.SelectedItem as DataRowView;
-                        DataRow product = selectedItem.Row;
-
                         
+                        DataRow product = product_id.SelectedItem as DataRow;
+
+
 
 
                         width.Clear();
@@ -162,7 +165,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
                     }
                 }
             }
-           
+
         }
 
         private void is_in_a_box_Unchecked(object sender, RoutedEventArgs e)
@@ -181,8 +184,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
                     if (product_id.SelectedIndex > -1)
                     {
-                        DataRowView selectedItem = product_id.SelectedItem as DataRowView;
-                        DataRow product = selectedItem.Row;
+                        DataRow product = product_id.SelectedItem as DataRow;
 
 
                         width.Text = product["width"].ToString();
@@ -197,9 +199,9 @@ namespace WH_APP_GUI.WarehouseTableFolder
         {
             if (product_id.SelectedIndex > -1)
             {
-                DataRowView selectedItem = product_id.SelectedItem as DataRowView;
-                DataRow product = selectedItem.Row;
-                if (is_in_a_box.IsChecked == false && Tables.features.isFeatureInUse("Storage") == true) {
+                DataRow product = product_id.SelectedItem as DataRow;
+                if (is_in_a_box.IsChecked == false && Tables.features.isFeatureInUse("Storage") == true)
+                {
                     width.Text = product["width"].ToString();
                     height.Text = product["heigth"].ToString();
                     length.Text = product["length"].ToString();
@@ -207,7 +209,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
                 warehouseProduct["product_id"] = product["id"];
 
-               
+
             }
         }
 
@@ -221,7 +223,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             bool thereIsAnError = false;
-            
+
 
             foreach (var gridElement in productGrid.Children)
             {
@@ -238,7 +240,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
                             thereIsAnError = Validation.ValidateTextbox(VTextBox, warehouseProduct);
 
                         }
-                        else if(element.GetType() == typeof(ComboBox))
+                        else if (element.GetType() == typeof(ComboBox))
                         {
                             ComboBox comboBox = (ComboBox)element;
 
@@ -263,7 +265,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
                 {
                     updateDatabase();
                 }
-               
+
             }
         }
     }
