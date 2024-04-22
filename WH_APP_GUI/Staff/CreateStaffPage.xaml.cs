@@ -84,7 +84,7 @@ namespace WH_APP_GUI.Staff
         {
             DataRow staff = Tables.staff.database.NewRow();
 
-            if (!Validation.ValidateTextbox(name, staff) && !Validation.ValidateTextbox(email, staff))
+            if (!Validation.ValidateTextbox(name, staff) && !Validation.validateEmail(email.Text))
             {
                 if (role_id.SelectedIndex != -1)
                 {

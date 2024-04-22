@@ -171,7 +171,7 @@
                     </ComboBox>
                 </StackPanel>
 
-                <Button x:Name="Save" Click="Save_Click" Background="YellowGreen" Panel.ZIndex="1" Content="Save" FontSize="17" Grid.Row="8"></Button>
+                <Button x:Name="Save" Click="Save_Click" Foreground="White" Background="Crimson" Panel.ZIndex="1" Content="Save" FontSize="17" Grid.Row="8"></Button>
         </Grid>
         </ScrollViewer>
         

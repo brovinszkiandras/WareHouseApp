@@ -122,7 +122,7 @@ namespace WH_APP_GUI.Staff
             
             if (staff != null)
             {
-                if (!Validation.ValidateTextbox(name, staff) && !Validation.ValidateTextbox(email, staff))
+                if (!Validation.ValidateTextbox(name, staff) && !Validation.validateEmail(email.Text))
                 {
                     staff["name"] = name.Text;
                     staff["email"] = email.Text;

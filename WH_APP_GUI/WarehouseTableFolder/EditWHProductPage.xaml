@@ -6,7 +6,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:WH_APP_GUI.WarehouseTableFolder"
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="600"
+      d:DesignHeight="700" d:DesignWidth="600"
       Title="EditWHProductPage">
     <Page.Resources>
         <Style x:Key="MyTextBoxStyle" x:Name="MyTextBoxStyle" TargetType="TextBox">
@@ -170,7 +170,7 @@
                     </ComboBox>
                 </StackPanel>
 
-                <Button x:Name="Save" Click="Save_Click" Background="YellowGreen" Panel.ZIndex="1" Content="Save" FontSize="17" Grid.Row="8"></Button>
+                <Button x:Name="Save" Click="Save_Click" Foreground="White" Background="Crimson" Panel.ZIndex="1" Content="Save" FontSize="17" Grid.Row="8"></Button>
             </Grid>
         </ScrollViewer>
 

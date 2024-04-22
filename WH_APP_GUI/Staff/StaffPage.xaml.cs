@@ -287,7 +287,7 @@ namespace WH_APP_GUI.Staff
             if (StaffRoles.SelectedIndex != -1)
             {
                 DisplayStaffsStackpanel.Children.Clear();
-                InitializeStaffsByRole(DisplayStaffsStackpanel, Tables.roles.database.Select($"id = {role_id_Dictionary [StaffRoles.SelectedItem.ToString()]}")[0]);
+                InitializeStaffsByRole(DisplayStaffsStackpanel, Tables.roles.database.Select($"id = {role_id_Dictionary[StaffRoles.SelectedItem.ToString()]["id"]}")[0]);
             }
         }
 
