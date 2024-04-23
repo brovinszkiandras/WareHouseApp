@@ -24,7 +24,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
     {
         private void CheckifProductsFitInbox()
         {
-            MessageBox.Show(warehouseProduct["width"].ToString());
+           
             double boxvolume = (double)warehouseProduct["width"]
            * (double)warehouseProduct["height"]
            * (double)warehouseProduct["length"];
@@ -104,7 +104,6 @@ namespace WH_APP_GUI.WarehouseTableFolder
             }
             else
             {
-                MessageBox.Show("True");
                 Binding widthBinding = new Binding("[width]");
                 widthBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                 width.SetBinding(TextBox.TextProperty, widthBinding);
