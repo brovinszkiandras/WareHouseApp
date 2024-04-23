@@ -71,6 +71,7 @@ namespace WH_APP_GUI
             Relations.makeRelation("sectorWarehouse", warehouses.database, sector.database, "id", "warehouse_id");
             Relations.makeRelation("orderWarehouse", warehouses.database, orders.database, "id", "warehouse_id");
             Relations.makeRelation("orderCity", cities.database, orders.database, "id", "city_id");
+            Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
         }
 
         public static void addFleetTablesToTables()

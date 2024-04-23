@@ -23,7 +23,7 @@
 
 
 
-    <Grid>
+    <Grid Background="White">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"></ColumnDefinition>

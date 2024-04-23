@@ -333,5 +333,18 @@ namespace WH_APP_GUI
                 
             }
         }
+
+        private void Select_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void changeClickEventToSelect()
+        {
+            foreach (Button children in boxGrid.Children)
+            {
+
+            }
+        }
     }
 }
