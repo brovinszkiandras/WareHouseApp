@@ -161,7 +161,7 @@ namespace WH_APP_GUI
             DataRow employee = (sender as Button).Tag as  DataRow;
             if (employee != null)
             {
-                if (! Validation.ValidateTextbox(name, employee) && ! Validation.ValidateTextbox(email, employee))
+                if (! Validation.ValidateTextbox(name, employee) && ! Validation.validateEmail(email.Text))
                 {
                     employee["name"] = name.Text;
                     employee["email"] = email.Text;

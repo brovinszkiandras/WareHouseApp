@@ -9,46 +9,13 @@
         d:DesignHeight="450" d:DesignWidth="800">
     <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
         <Grid Name="alapgrid" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="8*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-
             <Grid Grid.Row="1" Grid.Column="1">
 
-
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="7*"></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="7*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-
-                    </Grid.ColumnDefinitions>
-
-                    <Label Content="Plate number" Foreground="Black" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
-                    <Label Content="Type" Foreground="Black" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
-                    <Label Content="Ready" Foreground="Black" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
-
-                    <Button Grid.Column="5" Foreground="Black" Name="Create" Content="Create new" Click="Create_Click"></Button>
-                </Grid>
-
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                    <Grid x:Name="carsGrid">
+                    <Grid Background="DarkMagenta">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -59,14 +26,33 @@
 
                         </Grid.ColumnDefinitions>
 
-                        <Grid.RowDefinitions>
+                        <Label Content="Plate number" Foreground="White" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                        <Label Content="Type" Foreground="White" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                        <Label Content="Ready" Foreground="White" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
 
-                        </Grid.RowDefinitions>
+                        <Button Grid.Column="5" Background="DarkMagenta" Foreground="White" Name="Create" Content="Create new" Click="Create_Click"></Button>
                     </Grid>
-                </ScrollViewer>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Background="Black">
+                        <Grid x:Name="carsGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+
+                            </Grid.RowDefinitions>
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
+
+
             </Grid>
-
-
-        </Grid>
     </Border>
 </Page>

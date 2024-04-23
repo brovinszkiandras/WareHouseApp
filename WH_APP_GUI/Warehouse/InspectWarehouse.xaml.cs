@@ -62,7 +62,7 @@ namespace WH_APP_GUI.Warehouse
                 terkep.ZoomLevel = 10;
 
                 terkep.Children.Add(polyline);
-                terkep.IsEnabled = false;
+                
             }
         }
         private void Ini_Revnue_A_Day()
@@ -209,6 +209,16 @@ namespace WH_APP_GUI.Warehouse
                 WarehousesPage warehousesPage = new WarehousesPage();
                 Navigation.content2.Navigate(warehousesPage);
             }
+        }
+
+        private void MapDisplay_MouseEnter(object sender, MouseEventArgs e)
+        {
+            mainScrollviewer.CanContentScroll = false;
+        }
+
+        private void MapDisplay_MouseLeave(object sender, MouseEventArgs e)
+        {
+            mainScrollviewer.CanContentScroll = true;
         }
     }
 }
