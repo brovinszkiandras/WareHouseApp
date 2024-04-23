@@ -293,6 +293,11 @@ namespace WH_APP_GUI
         {
             return Relations.parentRelation("orderCity", order);
         }
+
+        public DataRow[] getOrdersOfAUser(object name, object address)
+        {
+            return database.Select($"user_name = '{name}' AND address = {address}");
+        }
     }
     class employees : staff
     {
