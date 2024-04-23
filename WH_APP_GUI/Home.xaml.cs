@@ -35,7 +35,10 @@ namespace WH_APP_GUI
 
             UserNameDisplay.Content = User.currentUser["name"].ToString();
             UserEmailDisplay.Content = User.currentUser["email"].ToString();
-           
+            Navigation.OpenPage(Navigation.GetTypeByName("WarehousesPage"));
+            Navigation.content2.Background = new SolidColorBrush(Color.FromArgb(255, 66, 71, 105));
+            Navigation.content2.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+
             #region Show Permission btns
 
             if (User.DoesHavePermission("Inspect all Warehouses"))
@@ -154,7 +157,7 @@ namespace WH_APP_GUI
         {
             foreach (var child in alapgrid.Children)
             {
-                FontSize = e.NewSize.Height * 0.025;
+                FontSize = e.NewSize.Height * 0.03;
             }
         }
         private void InspectAllWarehouses_Click(object sender, RoutedEventArgs e)

@@ -3,16 +3,53 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
                       Title="Főablak" FontFamily="Trade Gothic LT" TitleForeground="White"
-                      MinWidth="800" MinHeight="600" WindowTitleBrush="#FFCE5E34"
+                      MinWidth="800" MinHeight="600" WindowTitleBrush="#FF2D3250"
                       BorderThickness="0"
                       SizeChanged="FoOldal_SizeChanged"  
                       ResizeMode="CanResizeWithGrip"
                       WindowStartupLocation="CenterScreen">
 
     <Controls:MetroWindow.Resources>
+        <Style TargetType="Button" x:Key="ElegantButtonStyle">
+            <Setter Property="BorderThickness" Value="5"/>
+            <Setter Property="Background" Value="#FFF9B17A"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="20, 5"/>
+            <Setter Property="Margin" Value="30, 10"/>
+            <Setter Property="BorderBrush">
+                <Setter.Value>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FFF9B17A" Offset="0"/>
+                        <GradientStop Color="#19F9B17A" Offset="1"/>
+                    </RadialGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                         BorderBrush="{TemplateBinding BorderBrush}"
+                         BorderThickness="{TemplateBinding BorderThickness}"
+                         CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
-            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            <Border Background="{TemplateBinding Background}"
+         BorderBrush="{TemplateBinding BorderBrush}"
+         BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
             </Border>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
@@ -49,38 +86,22 @@
                     </StackPanel>
                 </Border>
 
-                <Border Padding="5" x:Name="EmailBorder" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
+                    <Border Padding="5" x:Name="EmailBorder" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                     <StackPanel>
                         <Label Content="Emali:" VerticalContentAlignment="Bottom" Foreground="Black"/>
                     <TextBox x:Name="Emali" Text="micimacko@tigris.com" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                     </StackPanel>
                 </Border>
 
-                <Border x:Name="PasswordBorder" Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
-                    <StackPanel>
-                        <Label Content="Password:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                        <TextBox x:Name="Password" Text="malacka" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
-                    </StackPanel>
-                </Border>
-
-                    <Button Content="Login" x:Name="Login_button" Click="Login_Click" Visibility="Collapsed" BorderThickness="5" Background="#FFF9B17A" Foreground="Black">
-                        <Button.BorderBrush>
-                            <RadialGradientBrush>
-                                <GradientStop Color="#FFF9B17A" Offset="0"/>
-                                <GradientStop Color="#19F9B17A" Offset="1"/>
-                            </RadialGradientBrush>
-                        </Button.BorderBrush>
-                    </Button>
-
-                    <Button Content="Register As Admin" x:Name="RegisterAsAdmin" Click="RegisterAsAdmin_Click" BorderThickness="5" Background="#FFF9B17A" Foreground="Black">
-                    <Button.BorderBrush>
-                        <RadialGradientBrush>
-                            <GradientStop Color="#FFF9B17A" Offset="0"/>
-                            <GradientStop Color="#19F9B17A" Offset="1"/>
-                        </RadialGradientBrush>
-                    </Button.BorderBrush>
-                </Button>
-            </StackPanel>
+                    <Border x:Name="PasswordBorder" Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
+                        <StackPanel>
+                            <Label Content="Password:" VerticalContentAlignment="Bottom" Foreground="Black"/>
+                            <TextBox x:Name="Password" Text="malacka" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+                    <Button Content="Login" x:Name="Login_button" Click="Login_Click" Visibility="Collapsed" Style="{StaticResource ElegantButtonStyle}"/>
+                    <Button Content="Register As Admin" x:Name="RegisterAsAdmin" Click="RegisterAsAdmin_Click" Style="{StaticResource ElegantButtonStyle}"/>
+                </StackPanel>
         </StackPanel>
         </Border>
 
@@ -124,17 +145,10 @@
                     </StackPanel>
                 </Border>
 
-                <Button Content="Confirm" x:Name="ConfirmDBdatas" Click="ConfirmDBdatas_Click" BorderThickness="5" Margin="50, 10" Background="#FFF9B17A" Foreground="Black" Padding="30, 5">
-                    <Button.BorderBrush>
-                        <RadialGradientBrush>
-                            <GradientStop Color="#FFF9B17A" Offset="0"/>
-                            <GradientStop Color="#19F9B17A" Offset="1"/>
-                        </RadialGradientBrush>
-                    </Button.BorderBrush>
-                </Button>
+                <Button Content="Confirm" x:Name="ConfirmDBdatas" Click="ConfirmDBdatas_Click" Style="{StaticResource ElegantButtonStyle}"/>
 
             </StackPanel>
         </Border>
-        <Frame Name="content" Navigating="content_Navigating" Background="WhiteSmoke" Grid.ColumnSpan="3" Visibility="Collapsed"/>
+        <Frame Name="content" Navigating="content_Navigating" Background="WhiteSmoke" Grid.ColumnSpan="3" Visibility="Collapsed" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Controls:MetroWindow>

@@ -9,51 +9,53 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CreateWarehouse">
 
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-
-        <Image Name="WarehouseImage" Margin="20" Grid.Column="1" MaxHeight="100" MaxWidth="100"/>
-
-        <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+        <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Length:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Width:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Height:" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="City:" Name="CityLBL" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+            <Image Name="WarehouseImage" Margin="20" Grid.Column="1" MaxHeight="100" MaxWidth="100"/>
 
-            <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
-            <xctk:ValueRangeTextBox Name="length" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
-            <xctk:ValueRangeTextBox Name="width" Grid.Column="1" Grid.Row="2" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
-            <xctk:ValueRangeTextBox Name="height" Grid.Column="1" Grid.Row="3" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
-            <ComboBox Name="city_id" Grid.Column="1" Grid.Row="4" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-        </Grid>
-        
-        <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
+            <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Length:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Width:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Height:" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="City:" Name="CityLBL" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+
+                <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
+                <xctk:ValueRangeTextBox Name="length" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
+                <xctk:ValueRangeTextBox Name="width" Grid.Column="1" Grid.Row="2" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
+                <xctk:ValueRangeTextBox Name="height" Grid.Column="1" Grid.Row="3" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
+                <ComboBox Name="city_id" Grid.Column="1" Grid.Row="4" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+            </Grid>
+
+            <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
                 <Button Name="Done" Content="Done" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="Done_Click" Padding="40, 10"/>
                 <Button Name="Cancel" Content="Cancel" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Padding="40, 10" Click="Cancel_Click"/>
-        </StackPanel>
-    </Grid>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Page>

@@ -9,21 +9,22 @@
         Title="CreateStaffPage"
         d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
 
-        <Button Name="profile_picture" Margin="20" Grid.Column="1" Click="profile_picture_Click" MaxHeight="100" MaxWidth="100"/>
-        
-        <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
+            <Button Name="profile_picture" Margin="20" Grid.Column="1" Click="profile_picture_Click" MaxHeight="100" MaxWidth="100"/>
+
+            <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -37,7 +38,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                </Grid.RowDefinitions>
 
                 <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0"/>
                 <Label Content="Email:" Margin="5" Grid.Column="0" Grid.Row="1"/>
@@ -47,11 +48,12 @@
                 <xctk:ValueRangeTextBox Name="email" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5"/>
                 <ComboBox Name="role_id" Grid.Column="1" Grid.Row="2" BorderBrush="Black" Margin="5"/>
             </Grid>
-                
-        <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
-            <Button Name="Done" Content="Done" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="Done_Click" Padding="40, 10"/>
-            <Button Name="Cancel" Content="Cancel" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Padding="40, 10" Click="Cancel_Click"/>
-        </StackPanel>
-                
-    </Grid>
+
+            <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
+                <Button Name="Done" Content="Done" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="Done_Click" Padding="40, 10"/>
+                <Button Name="Cancel" Content="Cancel" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Padding="40, 10" Click="Cancel_Click"/>
+            </StackPanel>
+
+        </Grid>
+    </Border>
 </Page>

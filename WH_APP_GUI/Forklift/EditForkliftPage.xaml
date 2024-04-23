@@ -8,22 +8,23 @@
         mc:Ignorable="d"
         Title="EditForkliftPage"
         d:DesignHeight="450" d:DesignWidth="800">
-    
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
 
-        <Image Name="ForkliftImage" Margin="20" Grid.Column="1" MaxHeight="100" MaxWidth="100"/>
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
 
-        <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
+            <Image Name="ForkliftImage" Margin="20" Grid.Column="1" MaxHeight="100" MaxWidth="100"/>
+
+            <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
@@ -36,20 +37,21 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-            <Label Content="Type:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Operating hours:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Status:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Warehouse:" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Type:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Operating hours:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Status:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Warehouse:" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
 
-            <xctk:ValueRangeTextBox Name="type" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
-            <xctk:ValueRangeTextBox Name="operating_hours" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
-            <ComboBox Name="status" Grid.Column="1" Grid.Row="2" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
-            <ComboBox Name="warehouse_id" Grid.Column="1" Grid.Row="3" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
+                <xctk:ValueRangeTextBox Name="type" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
+                <xctk:ValueRangeTextBox Name="operating_hours" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
+                <ComboBox Name="status" Grid.Column="1" Grid.Row="2" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
+                <ComboBox Name="warehouse_id" Grid.Column="1" Grid.Row="3" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center"/>
             </Grid>
 
             <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
                 <Button Name="Done" Content="Done" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="Done_Click" Padding="40, 10"/>
                 <Button Name="Cancel" Content="Cancel" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Padding="40, 10" Click="Cancel_Click"/>
             </StackPanel>
-    </Grid>
+        </Grid>
+    </Border>
 </Page>
