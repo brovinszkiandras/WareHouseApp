@@ -96,14 +96,17 @@ namespace WH_APP_GUI
         public static void addDockTableToTables()
         {
             docks = new dock();
-            if (bool.Parse(Tables.features.database.Select("name = 'Fleet'")[0]["in_use"].ToString()) && bool.Parse(Tables.features.database.Select("name = 'Dock'")[0]["in_use"].ToString()))
+            if (bool.Parse(Tables.features.database.Select("name = 'Fleet'")[0]["in_use"].ToString()))
             {
                 Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
                 
 
             }
+            else
+            {
+                Relations.makeRelation("orderDock", docks.database, orders.database, "id", "dock_id");
+            }
             Relations.makeRelation("dockWarehouse", warehouses.database, docks.database, "id", "warehouse_id");
-            Relations.makeRelation("orderDock", docks.database, orders.database, "id", "dock_id");
         }
 
         public static void addForkliftTableToTables()

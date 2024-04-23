@@ -246,6 +246,7 @@ namespace WH_APP_GUI
 
             Tables.shelf.updateChanges();
 
+            changeClickEventToSelect();
             MessageBox.Show("You have created a new shelf");
         }
 
@@ -336,14 +337,16 @@ namespace WH_APP_GUI
 
         private void Select_Click(object sender, RoutedEventArgs e)
         {
-
+            Button button = (Button)sender;
+            DataRow shelf = 
         }
 
         private void changeClickEventToSelect()
         {
             foreach (Button children in boxGrid.Children)
             {
-
+                children.Click -= box_Click;
+                children.Click += Select_Click;
             }
         }
     }
