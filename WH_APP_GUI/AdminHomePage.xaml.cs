@@ -268,40 +268,16 @@ namespace WH_APP_GUI
             if (this.IsChecked == true)
             {
                 Controller.Dock();
-                this.CanBeCreated = true;
+                this.CanBeCreated = false;
             }
         }
+
         public override void DisableFeature()
         {
             if (this.IsChecked != true)
             {
                 Controller.DockOff();
                 this.CanBeCreated = true;
-            }
-        }
-        public override void Update()
-        {
-            if (SQL.Tables().Contains("feature"))
-            {
-                if (bool.Parse(SQL.FindOneDataFromQuery($"SELECT in_use FROM feature WHERE name = '{this.FeatureNameInDataBase}'")))
-                {
-                    this.IsChecked = true;
-                    CanBeCreated = true;
-                }
-                else if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Fleet';"))
-                {
-                    CanBeCreated = true;
-                }
-                else
-                {
-                    this.IsChecked = false;
-                    this.CanBeCreated = true;
-                    this.IsEnabled = true;
-                }
-            }
-            else
-            {
-                this.IsEnabled = true;
             }
         }
     }

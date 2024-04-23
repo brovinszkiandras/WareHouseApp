@@ -76,7 +76,6 @@ namespace WH_APP_GUI
             Relations.makeRelation("transportEmployee", employees.database, transports.database, "id", "employee_id");
             Relations.makeRelation("transportCar", cars.database, transports.database, "id", "car_id");
             Relations.makeRelation("orderTransport", transports.database, orders.database, "id", "transport_id");
-
         }
 
         public static void addDockTableToTables()
@@ -108,7 +107,6 @@ namespace WH_APP_GUI
 
             orders.database.Constraints.Remove("orderTransport");
             orders.database.Columns.Remove("transport_id");
-
         }
 
         public static void disableDockFeature()
@@ -129,7 +127,6 @@ namespace WH_APP_GUI
         {
             cities = null;
 
-
             databases.Relations.Remove("warehouseCity");
             warehouses.database.Constraints.Remove("warehouseCity");
             Tables.warehouses.database.Columns.Remove("city_id");
@@ -141,6 +138,5 @@ namespace WH_APP_GUI
 
             databases.Relations.Remove("forkliftWarehouse");
         }
-
     }
 }

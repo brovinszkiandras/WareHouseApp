@@ -349,6 +349,7 @@ namespace WH_APP_GUI
                             ADD transport_id INT, 
                             ADD CONSTRAINT fk_transport_id FOREIGN KEY (transport_id) REFERENCES transports(id) ON DELETE CASCADE
                         ");
+                        Tables.orders.Refresh();
                     }
 
                     Tables.addFleetTablesToTables();
@@ -481,8 +482,7 @@ namespace WH_APP_GUI
                 {
                     Debug.WriteError(ex);
                     throw;
-                }
-                
+                }            
             }
         }
 
@@ -528,7 +528,7 @@ namespace WH_APP_GUI
 
                     if (Tables.features.isFeatureInUse("Fleet"))
                     {
-                        SQL.SqlCommand($"ALTER TABLE {Tables.transports.actual_name} ADD dock_id INT, ADD CONSTRAINT fk_dock_id FOREIGN KEY (dock_id) REFERENCES DOCK (id) ON DELETE CASCADE;");
+                        SQL.SqlCommand($"ALTER TABLE {Tables.transports.actual_name} ADD dock_id INT, ADD CONSTRAINT fk_dock_id_to_transports FOREIGN KEY (dock_id) REFERENCES DOCK (id) ON DELETE CASCADE;");
                         Tables.transports.Refresh();
                     }
                     else
@@ -621,22 +621,31 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    DockOff();
                     FuelOff();
                     StorageOff();
 
-                    //SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT `employee_id`;");
-                    //SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT `car_id`;");
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT transports_ibfk_1");
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT transports_ibfk_2");
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` DROP CONSTRAINT `fk_transport_id`; ALTER TABLE `{Tables.orders.actual_name}` DROP COLUMN transport_id;");
+                    if (Tables.features.isFeatureInUse("Dock"))
+                    {
+                        //fk_dock_id_to_transports
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` DROP CONSTRAINT `fk_transport_id`; ALTER TABLE `{Tables.orders.actual_name}` DROP COLUMN transport_id;");
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` ADD dock_id INT, ADD CONSTRAINT fk_dock_id FOREIGN KEY (dock_id) REFERENCES DOCK (id) ON DELETE CASCADE;");
+                        Tables.orders.Refresh();
+                        
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT fk_dock_id_to_transports");
 
-                    SQL.SqlCommand($"DROP TABLE `{Tables.transports.actual_name}`;");
-                    SQL.SqlCommand($"DROP TABLE `{Tables.cars.actual_name}`;");
+                        SQL.SqlCommand($"DROP TABLE `{Tables.transports.actual_name}`;");
+                        SQL.SqlCommand($"DROP TABLE `{Tables.cars.actual_name}`;");
+                    }
+                    else
+                    {
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` DROP CONSTRAINT `fk_transport_id`; ALTER TABLE `{Tables.orders.actual_name}` DROP COLUMN transport_id;");
+
+                        SQL.SqlCommand($"DROP TABLE `{Tables.transports.actual_name}`;");
+                        SQL.SqlCommand($"DROP TABLE `{Tables.cars.actual_name}`;");
+                    }
 
                     Tables.features.getFeature("Fleet")["in_use"] = false;
                     Tables.features.updateChanges();
-
 
                     Tables.DisableFleetFeature();
                 }
@@ -790,14 +799,16 @@ namespace WH_APP_GUI
                         SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` DROP CONSTRAINT `fk_dock_id`; ALTER TABLE `{Tables.orders.actual_name}` DROP `dock_id`;");
                     }
 
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT `fk_dock_id_to_transports`; ALTER TABLE `{Tables.transports.actual_name}` DROP `dock_id`;");
-                    SQL.SqlCommand($"DROP TABLE `{Tables.docks.actual_name}`;");
+                    if (FeatureInUse("Fleet"))
+                    {
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT `fk_dock_id_to_transports`; ALTER TABLE `{Tables.transports.actual_name}` DROP `dock_id`;");
+                        SQL.SqlCommand($"DROP TABLE `{Tables.docks.actual_name}`;");
+                    }
 
                     Tables.disableDockFeature();
 
                     Tables.features.getFeature("Dock")["in_use"] = false;
                     Tables.features.updateChanges();
-
                 }
                 catch (Exception ex)
                 {
