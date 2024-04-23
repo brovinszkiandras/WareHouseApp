@@ -413,42 +413,52 @@ namespace WH_APP_GUI
             #region Checkboxes
             DateLogFeature DateLogCBXexe = new DateLogFeature("Date Log");
             DateLogCBXexe.Content = "Include DateLog feature";
+            DateLogCBXexe.Foreground = Brushes.White;
             Display.Children.Add(DateLogCBXexe);
 
             FleetFeature FleetCBXexe = new FleetFeature("Fleet");
             FleetCBXexe.Content = "Include Fleet feature";
+            FleetCBXexe.Foreground = Brushes.White;
             Display.Children.Add(FleetCBXexe);
 
             CityFeature CityCBXexe = new CityFeature("City");
             CityCBXexe.Content = "Include City feature";
+            CityCBXexe.Foreground = Brushes.White;
             Display.Children.Add(CityCBXexe);
 
             LogFeature LogCBXexe = new LogFeature("Log");
             LogCBXexe.Content = "Include Log feature";
+            LogCBXexe.Foreground = Brushes.White;
             Display.Children.Add(LogCBXexe);
 
             ActivityFeature ActivityCBXexe = new ActivityFeature("Activity");
             ActivityCBXexe.Content = "Include Activity feature";
+            ActivityCBXexe.Foreground = Brushes.White;
             Display.Children.Add(ActivityCBXexe);
 
             RevenueFeature RevenueCBXexe = new RevenueFeature("Revenue");
             RevenueCBXexe.Content = "Include Revenue feature";
+            RevenueCBXexe.Foreground = Brushes.White;
             Display.Children.Add(RevenueCBXexe);
 
             StorageFeature StorageCBXexe = new StorageFeature("Storage");
             StorageCBXexe.Content = "Include Storage feature";
+            StorageCBXexe.Foreground = Brushes.White;
             Display.Children.Add(StorageCBXexe);
 
             FuelFeature FuelCBXexe = new FuelFeature("Fuel");
             FuelCBXexe.Content = "Include Fuel feature";
+            FuelCBXexe.Foreground = Brushes.White;
             Display.Children.Add(FuelCBXexe);
 
             DockFeature DockCBXexe = new DockFeature("Dock");
             DockCBXexe.Content = "Include Dock feature";
+            DockCBXexe.Foreground = Brushes.White;
             Display.Children.Add(DockCBXexe);
 
             ForkliftFeature ForkliftCBXexe = new ForkliftFeature("Forklift");
             ForkliftCBXexe.Content = "Include Forklift feature";
+            ForkliftCBXexe.Foreground = Brushes.White;
             Display.Children.Add(ForkliftCBXexe);
             #endregion
         }
@@ -659,18 +669,18 @@ namespace WH_APP_GUI
 
             }
 
-            RegisterEmployee.FontSize = e.NewSize.Height * 0.02;
-            RegisterStaff.FontSize = e.NewSize.Height * 0.02;
-            ImportEmployees.FontSize = e.NewSize.Height * 0.02;
-            ManageDatabase.FontSize = e.NewSize.Height * 0.02;
-            manageRoles.FontSize = e.NewSize.Height * 0.02;
-            ToTheApp.FontSize = e.NewSize.Height * 0.02;
-            AddRole.FontSize = e.NewSize.Height * 0.02;
-            CancelRoles.FontSize = e.NewSize.Height * 0.02;
-            AddNewRoleBTN.FontSize = e.NewSize.Height * 0.02;
-            CancelRoleCreation.FontSize = e.NewSize.Height * 0.02;
-            CreateRequiredTablesBTN.FontSize = e.NewSize.Height * 0.02;
-            IncludeFeture.FontSize = e.NewSize.Height * 0.02;
+            RegisterEmployee.FontSize = e.NewSize.Height * 0.03;
+            RegisterStaff.FontSize = e.NewSize.Height * 0.03;
+            ImportEmployees.FontSize = e.NewSize.Height * 0.03;
+            ManageDatabase.FontSize = e.NewSize.Height * 0.03;
+            manageRoles.FontSize = e.NewSize.Height * 0.03;
+            ToTheApp.FontSize = e.NewSize.Height * 0.03;
+            AddRole.FontSize = e.NewSize.Height * 0.03;
+            CancelRoles.FontSize = e.NewSize.Height * 0.03;
+            AddNewRoleBTN.FontSize = e.NewSize.Height * 0.03;
+            CancelRoleCreation.FontSize = e.NewSize.Height * 0.03;
+            CreateRequiredTablesBTN.FontSize = e.NewSize.Height * 0.03;
+            IncludeFeture.FontSize = e.NewSize.Height * 0.03;
             
         }
 
@@ -688,10 +698,10 @@ namespace WH_APP_GUI
                 btn.Content = Tables.roles.database.Rows[i]["role"];
                 btn.Tag = Tables.roles.database.Rows[i];
 
-                btn.Background = Brushes.White;
-                btn.Foreground = Brushes.Black;
+                btn.Background = new SolidColorBrush(Color.FromArgb(255, 66, 71, 105));
+                btn.Foreground = Brushes.White;
                 btn.BorderThickness = new Thickness(1);
-                btn.BorderBrush = Brushes.Black;
+                btn.BorderBrush = Brushes.White;
                 btn.Click += RoleButton_Click;
                 btn.Margin = new Thickness(5);
                 panel.Children.Add(btn);
@@ -717,7 +727,7 @@ namespace WH_APP_GUI
 
                     Label content = new Label();
                     content.Content = Tables.permissions.database.Rows[i]["name"];
-                    content.Background = Brushes.White;
+                    content.Background = Background = new SolidColorBrush(Color.FromArgb(0, 66, 71, 105));
                     content.Foreground = Brushes.Black;
                     content.BorderThickness = new Thickness(1);
                     content.HorizontalAlignment = HorizontalAlignment.Left;
@@ -779,7 +789,7 @@ namespace WH_APP_GUI
 
                 Label content = new Label();
                 content.Content = Tables.permissions.database.Rows[i]["name"];
-                content.Background = Brushes.White;
+                content.Background = Background = new SolidColorBrush(Color.FromArgb(0, 66, 71, 105));
                 content.Foreground = Brushes.Black;
                 content.BorderThickness = new Thickness(1);
                 content.HorizontalAlignment = HorizontalAlignment.Left;
