@@ -69,7 +69,8 @@ namespace WH_APP_GUI
             Relations.makeRelation("orderProduct", products.database, orders.database, "id", "product_id");
             Relations.makeRelation("shelfSector", sector.database, shelf.database, "id", "sector_id");
             Relations.makeRelation("sectorWarehouse", warehouses.database, sector.database, "id", "warehouse_id");
-
+            Relations.makeRelation("orderWarehouse", warehouses.database, orders.database, "id", "warehouse_id");
+            Relations.makeRelation("orderCity", cities.database, orders.database, "id", "city_id");
         }
 
         public static void addFleetTablesToTables()
@@ -97,9 +98,11 @@ namespace WH_APP_GUI
             if (bool.Parse(Tables.features.database.Select("name = 'Fleet'")[0]["in_use"].ToString()) && bool.Parse(Tables.features.database.Select("name = 'Dock'")[0]["in_use"].ToString()))
             {
                 Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
+                
 
             }
             Relations.makeRelation("dockWarehouse", warehouses.database, docks.database, "id", "warehouse_id");
+            Relations.makeRelation("orderDock", docks.database, orders.database, "id", "dock_id");
         }
 
         public static void addForkliftTableToTables()
@@ -134,6 +137,9 @@ namespace WH_APP_GUI
                 transports.database.Constraints.Remove("transportDock");
                 Tables.transports.database.Columns.Remove("dock_id");
             }
+            databases.Relations.Remove("orderDock");
+            databases.Relations.Remove("orderDock");
+            Tables.orders.database.Columns.Remove("dock_id");
             databases.Relations.Remove("dockWarehouse");
         }
 

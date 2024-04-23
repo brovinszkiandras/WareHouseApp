@@ -199,6 +199,11 @@ namespace WH_APP_GUI
         {
             return Relations.childRelation("warehouseCity", city);
         }
+
+        public DataRow[] getOrders(DataRow city)
+        {
+            return Relations.childRelation("orderCity", city);
+        }
     }
     class warehouses : table
     {
@@ -266,6 +271,11 @@ namespace WH_APP_GUI
         {
             return Relations.parentRelation("dockWarehouse", dock);
         }
+
+        public DataRow[] getOrders(DataRow dock)
+        {
+            return Relations.childRelation("orderDock", dock);
+        }
     }
     class orders : table
     {
@@ -287,6 +297,16 @@ namespace WH_APP_GUI
         public DataRow getTransport(DataRow order)
         {
             return Relations.parentRelation("orderTransport", order);
+        }
+
+        public DataRow getDock(DataRow order)
+        {
+            return Relations.parentRelation("orderDock", order) ;
+        }
+
+        public DataRow getCity(DataRow order)
+        {
+            return Relations.parentRelation("orderCity", order);
         }
     }
     class employees : staff
