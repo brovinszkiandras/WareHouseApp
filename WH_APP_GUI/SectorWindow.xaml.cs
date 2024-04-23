@@ -337,8 +337,8 @@ namespace WH_APP_GUI
 
         private void Select_Click(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
-            DataRow shelf = 
+            //Button button = (Button)sender;
+            //DataRow shelf = 
         }
 
         private void changeClickEventToSelect()
