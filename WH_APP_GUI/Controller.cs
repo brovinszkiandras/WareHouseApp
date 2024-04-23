@@ -129,7 +129,7 @@ namespace WH_APP_GUI
                 /*PRODUCTS*/
                 SQL.SqlCommand($"CREATE TABLE {TableNames[3]} (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), buying_price DOUBLE, selling_price DOUBLE, description TEXT, image VARCHAR(255) DEFAULT 'DefaultProductImage.png');");
                 /*ORDERS*/
-                SQL.SqlCommand($"CREATE TABLE {TableNames[4]} (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, product_id INT, qty INT, status VARCHAR(255), user_name VARCHAR(255), address VARCHAR(255), payment_method VARCHAR(255), order_date DATETIME, FOREIGN KEY (product_id) REFERENCES {TableNames[3]}(id) ON DELETE CASCADE, FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id));");
+                SQL.SqlCommand($"CREATE TABLE {TableNames[4]} (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, product_id INT, qty INT, status VARCHAR(255), user_name VARCHAR(255), address VARCHAR(255), payment_method VARCHAR(255), order_date TIMESTAMP DEFAULT NOW, FOREIGN KEY (product_id) REFERENCES {TableNames[3]}(id) ON DELETE CASCADE, FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id));");
 
                 /*CITY*/
                 City();
@@ -256,22 +256,13 @@ namespace WH_APP_GUI
                     Tables_Refresh.Add(Tables.staff.actual_name, Tables.staff.Refresh);
                     Tables_Refresh.Add(Tables.warehouses.actual_name, Tables.warehouses.Refresh);
                     Tables_Refresh.Add(Tables.employees.actual_name, Tables.employees.Refresh);
-                    Tables_Refresh.Add(Tables.orders.actual_name, Tables.orders.Refresh);
                     Tables_Refresh.Add(Tables.products.actual_name, Tables.products.Refresh);
                     Tables_Refresh.Add(Tables.roles.actual_name, Tables.roles.Refresh);
 
                     foreach (var Tables in Tables_Refresh)
                     {
-                        if (Tables.Key == "orders")
-                        {
-                            SQL.SqlCommand($"ALTER TABLE {Tables.Key} ADD created_at TIMESTAMP DEFAULT NOW();");
-                            Tables.Value();
-                        }
-                        else
-                        {
-                            SQL.SqlCommand($"ALTER TABLE {Tables.Key} ADD created_at TIMESTAMP DEFAULT NOW(), ADD updated_at TIMESTAMP DEFAULT NOW();");
-                            Tables.Value();
-                        }
+                        SQL.SqlCommand($"ALTER TABLE {Tables.Key} ADD created_at TIMESTAMP DEFAULT NOW(), ADD updated_at TIMESTAMP DEFAULT NOW();");
+                        Tables.Value();   
                     }
 
                     Tables.features.getFeature("Date log")["in_use"] = true;
@@ -355,6 +346,7 @@ namespace WH_APP_GUI
                     Tables.addFleetTablesToTables();
                     Tables.features.getFeature("Fleet")["in_use"] = true;
                     Tables.features.updateChanges();
+                    //Tables.addCityTableToTables();
                 }
                 catch (Exception ex)
                 {

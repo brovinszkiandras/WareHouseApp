@@ -24,7 +24,7 @@
             <StackPanel x:Name="Orders">
                 <Border BorderBrush="Black" BorderThickness="3" Margin="5">
                     <StackPanel x:Name="NearbyOrders" Margin="5">
-
+                        
                     </StackPanel>
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="3" Margin="5">

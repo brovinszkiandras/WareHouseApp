@@ -343,6 +343,8 @@ namespace WH_APP_GUI
 
         private void changeClickEventToSelect()
         {
+            //Eltávolítom a box click eventet(shelfek létrehozása) és hozzáadom
+            //a select click eventet(egy shelf kiválasztása) a gombokhoz 
             foreach (Button children in boxGrid.Children)
             {
                 children.Click -= box_Click;

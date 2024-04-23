@@ -66,6 +66,7 @@ namespace WH_APP_GUI
             button.BorderThickness = new System.Windows.Thickness(0);
 
             addSquaresAreaToSectorsAreaInUse(button);
+            addSquaresLengthToActualLength();
             Visual.squaresInUSe += 1;
         }
 
@@ -175,6 +176,7 @@ namespace WH_APP_GUI
                     shelf.Delete();
                 }
                 removeSquaresAreaFromSectorsAreaInUse(button);
+                removeSquaresLengthFromActualLength();
                 Visual.squaresInUSe -= 1;
 
                 Tables.shelf.updateChanges();
@@ -192,9 +194,31 @@ namespace WH_APP_GUI
         public static void removeSquaresAreaFromSectorsAreaInUse(Button square)
         {
             Visual.sector["area_in_use"] = (double)Visual.sector["area_in_use"] - square.Width * square.Height;
+        }
 
+        private static void addSquaresLengthToActualLength()
+        {
+            if (newShelf["orientation"].ToString() == "Horizontal")
+            {
+                MessageBox.Show(newShelf["actual_length"].ToString());
+                newShelf["actual_length"] = (double)newShelf["actual_length"] + Visual.sizeHorizontally;
+            }
+            else if (newShelf["orientation"].ToString() == "Vertical")
+            {
+                newShelf["actual_length"] = (double)newShelf["actual_length"] + Visual.sizeVertically;
+            }
+        }
 
-            
+        private static void removeSquaresLengthFromActualLength()
+        {
+            if (newShelf["orientation"].ToString() == "Horizontal")
+            {
+                newShelf["actual_length"] = (double)newShelf["actual_length"] - Visual.sizeHorizontally;
+            }
+            else if (newShelf["orientation"].ToString() == "Vertical")
+            {
+                newShelf["actual_length"] = (double)newShelf["actual_length"] - Visual.sizeVertically;
+            }
         }
     }
 }

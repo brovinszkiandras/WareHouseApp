@@ -296,7 +296,7 @@ namespace WH_APP_GUI
 
         public DataRow[] getOrdersOfAUser(object name, object address)
         {
-            return database.Select($"user_name = '{name}' AND address = {address}");
+            return database.Select($"user_name = '{name}' AND address = '{address}'");
         }
     }
     class employees : staff
@@ -523,6 +523,7 @@ namespace WH_APP_GUI
             database.Columns["name"].Unique = true;
             database.Columns["name"].AllowDBNull = false;
             database.Columns["width"].AllowDBNull = false;
+            database.Columns["actual_length"].DefaultValue = 0;
         }
 
         public DataRow getSector(DataRow shelf)

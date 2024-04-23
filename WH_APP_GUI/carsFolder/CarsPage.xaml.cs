@@ -35,7 +35,6 @@ namespace WH_APP_GUI.carsFolder
                 plate_number.Text = car["plate_number"].ToString();
                 plate_number.FontSize = 15;
                 plate_number.TextWrapping = TextWrapping.Wrap;
-                plate_number.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(plate_number, lastRow);
                 Grid.SetColumn(plate_number, 0);
 
@@ -43,14 +42,10 @@ namespace WH_APP_GUI.carsFolder
                 type.Text = car["type"].ToString();
                 type.FontSize = 15;
                 type.TextWrapping = TextWrapping.Wrap;
-                type.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(type, lastRow);
                 Grid.SetColumn(type, 1);
 
                 CheckBox ready = new CheckBox();
-                ready.HorizontalContentAlignment = HorizontalAlignment.Center;
-                ready.VerticalContentAlignment = VerticalAlignment.Center;
-                ready.HorizontalAlignment = HorizontalAlignment.Center;
                 ready.IsEnabled = false;
                 ready.IsChecked = (bool)car["ready"];
                 Grid.SetRow(ready, lastRow);
