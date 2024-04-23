@@ -7,18 +7,20 @@
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
         Title="ForkliftsPage">
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel  HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Add new forklift" Name="AddNewforklift" Click="AddNewforklift_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
-            <Button Content="All forklift" Name="Allforklift" Click="Allforklift_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
-            <ComboBox Name="forkliftFilter" BorderBrush="Black" SelectionChanged="forkliftFilter_SelectionChanged" Margin="10"/>
-            <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
-        </StackPanel>
-        <StackPanel x:Name="DisplayForkliftsStackPanel" Grid.Column="1"/>
-        <Frame x:Name="ForkliftContent" Grid.ColumnSpan="2" Visibility="Collapsed"/>
-    </Grid>
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel  HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="Add new forklift" Name="AddNewforklift" Click="AddNewforklift_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+                <Button Content="All forklift" Name="Allforklift" Click="Allforklift_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+                <ComboBox Name="forkliftFilter" BorderBrush="Black" SelectionChanged="forkliftFilter_SelectionChanged" Margin="10"/>
+                <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
+            </StackPanel>
+            <StackPanel x:Name="DisplayForkliftsStackPanel" Grid.Column="1"/>
+            <Frame x:Name="ForkliftContent" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        </Grid>
+    </Border>
 </Page>

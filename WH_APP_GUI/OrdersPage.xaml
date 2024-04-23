@@ -8,19 +8,21 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="OrdersPage">
 
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5*"/>
-        </Grid.ColumnDefinitions>
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="All Orders" Name="AllOrders" Click="AllOrders_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
-            <ComboBox Name="users" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10" SelectionChanged="users_SelectionChanged"/>
-        </StackPanel>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="All Orders" Name="AllOrders" Click="AllOrders_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+                <ComboBox Name="users" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10" SelectionChanged="users_SelectionChanged"/>
+            </StackPanel>
 
-        <StackPanel x:Name="AllOrdersDisplay" Visibility="Visible" Grid.Column="1" Grid.ColumnSpan="2">
-            
-        </StackPanel>
-    </Grid>
+            <StackPanel x:Name="AllOrdersDisplay" Visibility="Visible" Grid.Column="1" Grid.ColumnSpan="2">
+
+            </StackPanel>
+        </Grid>
+    </Border>
 </Page>

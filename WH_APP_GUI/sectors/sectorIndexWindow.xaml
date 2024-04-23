@@ -6,59 +6,13 @@
         xmlns:local="clr-namespace:WH_APP_GUI.sectors"
         mc:Ignorable="d"
         Title="sectorIndexWindow">
-    <Grid Background="LightYellow">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1.5*"></RowDefinition>
-            <RowDefinition Height="7*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid Background="DarkMagenta">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-               
-            </Grid.ColumnDefinitions>
-
-            <Label Content="Name"
-           Foreground="White"
-           FontSize="15"
-           VerticalAlignment="Center"
-           HorizontalContentAlignment="Center"></Label>
-            <Label Content="Length"
-           Foreground="White"
-           Grid.Column="1" VerticalAlignment="Center"
-           FontSize="15"
-           HorizontalContentAlignment="Center"></Label>
-            <Label Content="Width"
-            Foreground="White"
-            Grid.Column="2" 
-            VerticalAlignment="Center"
-            FontSize="15"
-            HorizontalContentAlignment="Center"></Label>
-
-            <Label Content="Area"
-           Foreground="White" Grid.Column="3"
-           VerticalAlignment="Center" FontSize="13"
-           HorizontalContentAlignment="Center"></Label>
-            <Label Content="Area in use"
-           Foreground="White"
-           Grid.Column="4"
-           VerticalAlignment="Center"
-           FontSize="13"
-           HorizontalContentAlignment="Center"></Label>
-           
-
-         <Button Grid.Column="8" Background="DarkMagenta" Foreground="White" Name="Create" Content="Create new" Click="Create_Click"></Button>
-
-        </Grid>
-
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-            <Grid Background="Black" x:Name="sectorGrid">
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"></RowDefinition>
+                <RowDefinition Height="7*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Background="DarkMagenta">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -68,14 +22,62 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
-                   
+
                 </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
+                <Label Content="Name"
+           Foreground="White"
+           FontSize="15"
+           VerticalAlignment="Center"
+           HorizontalContentAlignment="Center"></Label>
+                <Label Content="Length"
+           Foreground="White"
+           Grid.Column="1" VerticalAlignment="Center"
+           FontSize="15"
+           HorizontalContentAlignment="Center"></Label>
+                <Label Content="Width"
+            Foreground="White"
+            Grid.Column="2" 
+            VerticalAlignment="Center"
+            FontSize="15"
+            HorizontalContentAlignment="Center"></Label>
 
-                </Grid.RowDefinitions>
+                <Label Content="Area"
+           Foreground="White" Grid.Column="3"
+           VerticalAlignment="Center" FontSize="13"
+           HorizontalContentAlignment="Center"></Label>
+                <Label Content="Area in use"
+           Foreground="White"
+           Grid.Column="4"
+           VerticalAlignment="Center"
+           FontSize="13"
+           HorizontalContentAlignment="Center"></Label>
+
+
+                <Button Grid.Column="8" Background="DarkMagenta" Foreground="White" Name="Create" Content="Create new" Click="Create_Click"></Button>
+
             </Grid>
-        </ScrollViewer>
 
-    </Grid>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                <Grid Background="Black" x:Name="sectorGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+
+                    </Grid.RowDefinitions>
+                </Grid>
+            </ScrollViewer>
+
+        </Grid>
+    </Border>
 </Page>
