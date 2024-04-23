@@ -78,17 +78,34 @@ namespace WH_APP_GUI
             Relations.makeRelation("transportEmployee", employees.database, transports.database, "id", "employee_id");
             Relations.makeRelation("transportCar", cars.database, transports.database, "id", "car_id");
             Relations.makeRelation("orderTransport", transports.database, orders.database, "id", "transport_id");
+            //Kikapcsolom az orders dock relationt és megcsinálom a transport dock relationt
+            if (Tables.features.isFeatureInUse("Dock") == true)
+            {
+                databases.Relations.Remove("orderDock");
+                Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
+            }
+        }
+
+        public static void addCityTableToTables()
+        {
+            cities = new cities();
+
+            Tables.orders.Refresh();
+            Tables.warehouses.Refresh();
+            Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
         }
 
         public static void addDockTableToTables()
         {
             docks = new dock();
+            //transportDock relation létrehozása
             if (bool.Parse(Tables.features.database.Select("name = 'Fleet'")[0]["in_use"].ToString()))
             {
                 Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
             }
             else
             {
+                //Létrehozom az order dock relationt
                 Relations.makeRelation("orderDock", docks.database, orders.database, "id", "dock_id");
             }
             Relations.makeRelation("dockWarehouse", warehouses.database, docks.database, "id", "warehouse_id");
@@ -105,29 +122,39 @@ namespace WH_APP_GUI
         {
             transports = null;
             cars = null;
-
             databases.Relations.Remove("transportEmployee");
             databases.Relations.Remove("transportCar");
+            //Kikapcsolom az ordertransportot
             databases.Relations.Remove("orderTransport");
-
             orders.database.Constraints.Remove("orderTransport");
             orders.database.Columns.Remove("transport_id");
+            //Hozzáadom az orderDock relationt és kikapcsolom a transport dock relationt 
+            if (Tables.features.isFeatureInUse("Dock") == true)
+            {
+                databases.Relations.Remove("orderDock");
+                Relations.makeRelation("orderDock", docks.database, orders.database, "id", "dock_id");
+            }
         }
 
         public static void disableDockFeature()
         {
             docks = null;
             
-            if (Tables.features.isFeatureInUse("Fleet") && Tables.features.isFeatureInUse("Dock"))
+            if (Tables.features.isFeatureInUse("Fleet"))
             {
-               
+               //Kikapcsolom a transport dock relationt
                 databases.Relations.Remove("transportDock");
                 transports.database.Constraints.Remove("transportDock");
                 Tables.transports.database.Columns.Remove("dock_id");
             }
-            databases.Relations.Remove("orderDock");
-            databases.Relations.Remove("orderDock");
-            Tables.orders.database.Columns.Remove("dock_id");
+            else
+            {
+                //Kikapcsolom az orderDock relationt
+                databases.Relations.Remove("orderDock");
+                Tables.orders.database.Columns.Remove("dock_id");
+            }
+            
+            
             databases.Relations.Remove("dockWarehouse");
         }
 
