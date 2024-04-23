@@ -7,28 +7,30 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DockPage">
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Add new dock" Name="AddNewDock" Click="AddNewDock_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
-            <Button Content="All dock" Name="AllDocks" Click="AllDocks_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
-            <ComboBox Name="DocksByWarehouses" Visibility="Collapsed" BorderBrush="Black" SelectionChanged="DockByWarehouses_SelectionChanged" Margin="5"/>
-            <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
-        </StackPanel>
+            <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="Add new dock" Name="AddNewDock" Click="AddNewDock_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
+                <Button Content="All dock" Name="AllDocks" Click="AllDocks_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
+                <ComboBox Name="DocksByWarehouses" Visibility="Collapsed" BorderBrush="Black" SelectionChanged="DockByWarehouses_SelectionChanged" Margin="5"/>
+                <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
+            </StackPanel>
 
 
-        <Grid Name="DockDisplayGRID" Grid.Column="1" Visibility="Visible" Background="White">
-            <ScrollViewer Name="DockDisplaySCROLL" Visibility="Visible" HorizontalAlignment="Center" Margin="20">
-                <StackPanel Name="DockDisplaySTACK" Orientation="Vertical">
+            <Grid Name="DockDisplayGRID" Grid.Column="1" Visibility="Visible">
+                <ScrollViewer Name="DockDisplaySCROLL" Visibility="Visible" HorizontalAlignment="Center" Margin="20">
+                    <StackPanel Name="DockDisplaySTACK" Orientation="Vertical">
 
-                </StackPanel>
-            </ScrollViewer>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+
+            <Frame Grid.ColumnSpan="2" Name="DockContent" Visibility="Collapsed"/>
         </Grid>
-
-        <Frame Grid.ColumnSpan="2" Name="DockContent" Visibility="Collapsed"/>
-    </Grid>
+    </Border>
 </Page>

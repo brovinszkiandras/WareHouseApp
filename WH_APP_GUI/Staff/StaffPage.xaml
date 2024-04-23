@@ -9,29 +9,31 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StaffPage">
 
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel HorizontalAlignment="Center" Margin="0, 20">
-            <Button Content="Add new staff" Name="AddNewStaff" Click="AddNewStaff_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
-            <Button Content="All Staffs" Name="AllStaffs" Click="AllStaffs_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
-            <ComboBox Name="StaffRoles" BorderBrush="Black" SelectionChanged="StaffRoles_SelectionChanged" Margin="5"/>
-            <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
-        </StackPanel>
+            <StackPanel HorizontalAlignment="Center" Margin="0, 20">
+                <Button Content="Add new staff" Name="AddNewStaff" Click="AddNewStaff_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+                <Button Content="All Staffs" Name="AllStaffs" Click="AllStaffs_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+                <ComboBox Name="StaffRoles" BorderBrush="Black" SelectionChanged="StaffRoles_SelectionChanged" Margin="5"/>
+                <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+            </StackPanel>
 
-        <Grid x:Name="Display" Grid.Column="1">
-            <Grid Name="StaffsDisplay" Grid.Column="1" Visibility="Collapsed">
-                <ScrollViewer Name="DisplayStaffs" Visibility="Visible">
-                    <StackPanel Name="DisplayStaffsStackpanel" Orientation="Vertical" HorizontalAlignment="Center">
+            <Grid x:Name="Display" Grid.Column="1">
+                <Grid Name="StaffsDisplay" Grid.Column="1" Visibility="Collapsed">
+                    <ScrollViewer Name="DisplayStaffs" Visibility="Visible">
+                        <StackPanel Name="DisplayStaffsStackpanel" Orientation="Vertical" HorizontalAlignment="Center">
 
-                    </StackPanel>
-                </ScrollViewer>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
             </Grid>
+            <Frame x:Name="StaffContent" Grid.ColumnSpan="3" Visibility="Collapsed"/>
         </Grid>
-        <Frame x:Name="StaffContent" Grid.ColumnSpan="3" Visibility="Collapsed"/>
-    </Grid>
+    </Border>
 </Page>

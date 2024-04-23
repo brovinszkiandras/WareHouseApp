@@ -1,0 +1,92 @@
+﻿<Page x:Class="WH_APP_GUI.Home"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WH_APP_GUI"
+      mc:Ignorable="d"
+<<<<<<< HEAD
+      Title="Home" MinWidth="800" MinHeight="600" Background="Black"
+      SizeChanged="Home_SizeChanged">
+=======
+      
+      Title="Home"  Background="Black"
+                            SizeChanged="Home_SizeChanged" >
+>>>>>>> 9f1d2b2297bc03282cbc79f5e5f0fa9b7291bdd7
+
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="ElegantButtonStyle">
+            <Setter Property="BorderThickness" Value="0,0,0,3"/>
+            <Setter Property="Background" Value="#676F9D"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                 BorderBrush="{TemplateBinding BorderBrush}"
+                                 BorderThickness="{TemplateBinding BorderThickness}"
+                                 CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFF9B17A"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="BorderBrush" Value="#FFF9B17A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+                 BorderBrush="{TemplateBinding BorderBrush}"
+                 BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{x:Static SystemColors.ControlLightBrush}"/>
+                    <Setter Property="Foreground" Value="{x:Static SystemColors.GrayTextBrush}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Page.Resources>
+
+    <Grid Name="alapgrid" Background="#424769">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="menucolum" Width="auto" MouseEnter="menucolum_MouseEnter"/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border CornerRadius="0,20,0,0" Background="#FF2D3250" Grid.Row="1" Margin="0,0,20,0">
+            <StackPanel Name="Menu" Margin="10">
+            </StackPanel>
+        </Border>
+        
+        <StackPanel Name="Header" Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center">
+            <StackPanel Margin="0,0,0,10">
+                <Label Content="User name:" Foreground="#FFF9B17A" Margin="20, 0"/>
+                <Label Name="UserNameDisplay" Content="User name display" Foreground="#FFF9B17A" Margin="20, 0"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="User email:" Foreground="#FFF9B17A" Margin="20, 0"/>
+                <Label Content="User email display" Name="UserEmailDisplay" Foreground="#FFF9B17A" Margin="20, 0"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

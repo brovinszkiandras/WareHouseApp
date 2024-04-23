@@ -193,8 +193,8 @@ namespace WH_APP_GUI.sectors
             DataRow sector = Tables.sector.database.Select($"id = '{button.Tag}'")[0];
             Visual.sector = sector;
 
-            SectorWindow sectorWindow = new SectorWindow();
-            sectorWindow.Show();
+            SectorWindow page = new SectorWindow();
+            Navigation.content2.Navigate(page);
         }
 
     }

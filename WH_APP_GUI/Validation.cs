@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -70,40 +72,19 @@ namespace WH_APP_GUI
                 }
                 else if (textBox.IsValueOutOfRange == true)
                 {
-                    MessageBox.Show($"{textBox.Name} must be smaller or equal to {textBox.MaxValue}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    string errorMessage = "";
+                    if(textBox.MinValue != null)
+                    {
+                        errorMessage += $"{textBox.Name} must be bigger or equal to {textBox.MinValue}, ";
+                    }
+                    if(textBox.MaxValue != null)
+                    {
+                        errorMessage += $"{textBox.Name} must be smaller or equal to {textBox.MaxValue}";
+                    }
+                    MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     HasError = true;
                 }
-                else
-                {
-                    char[] Email_exceptions = { '@', '.' };
-                    char[] Name_exceptions = { ' ', '-' };
-                    if (textBox.Name == "email" && SQL.ContainsIllegalRegexWithExceptions(textBox.Text, Email_exceptions))
-                    {
-                        textBox.Text = context[textBox.Name].ToString();
-
-                        MessageBox.Show($"{textBox.Name} cannot contain special characters", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        HasError = true;
-                    }
-                    else if (textBox.Name != "email" && SQL.ContainsIllegalRegexWithExceptions(textBox.Text, Name_exceptions) && (textBox.ValueDataType != typeof(int) && textBox.ValueDataType != (typeof(double))))
-                    {
-                        textBox.Text = context[textBox.Name].ToString();
-
-                        MessageBox.Show($"{textBox.Name} cannot contain special characters", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        HasError = true;
-                    }
-                    else if(textBox.Name == "email")
-                    {
-                        DataRow[] matchingRows = contextTable.Select($"{textBox.Name} = '{textBox.Value}'");
-                        if (matchingRows.Length != 0)
-                        {
-                            if ((int)matchingRows[0]["id"] != (int)context["id"])
-                            {
-                                MessageBox.Show($"An element with this {textBox.Name} already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                                HasError = true;
-                            }
-                        }
-                    }
-                }
+               
             }
             return HasError;
         }
@@ -127,6 +108,48 @@ namespace WH_APP_GUI
             {
                 return false;
             }
+        }
+
+
+        public static bool ValidateSQLNaming(string input, string input_name)
+        {
+            string pattern = @"^[a-zA-Z][a-zA-Z0-9_]*$";
+
+            // Test the pattern against a string
+           
+            bool isMatch = Regex.IsMatch(input, pattern);
+            if(isMatch == false)
+            {
+                MessageBox.Show($"{input_name} must start with a letter and can only contain letters, numbers and underscores");
+            }
+
+            return isMatch;
+        }
+
+        public static bool validateEmail(string email)
+        {
+            bool haserror = false;
+            if(email.Length == 0)
+            {
+                MessageBox.Show("Email cannot be empty");
+                haserror = true;
+            }
+            else
+            {
+                string pattern = @"^(?=.*@)(?=.*\.)[\S]+$";
+                bool isMatch = Regex.IsMatch(email, pattern);
+                if (isMatch == false)
+                {
+                    MessageBox.Show("Please give a valid email");
+                    haserror = true;
+                }
+                else if (Tables.staff.database.Select($"email = '{email}'").Length > 0 || Tables.employees.database.Select($"email = '{email}'").Length > 0)
+                {
+                    MessageBox.Show("This email has already been registered");
+                    haserror = true;
+                }
+            }
+            return haserror;
         }
     }
 }

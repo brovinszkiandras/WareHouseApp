@@ -127,15 +127,15 @@ namespace WH_APP_GUI
         {
             if(database.GetChanges() != null)
             {
-                MessageBox.Show("There are cahnges");
+                
                 if (database.Columns["updated_at"] != null)
                 {
-                    MessageBox.Show("There is a datelog column");
+                   
                     foreach (DataRow row in database.GetChanges().Rows)
                     {
                         if(row.RowState == DataRowState.Modified)
                         {
-                            MessageBox.Show("This row is modified");
+                           
                             DataRow originalRow = findById((int)row["id"]);
                             originalRow["updated_at"] = SQL.convertDateToCorrectFormat(DateTime.Now);
                            

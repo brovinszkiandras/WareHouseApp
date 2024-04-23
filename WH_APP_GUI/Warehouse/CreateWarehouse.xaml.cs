@@ -67,7 +67,7 @@ namespace WH_APP_GUI.Warehouse
         {
             DataRow warehouse = Tables.warehouses.database.NewRow();
 
-            if (!Validation.ValidateTextbox(name, warehouse) && !Validation.ValidateTextbox(length, warehouse) && !Validation.ValidateTextbox(width, warehouse) && !Validation.ValidateTextbox(height, warehouse))
+            if (Validation.ValidateSQLNaming(name.Text, "Warehouse name") == true && !Validation.ValidateTextbox(name, warehouse) && !Validation.ValidateTextbox(length, warehouse) && !Validation.ValidateTextbox(width, warehouse) && !Validation.ValidateTextbox(height, warehouse))
             {
                 warehouse["name"] = name.Text;
                 warehouse["length"] = length.Text;

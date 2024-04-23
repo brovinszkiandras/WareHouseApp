@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +16,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml.Linq;
 using MahApps.Metro.Controls;
 using MySqlConnector;
@@ -27,7 +27,6 @@ namespace WH_APP_GUI
         public MainWindow()
         {
             InitializeComponent();
-
             //Email.send("szsoly04@gmail.com", "Megkérdezzem?", "Mivan mivan mivan");
 
             if (! SQL.IsDatabasetxtExist())
@@ -45,6 +44,7 @@ namespace WH_APP_GUI
                         List<string> RolesInStaff = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT role_id FROM {Tables.staff.actual_name}"));
                         if (RolesInStaff.Contains("1"))
                         {
+
                             LogIn.Visibility = Visibility.Visible;
                             Login_button.Visibility = Visibility.Visible;
                             RegisterAsAdmin.Visibility = Visibility.Collapsed;
@@ -87,16 +87,27 @@ namespace WH_APP_GUI
             {
                 FontSize = e.NewSize.Height * 0.03;
             }
+            Name.FontSize = e.NewSize.Height * 0.02;
+            Emali.FontSize = e.NewSize.Height * 0.02;
+            Password.FontSize = e.NewSize.Height * 0.02;
         }
 
         private void ConfirmDBdatas_Click(object sender, RoutedEventArgs e)
         {
-            if (DataSourceFU.Text != string.Empty && portFU.Text != string.Empty && usernameFU.Text != string.Empty && DatabaseNameFU.Text != string.Empty)
+            if (Validation.ValidateSQLNaming(DatabaseNameFU.Text, "Database name") == true &&  DataSourceFU.Text != string.Empty && portFU.Text != string.Empty && usernameFU.Text != string.Empty && DatabaseNameFU.Text != string.Empty)
             {
-                SQL.CreateDatabaseConnectionDatas(DataSourceFU.Text, int.Parse(portFU.Text), usernameFU.Text, passwrdFU.Text, DatabaseNameFU.Text);
-                SQL.FillStaticDatabaseValues();
-                DatabaseSet.Visibility = Visibility.Collapsed;
-                LogIn.Visibility = Visibility.Visible;
+                try
+                {
+                    SQL.CreateDatabaseConnectionDatas(DataSourceFU.Text, int.Parse(portFU.Text), usernameFU.Text, passwrdFU.Text, DatabaseNameFU.Text);
+                    SQL.FillStaticDatabaseValues();
+                    DatabaseSet.Visibility = Visibility.Collapsed;
+                    LogIn.Visibility = Visibility.Visible;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Couldnt connect to the specified database");
+                }
+
             }
             else
             {

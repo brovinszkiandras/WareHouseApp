@@ -83,7 +83,7 @@ namespace WH_APP_GUI.Employee
         {
             DataRow employee = Tables.employees.database.NewRow();
 
-            if (! Validation.ValidateTextbox(name, employee) && ! Validation.ValidateTextbox(email, employee) && role_id.SelectedIndex != -1 && warehouse_id.SelectedIndex != -1)
+            if (! Validation.ValidateTextbox(name, employee) && ! Validation.validateEmail(email.Text) && role_id.SelectedIndex != -1 && warehouse_id.SelectedIndex != -1)
             {
                 string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
                 string HashedPassword = Hash.HashPassword(password);
@@ -107,9 +107,6 @@ namespace WH_APP_GUI.Employee
                 MessageBox.Show("Employee has successfully created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 //EmployeesPage employeesPage = new EmployeesPage();
-                //Navigation.content2.Navigate(employeesPage);
-
-                //EmployeesPage employeesPage = new EmployeesPage();
 
                 //string text = $"Subject: Welcome to the company! Your Login Credentials Inside\r\n\r\n" +
                 //    $"Dear {employee["name"]},\r\n\r\nWe are thrilled to welcome you to the company." +
@@ -120,8 +117,7 @@ namespace WH_APP_GUI.Employee
 
                 //Email.send($"{employee["email"]}","Welcome to the company",text);
 
-                //Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                //Navigation.content2.Navigate(previousPage);
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
 

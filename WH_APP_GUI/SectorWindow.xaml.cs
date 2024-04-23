@@ -18,7 +18,7 @@ namespace WH_APP_GUI
     /// <summary>
     /// Interaction logic for SectorWindow.xaml
     /// </summary>
-    public partial class SectorWindow : Window
+    public partial class SectorWindow : Page
     {
         public SectorWindow()
         {

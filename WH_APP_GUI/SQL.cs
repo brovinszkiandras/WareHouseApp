@@ -39,22 +39,31 @@ namespace WH_APP_GUI
         }
         public static void CreateDatabaseConnectionDatas(string DataSource, int Port, string Username, string password, string DatabaseName)
         {
-            connectionstring = $"datasource={DataSource};port={Port};username={Username};password={password};database=;";
-            con = new MySqlConnection(connectionstring);
+            try
+            {
+                connectionstring = $"datasource={DataSource};port={Port};username={Username};password={password};database=;";
+                con = new MySqlConnection(connectionstring);
 
-            SQL.SqlCommandWithoutDatabase($"CREATE DATABASE IF NOT EXISTS {DatabaseName} DEFAULT CHARACTER SET utf8;");
+                SQL.SqlCommandWithoutDatabase($"CREATE DATABASE IF NOT EXISTS {DatabaseName} DEFAULT CHARACTER SET utf8;");
 
-            connectionstring = $"datasource={DataSource};port={Port};username={Username};password={password};database={DatabaseName};";
-            con = new MySqlConnection(connectionstring);
+                connectionstring = $"datasource={DataSource};port={Port};username={Username};password={password};database={DatabaseName};";
+                con = new MySqlConnection(connectionstring);
 
-            StreamWriter databaseWrite = new StreamWriter("database.txt");
-            databaseWrite.WriteLine($"datasource {DataSource}");
-            databaseWrite.WriteLine($"port {Port}");
-            databaseWrite.WriteLine($"username {Username}");
-            databaseWrite.WriteLine($"password  {password}");
-            databaseWrite.WriteLine($"databasename {DatabaseName}");
+                StreamWriter databaseWrite = new StreamWriter("database.txt");
+                databaseWrite.WriteLine($"datasource {DataSource}");
+                databaseWrite.WriteLine($"port {Port}");
+                databaseWrite.WriteLine($"username {Username}");
+                databaseWrite.WriteLine($"password  {password}");
+                databaseWrite.WriteLine($"databasename {DatabaseName}");
 
-            databaseWrite.Close();
+                databaseWrite.Close();
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Couldnt connect to the specified database");
+            }
+            
         }
 
         public static void FillStaticDatabaseValues()

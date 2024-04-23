@@ -21,6 +21,10 @@ namespace WH_APP_GUI.Warehouse
 {
     public partial class InspectWarehouse : Page
     {
+        private void inspectWarehouse_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            MapDisplay.Height = e.NewSize.Height * 0.4;
+        }
         private Map terkep = new Map();
         private Type PreviousPageType;
         private DataRow Warehouse;
@@ -56,14 +60,12 @@ namespace WH_APP_GUI.Warehouse
             terkep.ZoomLevel = 10;
 
             terkep.Children.Add(polyline);
-            terkep.IsEnabled = false;
         }
         private void Ini_Revnue_A_Day()
         {
             List<string[]> revenue_a_day = SQL.SqlQuery($"SELECT `date`, `total_expenditure`, `total_income` FROM `revenue_a_day` WHERE `warehouse_id` = {Warehouse["id"]} GROUP BY `date`;");
             if (revenue_a_day.Count() > 0)
             {
-                RevenueBorder.Visibility = Visibility.Visible;
                 NoRevenue.Visibility = Visibility.Collapsed;
 
                 string MaxValue = Warehouse["total_value"].ToString();
@@ -140,7 +142,6 @@ namespace WH_APP_GUI.Warehouse
             }
             else
             {
-                RevenueBorder.Visibility = Visibility.Collapsed;
                 NoRevenue.Visibility = Visibility.Visible;
             }
         }
@@ -204,6 +205,16 @@ namespace WH_APP_GUI.Warehouse
                 WarehousesPage warehousesPage = new WarehousesPage();
                 Navigation.content2.Navigate(warehousesPage);
             }
+        }
+
+        private void MapDisplay_MouseEnter(object sender, MouseEventArgs e)
+        {
+            mainScrollviewer.CanContentScroll = false;
+        }
+
+        private void MapDisplay_MouseLeave(object sender, MouseEventArgs e)
+        {
+            mainScrollviewer.CanContentScroll = true;
         }
     }
 }

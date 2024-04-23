@@ -8,59 +8,62 @@
         mc:Ignorable="d"
         Title="CreateProduct" 
         d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
 
-        <Button Name="image" BorderBrush="Black" Margin="20" Click="image_Click" Grid.Row="1"/>
-
-        <Grid Grid.Column="1" Grid.RowSpan="2" Margin="20">
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+        <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Buying Price:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Selling Price:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Width:" Name="widthLabel" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Heigth:" Name="heigthLabel" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Length:" Name="lengthLabel" Margin="5" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Description:" Margin="5" Grid.Column="0" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <Label Content="Weight:" Name="WeightLBL" Margin="5" Grid.Column="0" Grid.Row="7" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+            <Button Name="image" BorderBrush="Black" Margin="20" Click="image_Click" Grid.Row="1" MaxHeight="100" MaxWidth="100"/>
 
-            <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-            <xctk:ValueRangeTextBox Name="buying_price" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-            <xctk:ValueRangeTextBox Name="selling_price" Grid.Column="1" Grid.Row="2" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-            <xctk:ValueRangeTextBox Name="width" Grid.Column="1" Grid.Row="3" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-            <xctk:ValueRangeTextBox Name="heigth" Grid.Column="1" Grid.Row="4" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-            <xctk:ValueRangeTextBox Name="length" Grid.Column="1" Grid.Row="5" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-            <xctk:ValueRangeTextBox Name="description" Grid.Column="1" Grid.Row="6" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-            <xctk:ValueRangeTextBox Name="weight" Grid.Column="1" Grid.Row="7" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+            <Grid Grid.Column="1" Grid.RowSpan="2" Margin="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Buying Price:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Selling Price:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Width:" Name="widthLabel" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Heigth:" Name="heigthLabel" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Length:" Name="lengthLabel" Margin="5" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Description:" Margin="5" Grid.Column="0" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Weight:" Name="WeightLBL" Margin="5" Grid.Column="0" Grid.Row="7" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+
+                <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="buying_price" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="selling_price" Grid.Column="1" Grid.Row="2" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="width" Grid.Column="1" Grid.Row="3" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="heigth" Grid.Column="1" Grid.Row="4" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="length" Grid.Column="1" Grid.Row="5" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="description" Grid.Column="1" Grid.Row="6" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="weight" Grid.Column="1" Grid.Row="7" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+            </Grid>
+
+            <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
+                <Button Name="Done" Content="Done" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="Done_Click" Padding="40, 10"/>
+                <Button Name="Cancel" Content="Cancel" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Padding="40, 10" Click="Cancel_Click"/>
+            </StackPanel>
         </Grid>
-
-        <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
-            <Button Name="Done" Content="Done" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="Done_Click" Padding="40, 10"/>
-            <Button Name="Cancel" Content="Cancel" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Padding="40, 10" Click="Cancel_Click"/>
-        </StackPanel>
-    </Grid>
+    </Border>
 </Page>

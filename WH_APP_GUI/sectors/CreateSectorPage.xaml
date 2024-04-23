@@ -9,33 +9,35 @@
       d:DesignHeight="600" d:DesignWidth="800"
       Title="CreateSectorPage">
 
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="6*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="6*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="5*"></RowDefinition>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+            </Grid.RowDefinitions>
 
-        <Label Grid.Column="1" 
+            <Label Grid.Column="1" 
                Foreground="Black" 
                FontSize="30" 
                Content="Create Sector"
                HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"></Label>
-        
-        <StackPanel x:Name="sectorPanel" Grid.Column="1" Grid.Row="1">
-            <Label FontSize="17" Content="Name:"></Label>
-            <xctk:ValueRangeTextBox Name="name" FontSize="17" Text="{Binding Path=[name]}"></xctk:ValueRangeTextBox>
-            <Label FontSize="17" Content="Length: "></Label>
-            <xctk:ValueRangeTextBox Name="length" FontSize="17" Text="{Binding Path=[length]}"></xctk:ValueRangeTextBox>
-            <Label FontSize="17" Content="Width: "></Label>
-            <xctk:ValueRangeTextBox Name="width" FontSize="17" Text="{Binding Path=[width]}"></xctk:ValueRangeTextBox>
-            <Button FontSize="17" Content="Save" Name="save" Click="Button_Click"></Button>
-        </StackPanel>
-    </Grid>
+
+            <StackPanel x:Name="sectorPanel" Grid.Column="1" Grid.Row="1">
+                <Label FontSize="17" Content="Name:"></Label>
+                <xctk:ValueRangeTextBox Name="name" FontSize="17" Text="{Binding Path=[name]}"></xctk:ValueRangeTextBox>
+                <Label FontSize="17" Content="Length: "></Label>
+                <xctk:ValueRangeTextBox Name="length" FontSize="17" Text="{Binding Path=[length]}"></xctk:ValueRangeTextBox>
+                <Label FontSize="17" Content="Width: "></Label>
+                <xctk:ValueRangeTextBox Name="width" FontSize="17" Text="{Binding Path=[width]}"></xctk:ValueRangeTextBox>
+                <Button FontSize="17" Content="Save" Name="save" Click="Button_Click"></Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Page>

@@ -19,7 +19,17 @@ namespace WH_APP_GUI
 {
     public partial class EditEmployeePage : Page
     {
-        public EditEmployeePage(DataRow employee)
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.02;
+
+            }
+            profile_picture.Height = e.NewSize.Height * 0.4; profile_picture.Width = e.NewSize.Height * 0.4;
+        }
+        private static Type PreviousPageType;
+        public EditEmployeePage(Page previousPage, DataRow employee)
         {
             InitializeComponent();
             IniWarehouses();
@@ -151,7 +161,7 @@ namespace WH_APP_GUI
             DataRow employee = (sender as Button).Tag as  DataRow;
             if (employee != null)
             {
-                if (! Validation.ValidateTextbox(name, employee) && ! Validation.ValidateTextbox(email, employee))
+                if (! Validation.ValidateTextbox(name, employee) && ! Validation.validateEmail(email.Text))
                 {
                     employee["name"] = name.Text;
                     employee["email"] = email.Text;
