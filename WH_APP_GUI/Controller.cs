@@ -431,14 +431,19 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} ADD weight DOUBLE, ADD volume DOUBLE, ADD width DOUBLE, ADD heigth DOUBLE, ADD length DOUBLE;");
-                    SQL.SqlCommand($"ALTER TABLE cars ADD storage DOUBLE DEFAULT 0, ADD carrying_capacity DOUBLE DEFAULT 0;");
-                    SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} ADD sum_volume DOUBLE;");
+                    //SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} ADD weight DOUBLE, ADD volume DOUBLE, ADD width DOUBLE, ADD heigth DOUBLE, ADD length DOUBLE;");
+                    //SQL.SqlCommand($"ALTER TABLE cars ADD storage DOUBLE DEFAULT 0, ADD carrying_capacity DOUBLE DEFAULT 0;");
+                    //SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} ADD sum_volume DOUBLE;");
 
                     foreach (DataRow warehosue in Tables.warehouses.database.Rows)
                     {
-                        SQL.SqlCommand($"ALTER TABLE ezegywarehosue " +
-                            $"ADD width DOUBLE DEFAULT 0," +
+                        MessageBox.Show(warehosue["name"].ToString());
+                        MessageBox.Show($"ALTER TABLE {warehosue["name"]}" +
+                            $" ADD width DOUBLE DEFAULT 0," +
+                            $"ADD height DOUBLE DEFAULT 0," +
+                            $"ADD length DOUBLE DEFAULT 0;");
+                        SQL.SqlCommand($"ALTER TABLE {warehosue["name"]}" +
+                            $" ADD width DOUBLE DEFAULT 0," +
                             $"ADD height DOUBLE DEFAULT 0," +
                             $"ADD length DOUBLE DEFAULT 0;");
                         foreach (DataTable warehosueTable in Tables.databases.Tables)
