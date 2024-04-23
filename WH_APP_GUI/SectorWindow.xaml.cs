@@ -338,7 +338,7 @@ namespace WH_APP_GUI
         private void Select_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            DataRow shelf = 
+            DataRow shelf = Tables.shelf.database.Select($"id = '{button.Tag}'")[0];
         }
 
         private void changeClickEventToSelect()
