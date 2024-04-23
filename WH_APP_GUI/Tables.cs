@@ -32,17 +32,13 @@ namespace WH_APP_GUI
         static public void Ini()
         {
             addRequriedTablesToTables();
-            if ((bool)features.database.Select("name = 'City'")[0]["in_use"])
+            if ((bool)features.database.Select("name = 'Dock'")[0]["in_use"])
             {
-                addCityTableToTables();
+                addDockTableToTables();
             }
             if ((bool)features.database.Select("name = 'Fleet'")[0]["in_use"])
             {
                 addFleetTablesToTables();
-            }
-            if ((bool)features.database.Select("name = 'Dock'")[0]["in_use"])
-            {
-                addDockTableToTables();
             }
             if ((bool)features.database.Select("name = 'Forklift'")[0]["in_use"])
             {
@@ -62,6 +58,8 @@ namespace WH_APP_GUI
             permissions = new permission();
             sector = new Sector("sector");
             shelf = new shelf("shelf");
+            cities = new cities();
+            
 
             Relations.makeRelation("staffRole", roles.database, staff.database, "id", "role_id");
             Relations.makeRelation("employeeRole", roles.database, employees.database, "id", "role_id");
@@ -69,7 +67,7 @@ namespace WH_APP_GUI
             Relations.makeRelation("orderProduct", products.database, orders.database, "id", "product_id");
             Relations.makeRelation("shelfSector", sector.database, shelf.database, "id", "sector_id");
             Relations.makeRelation("sectorWarehouse", warehouses.database, sector.database, "id", "warehouse_id");
-            Relations.makeRelation("orderWarehouse", warehouses.database, orders.database, "id", "warehouse_id");
+            //Relations.makeRelation("orderWarehouse", warehouses.database, orders.database, "id", "warehouse_id");
             Relations.makeRelation("orderCity", cities.database, orders.database, "id", "city_id");
             Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
         }
@@ -84,19 +82,37 @@ namespace WH_APP_GUI
             //Kikapcsolom az orders dock relationt és megcsinálom a transport dock relationt
             if (Tables.features.isFeatureInUse("Dock") == true)
             {
-                databases.Relations.Remove("orderDock");
-                Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
+                if(docks != null)
+                {
+                    if (databases.Relations["orderDock"] != null)
+                    {
+                        databases.Relations.Remove("orderDock");
+                    }
+                    Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
+                }
             }
         }
 
-        public static void addCityTableToTables()
-        {
-            cities = new cities();
+        //public static void addCityTableToTables()
+        //{
+            
 
-            Tables.orders.Refresh();
-            Tables.warehouses.Refresh();
-            Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
-        }
+        //    Tables.orders.Refresh();
+        //    Tables.warehouses.Refresh();
+        //    Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
+        //}
+
+        //private static void initalizeDockAndFleetFeature()
+        //{
+        //    docks = new dock();
+        //    transports = new transports();
+
+        //    //Connect transport and dock
+        //    Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
+
+        //    //Connect dock and warehouse
+        //    Relations.makeRelation("dockWarehouse", warehouses.database, docks.database, "id", "warehouse_id");
+        //}
 
         public static void addDockTableToTables()
         {
@@ -104,7 +120,10 @@ namespace WH_APP_GUI
             //transportDock relation létrehozása
             if (bool.Parse(Tables.features.database.Select("name = 'Fleet'")[0]["in_use"].ToString()))
             {
-                Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
+                if (transports != null)
+                {
+                    Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
+                }
             }
             else
             {

@@ -336,7 +336,7 @@ namespace WH_APP_GUI
                     Tables.warehouses.Refresh();
                     Tables.orders.Refresh();
                     Tables.features.updateChanges();
-                    Tables.addCityTableToTables();
+                    //Tables.addCityTableToTables();
                 }
                 catch (Exception ex)
                 {

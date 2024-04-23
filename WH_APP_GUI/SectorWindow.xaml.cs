@@ -338,11 +338,14 @@ namespace WH_APP_GUI
         private void Select_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            DataRow shelf = Tables.shelf.database.Select($"id = '{button.Tag}'")[0];
+            //kiválasztom azt a shelfet aminek a neve a gomb azonosítója
+            DataRow shelf = Tables.shelf.database.Select($"name = '{button.Tag}'")[0];
         }
 
         private void changeClickEventToSelect()
         {
+            //Eltávolítom a box click eventet(shelfek létrehozása) és hozzáadom
+            //a select click eventet(egy shelf kiválasztása) a gombokhoz 
             foreach (Button children in boxGrid.Children)
             {
                 children.Click -= box_Click;
