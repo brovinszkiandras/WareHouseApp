@@ -46,8 +46,7 @@ namespace WH_APP_GUI
                 {
                     if (ReturnParam != null)
                     {
-                        OpenPage(page, ReturnParam);
-                        ReturnParam = null;
+                        OpenPage(page, ReturnParam);                    
                     }
                     else
                     {
@@ -75,7 +74,7 @@ namespace WH_APP_GUI
 
                 object[] constructorParameters = new object[] { constructorForPage };
 
-                Page ToPage = (Page)constructor.Invoke(constructorParameters);
+                Page ToPage = (Page)constructor.Invoke(constructorParameters); //Ha erre kapsz hibát az azért van mert konstruktort akarsz átadni ott ahol nem kéne
                 content2.Navigate(ToPage);
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been opened this page: {Page.Name}.");
             }

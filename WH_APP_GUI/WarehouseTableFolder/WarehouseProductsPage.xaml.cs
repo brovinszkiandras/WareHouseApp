@@ -17,9 +17,6 @@ using WH_APP_GUI.carsFolder;
 
 namespace WH_APP_GUI.WarehouseTableFolder
 {
-    /// <summary>
-    /// Interaction logic for WarehouseProductsPage.xaml
-    /// </summary>
     public partial class WarehouseProductsPage : Page
     {
         public void Displayproducts()

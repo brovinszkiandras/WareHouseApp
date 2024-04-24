@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Xml.Linq;
 
 namespace WH_APP_GUI.Order
 {
@@ -23,184 +24,411 @@ namespace WH_APP_GUI.Order
         public AllOrdersPage()
         {
             InitializeComponent();
-            IniCities();
 
-            DisplayProducts(NearbyOrders);
+            DisplayAllOrders();
+
+            Ini_unassigned_cities();
+            Ini_warehouses();
+            Ini_docks();
+
+            if (User.Warehouse() != null)
+            {
+                BackBORDER.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                BackBORDER.Visibility= Visibility.Collapsed;
+            }
+        }
+        private bool CanComplete(string username, string address)
+        {
+            bool canComplete = true;
+            foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
+            {
+                if (User.WarehouseTable().database.Select($"product_id = {order["product_id"]}").Length == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    int productsInTheWarehosue = User.WarehouseTable().database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
+                    if (productsInTheWarehosue < (int)order["qty"])
+                    {
+                        canComplete = false;
+                    }
+                }
+            }
+            return canComplete;
+        }
+        private void DisplayOneOrder(Panel panel, string username, string address)
+        {
+            DataRow dataOfOrder = Tables.orders.getOrdersOfAUser(username, address)[0];
+
+            Border border = new Border();
+            border.BorderBrush = Brushes.Black;
+            border.BorderThickness = new Thickness(2);
+            border.Margin = new Thickness(5);
+            border.Background = Brushes.White;
+
+            StackPanel mainStackPanel = new StackPanel();
+
+            StackPanel imagePanel = new StackPanel();
+            imagePanel.Orientation = Orientation.Horizontal;
+            imagePanel.HorizontalAlignment = HorizontalAlignment.Center;
+
+            int qtyOfAllProd = 0;
+            int maxPrice = 0;
+            double sumVolume = 0;
+            foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
+            {
+                qtyOfAllProd += int.Parse(order["qty"].ToString());
+                maxPrice += int.Parse(Tables.orders.getProduct(order)["selling_price"].ToString());
+                if (Tables.features.isFeatureInUse("Storage"))
+                {
+                    string sum = Tables.orders.getProduct(order)["volume"].ToString();
+                    sumVolume += sum != string.Empty ? double.Parse(sum) : 0;
+                }
+
+                Image image = new Image();
+                image.Width = 80;
+                image.Height = 80;
+                image.Margin = new Thickness(5);
+
+                string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
+                if (Directory.Exists(targetDirectory))
+                {
+                    string imageFileName = Tables.orders.getProduct(order)["image"].ToString();
+                    string imagePath = Path.Combine(targetDirectory, imageFileName);
+
+                    if (File.Exists(imagePath))
+                    {
+                        string fileName = Path.GetFileName(imagePath);
+                        string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                        BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+
+                        image.Source = bitmap;
+                    }
+                }
+                imagePanel.Children.Add(image);
+            }
+
+            UniformGrid userInfoGrid = new UniformGrid();
+            userInfoGrid.Rows = 3;
+            userInfoGrid.Margin = new Thickness(5);
+
+            Label userNameInfo = new Label();
+            userNameInfo.Content = $"Username: {dataOfOrder["user_name"]}";
+            userNameInfo.BorderBrush = Brushes.Black;
+            userNameInfo.BorderThickness = new Thickness(0, 0, 1, 1);
+            userNameInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
+            userInfoGrid.Children.Add(userNameInfo);
+
+            Label paymentMethodInfo = new Label();
+            paymentMethodInfo.Content = $"Payment method: {dataOfOrder["payment_method"]}";
+            paymentMethodInfo.BorderBrush = Brushes.Black;
+            paymentMethodInfo.BorderThickness = new Thickness(1, 0, 0, 1);
+            paymentMethodInfo.HorizontalContentAlignment = HorizontalAlignment.Left;
+            userInfoGrid.Children.Add(paymentMethodInfo);
+
+            Label addressInfo = new Label();
+            addressInfo.Content = $"Address: {dataOfOrder["address"]} - ({Tables.orders.getCity(dataOfOrder)["city_name"]})";
+            addressInfo.BorderBrush = Brushes.Black;
+            addressInfo.BorderThickness = new Thickness(0, 0, 1, 1);
+            addressInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
+            userInfoGrid.Children.Add(addressInfo);
+
+            Label productCountInfo = new Label();
+            productCountInfo.Content = $"Products Count: {qtyOfAllProd}";
+            productCountInfo.BorderBrush = Brushes.Black;
+            productCountInfo.BorderThickness = new Thickness(1, 0, 0, 1);
+            productCountInfo.HorizontalContentAlignment = HorizontalAlignment.Left;
+            userInfoGrid.Children.Add(productCountInfo);
+
+            Label orderInfo = new Label();
+            orderInfo.Content = $"Order date: {dataOfOrder["order_date"]}";
+            orderInfo.BorderBrush = Brushes.Black;
+            orderInfo.BorderThickness = new Thickness(0, 0, 1, 1);
+            orderInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
+            userInfoGrid.Children.Add(orderInfo);
+
+            Label maxValueCount = new Label();
+            maxValueCount.Content = $"Max value: {maxPrice} - Ft";
+            maxValueCount.BorderBrush = Brushes.Black;
+            maxValueCount.BorderThickness = new Thickness(1, 0, 0, 1);
+            maxValueCount.HorizontalContentAlignment = HorizontalAlignment.Left;
+            userInfoGrid.Children.Add(maxValueCount);
+
+            ScrollViewer scrollViewer = new ScrollViewer();
+            scrollViewer.Margin = new Thickness(15, 3, 15, 0);
+            scrollViewer.MinHeight = 80;
+            scrollViewer.MaxHeight = 150;
+
+            StackPanel productPanel = new StackPanel();
+
+            foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
+            {
+                Border productBorder = new Border();
+                productBorder.BorderBrush = Brushes.Black;
+                productBorder.BorderThickness = new Thickness(0, 0, 0, 1);
+
+                UniformGrid productGrid = new UniformGrid();
+                productGrid.Columns = 3;
+
+                Label productLabel = new Label();
+                productLabel.Content = Tables.orders.getProduct(order)["name"] + ": ";
+                Label priceLabel = new Label();
+                priceLabel.Content = $"Price: {Tables.orders.getProduct(order)["selling_price"]} - Ft";
+                Label qtyLabel = new Label();
+                qtyLabel.Content = $"Quantity: {order["qty"]}";
+
+                productGrid.Children.Add(productLabel);
+                productGrid.Children.Add(priceLabel);
+                productGrid.Children.Add(qtyLabel);
+
+                productBorder.Child = productGrid;
+                productPanel.Children.Add(productBorder);
+            }
+
+            scrollViewer.Content = productPanel;
+
+            mainStackPanel.Children.Add(imagePanel);
+            mainStackPanel.Children.Add(new Border() { BorderBrush = Brushes.Black, BorderThickness = new Thickness(1), Margin = new Thickness(5), Child = userInfoGrid });
+
+            if (Tables.features.isFeatureInUse("Storage"))
+            {
+                Border borderForSum = new Border();
+                borderForSum.BorderBrush = Brushes.Black;
+                borderForSum.BorderThickness = new Thickness(1, 0, 1, 1);
+                borderForSum.Margin = new Thickness(5);
+
+                Label sumVolumeInfo = new Label();
+                sumVolumeInfo.Content = $"Sum volume: {sumVolume}(m^2)";
+                sumVolumeInfo.HorizontalAlignment = HorizontalAlignment.Center;
+
+                borderForSum.Child = sumVolumeInfo;
+                mainStackPanel.Children.Add(borderForSum);
+            }
+
+            if (dataOfOrder["warehouse_id"] == DBNull.Value)
+            {
+                Button button = new Button();
+                button.Content = "Take";
+                button.Margin = new Thickness(5);
+                button.MaxWidth = 150;
+                mainStackPanel.Children.Add(button);
+
+                if (User.Warehouse() != null)
+                {
+                    if (CanComplete(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
+                    {
+                        button.IsEnabled = true;
+                    }
+                    else
+                    {
+                        button.IsEnabled = false;
+                    }
+                }
+            }
+            else
+            {
+                Label inWarehouse = new Label();
+                inWarehouse.Background = Brushes.LightSteelBlue;
+                inWarehouse.Foreground = Brushes.Black;
+                inWarehouse.Margin = new Thickness(5);
+                inWarehouse.BorderBrush = Brushes.Black;
+                inWarehouse.BorderThickness = new Thickness(1);
+                inWarehouse.MaxWidth = 350;
+                inWarehouse.HorizontalContentAlignment = HorizontalAlignment.Center;
+                //TODO
+                inWarehouse.Content = $"This order already in {Tables.orders.getWarehouse(dataOfOrder)["name"]}";
+                //inWarehouse.Content = $"This order already in a warehouse";
+                mainStackPanel.Children.Add(inWarehouse);
+            }
+
+            mainStackPanel.Children.Add(scrollViewer);
+
+            border.Child = mainStackPanel;
+            panel.Children.Add(border);
         }
 
-        private void DisplayProducts(Panel panel)
+        private Dictionary<string, DataRow> unassigned_city_id_Dictionary = new Dictionary<string, DataRow>();
+        private void Ini_unassigned_cities()
         {
-            List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} GROUP BY user_name, address");
-            for (int i = 0; i < name_address.Count; i++)
+            unassigned_city_id_Dictionary.Clear();
+            unassigned_city_id.Items.Clear();
+            foreach (DataRow order in Tables.orders.database.Rows)
             {
-                if (Tables.orders.getOrdersOfAUser(name_address[i][0], name_address[i][1]).Length != 0)
+                if (!unassigned_city_id_Dictionary.ContainsKey(Tables.orders.getCity(order)["city_name"].ToString()) && order["warehouse_id"].ToString() == string.Empty)
                 {
-                    DataRow dataOfOrder = Tables.orders.getOrdersOfAUser(name_address[i][0], name_address[i][1])[0];
-
-                    Border border = new Border();
-                    border.BorderBrush = Brushes.Black;
-                    border.BorderThickness = new Thickness(2);
-                    border.Margin = new Thickness(5);
-
-                    StackPanel mainStackPanel = new StackPanel();
-
-                    StackPanel imagePanel = new StackPanel();
-                    imagePanel.Orientation = Orientation.Horizontal;
-                    imagePanel.HorizontalAlignment = HorizontalAlignment.Center;
-
-                    int qtyOfAllProd = 0;
-                    int maxPrice = 0;
-                    double sumVolume = 0;
-                    foreach (DataRow order in Tables.orders.getOrdersOfAUser(name_address[i][0], name_address[i][1]))
-                    {
-                        qtyOfAllProd += int.Parse(order["qty"].ToString());
-                        maxPrice += int.Parse(Tables.orders.getProduct(order)["selling_price"].ToString());
-                        sumVolume += double.Parse(Tables.orders.getProduct(order)["volume"].ToString());
-
-                        Image image = new Image();
-                        image.Width = 80;
-                        image.Height = 80;
-                        image.Margin = new Thickness(5);
-
-                        string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
-                        if (Directory.Exists(targetDirectory))
-                        {
-                            string imageFileName = Tables.orders.getProduct(order)["image"].ToString();
-                            string imagePath = Path.Combine(targetDirectory, imageFileName);
-
-                            if (File.Exists(imagePath))
-                            {
-                                string fileName = Path.GetFileName(imagePath);
-                                string targetFilePath = Path.Combine(targetDirectory, fileName);
-
-                                BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
-
-                                image.Source = bitmap;
-                            }
-                        }
-                        imagePanel.Children.Add(image);
-                    }
-
-                    UniformGrid userInfoGrid = new UniformGrid();
-                    userInfoGrid.Rows = 3;
-                    userInfoGrid.Margin = new Thickness(5);
-
-                    Label userNameInfo = new Label();
-                    userNameInfo.Content = $"Username: {dataOfOrder["user_name"]}";
-                    userNameInfo.BorderBrush = Brushes.Black;
-                    userNameInfo.BorderThickness = new Thickness(0, 0, 1, 1);
-                    userNameInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
-                    userInfoGrid.Children.Add(userNameInfo);
-
-                    Label paymentMethodInfo = new Label();
-                    paymentMethodInfo.Content = $"Payment method: {dataOfOrder["payment_method"]}";
-                    paymentMethodInfo.BorderBrush = Brushes.Black;
-                    paymentMethodInfo.BorderThickness = new Thickness(1, 0, 0, 1);
-                    paymentMethodInfo.HorizontalContentAlignment = HorizontalAlignment.Left;
-                    userInfoGrid.Children.Add(paymentMethodInfo);
-
-                    Label addressInfo = new Label();
-                    addressInfo.Content = $"Address: {dataOfOrder["address"]} - ({Tables.orders.getCity(dataOfOrder)["city_name"]})";
-                    addressInfo.BorderBrush = Brushes.Black;
-                    addressInfo.BorderThickness = new Thickness(0, 0, 1, 1);
-                    addressInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
-                    userInfoGrid.Children.Add(addressInfo);
-
-                    Label productCountInfo = new Label();
-                    productCountInfo.Content = $"Products Count: {qtyOfAllProd}";
-                    productCountInfo.BorderBrush = Brushes.Black;
-                    productCountInfo.BorderThickness = new Thickness(1, 0, 0, 1);
-                    productCountInfo.HorizontalContentAlignment = HorizontalAlignment.Left;
-                    userInfoGrid.Children.Add(productCountInfo);
-
-                    Label orderInfo = new Label();
-                    orderInfo.Content = $"Order date: {dataOfOrder["order_date"]}";
-                    orderInfo.BorderBrush = Brushes.Black;
-                    orderInfo.BorderThickness = new Thickness(0, 0, 1, 1);
-                    orderInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
-                    userInfoGrid.Children.Add(orderInfo);
-
-                    Label maxValueCount = new Label();
-                    maxValueCount.Content = $"Max value: {maxPrice} - Ft";
-                    maxValueCount.BorderBrush = Brushes.Black;
-                    maxValueCount.BorderThickness = new Thickness(1, 0, 0, 1);
-                    maxValueCount.HorizontalContentAlignment = HorizontalAlignment.Left;
-                    userInfoGrid.Children.Add(maxValueCount);
-
-                    ScrollViewer scrollViewer = new ScrollViewer();
-                    scrollViewer.Margin = new Thickness(15, 3, 15, 0);
-                    scrollViewer.MinHeight = 80;
-                    scrollViewer.MaxHeight = 150;
-
-                    StackPanel productPanel = new StackPanel();
-
-                    foreach (DataRow order in Tables.orders.getOrdersOfAUser(name_address[i][0], name_address[i][1]))
-                    {
-                        Border productBorder = new Border();
-                        productBorder.BorderBrush = Brushes.Black;
-                        productBorder.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                        UniformGrid productGrid = new UniformGrid();
-                        productGrid.Columns = 3;
-
-                        Label productLabel = new Label();
-                        productLabel.Content = Tables.orders.getProduct(order)["name"] + ": ";
-                        Label priceLabel = new Label();
-                        priceLabel.Content = $"Price: {Tables.orders.getProduct(order)["selling_price"]} - Ft";
-                        Label qtyLabel = new Label();
-                        qtyLabel.Content = $"Quantity: {order["qty"]}";
-
-                        productGrid.Children.Add(productLabel);
-                        productGrid.Children.Add(priceLabel);
-                        productGrid.Children.Add(qtyLabel);
-
-                        productBorder.Child = productGrid;
-                        productPanel.Children.Add(productBorder);
-                    }
-
-                    scrollViewer.Content = productPanel;
-
-                    Button button = new Button();
-                    button.Content = "Take";
-                    button.Margin = new Thickness(5);
-                    button.MaxWidth = 150;
-
-                    mainStackPanel.Children.Add(imagePanel);
-                    mainStackPanel.Children.Add(new Border() { BorderBrush = Brushes.Black, BorderThickness = new Thickness(1), Margin = new Thickness(5), Child = userInfoGrid });
-
-                    Border borderForSum = new Border();
-                    borderForSum.BorderBrush = Brushes.Black;
-                    borderForSum.BorderThickness = new Thickness(1, 0, 1, 1);
-                    borderForSum.Margin = new Thickness(5);
-
-                    Label sumVolumeInfo = new Label();
-                    sumVolumeInfo.Content = $"Sum volume: {sumVolume}(m^2)";
-                    sumVolumeInfo.HorizontalAlignment = HorizontalAlignment.Center;
-
-                    borderForSum.Child = sumVolumeInfo;
-
-                    mainStackPanel.Children.Add(borderForSum);
-                    mainStackPanel.Children.Add(scrollViewer);
-                    mainStackPanel.Children.Add(button);
-
-                    border.Child = mainStackPanel;
-                    panel.Children.Add(border);
+                    unassigned_city_id.Items.Add(Tables.orders.getCity(order)["city_name"]);
+                    unassigned_city_id_Dictionary.Add(Tables.orders.getCity(order)["city_name"].ToString(), Tables.orders.getCity(order));
                 }
             }
         }
-        
-        private Dictionary<string, DataRow> Cities_Dictionary = new Dictionary<string, DataRow>();
-        private void IniCities()
+
+        private Dictionary<string, DataRow> warehouse_id_Dictionary = new Dictionary<string, DataRow>();
+        private void Ini_warehouses()
         {
-            Cities_Dictionary.Clear();
-            city_id.Items.Clear();
-            foreach (DataRow warehouse in Tables.cities.database.Rows)
+            warehouse_id_Dictionary.Clear();
+            warehouse_id.Items.Clear();
+            foreach (DataRow order in Tables.orders.database.Rows)
             {
-                if (Tables.warehouses.getOrders(warehouse).Length != 0)
+                if (order["warehouse_id"].ToString() != string.Empty)
                 {
-                    Cities_Dictionary.Add(warehouse["city_name"].ToString(), warehouse);
-                    city_id.Items.Add(warehouse["city_name"].ToString());
+                    if (!warehouse_id_Dictionary.ContainsKey(Tables.orders.getWarehouse(order)["name"].ToString()))
+                    {
+                        warehouse_id.Items.Add(Tables.orders.getWarehouse(order)["name"].ToString());
+                        warehouse_id_Dictionary.Add(Tables.orders.getWarehouse(order)["name"].ToString(), Tables.orders.getWarehouse(order));
+                    }
                 }
+            }
+        }
+
+        private Dictionary<string, DataRow> dock_id_Dictionary = new Dictionary<string, DataRow>();
+        private void Ini_docks()
+        {
+            if (Tables.features.isFeatureInUse("Dock") && Tables.features.isFeatureInUse("Fleet"))
+            {
+                dock_idBORDER.Visibility = Visibility.Visible;
+
+                foreach (DataRow order in Tables.orders.database.Rows)
+                {
+                    if (order["transport_id"] != DBNull.Value)
+                    {
+                        DataRow transport = Tables.orders.getTransport(order);
+                        if (! dock_id_Dictionary.ContainsKey(Tables.transports.getDock(transport)["name"].ToString()))
+                        {
+                            dock_id_Dictionary.Add(Tables.transports.getDock(transport)["name"].ToString(), Tables.transports.getDock(transport));
+                            dock_id.Items.Add(Tables.transports.getDock(transport)["name"].ToString());
+                        }
+                    }
+                }
+            }
+            else if (Tables.features.isFeatureInUse("Dock") && !Tables.features.isFeatureInUse("Fleet"))
+            {
+                dock_idBORDER.Visibility = Visibility.Visible;
+
+                foreach (DataRow order in Tables.orders.database.Rows)
+                {
+                    if (order["dock_id"] != DBNull.Value)
+                    {
+                        DataRow dock = Tables.orders.getDock(order);
+                        if (! dock_id_Dictionary.ContainsKey(dock["name"].ToString()))
+                        {
+                            dock_id_Dictionary.Add(dock["name"].ToString(), dock);
+                            dock_id.Items.Add(dock["name"].ToString());
+                        }
+                    }
+                }
+            }
+            else
+            {
+                dock_idBORDER.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void Ini_docks(DataRow warehouse)
+        {
+            //Relation need
+            //dock_id_Dictionary.Clear();
+            //dock_id.Items.Clear();
+
+            //foreach (DataRow dock in Tables.warehouses.getDocks(warehouse))
+            //{
+            //    if (Tables.docks.getOrders(dock).Length != 0 && !dock_id_Dictionary.ContainsKey(dock["name"].ToString()))
+            //    {
+            //        dock_id_Dictionary.Add(dock["name"].ToString(), dock);
+            //        dock_id.Items.Add(dock["name"].ToString());
+            //    }
+            //}
+        }
+
+        private Dictionary<string, DataRow> TransportsDicitionary = new Dictionary<string, DataRow>();
+        private void Ini_transports()
+        {
+            //RelationNeed
+        }
+
+        private void unassigned_city_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (unassigned_city_id.SelectedIndex != -1)
+            {
+                OrdersDisplay.Children.Clear();
+                int city_id = int.Parse(unassigned_city_id_Dictionary[unassigned_city_id.SelectedItem.ToString()]["id"].ToString());
+                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id IS NULL AND city_id = {city_id} GROUP BY user_name, address");
+                for (int i = 0; i < name_address.Count; i++)
+                {
+                    DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
+                }
+            }
+        }
+
+        private void warehouse_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void dock_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void transport_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void AssignedOrders_Click(object sender, RoutedEventArgs e)
+        {
+            OrdersDisplay.Children.Clear();
+            List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id IS NOT NULL GROUP BY user_name, address");
+            for (int i = 0; i < name_address.Count; i++)
+            {
+                DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
+            }
+        }
+
+        private void UnassignedOrders_Click(object sender, RoutedEventArgs e)
+        {
+            OrdersDisplay.Children.Clear();
+            List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id IS NULL GROUP BY user_name, address");
+            for (int i = 0; i < name_address.Count; i++)
+            {
+                DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
+            }
+        }
+        private void DisplayAllOrders()
+        {
+            OrdersDisplay.Children.Clear();
+            List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} GROUP BY user_name, address");
+            for (int i = 0; i < name_address.Count; i++)
+            {
+                DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
+            }
+        }
+
+        private void AllOrders_Click(object sender, RoutedEventArgs e)
+        {
+            DisplayAllOrders();
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                if (User.Warehouse() != null)
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), User.Warehouse());
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("InspectWarehouse"));
             }
         }
     }

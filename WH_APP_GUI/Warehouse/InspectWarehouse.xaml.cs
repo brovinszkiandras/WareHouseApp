@@ -164,7 +164,8 @@ namespace WH_APP_GUI.Warehouse
 
         private void OrdersInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
-
+            Navigation.PreviousPage = this;
+            Navigation.OpenPage(Navigation.GetTypeByName("AllOrdersPage"));
         }
 
         private void ProductsInspectToWarehouse_Click(object sender, RoutedEventArgs e)

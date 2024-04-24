@@ -257,7 +257,6 @@ namespace WH_APP_GUI
         {
             //Hozzáadja a bekért gomb területét a sector használt területéhez
             Visual.sector["area_in_use"] = (double)Visual.sector["area_in_use"] + square.Width * square.Height;
-
         }
 
         public static void removeSquaresAreaFromSectorsAreaInUse(Button square)
