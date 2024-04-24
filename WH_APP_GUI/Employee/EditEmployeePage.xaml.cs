@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,22 +15,13 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
-namespace WH_APP_GUI
+namespace WH_APP_GUI.Employee
 {
     public partial class EditEmployeePage : Page
     {
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (var child in alapgrid.Children)
-            {
-                FontSize = e.NewSize.Height * 0.02;
-
-            }
-            profile_picture.Height = e.NewSize.Height * 0.4; profile_picture.Width = e.NewSize.Height * 0.4;
-        }
-        private static Type PreviousPageType;
-        public EditEmployeePage(Page previousPage, DataRow employee)
+        public EditEmployeePage(DataRow employee)
         {
             InitializeComponent();
             IniWarehouses();
@@ -158,10 +150,10 @@ namespace WH_APP_GUI
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            DataRow employee = (sender as Button).Tag as  DataRow;
+            DataRow employee = (sender as Button).Tag as DataRow;
             if (employee != null)
             {
-                if (! Validation.ValidateTextbox(name, employee) && ! Validation.validateEmail(email.Text))
+                if (!Validation.ValidateTextbox(name, employee) && !Validation.ValidateTextbox(email, employee))
                 {
                     employee["name"] = name.Text;
                     employee["email"] = email.Text;
@@ -170,7 +162,7 @@ namespace WH_APP_GUI
 
                     if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Revenue';"))
                     {
-                        if (! Validation.ValidateTextbox(payment, employee))
+                        if (!Validation.ValidateTextbox(payment, employee))
                         {
                             employee["payment"] = payment.Text != string.Empty ? payment.Text : "0";
                         }
@@ -226,7 +218,7 @@ namespace WH_APP_GUI
                         throw;
                     }
                 }
-            }       
+            }
         }
     }
 }

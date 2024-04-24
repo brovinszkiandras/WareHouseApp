@@ -194,12 +194,16 @@ namespace WH_APP_GUI
             {
                 if (WarehouseFromPage != null)
                 {
+                    MessageBox.Show("ez is lefutott");
                     Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);
                     Navigation.ReturnParam = WarehouseFromPage;
                 }
                 else
                 {
-                    Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);   
+                    if(Navigation.GetTypeByName("EditEmployeePage") != null)
+                    {
+                        Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);
+                    }
                 }
             }
         }
