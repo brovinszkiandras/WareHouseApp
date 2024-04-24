@@ -46,8 +46,7 @@ namespace WH_APP_GUI
                 {
                     if (ReturnParam != null)
                     {
-                        OpenPage(page, ReturnParam);
-                        ReturnParam = null;
+                        OpenPage(page, ReturnParam);                    
                     }
                     else
                     {

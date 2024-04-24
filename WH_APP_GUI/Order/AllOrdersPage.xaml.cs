@@ -29,10 +29,15 @@ namespace WH_APP_GUI.Order
 
             Ini_unassigned_cities();
             Ini_warehouses();
+            Ini_docks();
 
-            if (Navigation.ReturnParam == null)
+            if (User.Warehouse() != null)
             {
-                BackBORDER.Visibility = Visibility.Collapsed;
+                BackBORDER.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                BackBORDER.Visibility= Visibility.Collapsed;
             }
         }
         private bool CanComplete(string username, string address)
@@ -283,45 +288,44 @@ namespace WH_APP_GUI.Order
         private Dictionary<string, DataRow> dock_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_docks()
         {
-            //Relation need
-            //dock_id_Dictionary.Clear();
-            //dock_id.Items.Clear();
+            if (Tables.features.isFeatureInUse("Dock") && Tables.features.isFeatureInUse("Fleet"))
+            {
+                dock_idBORDER.Visibility = Visibility.Visible;
 
-            //MessageBox.Show("Warehouses:" + Tables.warehouses.database.Rows.Count.ToString());
-            //MessageBox.Show("Docks:" + Tables.warehouses.getDocks(Tables.warehouses.database.Rows[0]).Count().ToString());
+                foreach (DataRow order in Tables.orders.database.Rows)
+                {
+                    if (order["transport_id"] != DBNull.Value)
+                    {
+                        DataRow transport = Tables.orders.getTransport(order);
+                        if (! dock_id_Dictionary.ContainsKey(Tables.transports.getDock(transport)["name"].ToString()))
+                        {
+                            dock_id_Dictionary.Add(Tables.transports.getDock(transport)["name"].ToString(), Tables.transports.getDock(transport));
+                            dock_id.Items.Add(Tables.transports.getDock(transport)["name"].ToString());
+                        }
+                    }
+                }
+            }
+            else if (Tables.features.isFeatureInUse("Dock") && !Tables.features.isFeatureInUse("Fleet"))
+            {
+                dock_idBORDER.Visibility = Visibility.Visible;
 
-            //if (Tables.features.isFeatureInUse("Fleet"))
-            //{
-            //    foreach (DataRow warehouse in Tables.warehouses.database.Rows)
-            //    {
-            //        if (Tables.warehouses.getDocks(warehouse).Length != 0)
-            //        {
-            //            foreach (DataRow transport in Tables.warehouses.get)
-            //            {
-            //                if (Tables.docks.getOrders(dock).Length != 0 && !dock_id_Dictionary.ContainsKey(dock["name"].ToString()))
-            //                {
-            //                    dock_id_Dictionary.Add(dock["name"].ToString(), dock);
-            //                    dock_id.Items.Add(dock["name"].ToString());
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //else if (Tables.features.isFeatureInUse("Dock"))
-            //{
-            //    foreach (DataRow dock in Tables.docks.database.Rows)
-            //    {
-            //        if (Tables.docks.getOrders(dock).Length != 0 && !dock_id_Dictionary.ContainsKey(dock["name"].ToString()))
-            //        {
-            //            dock_id_Dictionary.Add(dock["name"].ToString(), dock);
-            //            dock_id.Items.Add(dock["name"].ToString());
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    dock_idBORDER.Visibility = Visibility.Collapsed;
-            //}
+                foreach (DataRow order in Tables.orders.database.Rows)
+                {
+                    if (order["dock_id"] != DBNull.Value)
+                    {
+                        DataRow dock = Tables.orders.getDock(order);
+                        if (! dock_id_Dictionary.ContainsKey(dock["name"].ToString()))
+                        {
+                            dock_id_Dictionary.Add(dock["name"].ToString(), dock);
+                            dock_id.Items.Add(dock["name"].ToString());
+                        }
+                    }
+                }
+            }
+            else
+            {
+                dock_idBORDER.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void Ini_docks(DataRow warehouse)
@@ -413,7 +417,14 @@ namespace WH_APP_GUI.Order
         {
             if (Navigation.PreviousPage != null)
             {
-                Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                if (User.Warehouse() != null)
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), User.Warehouse());
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
             }
             else
             {

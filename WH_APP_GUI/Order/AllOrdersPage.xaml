@@ -52,18 +52,6 @@
                         <ComboBox Name="dock_id" Margin="5" SelectionChanged="dock_id_SelectionChanged"/>
                     </StackPanel>
                 </Border>
-                <Border Name="transport_idBORDER" BorderBrush="Black" BorderThickness="2,0,2,2" Margin="0,5,0,0">
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#676F9D" Offset="0.303"/>
-                            <GradientStop Color="Black" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <StackPanel>
-                        <Label Content="Orders by transports"/>
-                        <ComboBox Name="transport_id" Margin="5" SelectionChanged="transport_id_SelectionChanged"/>
-                    </StackPanel>
-                </Border>
                 <Border Name="AssignedOrdersBORDER" BorderBrush="Black" BorderThickness="2,0,2,2" Margin="0,5,0,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
