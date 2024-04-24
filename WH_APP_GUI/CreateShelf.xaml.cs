@@ -61,6 +61,7 @@ namespace WH_APP_GUI
                 shelfBuilder.newShelf = Tables.shelf.database.NewRow();
                 shelfBuilder.newShelf["name"] = shelf_Name.Text;
                 shelfBuilder.newShelf["width"] = double.Parse(shelf_width.Text);
+                shelfBuilder.newShelf["orientation"] = Visual.orientation.ToString();
                 shelfBuilder.isAShelfBeingCreated = true;
 
 

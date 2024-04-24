@@ -606,6 +606,7 @@ namespace WH_APP_GUI
             database.Columns["name"].AllowDBNull = false;
             database.Columns["width"].AllowDBNull = false;
             database.Columns["actual_length"].DefaultValue = 0;
+            database.Columns["number_of_levels"].DefaultValue = 1;
         }
 
         public DataRow getSector(DataRow shelf)

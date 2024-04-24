@@ -133,7 +133,7 @@ namespace WH_APP_GUI
                         }
 
                         //Beálíítom a jelenlegi pozicíót a polc kezdőpontjának
-                        shelfBuilder.setStartingPointOfShelf(button, shelfBuilder.newShelf["width"].ToString());
+                        shelfBuilder.setStartingPointOfShelf(button);
 
                     }
                     //Ha a polcnak már van kezdő pozicíója
@@ -317,6 +317,8 @@ namespace WH_APP_GUI
                 shelfBuilder.isDeleteBeingUsed = false;
                 Delete.Background = Brushes.Red;
                 Delete.Content = "Delete";
+                //Frissíti az adatbázist
+                Tables.shelf.updateChanges();
             }
 
 
@@ -460,11 +462,12 @@ namespace WH_APP_GUI
                 //Gombbá alakítom őket
                 Button square = (Button)boxGrid.Children[index];
                 //Minden gombnál elindul egy for cilkus ami polc kezdő pozicíójátol
-                //a polc hosszúságig megy (az összes pozició a polcban)
+                //a polc hosszúságig megy (az összes X pozició polcban)
                 for (int i = (int)row["startXindex"]; i < (int)row["startXindex"] + (double)row["length"]; i++)
                 {
                     //Ha az éppen vizsgált gomb poziciója egyezik az egyik pozicíóval a polcban akkor
-                    //összekapcsolja a polccal
+                    //összekapcsolja a polccal (a gomb sora egyezik a polc kezdő Y pozicíójával
+                    //és az X pozició egyezik a jelenleg vizsált X poziciíóval)
                     if (Grid.GetRow(square) == (int)row["startYindex"] && Grid.GetColumn(square) == i)
                     {
                         square.Background = Brushes.DarkMagenta;
@@ -511,6 +514,7 @@ namespace WH_APP_GUI
             }
         }
 
+        //Beállítja a kezdetleges értékeit az ui elementeknek
         private void initalizeUielements()
         {
             areaProgeressbar.Value = (double) Visual.sector["area_in_use"];
@@ -531,6 +535,7 @@ namespace WH_APP_GUI
             Visual.initalizeGrid(boxGrid);
         }
 
+        //Frissítí az ui elementeket
         private void UpdateUiElemets()
         {
             areaProgeressbar.Value = (double)Visual.sector["area_in_use"];
