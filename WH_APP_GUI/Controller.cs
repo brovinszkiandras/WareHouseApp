@@ -640,7 +640,7 @@ namespace WH_APP_GUI
                     Tables.features.getFeature("City")["in_use"] = false;
                     Tables.features.updateChanges();
 
-                    Tables.disableCityFeature();
+                    
 
 
                 }

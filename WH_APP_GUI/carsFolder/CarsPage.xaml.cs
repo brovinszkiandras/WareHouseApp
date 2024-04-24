@@ -119,6 +119,8 @@ namespace WH_APP_GUI.carsFolder
             InitializeComponent();
 
             DisplayCars();
+
+           
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
