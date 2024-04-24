@@ -29,7 +29,11 @@ namespace WH_APP_GUI.Order
 
             Ini_unassigned_cities();
             Ini_warehouses();
-            Ini_docks();
+
+            if (Tables.features.isFeatureInUse("Dock"))
+            {
+                Ini_docks();
+            }
 
             if (User.Warehouse() != null)
             {
@@ -328,28 +332,6 @@ namespace WH_APP_GUI.Order
             }
         }
 
-        private void Ini_docks(DataRow warehouse)
-        {
-            //Relation need
-            //dock_id_Dictionary.Clear();
-            //dock_id.Items.Clear();
-
-            //foreach (DataRow dock in Tables.warehouses.getDocks(warehouse))
-            //{
-            //    if (Tables.docks.getOrders(dock).Length != 0 && !dock_id_Dictionary.ContainsKey(dock["name"].ToString()))
-            //    {
-            //        dock_id_Dictionary.Add(dock["name"].ToString(), dock);
-            //        dock_id.Items.Add(dock["name"].ToString());
-            //    }
-            //}
-        }
-
-        private Dictionary<string, DataRow> TransportsDicitionary = new Dictionary<string, DataRow>();
-        private void Ini_transports()
-        {
-            //RelationNeed
-        }
-
         private void unassigned_city_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (unassigned_city_id.SelectedIndex != -1)
@@ -362,21 +344,57 @@ namespace WH_APP_GUI.Order
                     DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
                 }
             }
+            ClearDatasOfComboBox();
         }
 
         private void warehouse_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (warehouse_id.SelectedIndex != -1)
+            {
+                OrdersDisplay.Children.Clear();
+                int warehouseid = int.Parse(warehouse_id_Dictionary[warehouse_id.SelectedItem.ToString()]["id"].ToString());
+                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id = {warehouseid} GROUP BY user_name, address");
+                for (int i = 0; i < name_address.Count; i++)
+                {
+                    DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
+                }
+            }
+            ClearDatasOfComboBox();
         }
 
         private void dock_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (dock_id.SelectedIndex != -1)
+            {
+                OrdersDisplay.Children.Clear();
+                int dockid = int.Parse(dock_id_Dictionary[dock_id.SelectedItem.ToString()]["id"].ToString());
 
+                if (Tables.features.isFeatureInUse("Dock") && Tables.features.isFeatureInUse("Fleet"))
+                {
+                    DataRow transport = Tables.transports.database.Select($"dock_id = {dockid}")[0];
+                    List<string[]> namesAddresses = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE transport_id = {transport["id"]} GROUP BY user_name, address");
+                    for (int i = 0; i < namesAddresses.Count; i++)
+                    {
+                        DisplayOneOrder(OrdersDisplay, namesAddresses[i][0], namesAddresses[i][1]);
+                    }
+                }
+                else if (Tables.features.isFeatureInUse("Dock") && !Tables.features.isFeatureInUse("Fleet"))
+                {
+                    List<string[]> namesAddresses = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE dock_id = {dockid} GROUP BY user_name, address");
+                    for (int i = 0; i < namesAddresses.Count; i++)
+                    {
+                        DisplayOneOrder(OrdersDisplay, namesAddresses[i][0], namesAddresses[i][1]);
+                    }
+                }
+            }
+            ClearDatasOfComboBox();
         }
 
-        private void transport_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ClearDatasOfComboBox()
         {
-
+            unassigned_city_id.SelectedIndex = -1;
+            warehouse_id.SelectedIndex = -1;
+            dock_id.SelectedIndex = -1;
         }
 
         private void AssignedOrders_Click(object sender, RoutedEventArgs e)
@@ -387,6 +405,7 @@ namespace WH_APP_GUI.Order
             {
                 DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
             }
+            ClearDatasOfComboBox();
         }
 
         private void UnassignedOrders_Click(object sender, RoutedEventArgs e)
@@ -397,6 +416,7 @@ namespace WH_APP_GUI.Order
             {
                 DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
             }
+            ClearDatasOfComboBox();
         }
         private void DisplayAllOrders()
         {
@@ -411,6 +431,7 @@ namespace WH_APP_GUI.Order
         private void AllOrders_Click(object sender, RoutedEventArgs e)
         {
             DisplayAllOrders();
+            ClearDatasOfComboBox();
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

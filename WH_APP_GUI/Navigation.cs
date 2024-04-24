@@ -16,15 +16,6 @@ namespace WH_APP_GUI
         public static Frame content2 = new Frame();
         public static Page PreviousPage = null;
         public static object ReturnParam = null;
-        public static void SetReturnParam(object retutnParam)
-        {
-            ReturnParam = null;
-            ReturnParam = retutnParam;
-        }
-        public static void ClearReturnParam()
-        {
-            ReturnParam = null;
-        }
         public static void RemoveParent()
         {
             if (content2.Parent != null)
