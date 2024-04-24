@@ -44,26 +44,22 @@ namespace WH_APP_GUI.Warehouse
         }
         private void Ini_City()
         {
-            if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'City'"))
-            {
-                terkep.IsEnabled = false;
-                MapDisplay.Children.Add(terkep);
-                terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
+            terkep.IsEnabled = true;
+            MapDisplay.Children.Add(terkep);
+            terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
 
-                MapPolyline polyline = new MapPolyline();
-                polyline.Stroke = new SolidColorBrush(Colors.Black);
-                polyline.StrokeThickness = 5;
-                polyline.Opacity = 0.7;
+            MapPolyline polyline = new MapPolyline();
+            polyline.Stroke = new SolidColorBrush(Colors.Black);
+            polyline.StrokeThickness = 5;
+            polyline.Opacity = 0.7;
 
-                double lat = double.Parse(Tables.warehouses.getCity(Warehouse)["latitude"].ToString());
-                double lon = double.Parse(Tables.warehouses.getCity(Warehouse)["longitude"].ToString());
+            double lat = double.Parse(Tables.warehouses.getCity(Warehouse)["latitude"].ToString());
+            double lon = double.Parse(Tables.warehouses.getCity(Warehouse)["longitude"].ToString());
 
-                terkep.Center = new Location(lat, lon);
-                terkep.ZoomLevel = 10;
+            terkep.Center = new Location(lat, lon);
+            terkep.ZoomLevel = 10;
 
-                terkep.Children.Add(polyline);
-                
-            }
+            terkep.Children.Add(polyline);
         }
         private void Ini_Revnue_A_Day()
         {

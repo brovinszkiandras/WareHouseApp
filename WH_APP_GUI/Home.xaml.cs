@@ -150,7 +150,7 @@ namespace WH_APP_GUI
             Button btn = sender as Button;
             foreach (Button child in Menu.Children)
             {
-                    child.Content += btn.Tag.ToString();
+                child.Content += btn.Tag.ToString();
             }
         }
         private void Home_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -159,6 +159,7 @@ namespace WH_APP_GUI
             {
                 FontSize = e.NewSize.Height * 0.03;
             }
+
         }
         private void InspectAllWarehouses_Click(object sender, RoutedEventArgs e)
         {
@@ -172,7 +173,7 @@ namespace WH_APP_GUI
 
         private void InspectAllOrders_Click(object sender, RoutedEventArgs e)
         {
-            Navigation.OpenPage(Navigation.GetTypeByName("OrdersPage"));
+            Navigation.OpenPage(Navigation.GetTypeByName("AllOrdersPage"));
         }
 
         private void InspectProducts_Click(object sender, RoutedEventArgs e)
@@ -222,9 +223,7 @@ namespace WH_APP_GUI
             {
                 if (children.Tag != null)
                 {
-
                     children.Content += children.Tag.ToString();
-
                 }
             }
         }

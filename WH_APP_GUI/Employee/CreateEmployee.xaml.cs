@@ -107,9 +107,6 @@ namespace WH_APP_GUI.Employee
                 MessageBox.Show("Employee has successfully created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 //EmployeesPage employeesPage = new EmployeesPage();
-                //Navigation.content2.Navigate(employeesPage);
-
-                //EmployeesPage employeesPage = new EmployeesPage();
 
                 //string text = $"Subject: Welcome to the company! Your Login Credentials Inside\r\n\r\n" +
                 //    $"Dear {employee["name"]},\r\n\r\nWe are thrilled to welcome you to the company." +
@@ -120,8 +117,7 @@ namespace WH_APP_GUI.Employee
 
                 //Email.send($"{employee["email"]}","Welcome to the company",text);
 
-                //Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
-                //Navigation.content2.Navigate(previousPage);
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
 

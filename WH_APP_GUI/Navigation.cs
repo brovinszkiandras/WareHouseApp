@@ -98,6 +98,7 @@ namespace WH_APP_GUI
                     type = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).FirstOrDefault(t => t.Name == typeName);
                 }
 
+               
                 return type;
             }
             catch (Exception ex)

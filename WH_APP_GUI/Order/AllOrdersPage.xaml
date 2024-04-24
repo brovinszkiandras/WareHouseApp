@@ -1,0 +1,39 @@
+﻿<Page x:Class="WH_APP_GUI.Order.AllOrdersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WH_APP_GUI.Order"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AllOrdersPage">
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ComboBox Name="city_id" Grid.Column="1" Margin="5"/>
+        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+            <StackPanel x:Name="Orders">
+                <Border BorderBrush="Black" BorderThickness="3" Margin="5">
+                    <StackPanel x:Name="NearbyOrders" Margin="5">
+                        
+                    </StackPanel>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="3" Margin="5">
+                    <StackPanel x:Name="RemoteOrders" Margin="5">
+
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+        <Button x:Name="Back" Content="Back" Grid.Column="2" Margin="5"/>
+    </Grid>
+</Page>

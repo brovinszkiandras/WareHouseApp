@@ -61,8 +61,7 @@ namespace WH_APP_GUI
                     DataRow[] matchingRows = contextTable.Select($"{textBox.Name} = '{textBox.Value}'");
                     if (matchingRows.Length != 0)
                     {
-                        MessageBox.Show(matchingRows[0]["id"].ToString());
-                        MessageBox.Show(context["id"].ToString());
+                       
                         if ((int)matchingRows[0]["id"] != (int)context["id"])
                         {
                             MessageBox.Show($"An element with this {textBox.Name} already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
