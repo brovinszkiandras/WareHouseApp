@@ -31,7 +31,7 @@ namespace WH_APP_GUI
         }
         private static void FillFeatureTable()
         {
-            List<string> NameOfFeatures = new List<string>() { "Date Log", "Fleet", "City", "Log", "Activity", "Revenue", "Storage", "Fuel", "Dock", "Forklift" };
+            List<string> NameOfFeatures = new List<string>() { "Date Log", "Fleet", "Log", "Activity", "Revenue", "Storage", "Fuel", "Dock", "Forklift" };
             for (int i = 0; i < NameOfFeatures.Count; i++)
             {
                 SQL.SqlCommand($"INSERT INTO feature (name, in_use) VALUE ('{NameOfFeatures[i]}', FALSE);");
@@ -91,6 +91,28 @@ namespace WH_APP_GUI
         }
 
         #region Create Required Tables In Migartions
+        private static void City()
+        {
+            try
+            {
+                string warehousesActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'warehouses'");
+                string ordersActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'orders'");
+
+                CreateAndFillCityTable();
+                if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'cities'") == string.Empty)
+                {
+                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('cities', 'cities', 'Cities');");
+                }
+
+                SQL.SqlCommand($"ALTER TABLE {warehousesActualName} ADD city_id INT, ADD CONSTRAINT fk_city_id FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE;");
+                SQL.SqlCommand($"ALTER TABLE {ordersActualName} ADD city_id INT, ADD CONSTRAINT fk_city_id_orders FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE;");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteError(ex);
+                throw;
+            }
+        }
         public static void CreateDefaultTables(List<string> TableNames)
         {
             try
@@ -107,7 +129,10 @@ namespace WH_APP_GUI
                 /*PRODUCTS*/
                 SQL.SqlCommand($"CREATE TABLE {TableNames[3]} (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), buying_price DOUBLE, selling_price DOUBLE, description TEXT, image VARCHAR(255) DEFAULT 'DefaultProductImage.png');");
                 /*ORDERS*/
-                SQL.SqlCommand($"CREATE TABLE {TableNames[4]} (id INT PRIMARY KEY AUTO_INCREMENT, qty INT, order_date DATETIME, address VARCHAR(255), status VARCHAR(255), product_id INT, user_name VARCHAR(255), payment_method VARCHAR(255), FOREIGN KEY (product_id) REFERENCES {TableNames[3]}(id) ON DELETE CASCADE);");
+                SQL.SqlCommand($"CREATE TABLE {TableNames[4]} (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, product_id INT, qty INT, status VARCHAR(255), user_name VARCHAR(255), address VARCHAR(255), payment_method VARCHAR(255), order_date TIMESTAMP DEFAULT NOW, FOREIGN KEY (product_id) REFERENCES {TableNames[3]}(id) ON DELETE CASCADE, FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id));");
+
+                /*CITY*/
+                City();
 
                 /*PERMISSION*/
                 CreateAndFillPermission();
@@ -231,22 +256,13 @@ namespace WH_APP_GUI
                     Tables_Refresh.Add(Tables.staff.actual_name, Tables.staff.Refresh);
                     Tables_Refresh.Add(Tables.warehouses.actual_name, Tables.warehouses.Refresh);
                     Tables_Refresh.Add(Tables.employees.actual_name, Tables.employees.Refresh);
-                    Tables_Refresh.Add(Tables.orders.actual_name, Tables.orders.Refresh);
                     Tables_Refresh.Add(Tables.products.actual_name, Tables.products.Refresh);
                     Tables_Refresh.Add(Tables.roles.actual_name, Tables.roles.Refresh);
 
                     foreach (var Tables in Tables_Refresh)
                     {
-                        if (Tables.Key == "orders")
-                        {
-                            SQL.SqlCommand($"ALTER TABLE {Tables.Key} ADD created_at TIMESTAMP DEFAULT NOW();");
-                            Tables.Value();
-                        }
-                        else
-                        {
-                            SQL.SqlCommand($"ALTER TABLE {Tables.Key} ADD created_at TIMESTAMP DEFAULT NOW(), ADD updated_at TIMESTAMP DEFAULT NOW();");
-                            Tables.Value();
-                        }
+                        SQL.SqlCommand($"ALTER TABLE {Tables.Key} ADD created_at TIMESTAMP DEFAULT NOW(), ADD updated_at TIMESTAMP DEFAULT NOW();");
+                        Tables.Value();   
                     }
 
                     Tables.features.getFeature("Date log")["in_use"] = true;
@@ -267,82 +283,77 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    string employeesActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'employees'");
-                    string ordersActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'orders'");
+                    SQL.SqlCommand(@"CREATE TABLE CARS (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        plate_number VARCHAR(255) UNIQUE NOT NULL,
+                        type VARCHAR(255) NOT NULL,
+                        ready BOOLEAN NOT NULL,
+                        km DOUBLE,
+                        last_service DATE,
+                        last_exam DATE,
+                        warehouse_id INT,
+                        FOREIGN KEY (warehouse_id) REFERENCES warehouses(id) ON DELETE CASCADE
+                    )");
 
-                    SQL.SqlCommand("CREATE TABLE CARS (id INT PRIMARY KEY AUTO_INCREMENT," +
-                        " plate_number VARCHAR(255) UNIQUE NOT NULL," +
-                        " type VARCHAR(255) NOT NULL," +
-                        " ready BOOLEAN NOT NULL," +
-                        " km DOUBLE," +
-                        " last_service DATE," +
-                        " last_exam DATE," +
-                        " warehouse_id INT," +
-                        " FOREIGN KEY (warehouse_id) REFERENCES warehouses(id) ON DELETE CASCADE);");
+                    SQL.SqlCommand($@"CREATE TABLE TRANSPORTS (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        employee_id INT,
+                        car_id INT,
+                        status VARCHAR(255),
+                        start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        end_date TIMESTAMP NULL,
+                        warehouse_id INT,
+                        FOREIGN KEY (employee_id) REFERENCES {Tables.employees.actual_name}(id) ON DELETE CASCADE,
+                        FOREIGN KEY (car_id) REFERENCES CARS(id) ON DELETE CASCADE,
+                        FOREIGN KEY (warehouse_id) REFERENCES warehouses(id) ON DELETE CASCADE
+                    )");
 
-                    SQL.SqlCommand($"CREATE TABLE TRANSPORTS (id INT PRIMARY KEY AUTO_INCREMENT," +
-                        $"employee_id INT," +
-                        $"car_id INT," +
-                        $"status VARCHAR(255)," +
-                        $"start_date TIMESTAMP DEFAULT NOW()," +
-                        $"end_date TIMESTAMP null," +
-                        $"warehouse_id int," +
-                        $"FOREIGN KEY (employee_id) REFERENCES {employeesActualName}(id) ON DELETE CASCADE," +
-                        $"FOREIGN KEY (car_id) REFERENCES CARS(id) ON DELETE CASCADE," +
-                        $"FOREIGN KEY (warehouse_id) REFERENCES warehouses(id) ON DELETE CASCADE);");
 
-                    if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'cars'") == string.Empty && SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'transports'") == string.Empty)
+                    if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name IN ('cars', 'transports')") == string.Empty)
                     {
-                        SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('cars', 'cars', 'Cars');");
-                        SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('transports', 'transports', 'Transports');");
+                        SQL.SqlCommand(@"INSERT INTO migrations (name, actual_name, nice_name) 
+                            VALUES ('cars', 'cars', 'Cars'), ('transports', 'transports', 'Transports'
+                        )");
                     }
 
-                    SQL.SqlCommand($"ALTER TABLE {ordersActualName} ADD transport_id INT, ADD CONSTRAINT fk_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id) ON DELETE CASCADE;");
+                    string TransportsActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'transports'");
+                    string OrdersActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'orders'");
 
-                    Tables.features.getFeature("Fleet")["in_use"] = true;
+                    if (Tables.features.isFeatureInUse("Dock"))
+                    {
+                        SQL.SqlCommand($@"ALTER TABLE {TransportsActualName} 
+                            ADD dock_id INT,
+                            ADD CONSTRAINT fk_dock_id_to_transports FOREIGN KEY (dock_id) REFERENCES DOCK(id) ON DELETE CASCADE;
+                        ");
 
-                    Tables.orders.Refresh();
-                    Tables.features.updateChanges();
+                        SQL.SqlCommand($@"ALTER TABLE {OrdersActualName} DROP FOREIGN KEY fk_dock_id;
+                            ALTER TABLE {OrdersActualName} DROP COLUMN dock_id;
+                            ALTER TABLE {OrdersActualName} ADD transport_id INT;
+                            ALTER TABLE {OrdersActualName} ADD CONSTRAINT fk_transport_id FOREIGN KEY (transport_id) REFERENCES {TransportsActualName}(id) ON DELETE CASCADE;
+                        ");
+                        Tables.orders.Refresh();
+                        Tables.orders.database.Columns.Remove("dock_id");
+                    }
+                    else
+                    {
+                        SQL.SqlCommand($@"ALTER TABLE {Tables.orders.actual_name} 
+                            ADD transport_id INT, 
+                            ADD CONSTRAINT fk_transport_id FOREIGN KEY (transport_id) REFERENCES transports(id) ON DELETE CASCADE
+                        ");
+                        Tables.orders.Refresh();
+                    }
+
                     Tables.addFleetTablesToTables();
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteError(ex);
-                    throw;
-                }
-            }
-        }
-
-        //City: Nincs másik feature-hez kötve, Létrehoz egy city_id-t a WAREHOUSES táblába
-        public static void City()
-        {
-            if (!FeatureInUse("City"))
-            {
-                try
-                {
-                    string warehousesActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'warehouses'");
-                    string ordersActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'orders'");
-
-                    CreateAndFillCityTable();
-                    if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'cities'") == string.Empty)
-                    {
-                        SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('cities', 'cities', 'Cities');");
-                    }
-
-                    SQL.SqlCommand($"ALTER TABLE {warehousesActualName} ADD city_id INT, ADD CONSTRAINT fk_city_id FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE;");
-                    SQL.SqlCommand($"ALTER TABLE {ordersActualName} ADD city_id INT, ADD CONSTRAINT fk_city_id_orders FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE;");
-
-                    Tables.features.getFeature("City")["in_use"] = true;
-                    Tables.warehouses.Refresh();
-                    Tables.orders.Refresh();
+                    Tables.features.getFeature("Fleet")["in_use"] = true;
                     Tables.features.updateChanges();
-                    Tables.addCityTableToTables();
+                    //Tables.addCityTableToTables();
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteError(ex);
                     throw;
                 }
+
             }
         }
 
@@ -431,9 +442,9 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    //SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} ADD weight DOUBLE, ADD volume DOUBLE, ADD width DOUBLE, ADD heigth DOUBLE, ADD length DOUBLE;");
-                    //SQL.SqlCommand($"ALTER TABLE cars ADD storage DOUBLE DEFAULT 0, ADD carrying_capacity DOUBLE DEFAULT 0;");
-                    //SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} ADD sum_volume DOUBLE;");
+                    SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} ADD weight DOUBLE, ADD volume DOUBLE, ADD width DOUBLE, ADD heigth DOUBLE, ADD length DOUBLE;");
+                    SQL.SqlCommand($"ALTER TABLE cars ADD storage DOUBLE DEFAULT 0, ADD carrying_capacity DOUBLE DEFAULT 0;");
+                    SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} ADD sum_volume DOUBLE;");
 
                     foreach (DataRow warehosue in Tables.warehouses.database.Rows)
                     {
@@ -468,8 +479,7 @@ namespace WH_APP_GUI
                 {
                     Debug.WriteError(ex);
                     throw;
-                }
-                
+                }            
             }
         }
 
@@ -506,20 +516,27 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    string transportsActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'transports'");
-                    string warehousesActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'warehouses'");
-
                     if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'dock'") == string.Empty)
                     {
                         SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('dock', 'dock', 'Dock');");
                     }
 
-                    SQL.SqlCommand($"CREATE TABLE DOCK (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), free BOOLEAN DEFAULT TRUE, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES {warehousesActualName}(id) ON DELETE CASCADE);");
-                    SQL.SqlCommand($"ALTER TABLE {transportsActualName} ADD dock_id INT, ADD CONSTRAINT fk_dock_id FOREIGN KEY (dock_id) REFERENCES DOCK (id) ON DELETE CASCADE;");
+                    SQL.SqlCommand($"CREATE TABLE DOCK (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), free BOOLEAN DEFAULT TRUE, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
+
+                    if (Tables.features.isFeatureInUse("Fleet"))
+                    {
+                        SQL.SqlCommand($"ALTER TABLE {Tables.transports.actual_name} ADD dock_id INT, ADD CONSTRAINT fk_dock_id_to_transports FOREIGN KEY (dock_id) REFERENCES DOCK (id) ON DELETE CASCADE;");
+                        Tables.transports.Refresh();
+                    }
+                    else
+                    {
+                        SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} ADD dock_id INT, ADD CONSTRAINT fk_dock_id FOREIGN KEY (dock_id) REFERENCES DOCK (id) ON DELETE CASCADE;");
+                        Tables.orders.Refresh();
+                    }
+
                     Tables.features.getFeature("Dock")["in_use"] = true;
                     Tables.features.updateChanges();
 
-                    Tables.transports.Refresh();
                     Tables.addDockTableToTables();
                 }
                 catch (Exception ex)
@@ -601,48 +618,33 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    DockOff();
                     FuelOff();
                     StorageOff();
 
-                    //SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT `employee_id`;");
-                    //SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT `car_id`;");
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT transports_ibfk_1");
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT transports_ibfk_2");
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` DROP CONSTRAINT `fk_transport_id`; ALTER TABLE `{Tables.orders.actual_name}` DROP COLUMN transport_id;");
+                    if (Tables.features.isFeatureInUse("Dock"))
+                    {
+                        //fk_dock_id_to_transports
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` DROP CONSTRAINT `fk_transport_id`; ALTER TABLE `{Tables.orders.actual_name}` DROP COLUMN transport_id;");
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` ADD dock_id INT, ADD CONSTRAINT fk_dock_id FOREIGN KEY (dock_id) REFERENCES DOCK (id) ON DELETE CASCADE;");
+                        Tables.orders.Refresh();
+                        
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT fk_dock_id_to_transports");
 
-                    SQL.SqlCommand($"DROP TABLE `{Tables.transports.actual_name}`;");
-                    SQL.SqlCommand($"DROP TABLE `{Tables.cars.actual_name}`;");
+                        SQL.SqlCommand($"DROP TABLE `{Tables.transports.actual_name}`;");
+                        SQL.SqlCommand($"DROP TABLE `{Tables.cars.actual_name}`;");
+                    }
+                    else
+                    {
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` DROP CONSTRAINT `fk_transport_id`; ALTER TABLE `{Tables.orders.actual_name}` DROP COLUMN transport_id;");
+
+                        SQL.SqlCommand($"DROP TABLE `{Tables.transports.actual_name}`;");
+                        SQL.SqlCommand($"DROP TABLE `{Tables.cars.actual_name}`;");
+                    }
 
                     Tables.features.getFeature("Fleet")["in_use"] = false;
                     Tables.features.updateChanges();
 
-
                     Tables.DisableFleetFeature();
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteError(ex);
-                    throw;
-                }
-            }
-        }
-        public static void CityOff()
-        {
-            if (FeatureInUse("City"))
-            {
-                try
-                {
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.warehouses.actual_name}` DROP CONSTRAINT `fk_city_id`; ALTER TABLE `{Tables.warehouses.actual_name}` DROP COLUMN city_id;");
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` DROP CONSTRAINT `fk_city_id_orders`; ALTER TABLE `{Tables.orders.actual_name}` DROP COLUMN city_id;");
-                    SQL.SqlCommand($"DROP TABLE `{Tables.cities.actual_name}`");
-
-                    Tables.features.getFeature("City")["in_use"] = false;
-                    Tables.features.updateChanges();
-
-                    Tables.disableCityFeature();
-
-
                 }
                 catch (Exception ex)
                 {
@@ -789,16 +791,21 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.transports.actual_name} DROP CONSTRAINT `fk_dock_id`; ALTER TABLE `{Tables.transports.actual_name}` DROP `dock_id`;");
-                    SQL.SqlCommand($"DROP TABLE `{Tables.docks.actual_name}`;");
+                    if (SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{Tables.orders.actual_name}';")).Contains("dock_id"))
+                    {
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.orders.actual_name}` DROP CONSTRAINT `fk_dock_id`; ALTER TABLE `{Tables.orders.actual_name}` DROP `dock_id`;");
+                    }
 
-                    
+                    if (FeatureInUse("Fleet"))
+                    {
+                        SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT `fk_dock_id_to_transports`; ALTER TABLE `{Tables.transports.actual_name}` DROP `dock_id`;");
+                        SQL.SqlCommand($"DROP TABLE `{Tables.docks.actual_name}`;");
+                    }
 
                     Tables.disableDockFeature();
 
                     Tables.features.getFeature("Dock")["in_use"] = false;
                     Tables.features.updateChanges();
-
                 }
                 catch (Exception ex)
                 {

@@ -18,9 +18,6 @@ using WH_APP_GUI.transport;
 
 namespace WH_APP_GUI.carsFolder
 {
-    /// <summary>
-    /// Interaction logic for CarsPage.xaml
-    /// </summary>
     public partial class CarsPage : Page
     {
         public void DisplayCars()
@@ -38,8 +35,6 @@ namespace WH_APP_GUI.carsFolder
                 plate_number.Text = car["plate_number"].ToString();
                 plate_number.FontSize = 15;
                 plate_number.TextWrapping = TextWrapping.Wrap;
-                plate_number.Foreground = Brushes.White;
-                plate_number.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(plate_number, lastRow);
                 Grid.SetColumn(plate_number, 0);
 
@@ -47,16 +42,10 @@ namespace WH_APP_GUI.carsFolder
                 type.Text = car["type"].ToString();
                 type.FontSize = 15;
                 type.TextWrapping = TextWrapping.Wrap;
-                type.Foreground = Brushes.White;
-                type.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(type, lastRow);
                 Grid.SetColumn(type, 1);
 
                 CheckBox ready = new CheckBox();
-                ready.HorizontalContentAlignment = HorizontalAlignment.Center;
-                ready.VerticalContentAlignment = VerticalAlignment.Center;
-                ready.HorizontalAlignment = HorizontalAlignment.Center;
-                ready.Foreground = Brushes.White;
                 ready.IsEnabled = false;
                 ready.IsChecked = (bool)car["ready"];
                 Grid.SetRow(ready, lastRow);
@@ -70,7 +59,6 @@ namespace WH_APP_GUI.carsFolder
                 Button inspect = new Button();
                 inspect.Content = "Details";
                 inspect.FontSize = 15;
-                inspect.Foreground = Brushes.White;
                 inspect.Background = Brushes.Green;
                 inspect.Tag = car["id"];
                 inspect.Click += Details_Click;
@@ -84,7 +72,7 @@ namespace WH_APP_GUI.carsFolder
                     edit.Content = "Edit";
                     edit.FontSize = 15;
                     edit.Foreground = Brushes.White;
-                    edit.Background = Brushes.Green;
+                    edit.Background = Brushes.Black;
                     edit.Click += Edit_Click;
                     edit.Tag = car["id"];
 
@@ -97,7 +85,7 @@ namespace WH_APP_GUI.carsFolder
                     delete.Content = "Delete";
                     delete.FontSize = 15;
                     delete.Foreground = Brushes.White;
-                    delete.Background = Brushes.Green;
+                    delete.Background = Brushes.Black;
                     delete.Tag = car["id"];
                     delete.Click += Delete_Click;
                     Grid.SetRow(delete, lastRow);

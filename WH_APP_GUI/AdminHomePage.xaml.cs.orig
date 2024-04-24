@@ -364,47 +364,55 @@ namespace WH_APP_GUI
             Display.Children.Clear();
             #region Checkboxes
             DateLogFeature DateLogCBXexe = new DateLogFeature("Date Log");
-            DateLogCBXexe.Content = "DateLog feature";
+            DateLogCBXexe.Content = "Include DateLog feature";
             DateLogCBXexe.Foreground = Brushes.White;
             Display.Children.Add(DateLogCBXexe);
 
             FleetFeature FleetCBXexe = new FleetFeature("Fleet");
-            FleetCBXexe.Content = "Fleet feature";
+            FleetCBXexe.Content = "Include Fleet feature";
             FleetCBXexe.Foreground = Brushes.White;
             Display.Children.Add(FleetCBXexe);
 
+<<<<<<< HEAD
+            CityFeature CityCBXexe = new CityFeature("City");
+            CityCBXexe.Content = "Include City feature";
+            CityCBXexe.Foreground = Brushes.White;
+            Display.Children.Add(CityCBXexe);
+
+=======
+>>>>>>> e2c04a53e050e3652d3801e901c18ec2614a734e
             LogFeature LogCBXexe = new LogFeature("Log");
-            LogCBXexe.Content = "Log feature";
+            LogCBXexe.Content = "Include Log feature";
             LogCBXexe.Foreground = Brushes.White;
             Display.Children.Add(LogCBXexe);
 
             ActivityFeature ActivityCBXexe = new ActivityFeature("Activity");
-            ActivityCBXexe.Content = "Activity feature";
+            ActivityCBXexe.Content = "Include Activity feature";
             ActivityCBXexe.Foreground = Brushes.White;
             Display.Children.Add(ActivityCBXexe);
 
             RevenueFeature RevenueCBXexe = new RevenueFeature("Revenue");
-            RevenueCBXexe.Content = "Revenue feature";
+            RevenueCBXexe.Content = "Include Revenue feature";
             RevenueCBXexe.Foreground = Brushes.White;
             Display.Children.Add(RevenueCBXexe);
 
             StorageFeature StorageCBXexe = new StorageFeature("Storage");
-            StorageCBXexe.Content = "Storage feature";
+            StorageCBXexe.Content = "Include Storage feature";
             StorageCBXexe.Foreground = Brushes.White;
             Display.Children.Add(StorageCBXexe);
 
             FuelFeature FuelCBXexe = new FuelFeature("Fuel");
-            FuelCBXexe.Content = "Fuel feature";
+            FuelCBXexe.Content = "Include Fuel feature";
             FuelCBXexe.Foreground = Brushes.White;
             Display.Children.Add(FuelCBXexe);
 
             DockFeature DockCBXexe = new DockFeature("Dock");
-            DockCBXexe.Content = "Dock feature";
+            DockCBXexe.Content = "Include Dock feature";
             DockCBXexe.Foreground = Brushes.White;
             Display.Children.Add(DockCBXexe);
 
             ForkliftFeature ForkliftCBXexe = new ForkliftFeature("Forklift");
-            ForkliftCBXexe.Content = "Forklift feature";
+            ForkliftCBXexe.Content = "Include Forklift feature";
             ForkliftCBXexe.Foreground = Brushes.White;
             Display.Children.Add(ForkliftCBXexe);
             #endregion

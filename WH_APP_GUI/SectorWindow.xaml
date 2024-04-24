@@ -23,7 +23,7 @@
 
 
 
-    <Grid>
+    <Grid Background="White">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"></ColumnDefinition>
@@ -57,7 +57,7 @@
             </Viewbox>
         </xctk:Zoombox>
 
-        <StackPanel Grid.Row="1" Grid.Column="2">
+        <StackPanel Visibility="Collapsed" Grid.Row="1" Grid.Column="2">
 
             <Button Height="50" Content="Designer view: OFF" Name="desinger_viewButton" Click="Designer_Click"></Button>
 
@@ -67,11 +67,11 @@
 
         </StackPanel>
         <!--<TextBlock Grid.Row="2" FontSize="15"  Name="squareSize" Height="75" VerticalAlignment="Top" Grid.Column="1"></TextBlock>-->
-
+        
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+               
             </Grid.RowDefinitions>
 
             <Grid>

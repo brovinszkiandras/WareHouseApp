@@ -18,9 +18,6 @@ using WH_APP_GUI.transport;
 
 namespace WH_APP_GUI.transport
 {
-    /// <summary>
-    /// Interaction logic for TransportsPage.xaml
-    /// </summary>
     public partial class TransportsPage : Page
     {
         public void displayTransports()
@@ -37,7 +34,6 @@ namespace WH_APP_GUI.transport
                 driver.Text = Tables.transports.getEmployee(transport)["name"].ToString();
                 driver.FontSize = 15;
                 driver.TextWrapping = TextWrapping.Wrap;
-                driver.Foreground = Brushes.White;
                 Grid.SetRow(driver, lastRow);
                 Grid.SetColumn(driver, 0);
 
@@ -46,7 +42,6 @@ namespace WH_APP_GUI.transport
                 TextBlock car = new TextBlock();
                 car.Text = Tables.transports.getCar(transport)["type"].ToString();
                 car.FontSize = 15;
-                car.Foreground = Brushes.White;
                 car.TextWrapping = TextWrapping.Wrap;
                 Grid.SetRow(car, lastRow);
                 Grid.SetColumn(car, 1);
@@ -56,7 +51,6 @@ namespace WH_APP_GUI.transport
                 TextBlock status = new TextBlock();
                 status.Text = transport["status"].ToString();
                 status.FontSize = 15;
-                status.Foreground = Brushes.White;
                 status.TextWrapping = TextWrapping.Wrap;
 
                 Grid.SetRow(status, lastRow);
@@ -68,7 +62,6 @@ namespace WH_APP_GUI.transport
                 DateTime startDate = (DateTime)transport["start_date"];
                 start_date.Text = startDate.ToString("yyyy-MM-dd HH:mm:ss");
                 start_date.FontSize = 15;
-                start_date.Foreground = Brushes.White;
                 start_date.TextWrapping = TextWrapping.Wrap;
                 Grid.SetRow(start_date, lastRow);
                 Grid.SetColumn(start_date, 3);
@@ -82,7 +75,6 @@ namespace WH_APP_GUI.transport
                     end_date.Text = endDate.ToString("yyyy-MM-dd HH:mm:ss");
                 }
                 end_date.FontSize = 15;
-                end_date.Foreground = Brushes.White;
                 end_date.TextWrapping = TextWrapping.Wrap;
                 Grid.SetRow(end_date, lastRow);
                 Grid.SetColumn(end_date, 4);
@@ -95,7 +87,6 @@ namespace WH_APP_GUI.transport
                     TextBlock dock = new TextBlock();
                     dock.Text = Tables.transports.getDock(transport)["name"].ToString();
                     dock.FontSize = 15;
-                    dock.Foreground = Brushes.White;
                     dock.TextWrapping = TextWrapping.Wrap;
                     Grid.SetRow(dock, lastRow);
                     Grid.SetColumn(dock, 5);
@@ -109,7 +100,6 @@ namespace WH_APP_GUI.transport
                     Button inspect = new Button();
                     inspect.Content = "Inspect";
                     inspect.FontSize = 15;
-                    inspect.Foreground = Brushes.White;
                     inspect.Background = Brushes.Green;
                     inspect.Tag = transport["id"];
                     Grid.SetRow(inspect, lastRow);
@@ -123,7 +113,6 @@ namespace WH_APP_GUI.transport
                     Button edit = new Button();
                     edit.Content = "Edit";
                     edit.FontSize = 15;
-                    edit.Foreground = Brushes.White;
                     edit.Background = Brushes.Green;
                     edit.Click += Edit_Click;
                     edit.Tag = transport["id"];
@@ -136,7 +125,6 @@ namespace WH_APP_GUI.transport
                     Button delete = new Button();
                     delete.Content = "Delete";
                     delete.FontSize = 15;
-                    delete.Foreground = Brushes.White;
                     delete.Background = Brushes.Green;
                     delete.Tag = transport["id"];
                     delete.Click += Delete_Click;
@@ -158,8 +146,6 @@ namespace WH_APP_GUI.transport
         {
             InitializeComponent();
             //this.DataContext = Tables.transports.database.Rows[1];
-          
-            
 
             displayTransports();
         }

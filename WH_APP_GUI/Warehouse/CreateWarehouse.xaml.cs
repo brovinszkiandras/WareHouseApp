@@ -30,17 +30,10 @@ namespace WH_APP_GUI.Warehouse
             width.ValueDataType = typeof(double);
             height.ValueDataType = typeof(double);
 
-            if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'City'"))
-            {
-                IniCities();
-                CityLBL.Visibility = Visibility.Visible;
-                city_id.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                CityLBL.Visibility= Visibility.Collapsed;
-                city_id.Visibility= Visibility.Collapsed;
-            }
+            IniCities();
+            CityLBL.Visibility = Visibility.Visible;
+            city_id.Visibility = Visibility.Visible;
+
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -80,16 +73,7 @@ namespace WH_APP_GUI.Warehouse
                 warehouse["length"] = length.Text;
                 warehouse["width"] = width.Text;
                 warehouse["height"] = height.Text;
-
-                if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'City'") && city_id.SelectedIndex != -1)
-                {
-                    warehouse["city_id"] = Cities_Dictionary[city_id.SelectedItem.ToString()]["id"];
-                }
-                else
-                {
-                    MessageBox.Show("Empty input field", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                warehouse["city_id"] = Cities_Dictionary[city_id.SelectedItem.ToString()]["id"];
 
                 Tables.warehouses.database.Rows.Add(warehouse);
                 Tables.warehouses.updateChanges();

@@ -12,10 +12,29 @@
             <Grid Grid.Row="1" Grid.Column="1">
 
                 <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"></RowDefinition>
-                        <RowDefinition Height="7*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="7*"></RowDefinition>
                 </Grid.RowDefinitions>
-                    <Grid Background="DarkMagenta">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+
+                    </Grid.ColumnDefinitions>
+
+                    <Border BorderBrush="Black" Grid.Column="0" Grid.ColumnSpan="6" BorderThickness="0,0,0,1"/>
+                    <Label Content="Plate number" Foreground="White" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left"/>
+                    <Label Content="Type" Foreground="White" Grid.Column="1" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
+                    <Label Content="Ready" Foreground="White" Grid.Column="2" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
+                    <Button Grid.Column="5" Background="{x:Null}" Foreground="White" Name="Create" Content="Create new" Click="Create_Click" Margin="5"/>
+                </Grid>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                    <Grid x:Name="carsGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -23,36 +42,15 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
-
                         </Grid.ColumnDefinitions>
 
-                        <Label Content="Plate number" Foreground="White" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
-                        <Label Content="Type" Foreground="White" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
-                        <Label Content="Ready" Foreground="White" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                        <Grid.RowDefinitions>
 
-                        <Button Grid.Column="5" Background="DarkMagenta" Foreground="White" Name="Create" Content="Create new" Click="Create_Click"></Button>
+                        </Grid.RowDefinitions>
                     </Grid>
-
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Background="Black">
-                        <Grid x:Name="carsGrid">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-
-                            </Grid.ColumnDefinitions>
-
-                            <Grid.RowDefinitions>
-
-                            </Grid.RowDefinitions>
-                        </Grid>
-                    </ScrollViewer>
-                </Grid>
-
-
+                </ScrollViewer>
             </Grid>
+        </Grid>
     </Border>
 </Page>
+    

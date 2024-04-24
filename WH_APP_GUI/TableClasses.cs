@@ -27,8 +27,7 @@ namespace WH_APP_GUI
         {
             GetNames();
             fill();
-            setupAutoIncrement();
-           
+            setupAutoIncrement(); 
         }
 
         public table(string actualname)
@@ -37,15 +36,12 @@ namespace WH_APP_GUI
             GetNames();
             fill();
             setupAutoIncrement();
-           
         }
 
         public void setupAutoIncrement()
         {
             database.Columns["id"].AutoIncrement = true;
             database.Columns["id"].AutoIncrementStep = 1;
-
-           
 
             if (database.Rows.Count > 0)
             {
@@ -97,7 +93,6 @@ namespace WH_APP_GUI
             SQL.con.Open();
 
             adapter.Fill(database);
-
             
             SQL.con.Close();
         }
@@ -112,22 +107,13 @@ namespace WH_APP_GUI
         {
             using (MySqlCommandBuilder commandBuilder = new MySqlCommandBuilder(adapter))
             {
-
-                
                 if(Tables.features.isFeatureInUse("Date log") == true)
                 {
                     UpdateDatelog();
                 }
 
                 adapter.Update(database);
-
-               
-
             }
-
-            
-
-           
         }
 
         public void RefreshEverything()
@@ -199,12 +185,16 @@ namespace WH_APP_GUI
         {
             return Relations.childRelation("warehouseCity", city);
         }
+
+        public DataRow[] getOrders(DataRow city)
+        {
+            return Relations.childRelation("orderCity", city);
+        }
     }
     class warehouses : table
     {
         public warehouses() : base()
         {
-            
             database.Columns["name"].Unique = true;
             database.Columns["name"].AllowDBNull = false;
             database.Columns["length"].AllowDBNull=false;
@@ -266,6 +256,11 @@ namespace WH_APP_GUI
         {
             return Relations.parentRelation("dockWarehouse", dock);
         }
+
+        public DataRow[] getOrders(DataRow dock)
+        {
+            return Relations.childRelation("orderDock", dock);
+        }
     }
     class orders : table
     {
@@ -288,6 +283,21 @@ namespace WH_APP_GUI
         {
             return Relations.parentRelation("orderTransport", order);
         }
+
+        public DataRow getDock(DataRow order)
+        {
+            return Relations.parentRelation("orderDock", order) ;
+        }
+
+        public DataRow getCity(DataRow order)
+        {
+            return Relations.parentRelation("orderCity", order);
+        }
+
+        public DataRow[] getOrdersOfAUser(object name, object address)
+        {
+            return database.Select($"user_name = '{name}' AND address = '{address}'");
+        }
     }
     class employees : staff
     {
@@ -307,8 +317,6 @@ namespace WH_APP_GUI
             }
         }
 
-
-
         public DataRow getWarehouse(DataRow employee)
         {
             return Relations.parentRelation("employeeWarehouse", employee);
@@ -327,8 +335,6 @@ namespace WH_APP_GUI
             database.Columns["buying_price"].AllowDBNull = false;
             database.Columns["selling_price"].AllowDBNull = false;
             database.Columns["description"].AllowDBNull = true;
-
-          
 
             if(Tables.features.isFeatureInUse("Storage") == true)
             {
@@ -382,10 +388,7 @@ namespace WH_APP_GUI
     }
     class permission : table
     {
-        public permission() : base()
-        {
-
-        }
+        public permission() : base() { }
 
         public DataRow[] getRoles(DataRow permission)
         {
@@ -401,7 +404,6 @@ namespace WH_APP_GUI
     }
     class cars : table
     {
-
         public cars() : base()
         {
            
@@ -450,10 +452,7 @@ namespace WH_APP_GUI
     }
     class feature : table
     {
-        public feature(string actualname) : base(actualname)
-        {
-
-        }
+        public feature(string actualname) : base(actualname) { }
 
         public DataRow getFeature(string name)
         {
@@ -524,6 +523,7 @@ namespace WH_APP_GUI
             database.Columns["name"].Unique = true;
             database.Columns["name"].AllowDBNull = false;
             database.Columns["width"].AllowDBNull = false;
+            database.Columns["actual_length"].DefaultValue = 0;
         }
 
         public DataRow getSector(DataRow shelf)
