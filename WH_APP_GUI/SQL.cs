@@ -302,6 +302,7 @@ namespace WH_APP_GUI
             catch (Exception ex)
             {
                 Debug.WriteError(ex);
+                Debug.WriteError(query);
                 throw;
             }
         }

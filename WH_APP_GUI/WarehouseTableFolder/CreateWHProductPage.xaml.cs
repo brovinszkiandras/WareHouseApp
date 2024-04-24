@@ -20,9 +20,6 @@ using Xceed.Wpf.Toolkit.Primitives;
 
 namespace WH_APP_GUI.WarehouseTableFolder
 {
-    /// <summary>
-    /// Interaction logic for CreateWHProductPage.xaml
-    /// </summary>
     public partial class CreateWHProductPage : Page
     {
        private DataRow warehouseProduct;
@@ -53,10 +50,6 @@ namespace WH_APP_GUI.WarehouseTableFolder
             {
                 updateDatabase();
             }
-
-
-
-
         }
 
         private void updateDatabase()
@@ -81,9 +74,9 @@ namespace WH_APP_GUI.WarehouseTableFolder
             List<DataRow> shelfs = new List<DataRow>();
             foreach (DataRow sector in Tables.warehouses.getSectors(User.Warehouse()))
             {
-               foreach (DataRow shelf in Tables.sector.getShelfs(sector)) 
-                {
-                  shelfs.Add(shelf);
+                foreach (DataRow shelf in Tables.sector.getShelfs(sector))
+                { 
+                    shelfs.Add(shelf);
                 }
             }
 
@@ -152,13 +145,9 @@ namespace WH_APP_GUI.WarehouseTableFolder
                         DataRowView selectedItem = product_id.SelectedItem as DataRowView;
                         DataRow product = selectedItem.Row;
 
-                        
-
-
                         width.Clear();
                         height.Clear();
                         length.Clear();
-
                     }
                 }
             }

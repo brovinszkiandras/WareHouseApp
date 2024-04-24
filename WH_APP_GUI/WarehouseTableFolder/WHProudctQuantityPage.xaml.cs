@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace WH_APP_GUI.WarehouseTableFolder
 {
-    /// <summary>
-    /// Interaction logic for WHProudctQuantityPage.xaml
-    /// </summary>
     public partial class WHProudctQuantityPage : Window
     {
         private void CheckifProductsFitInbox()
@@ -45,10 +42,6 @@ namespace WH_APP_GUI.WarehouseTableFolder
             {
                 updateDatabase();
             }
-
-
-
-
         }
 
         private void updateDatabase()

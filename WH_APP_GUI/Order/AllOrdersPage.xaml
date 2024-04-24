@@ -8,32 +8,109 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AllOrdersPage">
 
-    <Grid Background="White">
+    <Grid Background="#676F9D">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
-        <ComboBox Name="city_id" Grid.Column="1" Margin="5"/>
-        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Hidden">
-            <StackPanel x:Name="Orders">
-                <Border BorderBrush="Black" BorderThickness="3" Margin="5">
-                    <StackPanel x:Name="NearbyOrders" Margin="5">
-                        
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <StackPanel Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Top">
+                <Border Name="unassigned_city_idBORDER" BorderBrush="Black" BorderThickness="2,0,2,2">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#676F9D" Offset="0.303"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <StackPanel>
+                        <Label Content="Unassigned orders by cities"/>
+                        <ComboBox Name="unassigned_city_id" Margin="5" SelectionChanged="unassigned_city_id_SelectionChanged"/>
                     </StackPanel>
                 </Border>
+                <Border Name="warehouse_idBORDER" BorderBrush="Black" BorderThickness="2,0,2,2" Margin="0,5,0,0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#676F9D" Offset="0.303"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <StackPanel>
+                        <Label Content="Orders by warehouses"/>
+                        <ComboBox Name="warehouse_id" Margin="5" SelectionChanged="warehouse_id_SelectionChanged"/>
+                    </StackPanel>
+                </Border>
+                <Border Name="dock_idBORDER" BorderBrush="Black" BorderThickness="2,0,2,2" Margin="0,5,0,0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#676F9D" Offset="0.303"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <StackPanel>
+                        <Label Content="Orders by docks"/>
+                        <ComboBox Name="dock_id" Margin="5" SelectionChanged="dock_id_SelectionChanged"/>
+                    </StackPanel>
+                </Border>
+                <Border Name="transport_idBORDER" BorderBrush="Black" BorderThickness="2,0,2,2" Margin="0,5,0,0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#676F9D" Offset="0.303"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <StackPanel>
+                        <Label Content="Orders by transports"/>
+                        <ComboBox Name="transport_id" Margin="5" SelectionChanged="transport_id_SelectionChanged"/>
+                    </StackPanel>
+                </Border>
+                <Border Name="AssignedOrdersBORDER" BorderBrush="Black" BorderThickness="2,0,2,2" Margin="0,5,0,0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#676F9D" Offset="0.303"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Button x:Name="AssignedOrders" Content="Assigned orders" Grid.Column="2" Margin="5" MinHeight="25" Click="AssignedOrders_Click"/>
+                </Border>
+                <Border Name="UnassignedOrdersBORDER" BorderBrush="Black" BorderThickness="2,0,2,2" Margin="0,5,0,0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#676F9D" Offset="0.303"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Button x:Name="UnassignedOrders" Content="Unassigned orders" Grid.Column="2" Margin="5" MinHeight="25" Click="UnassignedOrders_Click"/>
+                </Border>
+                <Border Name="AllOrdersBORDER" BorderBrush="Black" BorderThickness="2,0,2,2" Margin="0,5,0,0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#676F9D" Offset="0.303"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Button x:Name="AllOrders" Content="All orders" Grid.Column="2" Margin="5" MinHeight="25" Click="AllOrders_Click"/>
+                </Border>
+                <Border Name="BackBORDER" BorderBrush="Black" BorderThickness="2,0,2,2" Margin="0,5,0,0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#676F9D" Offset="0.303"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Button x:Name="Back" Content="Back" Grid.Column="2" Margin="5" MinHeight="25" Click="Back_Click"/>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Hidden">
+            <StackPanel x:Name="Orders">
                 <Border BorderBrush="Black" BorderThickness="3" Margin="5">
-                    <StackPanel x:Name="RemoteOrders" Margin="5">
+                    <StackPanel x:Name="OrdersDisplay" Margin="5">
 
                     </StackPanel>
                 </Border>
             </StackPanel>
         </ScrollViewer>
-        <Button x:Name="Back" Content="Back" Grid.Column="2" Margin="5"/>
     </Grid>
 </Page>

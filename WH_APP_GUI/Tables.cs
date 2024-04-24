@@ -67,7 +67,7 @@ namespace WH_APP_GUI
             Relations.makeRelation("orderProduct", products.database, orders.database, "id", "product_id");
             Relations.makeRelation("shelfSector", sector.database, shelf.database, "id", "sector_id");
             Relations.makeRelation("sectorWarehouse", warehouses.database, sector.database, "id", "warehouse_id");
-            //Relations.makeRelation("orderWarehouse", warehouses.database, orders.database, "id", "warehouse_id");
+            Relations.makeRelation("orderWarehouse", warehouses.database, orders.database, "id", "warehouse_id");
             Relations.makeRelation("orderCity", cities.database, orders.database, "id", "city_id");
             Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
         }

@@ -186,9 +186,6 @@ namespace WH_APP_GUI
         public static void addSquaresAreaToSectorsAreaInUse(Button square)
         {
             Visual.sector["area_in_use"] = (double)Visual.sector["area_in_use"] + square.Width * square.Height;
-
-            
-            
         }
 
         public static void removeSquaresAreaFromSectorsAreaInUse(Button square)
