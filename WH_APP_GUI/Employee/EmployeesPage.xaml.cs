@@ -96,7 +96,7 @@ namespace WH_APP_GUI
                 foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
                 {
                     StackPanel mainStackPanel = new StackPanel();
-                    mainStackPanel.Height = 100;
+                    mainStackPanel.Height = 150;
                     mainStackPanel.Orientation = Orientation.Horizontal;
 
                     Image image = new Image();
@@ -132,7 +132,7 @@ namespace WH_APP_GUI
 
                     StackPanel leftStackPanel = new StackPanel();
                     leftStackPanel.Orientation = Orientation.Vertical;
-                    leftStackPanel.Width = 350;
+                    leftStackPanel.Width = 400;
 
                     Label nameLabel = new Label();
                     nameLabel.Content = employee["name"];
@@ -155,7 +155,7 @@ namespace WH_APP_GUI
 
                     StackPanel rightStackPanel = new StackPanel();
                     rightStackPanel.Orientation = Orientation.Vertical;
-                    rightStackPanel.Width = 130;
+                    rightStackPanel.Width = 140;
 
                     if (User.currentUser != employee)
                     {
@@ -194,12 +194,16 @@ namespace WH_APP_GUI
             {
                 if (WarehouseFromPage != null)
                 {
+                    MessageBox.Show("ez is lefutott");
                     Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);
                     Navigation.ReturnParam = WarehouseFromPage;
                 }
                 else
                 {
-                    Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);   
+                    if(Navigation.GetTypeByName("EditEmployeePage") != null)
+                    {
+                        Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);
+                    }
                 }
             }
         }

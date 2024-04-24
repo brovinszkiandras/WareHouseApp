@@ -41,11 +41,17 @@
 
 
         <Label FontSize="25"
-        Content="{Binding Path=[name]}"
+        Content="Sector1 - shelf2"
         VerticalContentAlignment="Center"
         Grid.Column="1"></Label>
 
-        <xctk:Zoombox Loaded="zBox_Loaded" Grid.Row="1" x:Name="zBox"  Grid.Column="1">
+        <StackPanel Name="shelfInfoSPNL" Visibility="Collapsed"  Panel.ZIndex="1" Width="auto" Height="auto" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1">
+            <Label Name="shelfName"  Foreground="White" FontSize="20" Content="Shelf1"></Label>
+            <Label Name="Size" Foreground="White" FontSize="20" Content="2*8 m2"></Label>
+            <Label Name="shelfOrientation" Foreground="White" FontSize="20" Content="Vertical"></Label>
+        </StackPanel>
+        
+        <xctk:Zoombox Panel.ZIndex="0" Loaded="zBox_Loaded" Grid.Row="1" x:Name="zBox"  Grid.Column="1">
 
             <Viewbox Stretch="Fill" Name="myViewbox">
 
@@ -57,7 +63,7 @@
             </Viewbox>
         </xctk:Zoombox>
 
-        <StackPanel Visibility="Collapsed" Grid.Row="1" Grid.Column="2">
+        <StackPanel Visibility="Visible" Grid.Row="1" Grid.Column="2">
 
             <Button Height="50" Content="Designer view: OFF" Name="desinger_viewButton" Click="Designer_Click"></Button>
 
@@ -66,6 +72,24 @@
             <Button Height="50" Content="Delete" Foreground="White" Visibility="Hidden" Name="Delete" Background="Red" Click="Delete_Click"></Button>
 
         </StackPanel>
+
+        <ScrollViewer Visibility="Collapsed" Grid.Column="2" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel Name="productsPanel">
+                <Border BorderBrush="Black" BorderThickness="0,0,0,2">
+                    <Grid Height="auto">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label FontSize="17" Content="Products"></Label>
+                        <Button FontSize="17" Name="CloseBTN" Foreground="White" Background="Crimson" Content="X" Grid.Column="1"/>
+                    </Grid>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+        
         <!--<TextBlock Grid.Row="2" FontSize="15"  Name="squareSize" Height="75" VerticalAlignment="Top" Grid.Column="1"></TextBlock>-->
         
         <Grid Grid.Column="1" Grid.Row="2">

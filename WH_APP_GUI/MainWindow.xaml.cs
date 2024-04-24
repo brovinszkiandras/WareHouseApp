@@ -90,6 +90,16 @@ namespace WH_APP_GUI
             Name.FontSize = e.NewSize.Height * 0.02;
             Emali.FontSize = e.NewSize.Height * 0.02;
             Password.FontSize = e.NewSize.Height * 0.02;
+
+            passwrdFU.FontSize = e.NewSize.Height * 0.02;
+            usernameFU.FontSize = e.NewSize.Height * 0.02;
+            portFU.FontSize = e.NewSize.Height * 0.02;
+            DataSourceFU.FontSize = e.NewSize.Height * 0.02;
+            DatabaseNameFU.FontSize = e.NewSize.Height * 0.02;
+
+            Name.FontSize = e.NewSize.Height * 0.02;
+            Emali.FontSize = e.NewSize.Height * 0.02;
+            RegisterAsAdmin.FontSize = e.NewSize.Height * 0.02;
         }
 
         private void ConfirmDBdatas_Click(object sender, RoutedEventArgs e)

@@ -40,6 +40,7 @@ namespace WH_APP_GUI
             button.Background = Brushes.DarkMagenta;
             button.BorderThickness = new System.Windows.Thickness(0);
 
+            addSquaresLengthToActualLength();
             addSquaresAreaToSectorsAreaInUse(button);
             Visual.squaresInUSe += 1;
         }
@@ -148,8 +149,15 @@ namespace WH_APP_GUI
         }
         public static void removeSquareFromShelf(Button button)
         {
-
-            DataRow shelf = Tables.shelf.database.Select($"name = '{button.Tag}' AND sector_id = {Visual.sector["id"]}")[0];
+            DataRow shelf;
+            if (isAShelfBeingCreated == false)
+            {
+              shelf  = Tables.shelf.database.Select($"name = '{button.Tag}' AND sector_id = {Visual.sector["id"]}")[0];
+            }
+            else
+            {
+                shelf = newShelf;
+            }
             //Check if square is at the start ot end
             if (checkIfSquareIsInTheMiddleOfTheShelf(button, shelf) == false)
             {
@@ -173,7 +181,10 @@ namespace WH_APP_GUI
                 }
                 if ((double)shelf["length"] == 0)
                 {
-                    shelf.Delete();
+                    if(isAShelfBeingCreated == false)
+                    {
+                        shelf.Delete();
+                    }
                 }
                 removeSquaresAreaFromSectorsAreaInUse(button);
                 removeSquaresLengthFromActualLength();
@@ -197,7 +208,7 @@ namespace WH_APP_GUI
         {
             if (newShelf["orientation"].ToString() == "Horizontal")
             {
-                MessageBox.Show(newShelf["actual_length"].ToString());
+                
                 newShelf["actual_length"] = (double)newShelf["actual_length"] + Visual.sizeHorizontally;
             }
             else if (newShelf["orientation"].ToString() == "Vertical")

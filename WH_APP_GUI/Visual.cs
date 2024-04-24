@@ -169,55 +169,7 @@ namespace WH_APP_GUI
             return isCorrect;
         }
 
-        public static void displayHorizontalShelf(Grid boxGrid, DataRow row)
-        {
-            double numberOfSquaresToFind = (double)row["length"];
-            int index = 0;
-            while (index < boxGrid.Children.Count && numberOfSquaresToFind != 0)
-            {
-                Button square = (Button)boxGrid.Children[index];
-                for (int i = (int)row["startXindex"]; i < (int)row["startXindex"] + (double)row["length"]; i++)
-                {
-                    if (Grid.GetRow(square) == (int)row["startYindex"] && Grid.GetColumn(square) == i)
-                    {
-                        square.Background = Brushes.DarkMagenta;
-                        square.BorderThickness = new System.Windows.Thickness(0);
-                        square.Width = Visual.sizeHorizontally;
-                        square.Height = (double)row["width"];
-                        square.Tag = row["name"];
-
-                        numberOfSquaresToFind--;
-                    }
-
-                }
-                index++;
-            }
-        }
-
-        public static void DisplayVerticalShelf(Grid boxGrid, DataRow row)
-        {
-            double numberOfSquaresToFind = (double)row["length"];
-            int index = 0;
-            while (index < boxGrid.Children.Count || numberOfSquaresToFind != 0)
-            {
-                Button square = (Button)boxGrid.Children[index];
-                for (int i = (int)row["startYindex"]; i < (int)row["startYindex"] + (double)row["length"]; i++)
-                {
-                    if (Grid.GetColumn(square) == (int)row["startXindex"] && Grid.GetRow(square) == i)
-                    {
-                        square.Background = Brushes.DarkMagenta;
-                        square.BorderThickness = new System.Windows.Thickness(0);
-                        square.Width = (double)row["width"];
-                        square.Height = Visual.sizeVertically;
-
-                        square.Tag = row["name"];
-                        numberOfSquaresToFind--;
-                    }
-
-                }
-                index++;
-            }
-        }
+        
 
         public static void initalizeGrid(Grid boxGrid)
         {

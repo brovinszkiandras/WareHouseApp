@@ -11,6 +11,7 @@ namespace WH_APP_GUI
 {
     class Tables
     {
+        #region defaultTables
         public static DataSet databases = new DataSet();
         public static feature features;
         public static dock docks;
@@ -20,7 +21,6 @@ namespace WH_APP_GUI
         public static staff staff;
         public static cities cities;
         public static products products;
-        public static role_permission role_permission;
         public static permission permissions;
         public static roles roles;
         public static transports transports;
@@ -28,7 +28,9 @@ namespace WH_APP_GUI
         public static Sector sector;
         public static shelf shelf;
         public static forklift forklifts;
+        #endregion
 
+        #region ini
         static public void Ini()
         {
             addRequriedTablesToTables();
@@ -45,7 +47,7 @@ namespace WH_APP_GUI
                 addForkliftTableToTables();
             }
         }
-
+        
         public static void addRequriedTablesToTables()
         {
             features = new feature("feature");
@@ -71,7 +73,9 @@ namespace WH_APP_GUI
             Relations.makeRelation("orderCity", cities.database, orders.database, "id", "city_id");
             Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
         }
+        #endregion
 
+        #region fleet
         public static void addFleetTablesToTables()
         {
             transports = new transports();
@@ -79,6 +83,8 @@ namespace WH_APP_GUI
             Relations.makeRelation("transportEmployee", employees.database, transports.database, "id", "employee_id");
             Relations.makeRelation("transportCar", cars.database, transports.database, "id", "car_id");
             Relations.makeRelation("orderTransport", transports.database, orders.database, "id", "transport_id");
+            Relations.makeRelation("transportWarehouse", warehouses.database, transports.database, "id", "warehouse_id");
+            Relations.makeRelation("carWarehosue", warehouses.database, cars.database, "id", "warehouse_id");
             //Kikapcsolom az orders dock relationt és megcsinálom a transport dock relationt
             if (Tables.features.isFeatureInUse("Dock") == true)
             {
@@ -92,28 +98,29 @@ namespace WH_APP_GUI
                 }
             }
         }
+        
+        public static void DisableFleetFeature()
+        {
+            transports = null;
+            cars = null;
+            databases.Relations.Remove("transportEmployee");
+            databases.Relations.Remove("transportCar");
+            databases.Relations.Remove("transportWarehouse");
+            databases.Relations.Remove("carWarehosue");
+            //Kikapcsolom az ordertransportot
+            databases.Relations.Remove("orderTransport");
+            orders.database.Constraints.Remove("orderTransport");
+            orders.database.Columns.Remove("transport_id");
+            //Hozzáadom az orderDock relationt és kikapcsolom a transport dock relationt 
+            if (Tables.features.isFeatureInUse("Dock") == true)
+            {
+                databases.Relations.Remove("orderDock");
+                Relations.makeRelation("orderDock", docks.database, orders.database, "id", "dock_id");
+            }
+        }
+        #endregion
 
-        //public static void addCityTableToTables()
-        //{
-            
-
-        //    Tables.orders.Refresh();
-        //    Tables.warehouses.Refresh();
-        //    Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
-        //}
-
-        //private static void initalizeDockAndFleetFeature()
-        //{
-        //    docks = new dock();
-        //    transports = new transports();
-
-        //    //Connect transport and dock
-        //    Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
-
-        //    //Connect dock and warehouse
-        //    Relations.makeRelation("dockWarehouse", warehouses.database, docks.database, "id", "warehouse_id");
-        //}
-
+        #region dock
         public static void addDockTableToTables()
         {
             docks = new dock();
@@ -132,32 +139,6 @@ namespace WH_APP_GUI
             }
             Relations.makeRelation("dockWarehouse", warehouses.database, docks.database, "id", "warehouse_id");
         }
-
-        public static void addForkliftTableToTables()
-        {
-            forklifts = new forklift();
-
-            Relations.makeRelation("forkliftWarehouse", warehouses.database, forklifts.database, "id", "warehouse_id");
-        }
-
-        public static void DisableFleetFeature()
-        {
-            transports = null;
-            cars = null;
-            databases.Relations.Remove("transportEmployee");
-            databases.Relations.Remove("transportCar");
-            //Kikapcsolom az ordertransportot
-            databases.Relations.Remove("orderTransport");
-            orders.database.Constraints.Remove("orderTransport");
-            orders.database.Columns.Remove("transport_id");
-            //Hozzáadom az orderDock relationt és kikapcsolom a transport dock relationt 
-            if (Tables.features.isFeatureInUse("Dock") == true)
-            {
-                databases.Relations.Remove("orderDock");
-                Relations.makeRelation("orderDock", docks.database, orders.database, "id", "dock_id");
-            }
-        }
-
         public static void disableDockFeature()
         {
             docks = null;
@@ -179,21 +160,24 @@ namespace WH_APP_GUI
             
             databases.Relations.Remove("dockWarehouse");
         }
+        #endregion
 
-        public static void disableCityFeature()
+        #region forklift
+        public static void addForkliftTableToTables()
         {
-            cities = null;
+            forklifts = new forklift();
 
-            databases.Relations.Remove("warehouseCity");
-            warehouses.database.Constraints.Remove("warehouseCity");
-            Tables.warehouses.database.Columns.Remove("city_id");
-            Tables.orders.database.Columns.Remove("city_id");
+            Relations.makeRelation("forkliftWarehouse", warehouses.database, forklifts.database, "id", "warehouse_id");
         }
+
+
+
         public static void disableForkliftFeauture()
         {
             forklifts = null;
 
             databases.Relations.Remove("forkliftWarehouse");
         }
+        #endregion
     }
 }

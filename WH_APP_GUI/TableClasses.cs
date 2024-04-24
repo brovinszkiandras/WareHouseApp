@@ -38,6 +38,7 @@ namespace WH_APP_GUI
             setupAutoIncrement();
         }
 
+        #region autoincrement
         public void setupAutoIncrement()
         {
             database.Columns["id"].AutoIncrement = true;
@@ -54,7 +55,9 @@ namespace WH_APP_GUI
                 database.Columns["id"].AutoIncrementSeed = 1;
             }
         }
+        #endregion
 
+        #region getname
         public void GetNames()
         {
             if (actual_name == null && name == null && nice_name == null)
@@ -64,6 +67,9 @@ namespace WH_APP_GUI
                 nice_name = SQL.FindOneDataFromQuery($"SELECT nice_name FROM migrations WHERE name = '{this.GetType().Name}'");
             }
         }
+        #endregion
+
+        #region queris
         public void fill()
         {
             adapter = new MySqlDataAdapter($"SELECT * FROM {actual_name}", SQL.con);
@@ -122,7 +128,9 @@ namespace WH_APP_GUI
 
             adapter.Fill(database);
         }
+        #endregion
 
+        #region datelog
         public void UpdateDatelog()
         {
             if(database.GetChanges() != null)
@@ -143,10 +151,11 @@ namespace WH_APP_GUI
                     }
                 }
             }
-            
         }
+        #endregion
     }
 
+    #region staff
     class staff : table
     {
         public staff() : base() 
@@ -174,6 +183,9 @@ namespace WH_APP_GUI
             }
         }
     }
+    #endregion
+
+    #region cities
     class cities : table
     {
         public cities() : base()
@@ -191,6 +203,9 @@ namespace WH_APP_GUI
             return Relations.childRelation("orderCity", city);
         }
     }
+    #endregion
+
+    #region warehouses
     class warehouses : table
     {
         public warehouses() : base()
@@ -207,7 +222,7 @@ namespace WH_APP_GUI
                 database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
             }
         }
-
+        
         public DataRow[] getEmployees(DataRow warehouse)
         {
             return Relations.childRelation("employeeWarehouse", warehouse);
@@ -237,7 +252,20 @@ namespace WH_APP_GUI
         {
             return Relations.childRelation("forkliftWarehouse", warehouse);
         }
+
+        public DataRow[] getTransports(DataRow warehouse)
+        {
+            return Relations.childRelation("transportWarehouse", warehouse);
+        }
+
+        public DataRow[] getCars(DataRow warehouse)
+        {
+            return Relations.childRelation("carWarehosue", warehouse);
+        }
     }
+    #endregion
+
+    #region dock
     class dock : table
     {
         public dock() : base()
@@ -262,6 +290,9 @@ namespace WH_APP_GUI
             return Relations.childRelation("orderDock", dock);
         }
     }
+    #endregion
+
+    #region orders
     class orders : table
     {
         public orders() : base()
@@ -298,7 +329,11 @@ namespace WH_APP_GUI
         {
             return database.Select($"user_name = '{name}' AND address = '{address}'");
         }
+
     }
+    #endregion
+
+    #region employees
     class employees : staff
     {
         public employees() : base() 
@@ -316,7 +351,6 @@ namespace WH_APP_GUI
                 database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
             }
         }
-
         public DataRow getWarehouse(DataRow employee)
         {
             return Relations.parentRelation("employeeWarehouse", employee);
@@ -327,6 +361,9 @@ namespace WH_APP_GUI
             return Relations.childRelation("transportEmployee", employee);
         }
     }
+    #endregion
+
+    #region products
     class products : table
     {
         public products() : base()
@@ -356,6 +393,9 @@ namespace WH_APP_GUI
             return Relations.childRelation("orderProduct", product);
         }
     }
+    #endregion
+
+    #region roles
     class roles : table
     {
         public roles() : base()
@@ -386,6 +426,9 @@ namespace WH_APP_GUI
             return Relations.connectionTableRelation(role, "role_permission", "roles", "role_id", "permission_id", Tables.permissions.database);
         }
     }
+    #endregion
+
+    #region permissions
     class permission : table
     {
         public permission() : base() { }
@@ -395,13 +438,9 @@ namespace WH_APP_GUI
             return Relations.connectionTableRelation(permission, "role_permission", "permission", "permission_id", "role_id", Tables.roles.database);
         }
     }
-    class role_permission : table
-    {
-        public role_permission() : base()
-        {
-            actual_name = "role_permission";
-        }
-    }
+    #endregion
+
+    #region cars
     class cars : table
     {
         public cars() : base()
@@ -419,7 +458,15 @@ namespace WH_APP_GUI
         {
             return Relations.childRelation("transportCar", car);
         }
+
+        public DataRow getWarehouse(DataRow car)
+        {
+            return Relations.parentRelation("carWarehosue", car);
+        }
     }
+    #endregion
+
+    #region transports
     class transports : table
     {
         public transports() : base()
@@ -449,7 +496,15 @@ namespace WH_APP_GUI
         {
             return Relations.childRelation("orderTransport", transport);
         }
+
+        public DataRow getWarehouse(DataRow transport)
+        {
+            return Relations.parentRelation("transportWarehouse", transport);
+        }
     }
+    #endregion
+
+    #region features
     class feature : table
     {
         public feature(string actualname) : base(actualname) { }
@@ -464,7 +519,9 @@ namespace WH_APP_GUI
             return (bool)getFeature(name)["in_use"];
         }
     }
+    #endregion
 
+    #region warehosueTable
     class warehouse : table
     {
         public warehouse(string actualname) : base(actualname)
@@ -493,8 +550,31 @@ namespace WH_APP_GUI
         {
             return Tables.shelf.database.Select($"id = {item["shelf_id"]}")[0];
         }
-    }
 
+        public bool canComleteOrdersOfAnUser(string address, string name)
+        {
+            bool canComplete = true;
+            foreach (DataRow order in Tables.orders.getOrdersOfAUser(name, address))
+            {
+                if (User.WarehouseTable().database.Select($"product_id = {order["product_id"]}").Length == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    int productsInTheWarehosue = User.WarehouseTable().database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
+                    if (productsInTheWarehosue < (int)order["qty"])
+                    {
+                        canComplete = false;
+                    }
+                }
+            }
+            return canComplete;
+        }
+    }
+    #endregion
+
+    #region sectors
     class Sector : table
     {
         public Sector(string actualname) : base(actualname)
@@ -515,7 +595,9 @@ namespace WH_APP_GUI
             return Relations.parentRelation("sectorWarehouse", sector);
         }
     }
+    #endregion
 
+    #region shelf
     class shelf : table
     {
         public shelf(string actualname) : base(actualname) 
@@ -536,7 +618,9 @@ namespace WH_APP_GUI
             return Relations.childRelation(warehouse.actual_name + "shelf", shelf);
         }
     }
+    #endregion
 
+    #region forklift
     class forklift : table
     {
         public forklift() : base()
@@ -550,4 +634,5 @@ namespace WH_APP_GUI
             return Relations.parentRelation("forkliftWarehouse", forklift);
         }
     }
+    #endregion
 }

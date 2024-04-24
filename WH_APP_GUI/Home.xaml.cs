@@ -159,6 +159,7 @@ namespace WH_APP_GUI
             {
                 FontSize = e.NewSize.Height * 0.03;
             }
+
         }
         private void InspectAllWarehouses_Click(object sender, RoutedEventArgs e)
         {
