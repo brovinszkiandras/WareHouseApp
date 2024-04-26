@@ -147,7 +147,7 @@ namespace WH_APP_GUI.Warehouse
                 {
                     foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
                     {
-                        employee["warehouse_id"] = null;
+                        employee["warehouse_id"] = DBNull.Value;
                     }
                     Tables.employees.updateChanges();
 
