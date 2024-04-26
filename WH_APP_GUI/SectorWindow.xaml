@@ -37,7 +37,9 @@
         </Grid.RowDefinitions>
 
 
-
+        <Grid Grid.Column="2">
+            
+        </Grid>
 
 
         <Label FontSize="25"
@@ -46,21 +48,23 @@
         Grid.Column="1"></Label>
 
         <StackPanel Name="shelfInfoSPNL" Visibility="Collapsed"  Panel.ZIndex="1" Width="auto" Height="auto" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1">
-            <Label Name="shelfName"  Foreground="White" FontSize="20" Content="Shelf1"></Label>
-            <Label Name="Size" Foreground="White" FontSize="20" Content="2*8 m2"></Label>
-            <Label Name="shelfOrientation" Foreground="White" FontSize="20" Content="Vertical"></Label>
+            <Label Name="shelfName"  Foreground="Red" FontSize="20" Content="Shelf1"></Label>
+            <Label Name="Size" Foreground="Red" FontSize="20" Content="2*8 m2"></Label>
+            <Label Name="shelfOrientation" Foreground="Red" FontSize="20" Content="Vertical"></Label>
         </StackPanel>
-        
+
         <xctk:Zoombox Panel.ZIndex="0" Loaded="zBox_Loaded" Grid.Row="1" x:Name="zBox"  Grid.Column="1">
+           
+                
+                <Viewbox Stretch="Fill" Name="myViewbox">
 
-            <Viewbox Stretch="Fill" Name="myViewbox">
-
-                <Grid  x:Name="boxGrid" VerticalAlignment="Stretch"  Background="Black" >
+                    <Grid  x:Name="boxGrid" VerticalAlignment="Stretch"  Background="Black" >
 
 
-                </Grid>
+                    </Grid>
 
-            </Viewbox>
+                </Viewbox>
+           
         </xctk:Zoombox>
 
         <StackPanel Visibility="Visible" Grid.Row="1" Grid.Column="2">

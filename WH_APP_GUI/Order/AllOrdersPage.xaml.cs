@@ -45,13 +45,13 @@ namespace WH_APP_GUI.Order
             bool canComplete = true;
             foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
             {
-                if (User.WarehouseTable().database.Select($"product_id = {order["product_id"]}").Length == 0)
+                if (User.warehouseTable().database.Select($"product_id = {order["product_id"]}").Length == 0)
                 {
                     return false;
                 }
                 else
                 {
-                    int productsInTheWarehosue = User.WarehouseTable().database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
+                    int productsInTheWarehosue = User.warehouseTable().database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
                     if (productsInTheWarehosue < (int)order["qty"])
                     {
                         canComplete = false;

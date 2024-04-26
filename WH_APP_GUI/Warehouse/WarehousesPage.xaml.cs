@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using WH_APP_GUI.Forklift;
 using WH_APP_GUI.sectors;
-using WH_APP_GUI.WarehouseTableFolder;
+using WH_APP_GUI.warehouseTableFolder;
 
 namespace WH_APP_GUI.Warehouse
 {
@@ -160,15 +160,32 @@ namespace WH_APP_GUI.Warehouse
                     }
                     Tables.docks.updateChanges();
 
+                MessageBox.Show(Tables.warehouseTables.Count.ToString());
+
+                for (int i = 0; i < Tables.warehouseTables.Count; i++)
+                {
+                    if (Tables.warehouseTables[i].database.TableName == warehouse["name"].ToString())
+                    {
+                        Tables.databases.Tables.Remove(Tables.warehouseTables[i].database);
+                        Tables.warehouseTables.Remove(Tables.warehouseTables[i]);
+                    }
+                }
+
+                foreach (DataRow sector in Tables.warehouses.getSectors(warehouse))
+                {
+                    sector.Delete();
+                }
+                Tables.sector.updateChanges();
+
+
+
                     SQL.SqlCommand($"DROP TABLE `{warehouse["name"]}`");
                     warehouse.Delete();
                     Tables.warehouses.updateChanges();
 
-                    foreach (DataRow sector in Tables.warehouses.getSectors(warehouse))
-                    {
-                        sector.Delete();
-                    }
-                    Tables.sector.Refresh();
+                   
+
+                    
 
                     DisplayWarehousesOnPanel(DisplayWarehousesStackpanel);
 

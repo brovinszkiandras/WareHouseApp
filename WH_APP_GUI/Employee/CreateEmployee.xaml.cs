@@ -144,8 +144,12 @@ namespace WH_APP_GUI.Employee
                         Directory.CreateDirectory(targetDirectory);
                     }
 
+
+                    
                     string fileName = Path.GetFileName(selectedFilePath);
-                    string targetFilePath = Path.Combine(targetDirectory, fileName);
+                    string pngFilename =  Path.ChangeExtension(fileName, "png");
+                    
+                    string targetFilePath = Path.Combine(targetDirectory, pngFilename);
 
                     File.Copy(selectedFilePath, targetFilePath, true);
 

@@ -233,16 +233,7 @@ namespace WH_APP_GUI
                 }
 
             }
-
-
-
-
         }
-
-
-
-
-
 
         //Új polc készítése gomb
         private void New_shelf_Click(object sender, RoutedEventArgs e)
@@ -260,17 +251,7 @@ namespace WH_APP_GUI
         //Funkció amikor a createshelf window bezáródik
         private void CreateShelf_Closed(object sender, EventArgs e)
         {
-            //Megmutatom az információkat a készülő polcról
-            shelfInfoSPNL.Visibility = Visibility.Visible;
-            //Hogyha egy polc készül készülőben van (a createshelf oldalon sikeresen elkezdte
-            //az user a polc készítését)
-            if(shelfBuilder.isAShelfBeingCreated == true)
-            {
-                //Megmutatom a polc adatait
-                shelfName.Content = shelfBuilder.newShelf["name"].ToString();
-                Size.Content = $"{shelfBuilder.newShelf["width"]}x{shelfBuilder.newShelf["actual_length"]} m2";
-                shelfOrientation.Content = Visual.orientation.ToString();
-            }
+            showShelfInfo();
         }
 
         //Befejezem a polc készítését
@@ -279,15 +260,26 @@ namespace WH_APP_GUI
             //Át állítom a változót ami egy polc készítését jelzi
             shelfBuilder.isAShelfBeingCreated = false;
             //Hogyha a polc még nem volt hozzáadva a polcok táblához akkor hozzáadom
-            if(Tables.shelf.database.Rows.Contains(shelfBuilder.newShelf) == true)
+            if(shelfBuilder.newShelf.RowState == DataRowState.Detached)
             {
                 Tables.shelf.database.Rows.Add(shelfBuilder.newShelf);
                 MessageBox.Show("You have created a new shelf");
             }
             //Ha már hozzá volt adva de meg az user megváltoztatta
-            else
+            else if(shelfBuilder.newShelf.RowState == DataRowState.Modified)
             {
               MessageBox.Show($"You have updated shelf {shelfBuilder.newShelf["name"]}");
+
+                foreach (Button children in boxGrid.Children)
+                {
+                    if(children.Tag != null)
+                    {
+                        if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
+                        {
+                            children.Background = Brushes.DarkMagenta;
+                        }
+                    }  
+                }
             }
 
             //Frissítem a kiválasztott sectort az adatbázisban
@@ -298,6 +290,7 @@ namespace WH_APP_GUI
 
             //Megváltoztatom a polcok click eventjét select clickre
             changeClickEventToSelect();
+            shelfInfoSPNL.Visibility = Visibility.Visible;
             
         }
 
@@ -416,11 +409,14 @@ namespace WH_APP_GUI
             if (shelf["orientation"].ToString() == "Horizontal")
             {
                 shelfBuilder.lastXindex = (int)shelf["startXindex"] + (int)(double)shelf["length"] - 1;
+                Visual.orientation = Orientation.Horizontal;
             }
             else if (shelf["orientation"].ToString() == "Vertical")
             {
                 shelfBuilder.lastYindex = (int)shelf["startYindex"] + (int)(double)shelf["length"] - 1;
+                Visual.orientation = Orientation.Vertical;
             }
+            showShelfInfo();
         }
 
         private void changeClickEventToSelect()
@@ -481,7 +477,6 @@ namespace WH_APP_GUI
                         //Megtalálandó gombok számát csökkenti
                         numberOfSquaresToFind--;
                     }
-
                 }
                 index++;
             }
@@ -523,6 +518,7 @@ namespace WH_APP_GUI
                 / (double) Visual.sector["area"]
                 * 100, 2) + "%";
 
+            Visual.calculateSquaresInUse();
             squares_in_use.Content = Visual.squaresInUSe.ToString();
             squaresProgressBar.Value = Visual.squaresInUSe;
 
@@ -553,5 +549,22 @@ namespace WH_APP_GUI
             }
         }
 
+        private void showShelfInfo()
+        {
+            //Megmutatom az információkat a készülő polcról
+            shelfInfoSPNL.Visibility = Visibility.Visible;
+            //Hogyha egy polc készül készülőben van (a createshelf oldalon sikeresen elkezdte
+            //az user a polc készítését)
+            if (shelfBuilder.isAShelfBeingCreated == true)
+            {
+                MessageBox.Show("Lefutott");
+                //Megmutatom a polc adatait
+                MessageBox.Show(shelfBuilder.newShelf["name"].ToString());
+                shelfName.Content = shelfBuilder.newShelf["name"].ToString();
+                MessageBox.Show(shelfName.Content.ToString());
+                Size.Content = $"{shelfBuilder.newShelf["width"]}x{shelfBuilder.newShelf["actual_length"]} m2";
+                shelfOrientation.Content = Visual.orientation.ToString();
+            }
+        }
     }
 }

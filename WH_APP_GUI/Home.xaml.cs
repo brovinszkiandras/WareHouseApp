@@ -18,6 +18,7 @@ using WH_APP_GUI.carsFolder;
 using WH_APP_GUI.transport;
 using Xceed.Wpf.Toolkit;
 
+
 namespace WH_APP_GUI
 {
     public partial class Home : Page
@@ -244,5 +245,9 @@ namespace WH_APP_GUI
             }
         }
 
+        private void Page_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

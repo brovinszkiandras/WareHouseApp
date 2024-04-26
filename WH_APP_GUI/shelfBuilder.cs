@@ -57,7 +57,14 @@ namespace WH_APP_GUI
 
             //a gomb azonosítója a polc neve lesz
             button.Tag = newShelf["name"];
-            button.Background = Brushes.DarkMagenta;
+            if(newShelf.RowState == DataRowState.Detached)
+            {
+                button.Background = Brushes.DarkMagenta;
+            }
+            else if(newShelf.RowState == DataRowState.Modified)
+            {
+                button.Background= Brushes.White;
+            }
             button.BorderThickness = new System.Windows.Thickness(0);
 
             //Hozzáadom a gomb hosszúságát a polc hosszúságához
@@ -90,7 +97,14 @@ namespace WH_APP_GUI
         {
             newShelf["length"] = (double)newShelf["length"] + 1;
             button.Tag = newShelf["name"];
-            button.Background = Brushes.DarkMagenta;
+            if (newShelf.RowState == DataRowState.Detached)
+            {
+                button.Background = Brushes.DarkMagenta;
+            }
+            else if (newShelf.RowState == DataRowState.Modified)
+            {
+                button.Background = Brushes.White;
+            }
             button.BorderThickness = new System.Windows.Thickness(0);
 
             //Hozzáadom a gomb hosszúságát a polc hosszúságához
@@ -172,7 +186,7 @@ namespace WH_APP_GUI
 
         //Megnézi hogy a bekért polcnak egy olyan poziciójéban van e ami kitörlhető
         //Csak a kezdő és a befejező pozició törölhető ki
-        public static bool checkIfSquareIsInTheMiddleOfTheShelf(Button button, DataRow shelf)
+        private static bool checkIfSquareIsInTheMiddleOfTheShelf(Button button, DataRow shelf)
         {
             int column = Grid.GetColumn(button);
             int row = Grid.GetRow(button);
@@ -253,13 +267,13 @@ namespace WH_APP_GUI
             }
         }
 
-        public static void addSquaresAreaToSectorsAreaInUse(Button square)
+        private static void addSquaresAreaToSectorsAreaInUse(Button square)
         {
             //Hozzáadja a bekért gomb területét a sector használt területéhez
             Visual.sector["area_in_use"] = (double)Visual.sector["area_in_use"] + square.Width * square.Height;
         }
 
-        public static void removeSquaresAreaFromSectorsAreaInUse(Button square)
+        private static void removeSquaresAreaFromSectorsAreaInUse(Button square)
         {
             //Kivonja a bekért gomb területét a sector használt területéből
             Visual.sector["area_in_use"] = (double)Visual.sector["area_in_use"] - square.Width * square.Height;
