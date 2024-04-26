@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit.Primitives;
 
-namespace WH_APP_GUI.WarehouseTableFolder
+namespace WH_APP_GUI.warehouseTableFolder
 {
     /// <summary>
     /// Interaction logic for EditWHProductPage.xaml
@@ -29,7 +29,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
            * (double)warehouseProduct["height"]
            * (double)warehouseProduct["length"];
 
-            double productsFullVolume = (double)User.WarehouseTable().getProduct(warehouseProduct)["volume"]
+            double productsFullVolume = (double)warehouseTable.getProduct(warehouseProduct)["volume"]
                 * (int)warehouseProduct["qty"];
 
             if (boxvolume < productsFullVolume)
@@ -57,23 +57,26 @@ namespace WH_APP_GUI.WarehouseTableFolder
         private void updateDatabase()
         {
            
-            User.WarehouseTable().updateChanges();
+            warehouseTable.updateChanges();
             Xceed.Wpf.Toolkit.MessageBox.Show($"The product has been updated");
-            WarehouseProductsPage page = new WarehouseProductsPage();
+            WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
             Navigation.content2.Navigate(page);
         }
 
         private DataRow warehouseProduct;
+        private warehouse warehouseTable;
         public EditWHProductPage(DataRow WarehouseProduct)
         {
             InitializeComponent();
 
             this.warehouseProduct = WarehouseProduct;
 
+            warehouseTable = Tables.getWarehosue(warehouseProduct.Table.TableName);
+
             this.DataContext = warehouseProduct;
 
             product_id.ItemsSource = Tables.products.database.Rows;
-            product_id.SelectedItem = User.WarehouseTable().getProduct(warehouseProduct);
+            product_id.SelectedItem = warehouseTable.getProduct(warehouseProduct);
             
 
             
@@ -88,7 +91,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
             }
 
             shelf_id.ItemsSource = shelfs;
-            shelf_id.SelectedItem = User.WarehouseTable().getShelf(warehouseProduct);
+            shelf_id.SelectedItem = warehouseTable.getShelf(warehouseProduct);
 
             on_shelf_level.SelectedItem = (int)warehouseProduct["on_shelf_level"];
 

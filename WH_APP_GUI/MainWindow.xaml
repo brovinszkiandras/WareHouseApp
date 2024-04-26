@@ -81,7 +81,7 @@
                     <Border Padding="5" x:Name="NameBorder" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                         <StackPanel>
                             <Label Content="Name:" Name="NameLBL" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                            <TextBox x:Name="Name" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                            <TextBox x:Name="Name" Text="micimacko" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                         </StackPanel>
                     </Border>
                     <Border Padding="5" x:Name="EmailBorder" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
@@ -110,28 +110,28 @@
                 <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                     <StackPanel>
                         <Label Content="Name:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                        <TextBox x:Name="DatabaseNameFU" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                        <TextBox x:Name="DatabaseNameFU" Text="wh_app_database" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                     </StackPanel>
                 </Border>
 
                 <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                     <StackPanel>
                         <Label Content="Datasource:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                        <TextBox x:Name="DataSourceFU" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                        <TextBox x:Name="DataSourceFU" Text="127.0.0.1" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                     </StackPanel>
                 </Border>
 
                 <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                     <StackPanel>
                         <Label Content="Port number:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                        <TextBox x:Name="portFU" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                        <TextBox x:Name="portFU" Text="3306" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                     </StackPanel>
                 </Border>
 
                 <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                     <StackPanel>
                         <Label Content="Username:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                        <TextBox x:Name="usernameFU" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                        <TextBox x:Name="usernameFU" Text="root" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                     </StackPanel>
                 </Border>
 

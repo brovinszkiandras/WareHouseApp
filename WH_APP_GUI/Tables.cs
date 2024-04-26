@@ -28,6 +28,7 @@ namespace WH_APP_GUI
         public static Sector sector;
         public static shelf shelf;
         public static forklift forklifts;
+        public static List<warehouse> warehouseTables = new List<warehouse>();
         #endregion
 
         #region ini
@@ -47,7 +48,7 @@ namespace WH_APP_GUI
                 addForkliftTableToTables();
             }
         }
-        
+
         public static void addRequriedTablesToTables()
         {
             features = new feature("feature");
@@ -61,7 +62,7 @@ namespace WH_APP_GUI
             sector = new Sector("sector");
             shelf = new shelf("shelf");
             cities = new cities();
-            
+
 
             Relations.makeRelation("staffRole", roles.database, staff.database, "id", "role_id");
             Relations.makeRelation("employeeRole", roles.database, employees.database, "id", "role_id");
@@ -72,6 +73,8 @@ namespace WH_APP_GUI
             Relations.makeRelation("orderWarehouse", warehouses.database, orders.database, "id", "warehouse_id");
             Relations.makeRelation("orderCity", cities.database, orders.database, "id", "city_id");
             Relations.makeRelation("warehouseCity", cities.database, warehouses.database, "id", "city_id");
+
+            loadInWarehouseTables();
         }
         #endregion
 
@@ -88,7 +91,7 @@ namespace WH_APP_GUI
             //Kikapcsolom az orders dock relationt és megcsinálom a transport dock relationt
             if (Tables.features.isFeatureInUse("Dock") == true)
             {
-                if(docks != null)
+                if (docks != null)
                 {
                     if (databases.Relations["orderDock"] != null)
                     {
@@ -98,7 +101,7 @@ namespace WH_APP_GUI
                 }
             }
         }
-        
+
         public static void DisableFleetFeature()
         {
             transports = null;
@@ -142,10 +145,10 @@ namespace WH_APP_GUI
         public static void disableDockFeature()
         {
             docks = null;
-            
+
             if (Tables.features.isFeatureInUse("Fleet"))
             {
-               //Kikapcsolom a transport dock relationt
+                //Kikapcsolom a transport dock relationt
                 databases.Relations.Remove("transportDock");
                 transports.database.Constraints.Remove("transportDock");
                 Tables.transports.database.Columns.Remove("dock_id");
@@ -156,8 +159,8 @@ namespace WH_APP_GUI
                 databases.Relations.Remove("orderDock");
                 Tables.orders.database.Columns.Remove("dock_id");
             }
-            
-            
+
+
             databases.Relations.Remove("dockWarehouse");
         }
         #endregion
@@ -179,5 +182,30 @@ namespace WH_APP_GUI
             databases.Relations.Remove("forkliftWarehouse");
         }
         #endregion
+
+        public static warehouse getWarehosue(string name)
+        {
+            MessageBox.Show("Lefutott");
+            warehouse selectedWarehosue = null;
+            foreach (warehouse warehouseTable in warehouseTables)
+            {
+                MessageBox.Show(warehouseTable.database.TableName);
+                MessageBox.Show(name);
+                if (warehouseTable.database.TableName == name)
+                {
+                    selectedWarehosue = warehouseTable;
+                }
+            }
+            return selectedWarehosue;
+        }
+
+        private static void loadInWarehouseTables()
+        {
+            foreach(DataRow warehouse in warehouses.database.Rows)
+            {
+                warehouseTables.Add(new warehouse(warehouse["name"].ToString()));
+            }
+        }
+
     }
 }

@@ -98,7 +98,7 @@ namespace WH_APP_GUI
             
         }
 
-        public static warehouse WarehouseTable()
+        public static warehouse warehouseTable()
         {
             if(WHTable == null)
             {
