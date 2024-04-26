@@ -129,7 +129,7 @@ namespace WH_APP_GUI
                 /*PRODUCTS*/
                 SQL.SqlCommand($"CREATE TABLE {TableNames[3]} (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), buying_price DOUBLE, selling_price DOUBLE, description TEXT, image VARCHAR(255) DEFAULT 'DefaultProductImage.png');");
                 /*ORDERS*/
-                SQL.SqlCommand($"CREATE TABLE {TableNames[4]} (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, product_id INT, qty INT, status VARCHAR(255), user_name VARCHAR(255), address VARCHAR(255), payment_method VARCHAR(255), order_date TIMESTAMP DEFAULT NOW(), FOREIGN KEY (product_id) REFERENCES {TableNames[3]}(id) ON DELETE CASCADE, FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id));");
+                SQL.SqlCommand($"CREATE TABLE {TableNames[4]} (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, product_id INT, qty INT, status VARCHAR(255) DEFAULT 'Registered', user_name VARCHAR(255), address VARCHAR(255), payment_method VARCHAR(255), order_date TIMESTAMP DEFAULT NOW(), FOREIGN KEY (product_id) REFERENCES {TableNames[3]}(id) ON DELETE CASCADE, FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id));");
 
                 /*CITY*/
                 City();

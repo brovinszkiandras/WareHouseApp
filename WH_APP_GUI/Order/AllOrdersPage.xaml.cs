@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Xml.Linq;
@@ -25,23 +27,27 @@ namespace WH_APP_GUI.Order
         {
             InitializeComponent();
 
-            DisplayAllOrders();
-
-            Ini_unassigned_cities();
-            Ini_warehouses();
-
-            if (Tables.features.isFeatureInUse("Dock"))
-            {
-                Ini_docks();
-            }
-
             if (User.Warehouse() != null)
             {
                 BackBORDER.Visibility = Visibility.Visible;
+                Ini_docks(User.Warehouse());
+                Ini_unassigned_cities();
+
+                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id = {User.Warehouse()["id"]} GROUP BY user_name, address");
+                for (int i = 0; i < name_address.Count; i++)
+                {
+                    DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
+                }
             }
             else
             {
                 BackBORDER.Visibility= Visibility.Collapsed;
+                AllOrdersBORDER.Visibility= Visibility.Visible;
+
+                DisplayAllOrders();
+                Ini_warehouses();
+                Ini_unassigned_cities();
+                Ini_docks();
             }
         }
         private bool CanComplete(string username, string address)
@@ -163,41 +169,20 @@ namespace WH_APP_GUI.Order
             maxValueCount.HorizontalContentAlignment = HorizontalAlignment.Left;
             userInfoGrid.Children.Add(maxValueCount);
 
-            ScrollViewer scrollViewer = new ScrollViewer();
-            scrollViewer.Margin = new Thickness(15, 3, 15, 0);
-            scrollViewer.MinHeight = 80;
-            scrollViewer.MaxHeight = 150;
-
-            StackPanel productPanel = new StackPanel();
-
-            foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
-            {
-                Border productBorder = new Border();
-                productBorder.BorderBrush = Brushes.Black;
-                productBorder.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                UniformGrid productGrid = new UniformGrid();
-                productGrid.Columns = 3;
-
-                Label productLabel = new Label();
-                productLabel.Content = Tables.orders.getProduct(order)["name"] + ": ";
-                Label priceLabel = new Label();
-                priceLabel.Content = $"Price: {Tables.orders.getProduct(order)["selling_price"]} - Ft";
-                Label qtyLabel = new Label();
-                qtyLabel.Content = $"Quantity: {order["qty"]}";
-
-                productGrid.Children.Add(productLabel);
-                productGrid.Children.Add(priceLabel);
-                productGrid.Children.Add(qtyLabel);
-
-                productBorder.Child = productGrid;
-                productPanel.Children.Add(productBorder);
-            }
-
-            scrollViewer.Content = productPanel;
-
             mainStackPanel.Children.Add(imagePanel);
             mainStackPanel.Children.Add(new Border() { BorderBrush = Brushes.Black, BorderThickness = new Thickness(1), Margin = new Thickness(5), Child = userInfoGrid });
+
+            Border status = new Border();
+            status.BorderBrush = Brushes.Black;
+            status.BorderThickness = new Thickness(1, 0, 1, 1);
+            status.Margin = new Thickness(5);
+
+            Label statusLBL = new Label();
+            statusLBL.Content = $"Status: {dataOfOrder["status"]}";
+            statusLBL.HorizontalAlignment = HorizontalAlignment.Center;
+
+            status.Child = statusLBL;
+            mainStackPanel.Children.Add(status);
 
             if (Tables.features.isFeatureInUse("Storage"))
             {
@@ -220,6 +205,7 @@ namespace WH_APP_GUI.Order
                 button.Content = "Take";
                 button.Margin = new Thickness(5);
                 button.MaxWidth = 150;
+                button.IsEnabled = false;
                 mainStackPanel.Children.Add(button);
 
                 if (User.Warehouse() != null)
@@ -227,10 +213,8 @@ namespace WH_APP_GUI.Order
                     if (CanComplete(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
                     {
                         button.IsEnabled = true;
-                    }
-                    else
-                    {
-                        button.IsEnabled = false;
+                        button.Tag = Tables.orders.getOrdersOfAUser(username, address);
+                        button.Click += TakeClick;
                     }
                 }
             }
@@ -242,23 +226,102 @@ namespace WH_APP_GUI.Order
                 inWarehouse.Margin = new Thickness(5);
                 inWarehouse.BorderBrush = Brushes.Black;
                 inWarehouse.BorderThickness = new Thickness(1);
-                inWarehouse.MaxWidth = 350;
                 inWarehouse.HorizontalContentAlignment = HorizontalAlignment.Center;
-                //TODO
                 inWarehouse.Content = $"This order already in {Tables.orders.getWarehouse(dataOfOrder)["name"]}";
-                //inWarehouse.Content = $"This order already in a warehouse";
                 mainStackPanel.Children.Add(inWarehouse);
             }
 
-            mainStackPanel.Children.Add(scrollViewer);
+            if (User.Warehouse() != null)
+            {
+                if (Tables.features.isFeatureInUse("Fleet"))
+                {
+                    if (IsOrderInTransport(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
+                    {
+                        Label inTransport = new Label();
+                        inTransport.Background = Brushes.LightSteelBlue;
+                        inTransport.Foreground = Brushes.Black;
+                        inTransport.Margin = new Thickness(5);
+                        inTransport.BorderBrush = Brushes.Black;
+                        inTransport.BorderThickness = new Thickness(1);
+                        inTransport.HorizontalContentAlignment = HorizontalAlignment.Center;
+                        DataRow transport = Tables.orders.getTransport(dataOfOrder);
+                        inTransport.Content = $"This order will be transported at {transport["start_date"]}, by {Tables.transports.getEmployee(transport)["name"]}";
+                        mainStackPanel.Children.Add(inTransport);
+                    }
+                }
+                else if(Tables.features.isFeatureInUse("Dock") && Tables.features.isFeatureInUse("Fleet"))
+                {
+                    if (IsOrderInDock(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
+                    {
+                        Label inDock = new Label();
+                        inDock.Background = Brushes.LightSteelBlue;
+                        inDock.Foreground = Brushes.Black;
+                        inDock.Margin = new Thickness(5);
+                        inDock.BorderBrush = Brushes.Black;
+                        inDock.BorderThickness = new Thickness(1);
+                        inDock.MaxWidth = 350;
+                        inDock.HorizontalContentAlignment = HorizontalAlignment.Center;
+                        DataRow dock = Tables.orders.getDock(dataOfOrder);
+                        inDock.Content = $"{dock["name"]} dock already contains this order.";
+                        mainStackPanel.Children.Add(inDock);
+                    }
+                }
+            }
+
+            Button inspectOrder = new Button();
+            inspectOrder.Content = "Inspect order";
+            inspectOrder.Margin = new Thickness(5);
+            inspectOrder.MaxWidth = 150;
+            inspectOrder.Tag = dataOfOrder;
+            inspectOrder.Click += InspectOrder;
+            mainStackPanel.Children.Add(inspectOrder);
 
             border.Child = mainStackPanel;
             panel.Children.Add(border);
+        }
+        private void InspectOrder(object sender, RoutedEventArgs e)
+        {
+            DataRow orderDatas = (sender as Button).Tag as DataRow;
+            if (orderDatas != null)
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("DisplayOneOrder"), orderDatas);
+            }
+        }
+
+        private bool IsOrderInTransport(string username, string address)
+        {
+            foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
+            {
+                if (Tables.features.isFeatureInUse("Fleet"))
+                {
+                    if (order["transport_id"] == DBNull.Value)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private bool IsOrderInDock(string username, string address)
+        {
+            foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
+            {
+                if (Tables.features.isFeatureInUse("Dock") && ! Tables.features.isFeatureInUse("Fleet"))
+                {
+                    if (order["dock_id"] == DBNull.Value)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         private Dictionary<string, DataRow> unassigned_city_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_unassigned_cities()
         {
+            unassigned_city_idBORDER.Visibility = Visibility.Visible;
             unassigned_city_id_Dictionary.Clear();
             unassigned_city_id.Items.Clear();
             foreach (DataRow order in Tables.orders.database.Rows)
@@ -274,6 +337,7 @@ namespace WH_APP_GUI.Order
         private Dictionary<string, DataRow> warehouse_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_warehouses()
         {
+            warehouse_idBORDER.Visibility = Visibility.Visible;
             warehouse_id_Dictionary.Clear();
             warehouse_id.Items.Clear();
             foreach (DataRow order in Tables.orders.database.Rows)
@@ -292,7 +356,7 @@ namespace WH_APP_GUI.Order
         private Dictionary<string, DataRow> dock_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_docks()
         {
-            if (Tables.features.isFeatureInUse("Dock") && Tables.features.isFeatureInUse("Fleet"))
+            if (Tables.features.isFeatureInUse("Fleet"))
             {
                 dock_idBORDER.Visibility = Visibility.Visible;
 
@@ -323,6 +387,44 @@ namespace WH_APP_GUI.Order
                             dock_id_Dictionary.Add(dock["name"].ToString(), dock);
                             dock_id.Items.Add(dock["name"].ToString());
                         }
+                    }
+                }
+            }
+            else
+            {
+                dock_idBORDER.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void Ini_docks(DataRow warehouse)
+        {
+            if (Tables.features.isFeatureInUse("Fleet"))
+            {
+                dock_idBORDER.Visibility = Visibility.Visible;
+
+                List<string> datas = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT transport_id FROM {Tables.orders.actual_name} WHERE transport_id IS NOT NULL AND warehouse_id = {warehouse["id"]}"));
+                for (int i = 0; i < datas.Count; i++)
+                {
+                    DataRow transport = Tables.transports.database.Select($"id = {datas[i]}")[0];
+                    if (!dock_id_Dictionary.ContainsKey(Tables.transports.getDock(transport)["name"].ToString()))
+                    {
+                        dock_id_Dictionary.Add(Tables.transports.getDock(transport)["name"].ToString(), Tables.transports.getDock(transport));
+                        dock_id.Items.Add(Tables.transports.getDock(transport)["name"].ToString());
+                    }
+                }
+            }
+            else if (Tables.features.isFeatureInUse("Dock") && !Tables.features.isFeatureInUse("Fleet"))
+            {
+                dock_idBORDER.Visibility = Visibility.Visible;
+
+                List<string[]> datas = SQL.SqlQuery($"SELECT dock_id FROM {Tables.orders.actual_name} WHERE dock_id IS NOT NULL AND warehouse_id = {warehouse["id"]}");
+                for (int i = 0; i < datas.Count; i++)
+                {
+                    DataRow dock = Tables.docks.database.Select($"id = {datas[i][0]}")[0];
+                    if (!dock_id_Dictionary.ContainsKey(dock["name"].ToString()))
+                    {
+                        dock_id_Dictionary.Add(dock["name"].ToString(), dock);
+                        dock_id.Items.Add(dock["name"].ToString());
                     }
                 }
             }
@@ -369,7 +471,7 @@ namespace WH_APP_GUI.Order
                 OrdersDisplay.Children.Clear();
                 int dockid = int.Parse(dock_id_Dictionary[dock_id.SelectedItem.ToString()]["id"].ToString());
 
-                if (Tables.features.isFeatureInUse("Dock") && Tables.features.isFeatureInUse("Fleet"))
+                if (Tables.features.isFeatureInUse("Fleet"))
                 {
                     DataRow transport = Tables.transports.database.Select($"dock_id = {dockid}")[0];
                     List<string[]> namesAddresses = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE transport_id = {transport["id"]} GROUP BY user_name, address");
@@ -397,15 +499,50 @@ namespace WH_APP_GUI.Order
             dock_id.SelectedIndex = -1;
         }
 
+        private void TakeClick(object sender, RoutedEventArgs e)
+        {
+            DataRow[] ordersByPersonAddress = (sender as Button).Tag as DataRow[];
+            if (User.Warehouse() != null && ordersByPersonAddress.Length != 0)
+            {
+                foreach (DataRow order in ordersByPersonAddress)
+                {
+                    order["warehouse_id"] = User.Warehouse()["id"];
+                    order["status"] = "In Warehouse";
+                }
+                Tables.orders.updateChanges();
+                MessageBox.Show($"The order has been added to the warehouse[{User.Warehouse()["name"]}]!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                OrdersDisplay.Children.Clear();
+                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id = {User.Warehouse()["id"]} GROUP BY user_name, address");
+                for (int i = 0; i < name_address.Count; i++)
+                {
+                    DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
+                }
+            }
+        }
+
         private void AssignedOrders_Click(object sender, RoutedEventArgs e)
         {
-            OrdersDisplay.Children.Clear();
-            List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id IS NOT NULL GROUP BY user_name, address");
-            for (int i = 0; i < name_address.Count; i++)
+            if (User.Warehouse() != null)
             {
-                DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
+                OrdersDisplay.Children.Clear();
+                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id = {User.Warehouse()["id"]} GROUP BY user_name, address");
+                for (int i = 0; i < name_address.Count; i++)
+                {
+                    DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
+                }
+                ClearDatasOfComboBox();
             }
-            ClearDatasOfComboBox();
+            else
+            {
+                OrdersDisplay.Children.Clear();
+                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id IS NOT NULL GROUP BY user_name, address");
+                for (int i = 0; i < name_address.Count; i++)
+                {
+                    DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
+                }
+                ClearDatasOfComboBox();
+            }
         }
 
         private void UnassignedOrders_Click(object sender, RoutedEventArgs e)
