@@ -18,36 +18,45 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Xml.Linq;
+using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI.Order
 {
     public partial class AllOrdersPage : Page
     {
+        private DataRow Warehouse = null;
+        private warehouse WarehouseTable = null;
         public AllOrdersPage()
         {
             InitializeComponent();
 
-            if (User.Warehouse() != null)
-            {
-                BackBORDER.Visibility = Visibility.Visible;
-                Ini_docks(User.Warehouse());
-                Ini_unassigned_cities();
+            BackBORDER.Visibility = Visibility.Collapsed;
+            AllOrdersBORDER.Visibility = Visibility.Visible;
 
-                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id = {User.Warehouse()["id"]} GROUP BY user_name, address");
-                for (int i = 0; i < name_address.Count; i++)
-                {
-                    DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
-                }
-            }
-            else
-            {
-                BackBORDER.Visibility= Visibility.Collapsed;
-                AllOrdersBORDER.Visibility= Visibility.Visible;
+            DisplayAllOrders();
+            Ini_warehouses();
+            Ini_unassigned_cities();
+            Ini_docks();
+            SetPreviousPage();
+        }
+        public AllOrdersPage(DataRow warehouse)
+        {
+            InitializeComponent();
 
-                DisplayAllOrders();
-                Ini_warehouses();
-                Ini_unassigned_cities();
-                Ini_docks();
+            Warehouse = warehouse;
+            WarehouseTable = Tables.getWarehosue(warehouse["name"].ToString());
+
+            BackBORDER.Visibility = Visibility.Visible;
+            warehouse_idBORDER.Visibility = Visibility.Collapsed;
+
+            Ini_docks(Warehouse);
+            Ini_unassigned_cities();
+            SetPreviousPage();
+
+            List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id = {Warehouse["id"]} GROUP BY user_name, address");
+            for (int i = 0; i < name_address.Count; i++)
+            {
+                DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
             }
         }
         private bool CanComplete(string username, string address)
@@ -55,13 +64,13 @@ namespace WH_APP_GUI.Order
             bool canComplete = true;
             foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
             {
-                if (User.warehouseTable().database.Select($"product_id = {order["product_id"]}").Length == 0)
+                if (WarehouseTable.database.Select($"product_id = {order["product_id"]}").Length == 0)
                 {
                     return false;
                 }
                 else
                 {
-                    int productsInTheWarehosue = User.warehouseTable().database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
+                    int productsInTheWarehosue = WarehouseTable.database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
                     if (productsInTheWarehosue < (int)order["qty"])
                     {
                         canComplete = false;
@@ -69,6 +78,23 @@ namespace WH_APP_GUI.Order
                 }
             }
             return canComplete;
+        }
+
+        private void SetPreviousPage()
+        {
+            if (Navigation.PreviousPage.GetType() == Navigation.GetTypeByName("DisplayOneOrder"))
+            {
+                if (Warehouse != null)
+                {
+                    InspectWarehouse inspectWarehouse = new InspectWarehouse(Warehouse);
+                    Navigation.PreviousPage = inspectWarehouse;
+                }
+                else
+                {
+                    WarehousesPage warehousesPage = new WarehousesPage();
+                    Navigation.PreviousPage = warehousesPage;
+                }
+            }
         }
         private void DisplayOneOrder(Panel panel, string username, string address)
         {
@@ -208,7 +234,7 @@ namespace WH_APP_GUI.Order
                 button.IsEnabled = false;
                 mainStackPanel.Children.Add(button);
 
-                if (User.Warehouse() != null)
+                if (Warehouse != null)
                 {
                     if (CanComplete(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
                     {
@@ -231,7 +257,7 @@ namespace WH_APP_GUI.Order
                 mainStackPanel.Children.Add(inWarehouse);
             }
 
-            if (User.Warehouse() != null)
+            if (Warehouse != null)
             {
                 if (Tables.features.isFeatureInUse("Fleet"))
                 {
@@ -284,7 +310,16 @@ namespace WH_APP_GUI.Order
             DataRow orderDatas = (sender as Button).Tag as DataRow;
             if (orderDatas != null)
             {
-                Navigation.OpenPage(Navigation.GetTypeByName("DisplayOneOrder"), orderDatas);
+                if (Warehouse != null)
+                {
+                    Navigation.OpenPageWithParameters(Navigation.GetTypeByName("DisplayOneOrder"), orderDatas, Warehouse);
+                    Navigation.ReturnParam = Warehouse;
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.GetTypeByName("DisplayOneOrder"), orderDatas);
+                }
+                //Navigation.OpenPage(Navigation.GetTypeByName("DisplayOneOrder"), orderDatas);
             }
         }
 
@@ -502,18 +537,18 @@ namespace WH_APP_GUI.Order
         private void TakeClick(object sender, RoutedEventArgs e)
         {
             DataRow[] ordersByPersonAddress = (sender as Button).Tag as DataRow[];
-            if (User.Warehouse() != null && ordersByPersonAddress.Length != 0)
+            if (Warehouse != null && ordersByPersonAddress.Length != 0)
             {
                 foreach (DataRow order in ordersByPersonAddress)
                 {
-                    order["warehouse_id"] = User.Warehouse()["id"];
+                    order["warehouse_id"] = Warehouse["id"];
                     order["status"] = "In Warehouse";
                 }
                 Tables.orders.updateChanges();
-                MessageBox.Show($"The order has been added to the warehouse[{User.Warehouse()["name"]}]!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"The order has been added to the warehouse[{Warehouse["name"]}]!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 OrdersDisplay.Children.Clear();
-                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id = {User.Warehouse()["id"]} GROUP BY user_name, address");
+                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id = {Warehouse["id"]} GROUP BY user_name, address");
                 for (int i = 0; i < name_address.Count; i++)
                 {
                     DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
@@ -523,10 +558,10 @@ namespace WH_APP_GUI.Order
 
         private void AssignedOrders_Click(object sender, RoutedEventArgs e)
         {
-            if (User.Warehouse() != null)
+            if (Warehouse != null)
             {
                 OrdersDisplay.Children.Clear();
-                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id = {User.Warehouse()["id"]} GROUP BY user_name, address");
+                List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE warehouse_id = {Warehouse["id"]} GROUP BY user_name, address");
                 for (int i = 0; i < name_address.Count; i++)
                 {
                     DisplayOneOrder(OrdersDisplay, name_address[i][0], name_address[i][1]);
@@ -575,9 +610,9 @@ namespace WH_APP_GUI.Order
         {
             if (Navigation.PreviousPage != null)
             {
-                if (User.Warehouse() != null)
+                if (Warehouse != null)
                 {
-                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), User.Warehouse());
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), Warehouse);
                 }
                 else
                 {

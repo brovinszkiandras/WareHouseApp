@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WH_APP_GUI.Order"
         mc:Ignorable="d"
+        
         Title="AddOrdersToDock" Height="350" Width="300" ResizeMode="NoResize">
     <Grid Background="#676F9D">
         <Grid.RowDefinitions>

@@ -93,9 +93,7 @@ namespace WH_APP_GUI
             else
             {
                 return tempWarehouse;
-            }
-
-            
+            } 
         }
 
         public static warehouse warehouseTable()

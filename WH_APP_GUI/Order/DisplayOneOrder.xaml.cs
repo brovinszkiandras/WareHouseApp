@@ -22,6 +22,9 @@ namespace WH_APP_GUI.Order
         DataRow[] orders = null;
         private string UserName = null;
         private string Address = null;
+
+        private DataRow Warehouse = null;
+        private warehouse WarehouseTable = null;
         public DisplayOneOrder(DataRow dataOfOrder)
         {
             InitializeComponent();
@@ -36,7 +39,23 @@ namespace WH_APP_GUI.Order
 
             OneOrderDisplay(OrdersDisplay, UserName, Address);
         }
+        public DisplayOneOrder(DataRow dataOfOrder, DataRow warehouse)
+        {
+            InitializeComponent();
 
+            UserName = dataOfOrder["user_name"].ToString();
+            Address = dataOfOrder["address"].ToString();
+
+            Warehouse = warehouse;
+            WarehouseTable = Tables.getWarehosue(warehouse["name"].ToString());
+
+            if (dataOfOrder != null)
+            {
+                orders = Tables.orders.getOrdersOfAUser(UserName, Address);
+            }
+
+            OneOrderDisplay(OrdersDisplay, UserName, Address);
+        }
         private void OneOrderDisplay(Panel panel, string username, string address)
         {
             OrdersDisplay.Children.Clear();
@@ -146,7 +165,7 @@ namespace WH_APP_GUI.Order
                 productBorder.BorderBrush = Brushes.Black;
                 productBorder.BorderThickness = new Thickness(0, 0, 0, 1);
 
-                if (User.Warehouse() != null)
+                if (Warehouse != null)
                 {
                     UniformGrid productGrid = new UniformGrid();
                     productGrid.Columns = 4;
@@ -171,7 +190,7 @@ namespace WH_APP_GUI.Order
                             statusOfOrder.Tag = order;
                             statusOfOrder.Click += DoneClick;
 
-                            if ((int)order["warehouse_id"] == (int)User.Warehouse()["id"])
+                            if ((int)order["warehouse_id"] == (int)Warehouse["id"])
                             {
                                 statusOfOrder.IsEnabled = true;
                             }
@@ -264,7 +283,7 @@ namespace WH_APP_GUI.Order
                 button.IsEnabled = false;
                 mainStackPanel.Children.Add(button);
 
-                if (User.Warehouse() != null)
+                if (Warehouse != null)
                 {
                     if (CanComplete(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
                     {
@@ -287,7 +306,7 @@ namespace WH_APP_GUI.Order
                 mainStackPanel.Children.Add(inWarehouse);
             }
 
-            if (User.Warehouse() != null)
+            if (Warehouse != null)
             {
                 if (Tables.features.isFeatureInUse("Fleet"))
                 {
@@ -443,12 +462,12 @@ namespace WH_APP_GUI.Order
             DataRow order = (sender as Button).Tag as DataRow;
             if (order != null)
             {
-                if (User.Warehouse() != null)
+                if (Warehouse != null)
                 {
                     DataRow orderInWarehouse = null;
                     try
                     {
-                        orderInWarehouse = User.WarehouseTable().database.Select($"product_id = {order["product_id"]}")[0];
+                        orderInWarehouse = WarehouseTable.database.Select($"product_id = {order["product_id"]}")[0];
                     }
                     catch (Exception)
                     {
@@ -462,7 +481,7 @@ namespace WH_APP_GUI.Order
                         {
                             orderInWarehouse["qty"] = int.Parse(orderInWarehouse["qty"].ToString()) - int.Parse(order["qty"].ToString());
                             order["status"] = "Finished";
-                            User.WarehouseTable().updateChanges();
+                            WarehouseTable.updateChanges();
                             Tables.orders.updateChanges();
 
                             MessageBox.Show("The product(s) has been added to the order!", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -473,7 +492,7 @@ namespace WH_APP_GUI.Order
                             {
                                 orderInWarehouse["qty"] = 0;
                                 order["status"] = "Finished";
-                                User.WarehouseTable().updateChanges();
+                                WarehouseTable.updateChanges();
                                 Tables.orders.updateChanges();
 
                                 MessageBox.Show("The product(s) has been added to the order!", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -513,13 +532,13 @@ namespace WH_APP_GUI.Order
             bool canComplete = true;
             foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
             {
-                if (User.WarehouseTable().database.Select($"product_id = {order["product_id"]}").Length == 0)
+                if (WarehouseTable.database.Select($"product_id = {order["product_id"]}").Length == 0)
                 {
                     return false;
                 }
                 else
                 {
-                    int productsInTheWarehosue = User.WarehouseTable().database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
+                    int productsInTheWarehosue = WarehouseTable.database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
                     if (productsInTheWarehosue < (int)order["qty"])
                     {
                         canComplete = false;
@@ -532,15 +551,15 @@ namespace WH_APP_GUI.Order
         private void TakeClick(object sender, RoutedEventArgs e)
         {
             DataRow[] ordersByPersonAddress = (sender as Button).Tag as DataRow[];
-            if (User.Warehouse() != null && ordersByPersonAddress.Length != 0)
+            if (Warehouse != null && ordersByPersonAddress.Length != 0)
             {
                 foreach (DataRow order in ordersByPersonAddress)
                 {
-                    order["warehouse_id"] = User.Warehouse()["id"];
+                    order["warehouse_id"] = Warehouse["id"];
                     order["status"] = "In Warehouse";
                 }
                 Tables.orders.updateChanges();
-                MessageBox.Show($"The order has been added to the warehouse[{User.Warehouse()["name"]}]!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"The order has been added to the warehouse[{Warehouse["name"]}]!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 OneOrderDisplay(OrdersDisplay, UserName, Address);
             }
