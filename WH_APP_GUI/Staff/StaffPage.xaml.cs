@@ -83,6 +83,112 @@ namespace WH_APP_GUI.Staff
                 }
             }
         }
+
+        private void DisplayOneStaff(Panel panel, DataRow staff)
+        {
+            StackPanel mainStackPanel = new StackPanel();
+            mainStackPanel.Height = 100;
+            mainStackPanel.Orientation = Orientation.Horizontal;
+
+            Image image = new Image();
+            image.Width = 100;
+            image.Height = 100;
+            image.HorizontalAlignment = HorizontalAlignment.Left;
+            image.SetValue(Grid.RowSpanProperty, 3);
+
+            string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
+            if (Directory.Exists(targetDirectory))
+            {
+                string imageFileName = staff["profile_picture"].ToString();
+                string imagePath = Path.Combine(targetDirectory, imageFileName);
+
+                if (File.Exists(imagePath))
+                {
+                    string fileName = Path.GetFileName(imagePath);
+                    string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                    BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+
+                    image.Source = bitmap;
+                }
+                else
+                {
+                    imageFileName = "DefaultStaffProfilePicture.png";
+                    imagePath = Path.Combine(targetDirectory, imageFileName);
+                    string fileName = Path.GetFileName(imagePath);
+                    string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                    BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+
+                    image.Source = bitmap;
+                }
+            }
+
+            StackPanel leftStackPanel = new StackPanel();
+            leftStackPanel.Orientation = Orientation.Vertical;
+            leftStackPanel.Width = 350;
+
+            Label nameLabel = new Label();
+            nameLabel.Content = "Name: " + staff["name"];
+            nameLabel.BorderBrush = Brushes.Black;
+            nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+
+            Label emailLabel = new Label();
+            emailLabel.Content = "Email: " + staff["email"];
+            emailLabel.BorderBrush = Brushes.Black;
+            emailLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+
+            Label roleLabel = new Label();
+            roleLabel.Content = "Role: " + Tables.staff.getRole(staff)["role"];
+            roleLabel.BorderBrush = Brushes.Black;
+            roleLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+
+            leftStackPanel.Children.Add(nameLabel);
+            leftStackPanel.Children.Add(emailLabel);
+            leftStackPanel.Children.Add(roleLabel);
+
+            StackPanel rightStackPanel = new StackPanel();
+            rightStackPanel.Orientation = Orientation.Vertical;
+            rightStackPanel.Width = 130;
+
+            if (User.currentUser != staff)
+            {
+                Button deleteButton = new Button();
+                deleteButton.Content = "Delete";
+                deleteButton.Click += deleteStaff_Click;
+                deleteButton.Tag = staff;
+                rightStackPanel.Children.Add(deleteButton);
+
+                Button resetPasswordButton = new Button();
+                resetPasswordButton.Content = "Reset Password";
+                resetPasswordButton.Click += resetPassword_Click;
+                resetPasswordButton.Tag = staff;
+                rightStackPanel.Children.Add(resetPasswordButton);
+            }
+            else
+            {
+                Button changePassword = new Button();
+                changePassword.Content = "Change Password";
+                changePassword.Tag = staff;
+                changePassword.Click += ModifyPassword;
+                rightStackPanel.Children.Add(changePassword);
+            }
+
+
+            Button editButton = new Button();
+            editButton.Content = "Edit Staff";
+            editButton.Click += editStaff_Click;
+            editButton.Tag = staff;
+
+            rightStackPanel.Children.Add(editButton);
+
+            mainStackPanel.Children.Add(image);
+            mainStackPanel.Children.Add(leftStackPanel);
+            mainStackPanel.Children.Add(rightStackPanel);
+
+            panel.Children.Add(mainStackPanel);
+        }
+
         public void InitializeStaffsByRole(Panel panel, DataRow role)
         {
             if (Tables.roles.getStaff(role).Length != 0)
@@ -98,107 +204,7 @@ namespace WH_APP_GUI.Staff
 
                 foreach (DataRow staff in Tables.roles.getStaff(role))
                 {
-                    StackPanel mainStackPanel = new StackPanel();
-                    mainStackPanel.Height = 100;
-                    mainStackPanel.Orientation = Orientation.Horizontal;
-
-                    Image image = new Image();
-                    image.Width = 100;
-                    image.Height = 100;
-                    image.HorizontalAlignment = HorizontalAlignment.Left;
-                    image.SetValue(Grid.RowSpanProperty, 3);
-
-                    string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
-                    if (Directory.Exists(targetDirectory))
-                    {
-                        string imageFileName = staff["profile_picture"].ToString();
-                        string imagePath = Path.Combine(targetDirectory, imageFileName);
-
-                        if (File.Exists(imagePath))
-                        {
-                            string fileName = Path.GetFileName(imagePath);
-                            string targetFilePath = Path.Combine(targetDirectory, fileName);
-
-                            BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
-
-                            image.Source = bitmap;
-                        }
-                        else
-                        {
-                            imageFileName = "DefaultStaffProfilePicture.png";
-                            imagePath = Path.Combine(targetDirectory, imageFileName);
-                            string fileName = Path.GetFileName(imagePath);
-                            string targetFilePath = Path.Combine(targetDirectory, fileName);
-
-                            BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
-
-                            image.Source = bitmap;
-                        }
-                    }
-
-                    StackPanel leftStackPanel = new StackPanel();
-                    leftStackPanel.Orientation = Orientation.Vertical;
-                    leftStackPanel.Width = 350;
-
-                    Label nameLabel = new Label();
-                    nameLabel.Content = "Name: " + staff["name"];
-                    nameLabel.BorderBrush = Brushes.Black;
-                    nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                    Label emailLabel = new Label();
-                    emailLabel.Content = "Email: " + staff["email"];
-                    emailLabel.BorderBrush = Brushes.Black;
-                    emailLabel.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                    Label roleLabel = new Label();
-                    roleLabel.Content = "Role: " + role["role"];
-                    roleLabel.BorderBrush = Brushes.Black;
-                    roleLabel.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                    leftStackPanel.Children.Add(nameLabel);
-                    leftStackPanel.Children.Add(emailLabel);
-                    leftStackPanel.Children.Add(roleLabel);
-
-                    StackPanel rightStackPanel = new StackPanel();
-                    rightStackPanel.Orientation = Orientation.Vertical;
-                    rightStackPanel.Width = 130;
-
-                    if (User.currentUser != staff)
-                    {
-                        Button deleteButton = new Button();
-                        deleteButton.Content = "Delete";
-                        deleteButton.Click += deleteStaff_Click;
-                        deleteButton.Tag = staff;
-                        rightStackPanel.Children.Add(deleteButton);
-
-                        Button resetPasswordButton = new Button();
-                        resetPasswordButton.Content = "Reset Password";
-                        resetPasswordButton.Click += resetPassword_Click;
-                        resetPasswordButton.Tag = staff;
-                        rightStackPanel.Children.Add(resetPasswordButton);
-                    }
-                    else
-                    {
-                        Button changePassword = new Button();
-                        changePassword.Content = "Change Password";
-                        changePassword.Tag = staff;
-                        changePassword.Click += ModifyPassword;
-                        rightStackPanel.Children.Add(changePassword);
-                    }
-
-
-                    Button editButton = new Button();
-                    editButton.Content = "Edit Staff";
-                    editButton.Click += editStaff_Click;
-                    editButton.Tag = staff;
-
-                    rightStackPanel.Children.Add(editButton);
-
-                    mainStackPanel.Children.Add(image);
-                    mainStackPanel.Children.Add(leftStackPanel);
-                    mainStackPanel.Children.Add(rightStackPanel);
-
-                    panel.Children.Add(mainStackPanel);
+                    
                 }
             }
         }
@@ -221,11 +227,6 @@ namespace WH_APP_GUI.Staff
             {
                 Navigation.OpenPage(Navigation.GetTypeByName("CreateStaffPage"));
             }
-        }
-
-        void CloseAndDisplay(object sender, EventArgs e)
-        {
-            InitializeAllStaffs(DisplayStaffsStackpanel);
         }
 
         private void deleteStaff_Click(object sender, RoutedEventArgs e)
@@ -277,19 +278,6 @@ namespace WH_APP_GUI.Staff
 
                 MessageBox.Show("Password has been reseted for the employee!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-        }
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            StaffsDisplay.Visibility = Visibility.Visible;
-            DisplayStaffsStackpanel.Children.Clear();
-            InitializeAllStaffs(DisplayStaffsStackpanel);
-        }
-
-        private void InsperctStaffs_Click(object sender, RoutedEventArgs e)
-        {
-            StaffsDisplay.Visibility = Visibility.Visible;
-            DisplayStaffsStackpanel.Children.Clear();
-            InitializeAllStaffs(DisplayStaffsStackpanel);
         }
 
         private void AllStaffs_Click(object sender, RoutedEventArgs e)

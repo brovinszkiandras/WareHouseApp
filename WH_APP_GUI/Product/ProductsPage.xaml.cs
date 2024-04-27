@@ -21,11 +21,7 @@ namespace WH_APP_GUI.Product
         public ProductsPage()
         {
             InitializeComponent();
-            //DisplayAllProducts(ProductsDiaplayStackPanel);
-            foreach (DataRow product in Tables.products.database.Rows)
-            {
-                DisplayOneProduct(ProductsDiaplayStackPanel, product);
-            }
+            DisplayAllProducts(ProductsDiaplayStackPanel);
         }
         private DataRow WarehouseFromPage;
         public ProductsPage(DataRow warehouseFromPage)
@@ -42,7 +38,7 @@ namespace WH_APP_GUI.Product
             border.BorderThickness = new Thickness(2);
             border.Background = Brushes.White;
             //border.MaxHeight = 150;
-            //border.MaxWidth = 600;
+            border.MaxWidth = 650;
             border.Margin = new Thickness(5);
 
             StackPanel mainStackpanel = new StackPanel();
@@ -178,14 +174,19 @@ namespace WH_APP_GUI.Product
             buttonsStackPanel.HorizontalAlignment = HorizontalAlignment.Center;
             buttonsStackPanel.VerticalAlignment = VerticalAlignment.Center;
 
+
             Button deleteButton = new Button();
             deleteButton.Content = "Delete";
+            deleteButton.Click += DeleteProduct_Click;
+            deleteButton.Tag = product;
             deleteButton.Margin = new Thickness(5);
             buttonsStackPanel.Children.Add(deleteButton);
 
             Button editButton = new Button();
             editButton.Content = "Edit";
             editButton.Margin = new Thickness(5);
+            editButton.Click += EditProduct_Click;
+            editButton.Tag = product;
             buttonsStackPanel.Children.Add(editButton);
 
             mainStackpanel.Children.Add(buttonsStackPanel);
@@ -200,104 +201,9 @@ namespace WH_APP_GUI.Product
             ProductsDisplay.Visibility = Visibility.Visible;
             panel.Visibility = Visibility.Visible;
 
-            for (int i = 0; i < Tables.products.database.Rows.Count; i++)
+            foreach (DataRow product in Tables.products.database.Rows)
             {
-                Grid grid = new Grid();
-
-                Border borderInsideGrid = new Border();
-                borderInsideGrid.BorderBrush = Brushes.Black;
-                borderInsideGrid.BorderThickness = new Thickness(0, 0, 0, 2);
-                grid.Children.Add(borderInsideGrid);
-
-                StackPanel stackPanelInsideGrid = new StackPanel();
-                stackPanelInsideGrid.Orientation = Orientation.Horizontal;
-                grid.Children.Add(stackPanelInsideGrid);
-
-                StackPanel firstStackPanel = new StackPanel();
-                firstStackPanel.Orientation = Orientation.Vertical;
-                stackPanelInsideGrid.Children.Add(firstStackPanel);
-
-                Border borderInsideFirstStackPanel = new Border();
-                borderInsideFirstStackPanel.BorderBrush = Brushes.Black;
-                borderInsideFirstStackPanel.BorderThickness = new Thickness(1);
-                firstStackPanel.Children.Add(borderInsideFirstStackPanel);
-
-                string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
-                if (Directory.Exists(targetDirectory))
-                {
-                    string imageFileName = Tables.products.database.Rows[i]["image"].ToString();
-                    string imagePath = Path.Combine(targetDirectory, imageFileName);
-
-                    if (File.Exists(imagePath))
-                    {
-                        Image image = new Image();
-                        image.Width = 80;
-                        image.Height = 80;
-
-                        string fileName = Path.GetFileName(imagePath);
-                        string targetFilePath = Path.Combine(targetDirectory, fileName);
-
-                        BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
-
-                        image.Source = bitmap;
-
-                        borderInsideFirstStackPanel.Child = image;
-                    }
-                }
-
-                Label label = new Label();
-                label.Content = Tables.products.database.Rows[i]["name"].ToString();
-                label.Height = 20;
-                label.FontSize = 8;
-                label.VerticalContentAlignment = VerticalAlignment.Center;
-                label.HorizontalContentAlignment = HorizontalAlignment.Center;
-                label.FontStyle = FontStyles.Italic;
-                firstStackPanel.Children.Add(label);
-
-                StackPanel secondStackPanel = new StackPanel();
-                secondStackPanel.Width = 190;
-                secondStackPanel.Orientation = Orientation.Vertical;
-                stackPanelInsideGrid.Children.Add(secondStackPanel);
-
-                secondStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["name"].ToString() });
-                secondStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["buying_price"].ToString() });
-                secondStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["selling_price"].ToString() });
-                secondStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["description"].ToString() });
-
-                StackPanel thirdStackPanel = new StackPanel();
-                thirdStackPanel.Width = 190;
-                thirdStackPanel.Orientation = Orientation.Vertical;
-                stackPanelInsideGrid.Children.Add(thirdStackPanel);
-
-                
-                if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Storage'"))
-                {
-                    thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["weight"].ToString() });
-                    thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["volume"].ToString() });
-                    thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["width"].ToString() });
-                    thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["heigth"].ToString() });
-                    thirdStackPanel.Children.Add(new Label { Content = Tables.products.database.Rows[i]["length"].ToString() });
-                }
-
-                StackPanel fourthStackPanel = new StackPanel();
-                fourthStackPanel.Orientation = Orientation.Vertical;
-                fourthStackPanel.Width = 120;
-                stackPanelInsideGrid.Children.Add(fourthStackPanel);
-
-                Button deleteButton = new Button();
-                deleteButton.Content = "Delete";
-                deleteButton.Click += DeleteProduct_Click;
-                deleteButton.Tag = Tables.products.database.Rows[i];
-
-                Button editButton = new Button();
-                editButton.Content = "Edit";
-                editButton.Click += EditProduct_Click;
-                editButton.Tag = Tables.products.database.Rows[i];
-
-                fourthStackPanel.Children.Add(deleteButton);
-                fourthStackPanel.Children.Add(editButton);
-
-                panel.Children.Add(grid);
+                DisplayOneProduct(ProductsDiaplayStackPanel, product);
             }
         }
         void DeleteProduct_Click(object sender, EventArgs e)
