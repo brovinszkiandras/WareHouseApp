@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WH_APP_GUI.Employee;
+using WH_APP_GUI.Staff;
 using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI
@@ -34,7 +35,6 @@ namespace WH_APP_GUI
             InitializeAllEmployees(DisplayEmployeesStackpanel);
         }
         private DataRow WarehouseFromPage;
-        //itt nem kell bekérni az előző oldalt mert elég csak a raktárat átadni, abból meg lehet mondani hogy az egy inspect warehouse page
         public EmployeesPage(DataRow warehouse)
         {
             InitializeComponent();
@@ -75,116 +75,162 @@ namespace WH_APP_GUI
         }
         public void InitializeAllEmployees(Panel panel)
         {
-            for (int i = 0; i < Tables.warehouses.database.Rows.Count; i++)
+            foreach (DataRow employee in Tables.employees.database.Rows)
             {
-                InitializeEmployeesInWarehouse(panel, Tables.warehouses.database.Rows[i]);
+                DisplayOneEmployee(panel, employee);
             }
         }
+
+        private void DisplayOneEmployee(Panel panel, DataRow employee)
+        {
+            Border border = new Border();
+            border.BorderBrush = Brushes.Black;
+            border.BorderThickness = new Thickness(2);
+            border.Margin = new Thickness(5);
+            border.MinHeight = 100;
+            border.MaxHeight = 170;
+
+            StackPanel mainStackPanel = new StackPanel();
+            mainStackPanel.Orientation = Orientation.Horizontal;
+            mainStackPanel.Background = Brushes.White;
+
+            Image image = new Image();
+            image.Margin = new Thickness(5);
+            image.Width = 80;
+            image.Height = 80;
+
+            string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
+            if (Directory.Exists(targetDirectory))
+            {
+                string imageFileName = employee["profile_picture"].ToString();
+                string imagePath = Path.Combine(targetDirectory, imageFileName);
+
+                if (File.Exists(imagePath))
+                {
+                    string fileName = Path.GetFileName(imagePath);
+                    string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                    BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+
+                    image.Source = bitmap;
+                }
+                else
+                {
+                    imageFileName = "DefaultEmployeeProfile.png";
+                    string fileName = Path.GetFileName(imagePath);
+                    string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                    BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+
+                    image.Source = bitmap;
+                }
+            }
+
+            StackPanel leftStackPanel = new StackPanel();
+            leftStackPanel.Orientation = Orientation.Vertical;
+            leftStackPanel.Width = 550;
+
+            Label nameLabel = new Label();
+            nameLabel.Content = employee["name"];
+            nameLabel.BorderBrush = Brushes.Black;
+            nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+
+            Label emailLabel = new Label();
+            emailLabel.Content = employee["email"];
+            emailLabel.BorderBrush = Brushes.Black;
+            emailLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+
+            Label warehouseLBL = new Label();
+            warehouseLBL.BorderBrush = Brushes.Black;
+            warehouseLBL.BorderThickness = new Thickness(0, 0, 0, 1);
+
+            if (employee["warehouse_id"] != DBNull.Value)
+            {
+                warehouseLBL.Content = Tables.employees.getWarehouse(employee)["name"];
+            }
+            else
+            {
+                warehouseLBL.Content = "This emplyee does not belongs to a warehouse";
+            }
+
+            Label roleLabel = new Label(); 
+            roleLabel.BorderBrush = Brushes.Black;
+
+            if (employee["role_id"] != DBNull.Value)
+            {
+                roleLabel.Content = Tables.employees.getRole(employee)["role"];
+            }
+            else
+            {
+                roleLabel.Content = "This employee does not have a role";
+            }
+
+            leftStackPanel.Children.Add(nameLabel);
+            leftStackPanel.Children.Add(emailLabel);
+            leftStackPanel.Children.Add(warehouseLBL);
+            leftStackPanel.Children.Add(roleLabel);
+
+            StackPanel rightStackPanel = new StackPanel();
+            rightStackPanel.Orientation = Orientation.Vertical;
+            rightStackPanel.VerticalAlignment = VerticalAlignment.Center;
+            rightStackPanel.Width = 140;
+
+            if (User.currentUser != employee)
+            {
+                Button deleteButton = new Button();
+                deleteButton.Content = "Delete";
+                deleteButton.Tag = employee;
+                deleteButton.Click += deleteEmployee_Click;
+                deleteButton.Margin = new Thickness(5);
+                rightStackPanel.Children.Add(deleteButton);
+
+                Button resetPasswordButton = new Button();
+                resetPasswordButton.Content = "Reset Password";
+                resetPasswordButton.Click += resetPassword_Click;
+                resetPasswordButton.Tag = employee;
+                resetPasswordButton.Margin = new Thickness(5);
+                rightStackPanel.Children.Add(resetPasswordButton);
+            }
+            else
+            {
+                Button modifyPassword = new Button();
+                modifyPassword.Content = "Reset Password";
+                modifyPassword.Click += ModifyPassword;
+                modifyPassword.Tag = employee;
+                modifyPassword.Margin = new Thickness(5);
+                rightStackPanel.Children.Add(modifyPassword);
+            }
+
+            Button editButton = new Button();
+            editButton.Content = "Edit";
+            editButton.Click += EditEmployee_Click;
+            editButton.Tag = employee;
+            editButton.Margin = new Thickness(5);
+
+            rightStackPanel.Children.Add(editButton);
+
+            mainStackPanel.Children.Add(image);
+            mainStackPanel.Children.Add(leftStackPanel);
+            mainStackPanel.Children.Add(rightStackPanel);
+
+            border.Child = mainStackPanel;
+            panel.Children.Add(border);
+        }
+
+        private void ModifyPassword(object sender, RoutedEventArgs e)
+        {
+            PasswordChangeForStaff passwordChangeForStaff = new PasswordChangeForStaff();
+            passwordChangeForStaff.ShowDialog();
+        }
+
         public void InitializeEmployeesInWarehouse(Panel panel, DataRow warehouse)
         {
-            EmployeesDisplay.Visibility = Visibility.Visible;
+            DisplayEmployeesStackpanel.Children.Clear();
             panel.Visibility = Visibility.Visible;
 
-            if (Tables.warehouses.getEmployees(warehouse).Length > 0)
+            foreach (DataRow emplyee in Tables.warehouses.getEmployees(warehouse))
             {
-                Label employeelabel = new Label();
-                employeelabel.Content = $"Employees in {warehouse["name"]}:";
-                employeelabel.BorderBrush = Brushes.Black;
-                employeelabel.BorderThickness = new Thickness(0, 0, 0, 1);
-                panel.Children.Add(employeelabel);
-
-                foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
-                {
-                    StackPanel mainStackPanel = new StackPanel();
-                    mainStackPanel.Height = 150;
-                    mainStackPanel.Orientation = Orientation.Horizontal;
-
-                    Image image = new Image();
-                    image.Width = 80;
-                    image.Height = 80;
-
-                    string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
-                    if (Directory.Exists(targetDirectory))
-                    {
-                        string imageFileName = employee["profile_picture"].ToString();
-                        string imagePath = Path.Combine(targetDirectory, imageFileName);
-
-                        if (File.Exists(imagePath))
-                        {
-                            string fileName = Path.GetFileName(imagePath);
-                            string targetFilePath = Path.Combine(targetDirectory, fileName);
-
-                            BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
-
-                            image.Source = bitmap;
-                        }
-                        else
-                        {
-                            imageFileName = "DefaultEmployeeProfile.png";
-                            string fileName = Path.GetFileName(imagePath);
-                            string targetFilePath = Path.Combine(targetDirectory, fileName);
-
-                            BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
-
-                            image.Source = bitmap;
-                        }
-                    }
-
-                    StackPanel leftStackPanel = new StackPanel();
-                    leftStackPanel.Orientation = Orientation.Vertical;
-                    leftStackPanel.Width = 400;
-
-                    Label nameLabel = new Label();
-                    nameLabel.Content = employee["name"];
-                    nameLabel.BorderBrush = System.Windows.Media.Brushes.Black;
-                    nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                    Label emailLabel = new Label();
-                    emailLabel.Content = employee["email"];
-                    emailLabel.BorderBrush = System.Windows.Media.Brushes.Black;
-                    emailLabel.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                    Label roleLabel = new Label();
-                    roleLabel.Content = Tables.employees.getRole(employee)["role"];
-                    roleLabel.BorderBrush = System.Windows.Media.Brushes.Black;
-                    roleLabel.BorderThickness = new Thickness(0, 0, 0, 1);
-
-                    leftStackPanel.Children.Add(nameLabel);
-                    leftStackPanel.Children.Add(emailLabel);
-                    leftStackPanel.Children.Add(roleLabel);
-
-                    StackPanel rightStackPanel = new StackPanel();
-                    rightStackPanel.Orientation = Orientation.Vertical;
-                    rightStackPanel.Width = 140;
-
-                    if (User.currentUser != employee)
-                    {
-                        Button deleteButton = new Button();
-                        deleteButton.Content = "Delete";
-                        deleteButton.Tag = employee;
-                        deleteButton.Click += deleteEmployee_Click;
-                        rightStackPanel.Children.Add(deleteButton);
-                    }
-
-                    Button editButton = new Button();
-                    editButton.Content = "Edit";
-                    editButton.Click += EditEmployee_Click;
-                    editButton.Tag = employee;
-
-                    Button resetPasswordButton = new Button();
-                    resetPasswordButton.Content = "Reset Password";
-                    resetPasswordButton.Click += resetPassword_Click;
-                    resetPasswordButton.Tag = employee;
-
-                    rightStackPanel.Children.Add(editButton);
-                    rightStackPanel.Children.Add(resetPasswordButton);
-
-                    mainStackPanel.Children.Add(image);
-                    mainStackPanel.Children.Add(leftStackPanel);
-                    mainStackPanel.Children.Add(rightStackPanel);
-
-                    panel.Children.Add(mainStackPanel);
-                }
+                DisplayOneEmployee(DisplayEmployeesStackpanel, emplyee);
             }
         }
         private void EditEmployee_Click(object sender, RoutedEventArgs e)

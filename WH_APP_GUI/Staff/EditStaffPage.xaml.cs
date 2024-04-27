@@ -73,7 +73,6 @@ namespace WH_APP_GUI.Staff
                 }
             }
         }
-
         private void profile_picture_Click(object sender, RoutedEventArgs e)
         {
             DataRow staff = (sender as Button).Tag as DataRow;

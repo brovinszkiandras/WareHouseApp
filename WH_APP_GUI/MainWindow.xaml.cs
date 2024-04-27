@@ -27,8 +27,8 @@ namespace WH_APP_GUI
         public MainWindow()
         {
             InitializeComponent();
+            Console.IniConsole();
             //Email.send("szsoly04@gmail.com", "Megkérdezzem?", "Mivan mivan mivan");
-
             if (! SQL.IsDatabasetxtExist())
             {
                 DatabaseSet.Visibility = Visibility.Visible;
@@ -44,7 +44,6 @@ namespace WH_APP_GUI
                         List<string> RolesInStaff = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT role_id FROM {Tables.staff.actual_name}"));
                         if (RolesInStaff.Contains("1"))
                         {
-
                             LogIn.Visibility = Visibility.Visible;
                             Login_button.Visibility = Visibility.Visible;
                             RegisterAsAdmin.Visibility = Visibility.Collapsed;
@@ -127,9 +126,9 @@ namespace WH_APP_GUI
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            if (Emali.Text != string.Empty && Password.Text != string.Empty)
+            if (Emali.Text != string.Empty && Password.Password != string.Empty)
             {
-                string hpsw = Hash.HashPassword(Password.Text);
+                string hpsw = Hash.HashPassword(Password.Password);
 
                 List<string> employees = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM {Tables.employees.actual_name}"));
                 List<string> staffs = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM {Tables.staff.actual_name}"));
@@ -189,11 +188,11 @@ namespace WH_APP_GUI
 
         private void RegisterAsAdmin_Click(object sender, RoutedEventArgs e)
         {
-            if (Name.Text != string.Empty && Emali.Text != string.Empty && Password.Text != string.Empty)
+            if (Name.Text != string.Empty && Emali.Text != string.Empty && Password.Password != string.Empty)
             {
                 string AdminName = Name.Text;
                 string AdminEmail = Emali.Text;
-                string AdminPassword = Hash.HashPassword(Password.Text);
+                string AdminPassword = Hash.HashPassword(Password.Password);
 
                 LogIn.Visibility = Visibility.Collapsed;
                 content.Visibility = Visibility.Visible;
