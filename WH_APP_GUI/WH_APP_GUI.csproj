@@ -233,6 +233,7 @@
     <Compile Include="carsFolder\UpdateCarWindow.xaml.cs">
       <DependentUpon>UpdateCarWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Console.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Dock\CreateDockPage.xaml.cs">
       <DependentUpon>CreateDockPage.xaml</DependentUpon>
@@ -245,6 +246,9 @@
     </Compile>
     <Compile Include="Employee\CreateEmployee.xaml.cs">
       <DependentUpon>CreateEmployee.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Employee\PasswordChangeForEmployee.xaml.cs">
+      <DependentUpon>PasswordChangeForEmployee.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forklift\CreateFrokliftPage.xaml.cs">
       <DependentUpon>CreateFrokliftPage.xaml</DependentUpon>
@@ -315,11 +319,17 @@
     <Compile Include="Staff\EditStaffPage.xaml.cs">
       <DependentUpon>EditStaffPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Staff\PasswordChangeForStaff.xaml.cs">
+      <DependentUpon>PasswordChangeForStaff.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Staff\StaffPage.xaml.cs">
       <DependentUpon>StaffPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="TableClasses.cs" />
     <Compile Include="Tables.cs" />
+    <Compile Include="Terminal.xaml.cs">
+      <DependentUpon>Terminal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="transport\CreateTransportPage.xaml.cs">
       <DependentUpon>CreateTransportPage.xaml</DependentUpon>
     </Compile>
@@ -386,6 +396,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Employee\CreateEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Employee\PasswordChangeForEmployee.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -486,7 +500,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Staff\PasswordChangeForStaff.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Staff\StaffPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Terminal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

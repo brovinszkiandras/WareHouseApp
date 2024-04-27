@@ -143,8 +143,8 @@ namespace WH_APP_GUI.Warehouse
             DataRow warehouse = btn.Tag as DataRow;
             if (warehouse != null)
             {
-                try
-                {
+                //try
+                //{
                     foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
                     {
                         employee["warehouse_id"] = DBNull.Value;
@@ -190,12 +190,12 @@ namespace WH_APP_GUI.Warehouse
                     DisplayWarehousesOnPanel(DisplayWarehousesStackpanel);
 
                     MessageBox.Show("Warehouse has been deleted", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteError(ex);
-                    throw;
-                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Debug.WriteError(ex);
+                //    throw;
+                //}
             }
         }
     }

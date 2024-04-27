@@ -27,7 +27,10 @@ namespace WH_APP_GUI.Dock
             IsInUseDock((bool)dock["free"]);
             name.ValueDataType = typeof(string);
             name.Text = dock["name"].ToString();
-            warehouse_id.SelectedItem = Tables.docks.getWarehouse(dock)["name"];
+            if (dock["warehouse_id"] != DBNull.Value)
+            {
+                warehouse_id.SelectedItem = Tables.docks.getWarehouse(dock)["name"];
+            }
             this.dock = dock;
         }
 

@@ -177,6 +177,15 @@ namespace WH_APP_GUI.Staff
                         resetPasswordButton.Tag = staff;
                         rightStackPanel.Children.Add(resetPasswordButton);
                     }
+                    else
+                    {
+                        Button changePassword = new Button();
+                        changePassword.Content = "Change Password";
+                        changePassword.Tag = staff;
+                        changePassword.Click += ModifyPassword;
+                        rightStackPanel.Children.Add(changePassword);
+                    }
+
 
                     Button editButton = new Button();
                     editButton.Content = "Edit Staff";
@@ -193,6 +202,13 @@ namespace WH_APP_GUI.Staff
                 }
             }
         }
+
+        private void ModifyPassword(object sender, RoutedEventArgs e)
+        {
+            PasswordChangeForStaff passwordChangeForStaff = new PasswordChangeForStaff();
+            passwordChangeForStaff.ShowDialog();
+        }
+
         public Dictionary<string, int> Role_Id = new Dictionary<string, int>();
         private void AddNewStaff_Click(object sender, RoutedEventArgs e)
         {
