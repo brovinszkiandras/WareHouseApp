@@ -5,7 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WH_APP_GUI"
       mc:Ignorable="d"
-      PreviewMouseDown="Page_PreviewMouseDown"
       Title="Home" MinWidth="800" MinHeight="600" Background="Black"
       SizeChanged="Home_SizeChanged">
 
@@ -42,6 +41,37 @@
             </Setter>
         </Style>
 
+        <Style TargetType="Button" x:Key="GreenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                         BorderBrush="{TemplateBinding BorderBrush}"
+                         BorderThickness="{TemplateBinding BorderThickness}"
+                         CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
             <Border Background="{TemplateBinding Background}"
                  BorderBrush="{TemplateBinding BorderBrush}"
@@ -58,7 +88,7 @@
         </ControlTemplate>
     </Page.Resources>
 
-    <Grid Name="alapgrid" Background="#424769">
+    <Grid Name="alapgrid" Background="#FFCEA2">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -68,20 +98,23 @@
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
 
-        <Border CornerRadius="0,20,0,0" Background="#FF2D3250" Grid.Row="1" Margin="0,0,20,0">
-            <StackPanel Name="Menu" Margin="10">
+        <Border CornerRadius="0,20,0,0" Background="#395250" Grid.Row="1" Margin="0,0,20,0">
+            <StackPanel Margin="10">
+                <Button x:Name="menubutton" Click="menubutton_Click" Content="||||" Background="#3A5351" Foreground="#FFCEA2" BorderThickness="0"/>
+                <StackPanel Name="Menu" Visibility="Collapsed">
+                    
+                </StackPanel>
             </StackPanel>
         </Border>
-        
+
         <StackPanel Name="Header" Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center">
-            <StackPanel Margin="0,0,0,10">
-                <Label Content="User name:" Foreground="#FFF9B17A" Margin="20, 0"/>
-                <Label Name="UserNameDisplay" Content="User name display" Foreground="#FFF9B17A" Margin="20, 0"/>
-            </StackPanel>
-            <StackPanel>
-                <Label Content="User email:" Foreground="#FFF9B17A" Margin="20, 0"/>
-                <Label Content="User email display" Name="UserEmailDisplay" Foreground="#FFF9B17A" Margin="20, 0"/>
-            </StackPanel>
+            <Label Name="UserNameDisplay" Content="User name display" Foreground="#395250" Margin="20, 0" FontFamily="Baskerville Old Face" FontWeight="Bold"/>
+            <Label Content="User email display" Name="UserEmailDisplay" Foreground="#395250" Margin="20, 0" FontFamily="Baskerville Old Face" FontWeight="Bold"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right" Grid.Column="2">
+            <Border Background="#3A5351" CornerRadius="20" Margin="10" BorderThickness="0">
+                <Button Content="Logout" Background="#3A5351" Foreground="#FFCEA2" BorderThickness="0" Name="logout"/>
+            </Border>
         </StackPanel>
     </Grid>
 </Page>

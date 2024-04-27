@@ -9,7 +9,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CreateWarehouse">
 
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

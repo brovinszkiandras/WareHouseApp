@@ -23,7 +23,12 @@ namespace WH_APP_GUI.Warehouse
     {
         private void inspectWarehouse_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            foreach (var child in alapgrid.Children)
+            {
+                    FontSize = e.NewSize.Height * 0.03;
+            }
             MapDisplay.Height = e.NewSize.Height * 0.4;
+
         }
         private Map terkep = new Map();
         private Type PreviousPageType;
