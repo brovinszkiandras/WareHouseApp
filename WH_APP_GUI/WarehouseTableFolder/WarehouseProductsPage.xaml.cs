@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WH_APP_GUI.carsFolder;
 
-namespace WH_APP_GUI.WarehouseTableFolder
+namespace WH_APP_GUI.warehouseTableFolder
 {
     public partial class WarehouseProductsPage : Page
     {
@@ -25,8 +25,9 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
             productGrid.Children.Clear();
             int lastRow = 0;
+           
 
-            foreach (DataRow product in User.WarehouseTable().database.Rows)
+            foreach (DataRow product in warehouseTable.database.Rows)
             {
                 RowDefinition rowDefinition = new RowDefinition();
                 rowDefinition.Height = GridLength.Auto;
@@ -34,7 +35,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
 
                 TextBlock name = new TextBlock();
-                name.Text = User.WarehouseTable().getProduct(product)["name"].ToString();
+                name.Text = warehouseTable.getProduct(product)["name"].ToString();
                 name.FontSize = 15;
                 name.TextWrapping = TextWrapping.Wrap;
                 name.Foreground = Brushes.White;
@@ -56,7 +57,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
                 productGrid.Children.Add(qty);
 
                 TextBlock shelf = new TextBlock();
-                shelf.Text = User.WarehouseTable().getShelf(product)["name"].ToString();
+                shelf.Text = warehouseTable.getShelf(product)["name"].ToString();
                 shelf.FontSize = 15;
                 shelf.Foreground = Brushes.White;
                 shelf.TextWrapping = TextWrapping.Wrap;
@@ -219,11 +220,15 @@ namespace WH_APP_GUI.WarehouseTableFolder
             Grid.SetColumn(lengthLabel, 7);
             labelsGrid.Children.Add(lengthLabel);
         }
-        
-        public WarehouseProductsPage()
+
+      
+       warehouse warehouseTable;
+        public WarehouseProductsPage(warehouse WarehouseTable)
         {
             InitializeComponent();
 
+            this.warehouseTable = WarehouseTable;
+            
             Displayproducts();
         }
 
@@ -233,12 +238,12 @@ namespace WH_APP_GUI.WarehouseTableFolder
             MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to delete this car?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                DataRow product = User.WarehouseTable().database.Select($"id = {button.Tag}")[0];
+                DataRow product = warehouseTable.database.Select($"id = {button.Tag}")[0];
                 if (product != null)
                 {
 
                     product.Delete();
-                    User.WarehouseTable().updateChanges();
+                    warehouseTable.updateChanges();
 
 
 
@@ -251,7 +256,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             Button button = e.Source as Button;
-            DataRow product = User.WarehouseTable().database.Select($"id = {button.Tag}")[0];
+            DataRow product = warehouseTable.database.Select($"id = {button.Tag}")[0];
             EditWHProductPage page = new EditWHProductPage(product);
 
             Navigation.content2.Navigate(page);
@@ -259,14 +264,14 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            CreateWHProductPage page = new CreateWHProductPage();
+            CreateWHProductPage page = new CreateWHProductPage(warehouseTable);
             Navigation.content2.Navigate(page);
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             Button button = e.Source as Button;
-            DataRow product = User.WarehouseTable().database.Select($"id = {button.Tag}")[0];
+            DataRow product = warehouseTable.database.Select($"id = {button.Tag}")[0];
             WHProudctQuantityPage page = new WHProudctQuantityPage(product);
 
             page.ShowDialog();

@@ -75,10 +75,12 @@ namespace WH_APP_GUI.Warehouse
                 warehouse["height"] = height.Text;
                 warehouse["city_id"] = Cities_Dictionary[city_id.SelectedItem.ToString()]["id"];
 
+               
                 Tables.warehouses.database.Rows.Add(warehouse);
                 Tables.warehouses.updateChanges();
                 Controller.CreateWarehouse(warehouse["name"].ToString());
 
+                Tables.warehouseTables.Add(new warehouse(warehouse["name"].ToString()));
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been created {warehouse["name"]} warehouse.");
 
                 MessageBox.Show("Warehouse created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

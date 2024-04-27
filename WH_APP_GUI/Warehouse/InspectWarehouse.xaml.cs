@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WH_APP_GUI.sectors;
-using WH_APP_GUI.WarehouseTableFolder;
+using WH_APP_GUI.warehouseTableFolder;
 
 namespace WH_APP_GUI.Warehouse
 {
@@ -28,10 +28,13 @@ namespace WH_APP_GUI.Warehouse
         private Map terkep = new Map();
         private Type PreviousPageType;
         private DataRow Warehouse;
+        private warehouse warehouseTable;
         public InspectWarehouse(DataRow warehouse)
         {
             InitializeComponent();
             Warehouse = warehouse;
+            MessageBox.Show(warehouse["name"].ToString());
+            this.warehouseTable = Tables.getWarehosue(warehouse["name"].ToString());
 
             WarehouseNameDisplay.Content = $"{warehouse["name"]} - {Tables.warehouses.getCity(warehouse)["city_name"]}";
 
@@ -165,12 +168,12 @@ namespace WH_APP_GUI.Warehouse
         private void OrdersInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
             Navigation.PreviousPage = this;
-            Navigation.OpenPage(Navigation.GetTypeByName("AllOrdersPage"));
+            Navigation.OpenPage(Navigation.GetTypeByName("AllOrdersPage"), Warehouse);
         }
 
         private void ProductsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
-            WarehouseProductsPage page = new WarehouseProductsPage();
+            WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
             Navigation.content2.Navigate(page);
             //Navigation.OpenPage(Navigation.GetTypeByName("ProductsPage"), Warehouse);
         }

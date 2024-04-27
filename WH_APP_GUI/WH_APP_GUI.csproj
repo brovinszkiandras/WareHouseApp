@@ -258,8 +258,17 @@
     <Compile Include="LogDisplay.xaml.cs">
       <DependentUpon>LogDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Order\AddOrdersToDock.xaml.cs">
+      <DependentUpon>AddOrdersToDock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Order\AddOrderToTransport.xaml.cs">
+      <DependentUpon>AddOrderToTransport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Order\AllOrdersPage.xaml.cs">
       <DependentUpon>AllOrdersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Order\DisplayOneOrder.xaml.cs">
+      <DependentUpon>DisplayOneOrder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Product\CreateProduct.xaml.cs">
       <DependentUpon>CreateProduct.xaml</DependentUpon>
@@ -396,7 +405,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Order\AddOrdersToDock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Order\AddOrderToTransport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Order\AllOrdersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Order\DisplayOneOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

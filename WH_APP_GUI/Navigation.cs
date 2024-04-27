@@ -54,6 +54,42 @@ namespace WH_APP_GUI
                 throw;
             }
         }
+
+        public static void OpenPageWithParameters(Type page, object param1, object param2)
+        {
+            try
+            {
+                if (content2.Content as Page != null)
+                {
+                    PreviousPage = (content2.Content as Page).NavigationService.Content as Page;
+                }
+
+                if (page != null)
+                {
+                    ConstructorInfo constructor = page.GetConstructor(new Type[] { param1.GetType(), param2.GetType() });
+
+                    if (constructor != null)
+                    {
+                        object[] constructorParameters = new object[] { param1, param2 };
+
+                        Page toPage = (Page)constructor.Invoke(constructorParameters);
+                        content2.Navigate(toPage);
+                        Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has opened this page: {page.Name}.");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Constructor with parameters not found for page: {page.Name}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occurred while redirecting to the page. Please restart the program if this message still appears", "System Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Debug.WriteError(ex);
+                throw;
+            }
+        }
+
         public static void OpenPage(Type Page, object constructorForPage)
         {
             try

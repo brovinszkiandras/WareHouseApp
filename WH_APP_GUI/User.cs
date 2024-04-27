@@ -93,12 +93,10 @@ namespace WH_APP_GUI
             else
             {
                 return tempWarehouse;
-            }
-
-            
+            } 
         }
 
-        public static warehouse WarehouseTable()
+        public static warehouse warehouseTable()
         {
             if(WHTable == null)
             {

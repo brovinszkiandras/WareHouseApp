@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 using WH_APP_GUI.carsFolder;
 using Xceed.Wpf.Toolkit.Primitives;
 
-namespace WH_APP_GUI.WarehouseTableFolder
+namespace WH_APP_GUI.warehouseTableFolder
 {
     public partial class CreateWHProductPage : Page
     {
@@ -31,7 +31,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
                * (double)warehouseProduct["height"]
                * (double)warehouseProduct["length"];
 
-                double productsFullVolume = (double)User.WarehouseTable().getProduct(warehouseProduct)["volume"]
+                double productsFullVolume = (double)warehouseTable.getProduct(warehouseProduct)["volume"]
                     * (int)warehouseProduct["qty"];
 
                 if (boxvolume < productsFullVolume)
@@ -54,17 +54,20 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
         private void updateDatabase()
         {
-            User.WarehouseTable().database.Rows.Add(warehouseProduct);
-            User.WarehouseTable().updateChanges();
+            warehouseTable.database.Rows.Add(warehouseProduct);
+            warehouseTable.updateChanges();
             Xceed.Wpf.Toolkit.MessageBox.Show($"A new product has been added to the warehouse");
-            WarehouseProductsPage page = new WarehouseProductsPage();
+            WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
             Navigation.content2.Navigate(page);
         }
-        public CreateWHProductPage()
+       private warehouse warehouseTable;
+        public CreateWHProductPage(warehouse WarehouseTable)
         {
             InitializeComponent();
 
-            warehouseProduct = User.WarehouseTable().database.NewRow();
+            this.warehouseTable = WarehouseTable;
+
+            warehouseProduct = warehouseTable.database.NewRow();
             warehouseProduct["is_in_box"] = true;
 
             this.DataContext = warehouseProduct;

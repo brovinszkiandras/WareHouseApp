@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WH_APP_GUI.WarehouseTableFolder
+namespace WH_APP_GUI.warehouseTableFolder
 {
     public partial class WHProudctQuantityPage : Window
     {
@@ -23,7 +23,7 @@ namespace WH_APP_GUI.WarehouseTableFolder
            * (double)warehouseProduct["height"]
            * (double)warehouseProduct["length"];
 
-            double productsFullVolume = (double)User.WarehouseTable().getProduct(warehouseProduct)["volume"]
+            double productsFullVolume = (double)warehouseTable.getProduct(warehouseProduct)["volume"]
                 * (int)warehouseProduct["qty"];
 
             if (boxvolume < productsFullVolume)
@@ -46,23 +46,26 @@ namespace WH_APP_GUI.WarehouseTableFolder
 
         private void updateDatabase()
         {
-            User.WarehouseTable().updateChanges();
+            warehouseTable.updateChanges();
             Xceed.Wpf.Toolkit.MessageBox.Show($"The products quantity has changed");
-            WarehouseProductsPage page = new WarehouseProductsPage();
+            WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
             Navigation.content2.Navigate(page);
 
             this.Close();
         }
 
         DataRow warehouseProduct;
+        warehouse warehouseTable;
         public WHProudctQuantityPage(DataRow WarehouseProduct)
         {
             InitializeComponent();
             this.warehouseProduct = WarehouseProduct;
 
+            warehouseTable = Tables.getWarehosue(warehouseProduct.Table.TableName);
+
             this.DataContext = warehouseProduct;
 
-            Product_name.Text = User.WarehouseTable().getProduct(warehouseProduct)["name"].ToString();
+            Product_name.Text = warehouseTable.getProduct(warehouseProduct)["name"].ToString();
 
             qty.ValueDataType = typeof(int);
             qty.MinValue = 1;

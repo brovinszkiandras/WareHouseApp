@@ -522,7 +522,7 @@ namespace WH_APP_GUI
     #endregion
 
     #region warehosueTable
-    class warehouse : table
+   public class warehouse : table
     {
         public warehouse(string actualname) : base(actualname)
         {
@@ -551,26 +551,7 @@ namespace WH_APP_GUI
             return Tables.shelf.database.Select($"id = {item["shelf_id"]}")[0];
         }
 
-        public bool canComleteOrdersOfAnUser(string address, string name)
-        {
-            bool canComplete = true;
-            foreach (DataRow order in Tables.orders.getOrdersOfAUser(name, address))
-            {
-                if (User.WarehouseTable().database.Select($"product_id = {order["product_id"]}").Length == 0)
-                {
-                    return false;
-                }
-                else
-                {
-                    int productsInTheWarehosue = User.WarehouseTable().database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
-                    if (productsInTheWarehosue < (int)order["qty"])
-                    {
-                        canComplete = false;
-                    }
-                }
-            }
-            return canComplete;
-        }
+    
     }
     #endregion
 
@@ -602,10 +583,12 @@ namespace WH_APP_GUI
     {
         public shelf(string actualname) : base(actualname) 
         {
+            database.PrimaryKey = new DataColumn[] { database.Columns["id"] };
             database.Columns["name"].Unique = true;
             database.Columns["name"].AllowDBNull = false;
             database.Columns["width"].AllowDBNull = false;
             database.Columns["actual_length"].DefaultValue = 0;
+            database.Columns["number_of_levels"].DefaultValue = 1;
         }
 
         public DataRow getSector(DataRow shelf)

@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WH_APP_GUI"
       mc:Ignorable="d"
+      PreviewMouseDown="Page_PreviewMouseDown"
       Title="Home" MinWidth="800" MinHeight="600" Background="Black"
       SizeChanged="Home_SizeChanged">
 
