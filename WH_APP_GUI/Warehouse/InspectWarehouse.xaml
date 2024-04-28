@@ -11,7 +11,43 @@
       Title="InspectWarehouse"
       SizeChanged="inspectWarehouse_SizeChanged">
 
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GreenButtonStyle">
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                         BorderBrush="{TemplateBinding BorderBrush}"
+                         BorderThickness="{TemplateBinding BorderThickness}"
+                         CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+    </Page.Resources>
+    
+            <Border CornerRadius="30,0,0,0" Background="#425C5A">
+                
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.01*"/>
@@ -26,7 +62,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Column="1" Height="auto" Content="Warehouse name - City name" Name="WarehouseNameDisplay" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"/>
+            <Label Grid.Column="1" Height="auto" Content="Warehouse name - City name" Name="WarehouseNameDisplay" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Style="{StaticResource labelstyle}"/>
 
 
             <Border BorderThickness="1" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
@@ -51,24 +87,24 @@
 
                                 <ProgressBar Name="WarehouseTotalSpending" Value="35" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Background="{x:Null}" Foreground="{x:Null}"/>
                                 <ProgressBar Name="WarehouseTotalIncome" Value="70" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" Background="{x:Null}"/>
-                                <Label Content="Warehouse total spending" Grid.Column="0" Grid.Row="0"/>
-                                <Label Content="Warehouse total income" Grid.Column="0" Grid.Row="1"/>
-                                <Label Name="WarehouseTotalSpendingLBL" Content="Warehouse total spending - Ft" Grid.Column="1" Grid.Row="0"/>
-                                <Label Name="WarehouseTotalIncomeLBL" Content="Warehouse total income - Ft" Grid.Column="1" Grid.Row="1"/>
+                                <Label Content="Warehouse total spending" Grid.Column="0" Grid.Row="0" Style="{StaticResource labelstyle}"/>
+                                <Label Content="Warehouse total income" Grid.Column="0" Grid.Row="1" Style="{StaticResource labelstyle}"/>
+                                <Label Name="WarehouseTotalSpendingLBL" Content="Warehouse total spending - Ft" Grid.Column="1" Grid.Row="0" Style="{StaticResource labelstyle}"/>
+                                <Label Name="WarehouseTotalIncomeLBL" Content="Warehouse total income - Ft" Grid.Column="1" Grid.Row="1" Style="{StaticResource labelstyle}"/>
 
                                 <ProgressBar Name="ProductsTotalSellingPrice" Value="50" Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Background="{x:Null}"/>
                                 <ProgressBar Name="ProductsTotalBuyingPrice" Value="20" Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Background="{x:Null}"/>
-                                <Label Content="Products total selling price" Grid.Column="0" Grid.Row="2"/>
-                                <Label Content="products total buying price" Grid.Column="0" Grid.Row="3"/>
-                                <Label Name="ProductsTotalSellingPriceLBL" Content="Total selling price - Ft" Grid.Column="1" Grid.Row="2"/>
-                                <Label Name="ProductsTotalBuyingPriceLBL" Content="Total buying price - Ft" Grid.Column="1" Grid.Row="3"/>
+                                <Label Content="Products total selling price" Grid.Column="0" Grid.Row="2" Style="{StaticResource labelstyle}"/>
+                                <Label Content="products total buying price" Grid.Column="0" Grid.Row="3" Style="{StaticResource labelstyle}"/>
+                                <Label Name="ProductsTotalSellingPriceLBL" Content="Total selling price - Ft" Grid.Column="1" Grid.Row="2" Style="{StaticResource labelstyle}"/>
+                                <Label Name="ProductsTotalBuyingPriceLBL" Content="Total buying price - Ft" Grid.Column="1" Grid.Row="3" Style="{StaticResource labelstyle}"/>
 
                                 <ProgressBar Name="SpendingByDay" Value="90" Orientation="Horizontal" Grid.Column="1" Grid.Row="4" Background="{x:Null}"/>
                                 <ProgressBar Name="IncomeByDay" Value="85" Orientation="Horizontal" Grid.Column="1" Grid.Row="5" Background="{x:Null}"/>
                                 <ComboBox Grid.Column="0" Grid.Row="4" Grid.RowSpan="2" VerticalAlignment="Center" Margin="5"/>
                                 <Border Grid.Column="0" Grid.Row="4" Grid.RowSpan="2"/>
-                                <Label Name="SpendingLBL" Content="Spending - Ft" Grid.Column="1" Grid.Row="4"/>
-                                <Label Name="IncomeLBL" Content="Income - Ft" Grid.Column="1" Grid.Row="5"/>
+                                <Label Name="SpendingLBL" Content="Spending - Ft" Grid.Column="1" Grid.Row="4" Style="{StaticResource labelstyle}"/>
+                                <Label Name="IncomeLBL" Content="Income - Ft" Grid.Column="1" Grid.Row="5" Style="{StaticResource labelstyle}"/>
                             </Grid>
 
                             <Grid Name="RevenueDisplay" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="7">
@@ -103,10 +139,12 @@
                                 </Grid.RowDefinitions>
 
                                 <ComboBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="20" Margin="5"/>
-                                <Label Content="Spending:" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" FontSize="9"/>
-                                <Label Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="5" Background="Red"/>
-                                <Label Content="Income:" Grid.Row="1" Grid.Column="9" Grid.ColumnSpan="2" HorizontalAlignment="Right" FontSize="9"/>
-                                <Label Grid.Row="1" Grid.Column="11" Grid.ColumnSpan="5" Background="Green" Margin="5"/>
+                                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="20">
+                                <Label Content="Spending:" HorizontalAlignment="Right" Style="{StaticResource labelstyle}"/>
+                                <Label Background="Red"/>
+                                <Label Content="Income:" HorizontalAlignment="Right" Style="{StaticResource labelstyle}"/>
+                                <Label Grid.Row="1" Background="Green"/>
+                                </StackPanel>
                             </Grid>
                         </StackPanel>
                     </StackPanel>
@@ -115,16 +153,19 @@
 
             <Label Name="NoRevenue" Content="There is no expenditure nor income yet" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Visibility="Collapsed"/>
 
-            <StackPanel Grid.Column="3" Grid.RowSpan="2" Grid.Row="1">
-                <Button Margin="20, 5" Content="Sectors" Name="SectorsInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="SectorsInspectToWarehouse_Click"/>
-                <Button Margin="20, 5" Content="Employees" Name="EmployeesInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="EmployeesInspectToWarehouse_Click"/>
-                <Button Margin="20, 5" Content="Orders" Name="OrdersInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="OrdersInspectToWarehouse_Click"/>
-                <Button Margin="20, 5" Content="Products" Name="ProductsInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="ProductsInspectToWarehouse_Click"/>
-                <Button Margin="20, 5" Content="Fleet" Name="FleetInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="FleetInspectToWarehouse_Click"/>
-                <Button Margin="20, 5" Content="Docks" Name="DocksInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="DocksInspectToWarehouse_Click"/>
-                <Button Margin="20, 5" Content="Forklift" Name="ForkliftInspectToWarehouse" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Click="ForkliftInspectToWarehouse_Click"/>
-                <Button Margin="20, 5" Content="back" Name="back_all_Warehouse" Click="Back_AllWarehouse_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black"/>
+            <Border Grid.Column="3" Grid.RowSpan="2" Grid.Row="1" Background="#395250" CornerRadius="15">
+                <StackPanel Margin="5">
+                <Button Margin="20, 5" Content="Sectors" Name="SectorsInspectToWarehouse" Click="SectorsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Employees" Name="EmployeesInspectToWarehouse"  Click="EmployeesInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Orders" Name="OrdersInspectToWarehouse"  Click="OrdersInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Products" Name="ProductsInspectToWarehouse"  Click="ProductsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Docks" Name="DocksInspectToWarehouse"  Click="DocksInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Forklift" Name="ForkliftInspectToWarehouse"  Click="ForkliftInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Cars" Name="CarsInspectToWarehouse" Click="CarsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Transports" Name="TransportsInspectToWarehouse" Click="TransportsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Back" Name="back_all_Warehouse" Click="Back_AllWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
             </StackPanel>
+            </Border>
             <Frame Name="InspectWarehouseContent" Visibility="Collapsed" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3"/>
         </Grid>
     </Border>

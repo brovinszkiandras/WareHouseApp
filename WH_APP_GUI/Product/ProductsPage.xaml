@@ -22,7 +22,7 @@
 
             <Grid x:Name="Display" Grid.Column="1">
 
-                <Grid Name="ProductsDisplay" Visibility="Collapsed">
+                <Grid Name="ProductsDisplay" Visibility="Visible">
                     <ScrollViewer Name="ProductsDiaplay">
                         <StackPanel Name="ProductsDiaplayStackPanel"/>
                     </ScrollViewer>

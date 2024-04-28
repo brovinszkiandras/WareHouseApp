@@ -32,8 +32,15 @@ namespace WH_APP_GUI.Employee
 
             name.Text = employee["name"].ToString();
             email.Text = employee["email"].ToString();
-            role_id.SelectedItem = Tables.employees.getRole(employee)["role"];
-            warehouse_id.SelectedItem = Tables.employees.getWarehouse(employee)["name"];
+            if (employee["role_id"] != DBNull.Value)
+            {
+                role_id.SelectedItem = Tables.employees.getRole(employee)["role"];
+            }
+
+            if (employee["warehouse_id"] != DBNull.Value)
+            {
+                warehouse_id.SelectedItem = Tables.employees.getWarehouse(employee)["name"];
+            }
             PasswordReset.Tag = employee;
             activity.Tag = employee;
             Done.Tag = employee;

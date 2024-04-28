@@ -23,7 +23,6 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
-
                     </Grid.ColumnDefinitions>
 
                     <Border BorderBrush="Black" Grid.Column="0" Grid.ColumnSpan="6" BorderThickness="0,0,0,1"/>
@@ -31,23 +30,38 @@
                     <Label Content="Type" Foreground="White" Grid.Column="1" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
                     <Label Content="Ready" Foreground="White" Grid.Column="2" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
                     <Button Grid.Column="5" Background="{x:Null}" Foreground="White" Name="Create" Content="Create new" Click="Create_Click" Margin="5"/>
+                    <Button Grid.Column="4" Background="{x:Null}" Foreground="White" Name="Back" Content="Back" Click="Back_Click" Margin="5"/>
                 </Grid>
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                    <Grid x:Name="carsGrid">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-
-                        <Grid.RowDefinitions>
-
-                        </Grid.RowDefinitions>
-                    </Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                    <StackPanel Name="CarsDisplay">
+                        <Border BorderBrush="Black" BorderThickness="2" MaxWidth="550">
+                            <StackPanel>
+                                <Image Width="80" Height="80"/>
+                                <Label Content="plate_number" HorizontalContentAlignment="Center" Margin="5" BorderBrush="Black" BorderThickness="1,0,1,1"/>
+                                <Expander Header="Datas" Margin="5">
+                                    <StackPanel>
+                                        <UniformGrid Name="Default" Rows="3" Margin="5">
+                                            <Label Content="type" BorderBrush="Black" BorderThickness="1,0,0,1"/>
+                                            <Label Content="ready" BorderBrush="Black" BorderThickness="1,0,1,1"/>
+                                            <Label Content="km" BorderBrush="Black" BorderThickness="1,0,0,1"/>
+                                            <Label Content="last_service" BorderBrush="Black" BorderThickness="1,0,1,1"/>
+                                            <Label Content="last_exam" BorderBrush="Black" BorderThickness="1,0,0,1"/>
+                                            <Label Content="warehouse_id" BorderBrush="Black" BorderThickness="1,0,1,1"/>
+                                        </UniformGrid>
+                                        <UniformGrid Name="StorageFeature" Columns="2" Margin="5">
+                                            <Label Content="storage" BorderBrush="Black" BorderThickness="1,0,0,1"/>
+                                            <Label Content="carrying_capacity" BorderBrush="Black" BorderThickness="1,0,1,1"/>
+                                        </UniformGrid>
+                                        <UniformGrid Name="FuelFeature" Columns="2" Margin="5">
+                                            <Label Content="consumption" BorderBrush="Black" BorderThickness="1,0,0,1"/>
+                                            <Label Content="gas_tank_size" BorderBrush="Black" BorderThickness="1,0,1,1"/>
+                                        </UniformGrid>
+                                    </StackPanel>
+                                </Expander>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
                 </ScrollViewer>
             </Grid>
         </Grid>

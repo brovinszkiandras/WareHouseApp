@@ -233,6 +233,7 @@
     <Compile Include="carsFolder\UpdateCarWindow.xaml.cs">
       <DependentUpon>UpdateCarWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Console.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Dock\CreateDockPage.xaml.cs">
       <DependentUpon>CreateDockPage.xaml</DependentUpon>
@@ -246,6 +247,9 @@
     <Compile Include="Employee\CreateEmployee.xaml.cs">
       <DependentUpon>CreateEmployee.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Employee\PasswordChangeForEmployee.xaml.cs">
+      <DependentUpon>PasswordChangeForEmployee.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forklift\CreateFrokliftPage.xaml.cs">
       <DependentUpon>CreateFrokliftPage.xaml</DependentUpon>
     </Compile>
@@ -258,8 +262,17 @@
     <Compile Include="LogDisplay.xaml.cs">
       <DependentUpon>LogDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Order\AddOrdersToDock.xaml.cs">
+      <DependentUpon>AddOrdersToDock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Order\AddOrderToTransport.xaml.cs">
+      <DependentUpon>AddOrderToTransport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Order\AllOrdersPage.xaml.cs">
       <DependentUpon>AllOrdersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Order\DisplayOneOrder.xaml.cs">
+      <DependentUpon>DisplayOneOrder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Product\CreateProduct.xaml.cs">
       <DependentUpon>CreateProduct.xaml</DependentUpon>
@@ -306,13 +319,22 @@
     <Compile Include="Staff\EditStaffPage.xaml.cs">
       <DependentUpon>EditStaffPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Staff\PasswordChangeForStaff.xaml.cs">
+      <DependentUpon>PasswordChangeForStaff.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Staff\StaffPage.xaml.cs">
       <DependentUpon>StaffPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="TableClasses.cs" />
     <Compile Include="Tables.cs" />
+    <Compile Include="Terminal.xaml.cs">
+      <DependentUpon>Terminal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="transport\CreateTransportPage.xaml.cs">
       <DependentUpon>CreateTransportPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="transport\InspectTransportPage.xaml.cs">
+      <DependentUpon>InspectTransportPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="transport\TransportsPage.xaml.cs">
       <DependentUpon>TransportsPage.xaml</DependentUpon>
@@ -380,6 +402,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Employee\PasswordChangeForEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forklift\CreateFrokliftPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -396,7 +422,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Order\AddOrdersToDock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Order\AddOrderToTransport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Order\AllOrdersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Order\DisplayOneOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -465,11 +503,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Staff\PasswordChangeForStaff.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Staff\StaffPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Terminal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="transport\CreateTransportPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="transport\InspectTransportPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

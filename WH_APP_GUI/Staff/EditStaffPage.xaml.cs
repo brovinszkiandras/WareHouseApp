@@ -55,7 +55,10 @@ namespace WH_APP_GUI.Staff
                 }
             }
 
-            role_id.SelectedItem = Tables.staff.getRole(staff)["role"];
+            if (staff["role_id"] != DBNull.Value)
+            {
+                role_id.SelectedItem = Tables.staff.getRole(staff)["role"];
+            } 
         }
 
         private Dictionary<string, DataRow> role_id_Dictionary = new Dictionary<string, DataRow>();
@@ -73,7 +76,6 @@ namespace WH_APP_GUI.Staff
                 }
             }
         }
-
         private void profile_picture_Click(object sender, RoutedEventArgs e)
         {
             DataRow staff = (sender as Button).Tag as DataRow;

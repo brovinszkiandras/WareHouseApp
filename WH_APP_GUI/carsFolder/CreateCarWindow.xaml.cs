@@ -18,25 +18,21 @@ using Xceed.Wpf.Toolkit.Primitives;
 
 namespace WH_APP_GUI.carsFolder
 {
-    /// <summary>
-    /// Interaction logic for CreateCarWindow.xaml
-    /// </summary>
     public partial class CreateCarWindow : Page
     {
         public DataRow car;
         public CreateCarWindow()
         {
             InitializeComponent();
+            Ini_warehouse_id();
 
             car = Tables.cars.database.NewRow();
             plate_number.ValueDataType = typeof(string);
             type.ValueDataType = typeof(string);
             km.ValueDataType = typeof(double);
-
-           
+   
             car["ready"] = true;
             this.DataContext = car;
-
 
             DataRow storageFeature = Tables.features.database.Select("name = 'Storage'")[0];
             if (storageFeature != null)
@@ -44,7 +40,6 @@ namespace WH_APP_GUI.carsFolder
                 if ((bool)storageFeature["in_use"] == true)
                 {
                     addStoreFeautereElements();
-
                 }
             }
 
@@ -53,24 +48,34 @@ namespace WH_APP_GUI.carsFolder
             {
                 if ((bool)fuelFeautore["in_use"] == true)
                 {
-
                     addFuelFeautereElements();
                 }
             }
         }
+        private Dictionary<string, DataRow> warehouse_id_Dictionary = new Dictionary<string, DataRow>();
+        private void Ini_warehouse_id()
+        {
+            warehouse_id.Visibility = Visibility.Visible;
+            warehouse_id.Items.Clear();
+            warehouse_id_Dictionary.Clear();
 
+            foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+            {
+                warehouse_id.Items.Add(warehouse["name"].ToString());
+                warehouse_id_Dictionary.Add(warehouse["name"].ToString(), warehouse);
+            }
+        }
         public void addStoreFeautereElements()
         {
             RowDefinition definition = new RowDefinition();
             definition.Height = GridLength.Auto;
             carsGrid.RowDefinitions.Add(definition);
             StackPanel stackPanel = new StackPanel();
-            Grid.SetRow(stackPanel, 6);
+            Grid.SetRow(stackPanel, 7);
             Label label = new Label();
             label.FontSize = 17;
             label.Content = "Storage (cm2)*";
             stackPanel.Children.Add(label);
-
 
             Binding storageBinding = new Binding("[storage]");
 
@@ -86,12 +91,11 @@ namespace WH_APP_GUI.carsFolder
 
             carsGrid.Children.Add(stackPanel);
 
-
             RowDefinition definition2 = new RowDefinition();
             definition2.Height = GridLength.Auto;
             carsGrid.RowDefinitions.Add(definition2);
             StackPanel stackPanel2 = new StackPanel();
-            Grid.SetRow(stackPanel2, 7);
+            Grid.SetRow(stackPanel2, 8);
             Label label2 = new Label();
             label2.FontSize = 17;
             label2.Content = "Carrying capacity (kgm)*";
@@ -122,12 +126,11 @@ namespace WH_APP_GUI.carsFolder
             definition.Height = GridLength.Auto;
             carsGrid.RowDefinitions.Add(definition);
             StackPanel stackPanel = new StackPanel();
-            Grid.SetRow(stackPanel, 8);
+            Grid.SetRow(stackPanel, 9);
             Label label = new Label();
             label.FontSize = 17;
             label.Content = "Consumption (liter/h)*";
             stackPanel.Children.Add(label);
-
 
             Binding consumptionBinding = new Binding("[consumption]");
 
@@ -148,7 +151,7 @@ namespace WH_APP_GUI.carsFolder
             definition2.Height = GridLength.Auto;
             carsGrid.RowDefinitions.Add(definition2);
             StackPanel stackPanel2 = new StackPanel();
-            Grid.SetRow(stackPanel2, 9);
+            Grid.SetRow(stackPanel2, 10);
             Label label2 = new Label();
             label2.FontSize = 17;
             label2.Content = "Gas tank size (liter)*";
@@ -189,12 +192,16 @@ namespace WH_APP_GUI.carsFolder
 
                             ValueRangeTextBox VTextBox = (ValueRangeTextBox)element;
 
-                            thereIsAnError = Validation.ValidateTextbox(VTextBox, car);
-                            
+                            thereIsAnError = Validation.ValidateTextbox(VTextBox, car);                          
                         }
-
                     }
                 }
+
+                if (warehouse_id.SelectedIndex == -1)
+                {
+                    thereIsAnError = true;
+                }
+
                 if (thereIsAnError == true)
                 {
                     break;
@@ -206,9 +213,10 @@ namespace WH_APP_GUI.carsFolder
 
                 //car["last_service"] = SQL.con((DateTime)car["last_service"]);
                 //car["last_exam"] = SQL.convertDateToCorrectFormat((DateTime)car["last_exam"]);
+                car["warehouse_id"] = warehouse_id_Dictionary[warehouse_id.SelectedItem.ToString()]["id"];
                 Tables.cars.database.Rows.Add(car);
                 Tables.cars.updateChanges();
-                Xceed.Wpf.Toolkit.MessageBox.Show($"A new car has been created");
+                MessageBox.Show($"A new car has been created", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
                 CarsPage carsPage = new CarsPage();
                 Navigation.content2.Navigate(carsPage);
             }
@@ -216,7 +224,7 @@ namespace WH_APP_GUI.carsFolder
 
         private void last_exam_InputValidationError(object sender, Xceed.Wpf.Toolkit.Core.Input.InputValidationErrorEventArgs e)
         {
-            Xceed.Wpf.Toolkit.MessageBox.Show($"You can only input a date");
+            MessageBox.Show($"You can only input a date", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

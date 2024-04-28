@@ -23,7 +23,12 @@ namespace WH_APP_GUI.Warehouse
     {
         private void inspectWarehouse_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            foreach (var child in alapgrid.Children)
+            {
+                    FontSize = e.NewSize.Height * 0.03;
+            }
             MapDisplay.Height = e.NewSize.Height * 0.4;
+
         }
         private Map terkep = new Map();
         private Type PreviousPageType;
@@ -168,7 +173,7 @@ namespace WH_APP_GUI.Warehouse
         private void OrdersInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
             Navigation.PreviousPage = this;
-            Navigation.OpenPage(Navigation.GetTypeByName("AllOrdersPage"));
+            Navigation.OpenPage(Navigation.GetTypeByName("AllOrdersPage"), Warehouse);
         }
 
         private void ProductsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
@@ -176,11 +181,6 @@ namespace WH_APP_GUI.Warehouse
             WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
             Navigation.content2.Navigate(page);
             //Navigation.OpenPage(Navigation.GetTypeByName("ProductsPage"), Warehouse);
-        }
-
-        private void FleetInspectToWarehouse_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void DocksInspectToWarehouse_Click(object sender, RoutedEventArgs e)
@@ -219,6 +219,16 @@ namespace WH_APP_GUI.Warehouse
         private void MapDisplay_MouseLeave(object sender, MouseEventArgs e)
         {
             mainScrollviewer.CanContentScroll = true;
+        }
+
+        private void CarsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.GetTypeByName("CarsPage"), Warehouse);
+        }
+
+        private void TransportsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"), Warehouse);
         }
     }
 }

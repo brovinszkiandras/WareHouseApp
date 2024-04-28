@@ -35,25 +35,24 @@ namespace WH_APP_GUI.Warehouse
             panel.Visibility = Visibility.Visible;
             for (int i = 0; i < Tables.warehouses.database.Rows.Count; i++)
             {
-                Grid grid = new Grid();
-                grid.Height = 150;
-                grid.Margin = new Thickness(5);
-
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
                 Border border = new Border();
                 border.BorderBrush = Brushes.Black;
+                border.CornerRadius = new CornerRadius(30);
                 border.BorderThickness = new Thickness(1);
-                Grid.SetColumnSpan(border, 3);
-                grid.Children.Add(border);
+                border.Background = new SolidColorBrush(Color.FromRgb(57, 82, 80));
+                border.Margin = new Thickness(5);
+
+                Grid grid = new Grid();
+
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0.5, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(4, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                // Grid.SetColumnSpan(border, 3);
+                border.Child = grid;
 
                 Image image = new Image();
-                image.Width = 100;
-                image.Height = 100;
-                image.HorizontalAlignment = HorizontalAlignment.Left;
-                image.SetValue(Grid.RowSpanProperty, 3);
+                image.HorizontalAlignment = HorizontalAlignment.Left;;
 
                 string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
                 if (Directory.Exists(targetDirectory))
@@ -71,11 +70,10 @@ namespace WH_APP_GUI.Warehouse
                         image.Source = bitmap;
                     }
                 }
-                image.Margin = new Thickness(5);
-                image.SetValue(Grid.RowSpanProperty, 3);
                 grid.Children.Add(image);
 
                 Label label = new Label();
+                label.HorizontalAlignment = HorizontalAlignment.Center;
                 label.Content = Tables.warehouses.database.Rows[i]["name"];
                 Grid.SetColumn(label, 1);
                 grid.Children.Add(label);
@@ -90,7 +88,8 @@ namespace WH_APP_GUI.Warehouse
                 inspectButton.Tag = Tables.warehouses.database.Rows[i];
                 inspectButton.Content = "Inspect Warehouse";
                 inspectButton.Click += inspect_warehouse_Click;
-                inspectButton.Margin = new Thickness(5);
+                inspectButton.Margin = new Thickness(10);
+                inspectButton.Style = (Style)this.Resources["GreenButtonStyle"];
                 Grid.SetRow(inspectButton, 0);
                 innerGrid.Children.Add(inspectButton);
 
@@ -98,11 +97,12 @@ namespace WH_APP_GUI.Warehouse
                 deleteButton.Content = "Delete Warehouse";
                 deleteButton.Tag = Tables.warehouses.database.Rows[i];
                 deleteButton.Click += delete_warehouse_Click;
-                deleteButton.Margin = new Thickness(5);
+                deleteButton.Margin = new Thickness(10);
+                deleteButton.Style = (Style)this.Resources["GreenButtonStyle"];
                 Grid.SetRow(deleteButton, 1);
                 innerGrid.Children.Add(deleteButton);
 
-                panel.Children.Add(grid);
+                panel.Children.Add(border);
             }
         }
 
@@ -143,11 +143,11 @@ namespace WH_APP_GUI.Warehouse
             DataRow warehouse = btn.Tag as DataRow;
             if (warehouse != null)
             {
-                try
-                {
+                //try
+                //{
                     foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
                     {
-                        employee["warehouse_id"] = null;
+                        employee["warehouse_id"] = DBNull.Value;
                     }
                     Tables.employees.updateChanges();
 
@@ -190,13 +190,23 @@ namespace WH_APP_GUI.Warehouse
                     DisplayWarehousesOnPanel(DisplayWarehousesStackpanel);
 
                     MessageBox.Show("Warehouse has been deleted", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteError(ex);
-                    throw;
-                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Debug.WriteError(ex);
+                //    throw;
+                //}
             }
+        }
+
+        private void WarehausePage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+            AddNewWarehouse.FontSize = e.NewSize.Height * 0.03;
+            AddNewWarehouse.Width = e.NewSize.Width * 0.4;
         }
     }
 }
