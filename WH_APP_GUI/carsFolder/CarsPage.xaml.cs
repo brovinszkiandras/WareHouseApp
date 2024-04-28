@@ -256,15 +256,6 @@ namespace WH_APP_GUI.carsFolder
            CreateCarWindow createCar = new CreateCarWindow();
             Navigation.content2.Navigate(createCar);
         }
-
-        private void Details_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = e.Source as Button;
-            DataRow car = Tables.cars.database.Select($"id = {button.Tag}")[0];
-            InspectCarWindow inspectCarWindow = new InspectCarWindow(car);
-            inspectCarWindow.ShowDialog();
-        }
-
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             if (Navigation.PreviousPage != null)
