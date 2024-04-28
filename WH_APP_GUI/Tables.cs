@@ -185,12 +185,11 @@ namespace WH_APP_GUI
 
         public static warehouse getWarehosue(string name)
         {
-            MessageBox.Show("Lefutott");
+          
             warehouse selectedWarehosue = null;
             foreach (warehouse warehouseTable in warehouseTables)
             {
-                MessageBox.Show(warehouseTable.database.TableName);
-                MessageBox.Show(name);
+               
                 if (warehouseTable.database.TableName == name)
                 {
                     selectedWarehosue = warehouseTable;

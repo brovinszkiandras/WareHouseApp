@@ -210,61 +210,66 @@ namespace WH_APP_GUI
         public static void removeSquareFromShelf(Button button)
         {
             //Polc amiból törölni fog
-            DataRow shelf;
-            //Ha egy polc nem készül akkor a bekért gomb azonosítója alapján lekéri a
-            //a megadott polcot
-            if (isAShelfBeingCreated == false)
-            {
-              shelf  = Tables.shelf.database.Select($"name = '{button.Tag}' AND sector_id = {Visual.sector["id"]}")[0];
-            }
-            //Ha egy polc készül akkor az lesz a polc amiből törölni fog
-            else
-            {
-                shelf = newShelf;
-            }
-            //Le ellenőrzi hogy a kocka a polc elején vagy végén van e (törölhető)
-            if (checkIfSquareIsInTheMiddleOfTheShelf(button, shelf) == false)
-            {
-                //Törli az azonosítóját
-                button.Tag = null;
-                //Lekapcsolja a polcról
-                shelf["length"] = (double)shelf["length"] - 1;
-                button.Background = Brushes.Black;
-                button.Width = Visual.sizeHorizontally / 2;
-                button.Height = Visual.sizeVertically / 2;
-                button.BorderThickness = new Thickness(0.03);
-                button.BorderBrush = Brushes.YellowGreen;
+            DataRow shelf = newShelf;
 
-                //Ha a gomb a polc kezdő pozicióján van és a polc vízszintes
-                if (shelf["orientation"].ToString() == "Horizontal" && (int)shelf["startXindex"] == Grid.GetColumn(button))
+           if(button.Tag != null)
+            {
+                if(button.Tag.ToString() == newShelf["name"].ToString())
                 {
-                    //a tőle jobbra lévő gomb lesz az új kezdő pozició
-                    shelf["startXindex"] = (int)shelf["startXindex"] + 1;
-
-                }
-                //Ha a gomb a polc befejező pozicióján van és a polc vízszintes
-                if (shelf["orientation"].ToString() == "Vertical" && (int)shelf["startYindex"] == Grid.GetRow(button))
-                {
-                    //az alatta lévő gomb lesz az új kezdő pozició
-                    shelf["startYindex"] = (int)shelf["startYindex"] + 1;
-
-                }
-                //Ha a gomb hosszúsága eléri a nullát kitörli a polcot
-                if ((double)shelf["length"] == 0)
-                {
-                    if (isAShelfBeingCreated == false)
+                    if (checkIfSquareIsInTheMiddleOfTheShelf(button, shelf) == false)
                     {
-                        shelf.Delete();
+                        //Törli az azonosítóját
+                        button.Tag = null;
+                        //Lekapcsolja a polcról
+                        shelf["length"] = (double)shelf["length"] - 1;
+                        button.Background = Brushes.Black;
+                        button.Width = Visual.sizeHorizontally / 2;
+                        button.Height = Visual.sizeVertically / 2;
+                        button.BorderThickness = new Thickness(0.03);
+                        button.BorderBrush = Brushes.YellowGreen;
+
+                        //Ha a gomb a polc kezdő pozicióján van és a polc vízszintes
+                        if (shelf["orientation"].ToString() == "Horizontal" && (int)shelf["startXindex"] == Grid.GetColumn(button))
+                        {
+                            //a tőle jobbra lévő gomb lesz az új kezdő pozició
+                            shelf["startXindex"] = (int)shelf["startXindex"] + 1;
+
+                        }
+                        //Ha a gomb a polc befejező pozicióján van és a polc vízszintes
+                        if (shelf["orientation"].ToString() == "Vertical" && (int)shelf["startYindex"] == Grid.GetRow(button))
+                        {
+                            //az alatta lévő gomb lesz az új kezdő pozició
+                            shelf["startYindex"] = (int)shelf["startYindex"] + 1;
+
+                        }
+                        //Ha a gomb hosszúsága eléri a nullát kitörli a polcot
+                        if ((double)shelf["length"] == 0)
+                        {
+                            if (isAShelfBeingCreated == false)
+                            {
+                                shelf.Delete();
+                            }
+                        }
+                        //Kivonja a polc területét a sector használt területéből
+                        removeSquaresAreaFromSectorsAreaInUse(button);
+                        //Kivonja a gomb hosszúságát a polc hosszúságából
+                        removeSquaresLengthFromActualLength();
+                        Visual.squaresInUSe -= 1;
+
+
                     }
                 }
-                //Kivonja a polc területét a sector használt területéből
-                removeSquaresAreaFromSectorsAreaInUse(button);
-                //Kivonja a gomb hosszúságát a polc hosszúságából
-                removeSquaresLengthFromActualLength();
-                Visual.squaresInUSe -= 1;
-
-                
+                else
+                {
+                    MessageBox.Show("This button belongs to an another shelg");
+                }
             }
+            else
+            {
+                MessageBox.Show("Cant delete this button");
+            }
+            //Le ellenőrzi hogy a kocka a polc elején vagy végén van e (törölhető)
+           
         }
 
         private static void addSquaresAreaToSectorsAreaInUse(Button square)

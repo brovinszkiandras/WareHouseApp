@@ -38,7 +38,7 @@ namespace WH_APP_GUI.Warehouse
         {
             InitializeComponent();
             Warehouse = warehouse;
-            MessageBox.Show(warehouse["name"].ToString());
+            
             this.warehouseTable = Tables.getWarehosue(warehouse["name"].ToString());
 
             WarehouseNameDisplay.Content = $"{warehouse["name"]} - {Tables.warehouses.getCity(warehouse)["city_name"]}";
