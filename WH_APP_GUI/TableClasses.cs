@@ -39,7 +39,7 @@ namespace WH_APP_GUI
         }
 
         #region autoincrement
-        public void setupAutoIncrement()
+        private void setupAutoIncrement()
         {
             database.Columns["id"].AutoIncrement = true;
             database.Columns["id"].AutoIncrementStep = 1;
@@ -58,7 +58,7 @@ namespace WH_APP_GUI
         #endregion
 
         #region getname
-        public void GetNames()
+        private void GetNames()
         {
             if (actual_name == null && name == null && nice_name == null)
             {
@@ -70,7 +70,7 @@ namespace WH_APP_GUI
         #endregion
 
         #region queris
-        public void fill()
+        private void fill()
         {
             adapter = new MySqlDataAdapter($"SELECT * FROM {actual_name}", SQL.con);
 
@@ -131,7 +131,7 @@ namespace WH_APP_GUI
         #endregion
 
         #region datelog
-        public void UpdateDatelog()
+        private void UpdateDatelog()
         {
             if(database.GetChanges() != null)
             {
@@ -596,9 +596,20 @@ namespace WH_APP_GUI
             return Relations.parentRelation("shelfSector", shelf);
         }
 
-        public DataRow[] getWarehouseProducts(warehouse warehouse, DataRow shelf)
+        public DataRow[] getWarehouseProducts(DataRow shelf)
         {
-            return Relations.childRelation(warehouse.actual_name + "shelf", shelf);
+           
+            warehouse warehouseTable = Tables.getWarehosue(getWarehouse(shelf)["name"].ToString());
+
+            return warehouseTable.database.Select($"shelf_id = '{shelf["id"]}'");
+        }
+
+        public DataRow getWarehouse(DataRow shelf)
+        {
+            DataRow shelfSector = getSector(shelf);
+            DataRow shelfwarehouse = Tables.sector.getWarehouse(shelfSector);
+
+            return shelfwarehouse;
         }
     }
     #endregion
