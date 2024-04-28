@@ -227,9 +227,6 @@
     <Compile Include="carsFolder\CreateCarWindow.xaml.cs">
       <DependentUpon>CreateCarWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="carsFolder\InspectCarWindow.xaml.cs">
-      <DependentUpon>InspectCarWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="carsFolder\UpdateCarWindow.xaml.cs">
       <DependentUpon>UpdateCarWindow.xaml</DependentUpon>
     </Compile>
@@ -375,10 +372,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="carsFolder\CreateCarWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="carsFolder\InspectCarWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -275,7 +275,7 @@ namespace WH_APP_GUI.Order
                         mainStackPanel.Children.Add(inTransport);
                     }
                 }
-                else if(Tables.features.isFeatureInUse("Dock") && Tables.features.isFeatureInUse("Fleet"))
+                else if(Tables.features.isFeatureInUse("Dock") && ! Tables.features.isFeatureInUse("Fleet"))
                 {
                     if (IsOrderInDock(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
                     {
