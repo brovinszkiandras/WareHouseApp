@@ -13,21 +13,24 @@
 
     <Page.Resources>
         <Style TargetType="Button" x:Key="GreenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
             <Setter Property="Padding" Value="20"/>
             <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                         BorderBrush="{TemplateBinding BorderBrush}"
-                         BorderThickness="{TemplateBinding BorderThickness}"
-                         CornerRadius="5">
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="5">
                             <ContentPresenter HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Content="{TemplateBinding Content}"/>
+            VerticalAlignment="Center"
+            Content="{TemplateBinding Content}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -40,8 +43,23 @@
             </Setter>
         </Style>
 
+        <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{x:Static SystemColors.ControlLightBrush}"/>
+                    <Setter Property="Foreground" Value="{x:Static SystemColors.GrayTextBrush}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
         <Style TargetType="Label" x:Key="labelstyle">
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="#FFCEA2"/>
             <Setter Property="FontFamily" Value="Baskerville Old Face"/>
         </Style>
     </Page.Resources>
@@ -65,11 +83,11 @@
             <Label Grid.Column="1" Height="auto" Content="Warehouse name - City name" Name="WarehouseNameDisplay" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Style="{StaticResource labelstyle}"/>
 
 
-            <Border BorderThickness="1" BorderBrush="Black" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+            <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
                 <ScrollViewer x:Name="mainScrollviewer" VerticalScrollBarVisibility="Hidden">
                     <StackPanel>
                         <Grid Name="MapDisplay"/>
-                        <StackPanel>
+                        <StackPanel Margin="10">
                             <Grid Name="Statistic">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -85,24 +103,23 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <ProgressBar Name="WarehouseTotalSpending" Value="35" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Background="{x:Null}" Foreground="{x:Null}"/>
-                                <ProgressBar Name="WarehouseTotalIncome" Value="70" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" Background="{x:Null}"/>
+                                <ProgressBar Name="WarehouseTotalSpending" Value="35" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Background="#395250" Foreground="{x:Null}" BorderThickness="0"/>
+                                <ProgressBar Name="WarehouseTotalIncome" Value="70" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" BorderThickness="0" Background="#395250"/>
                                 <Label Content="Warehouse total spending" Grid.Column="0" Grid.Row="0" Style="{StaticResource labelstyle}"/>
                                 <Label Content="Warehouse total income" Grid.Column="0" Grid.Row="1" Style="{StaticResource labelstyle}"/>
                                 <Label Name="WarehouseTotalSpendingLBL" Content="Warehouse total spending - Ft" Grid.Column="1" Grid.Row="0" Style="{StaticResource labelstyle}"/>
                                 <Label Name="WarehouseTotalIncomeLBL" Content="Warehouse total income - Ft" Grid.Column="1" Grid.Row="1" Style="{StaticResource labelstyle}"/>
 
-                                <ProgressBar Name="ProductsTotalSellingPrice" Value="50" Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Background="{x:Null}"/>
-                                <ProgressBar Name="ProductsTotalBuyingPrice" Value="20" Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Background="{x:Null}"/>
+                                <ProgressBar Name="ProductsTotalSellingPrice" Value="50" Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Background="#395250" BorderThickness="0"/>
+                                <ProgressBar Name="ProductsTotalBuyingPrice" Value="20" Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Background="#395250" BorderThickness="0"/>
                                 <Label Content="Products total selling price" Grid.Column="0" Grid.Row="2" Style="{StaticResource labelstyle}"/>
                                 <Label Content="products total buying price" Grid.Column="0" Grid.Row="3" Style="{StaticResource labelstyle}"/>
                                 <Label Name="ProductsTotalSellingPriceLBL" Content="Total selling price - Ft" Grid.Column="1" Grid.Row="2" Style="{StaticResource labelstyle}"/>
                                 <Label Name="ProductsTotalBuyingPriceLBL" Content="Total buying price - Ft" Grid.Column="1" Grid.Row="3" Style="{StaticResource labelstyle}"/>
 
-                                <ProgressBar Name="SpendingByDay" Value="90" Orientation="Horizontal" Grid.Column="1" Grid.Row="4" Background="{x:Null}"/>
-                                <ProgressBar Name="IncomeByDay" Value="85" Orientation="Horizontal" Grid.Column="1" Grid.Row="5" Background="{x:Null}"/>
-                                <ComboBox Grid.Column="0" Grid.Row="4" Grid.RowSpan="2" VerticalAlignment="Center" Margin="5"/>
-                                <Border Grid.Column="0" Grid.Row="4" Grid.RowSpan="2"/>
+                                <ProgressBar Name="SpendingByDay" Value="90" Orientation="Horizontal" Grid.Column="1" Grid.Row="4" Background="#395250" BorderThickness="0"/>
+                                <ProgressBar Name="IncomeByDay" Value="85" Orientation="Horizontal" Grid.Column="1" Grid.Row="5" Background="#395250" BorderThickness="0"/>
+                                <ComboBox Grid.Column="0" Grid.Row="4" Grid.RowSpan="2" VerticalAlignment="Center" Margin="5" Background="#425C5A" Foreground="#FFCEA2"/>
                                 <Label Name="SpendingLBL" Content="Spending - Ft" Grid.Column="1" Grid.Row="4" Style="{StaticResource labelstyle}"/>
                                 <Label Name="IncomeLBL" Content="Income - Ft" Grid.Column="1" Grid.Row="5" Style="{StaticResource labelstyle}"/>
                             </Grid>
@@ -138,7 +155,7 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
 
-                                <ComboBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="20" Margin="5"/>
+                                <ComboBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="20" Margin="5" Background="#425C5A" Foreground="#FFCEA2"/>
                                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="20">
                                 <Label Content="Spending:" HorizontalAlignment="Right" Style="{StaticResource labelstyle}"/>
                                 <Label Background="Red"/>

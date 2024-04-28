@@ -42,6 +42,7 @@
         </Setter>
     </Style>
     </Page.Resources>
+    
     <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.RowDefinitions>
