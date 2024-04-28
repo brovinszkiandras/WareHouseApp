@@ -112,13 +112,17 @@ namespace WH_APP_GUI.Product
             Grid.SetColumn(sellingPriceLabel, 0);
             Grid.SetRow(sellingPriceLabel, 2);
 
-            Label descriptionLabel = new Label();
-            descriptionLabel.Content = $"{product["description"]}";
-            descriptionLabel.BorderBrush = Brushes.Black;
-            descriptionLabel.BorderThickness = new Thickness(0, 0, 1, 0);
-            Grid.SetColumn(descriptionLabel, 0);
-            Grid.SetRow(descriptionLabel, 3);
-            Grid.SetRowSpan(descriptionLabel, 2);
+            TextBlock descriptionLabel = new TextBlock();
+            descriptionLabel.TextWrapping = TextWrapping.Wrap;
+            descriptionLabel.Text = $"{product["description"]}";
+
+            Border borderDescription = new Border();
+            borderDescription.BorderBrush = Brushes.Black;
+            borderDescription.BorderThickness = new Thickness(0,0,1,0);
+            borderDescription.Child = descriptionLabel;
+            Grid.SetColumn(borderDescription, 0);
+            Grid.SetRow(borderDescription, 3);
+            Grid.SetRowSpan(borderDescription, 2);
 
             if (Tables.features.isFeatureInUse("Storage"))
             {
@@ -159,7 +163,7 @@ namespace WH_APP_GUI.Product
                 grid.Children.Add(nameLabel);
                 grid.Children.Add(buyingPriceLabel);
                 grid.Children.Add(sellingPriceLabel);
-                grid.Children.Add(descriptionLabel);
+                grid.Children.Add(borderDescription);
                 grid.Children.Add(weightLabel);
                 grid.Children.Add(volumeLabel);
                 grid.Children.Add(widthLabel);

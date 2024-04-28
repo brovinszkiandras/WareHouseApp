@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,71 +17,34 @@ using Xceed.Wpf.Toolkit;
 
 namespace WH_APP_GUI.transport
 {
-    /// <summary>
-    /// Interaction logic for UpdateTransport.xaml
-    /// </summary>
     public partial class UpdateTransport : Page
     {
-
         public DataRow transport;
         public UpdateTransport(DataRow Transport)
         {
             InitializeComponent();
             this.transport = Transport;
-
             this.DataContext = transport;
 
+            Ini_warehouse_id();
+            IniEmployees();
+            IniCars();
+            IniDocks();
 
-            foreach (DataRow row in Tables.employees.database.Rows)
+            if (transport["employee_id"] != DBNull.Value)
             {
-                ComboBoxItem item = new ComboBoxItem();
-                item.Content = row["name"];
-                item.Tag = row["id"];
-
-                EmployeesCBX.Items.Add(item);
-
-                if ((int)row["id"] == (int)transport["employee_id"])
-                {
-
-                    EmployeesCBX.SelectedItem = item;
-                }
+                EmployeesCBX.SelectedItem = Tables.employees.database.Select($"id = {transport["employee_id"]}")[0]["name"];
             }
 
-
-            foreach (DataRow row in Tables.cars.database.Rows)
+            if (transport["car_id"] != DBNull.Value)
             {
-                ComboBoxItem item = new ComboBoxItem();
-                item.Content = row["type"] + " - " + row["plate_number"];
-                item.Tag = row["id"];
-
-                CarsCBX.Items.Add(item);
-
-                if ((int)row["id"] == (int)transport["car_id"])
-                {
-
-                    CarsCBX.SelectedItem = item;
-                }
+                CarsCBX.SelectedItem = Tables.cars.database.Select($"id = {transport["car_id"]}")[0]["type"];
             }
 
-            if(Tables.features.isFeatureInUse("Dock") == true)
+            if (transport["dock_id"] != DBNull.Value)
             {
-                foreach (DataRow row in Tables.docks.database.Rows)
-                {
-                    ComboBoxItem item = new ComboBoxItem();
-                    item.Content = row["name"];
-                    item.Tag = row["id"];
-
-                    DocksCBX.Items.Add(item);
-
-                    if ((int)row["id"] == (int)transport["dock_id"])
-                    {
-
-                        DocksCBX.SelectedItem = item;
-                    }
-                }
+                DocksCBX.SelectedItem = Tables.docks.database.Select($"id = {transport["dock_id"]}")[0]["name"];
             }
-
-           
 
             switch (transport["status"].ToString())
             {
@@ -98,7 +62,93 @@ namespace WH_APP_GUI.transport
             }
 
         }
+        private Dictionary<string, DataRow> employees = new Dictionary<string, DataRow>(); 
+        private void IniEmployees()
+        {
+            EmployeesCBX.Items.Clear();
+            employees.Clear();
+            if (transport["warehouse_id"] != DBNull.Value)
+            {
+                foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse_id_Dictionary[WarehouseCBX.SelectedItem.ToString()]))
+                {
+                    EmployeesCBX.Items.Add(employee["name"].ToString());  
+                    employees.Add(employee["name"].ToString(), employee);
+                }
+            }
+            else
+            {
+                foreach (DataRow employee in Tables.employees.database.Rows)
+                {
+                    EmployeesCBX.Items.Add(employee["name"].ToString());
+                    employees.Add(employee["name"].ToString(), employee);
+                }
+            }
+        }
 
+        private Dictionary<string, DataRow> cars = new Dictionary<string, DataRow>();
+        private void IniCars()
+        {
+            cars.Clear();
+            CarsCBX.Items.Clear();
+            if (transport["warehouse_id"] != DBNull.Value)
+            {
+                foreach (DataRow car in Tables.warehouses.getCars(warehouse_id_Dictionary[WarehouseCBX.SelectedItem.ToString()]))
+                {
+                    CarsCBX.Items.Add(car["type"].ToString());
+                    cars.Add(car["type"].ToString(), car);
+                }
+            }
+            else
+            {
+                foreach (DataRow car in Tables.cars.database.Rows)
+                {
+                    CarsCBX.Items.Add(car["type"].ToString());
+                    cars.Add(car["type"].ToString(), car);
+                }
+            }
+        }
+
+        private Dictionary<string, DataRow> docks = new Dictionary<string, DataRow>();
+        private void IniDocks()
+        {
+            docks.Clear();
+            DocksCBX.Items.Clear();
+            if (transport["warehouse_id"] != DBNull.Value)
+            {
+                foreach (DataRow dock in Tables.warehouses.getDocks(warehouse_id_Dictionary[WarehouseCBX.SelectedItem.ToString()]))
+                {
+                    DocksCBX.Items.Add(dock["name"].ToString());
+                    docks.Add(dock["name"].ToString(), dock);
+                }
+            }
+            else
+            {
+                foreach (DataRow dock in Tables.docks.database.Rows)
+                {
+                    DocksCBX.Items.Add(dock["name"].ToString());
+                    docks.Add(dock["name"].ToString(), dock);
+                }
+            }
+        }
+
+        private Dictionary<string, DataRow> warehouse_id_Dictionary = new Dictionary<string, DataRow>();
+        private void Ini_warehouse_id()
+        {
+            WarehouseCBX.Visibility = Visibility.Visible;
+            WarehouseCBX.Items.Clear();
+            warehouse_id_Dictionary.Clear();
+
+            foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+            {
+                WarehouseCBX.Items.Add(warehouse["name"].ToString());
+                warehouse_id_Dictionary.Add(warehouse["name"].ToString(), warehouse);
+            }
+
+            if (transport["warehouse_id"] != DBNull.Value)
+            {
+                WarehouseCBX.SelectedItem = Tables.warehouses.database.Select($"id = {transport["warehouse_id"]}")[0]["name"].ToString();
+            }
+        }
         private void maskedTextbox_LostFocus(object sender, RoutedEventArgs e)
         {
 
@@ -116,39 +166,34 @@ namespace WH_APP_GUI.transport
 
                 maskedTextBox.Text = transport[maskedTextBox.Name].ToString();
             }
-            else
-            {
-
-            }
         }
 
         private void EmployeesCBX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem comboBoxItem = EmployeesCBX.SelectedItem as ComboBoxItem;
-
-            transport["employee_id"] = comboBoxItem.Tag;
+            if (EmployeesCBX.SelectedItem != null)
+            {
+                transport["employee_id"] = employees[EmployeesCBX.SelectedItem.ToString()]["id"];
+            }
         }
 
         private void CarsCBX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem comboBoxItem = CarsCBX.SelectedItem as ComboBoxItem;
-
-            Tables.transports.getCar(transport)["ready"] = true;
-
-            // Tables.cars.database.Select(comboBoxItem.Tag.ToString())[0]["ready"] = false;
-            transport["car_id"] = comboBoxItem.Tag;
+            if (CarsCBX.SelectedItem != null)
+            {
+                transport["car_id"] = cars[CarsCBX.SelectedItem.ToString()]["id"];
+                Tables.transports.getCar(transport)["ready"] = true;
+            }         
         }
 
         private void DocksCBX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem comboBoxItem = DocksCBX.SelectedItem as ComboBoxItem;
-            if (Tables.features.isFeatureInUse("Dock"))
+            if (DocksCBX.SelectedItem != null)
             {
-
-                Tables.transports.getDock(transport)["free"] = true;
-
-                // Tables.docks.database.Select(comboBoxItem.Tag.ToString())[0]["free"] = false;
-                transport["dock_id"] = comboBoxItem.Tag;
+                if (Tables.features.isFeatureInUse("Dock"))
+                {
+                    transport["dock_id"] = docks[DocksCBX.SelectedItem.ToString()]["id"];
+                    Tables.transports.getDock(transport)["free"] = true;
+                }
             }
         }
 
@@ -157,21 +202,16 @@ namespace WH_APP_GUI.transport
             transport["start_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["start_date"]);
             transport["end_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["end_date"]);
 
-
             Tables.transports.updateChanges();
             Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully updated transport number {transport["id"]}");
             TransportsPage transportsPage = new TransportsPage();
             Navigation.content2.Navigate( transportsPage );
-
-
-
         }
 
 
         private void start_date_InputValidationError(object sender, Xceed.Wpf.Toolkit.Core.Input.InputValidationErrorEventArgs e)
         {
             Xceed.Wpf.Toolkit.MessageBox.Show($"You can only input a date");
-
         }
 
         private void StatusCBX_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -186,10 +226,9 @@ namespace WH_APP_GUI.transport
                 
             }
            if(this.IsLoaded == true)
-            {
+           {
                 transport["status"] = SelectedItem.Content.ToString();
-            }
-           
+           }
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -201,6 +240,18 @@ namespace WH_APP_GUI.transport
                     transport[column] = transport[column, DataRowVersion.Original];
                 }
             }
+        }
+
+        private void WarehouseCBX_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EmployeesCBX.SelectedIndex = -1;
+            DocksCBX.SelectedIndex = -1;
+            CarsCBX.SelectedIndex = -1;
+
+            transport["warehouse_id"] = warehouse_id_Dictionary[WarehouseCBX.SelectedItem.ToString()]["id"];
+            IniEmployees();
+            IniCars();
+            IniDocks();
         }
     }
 }

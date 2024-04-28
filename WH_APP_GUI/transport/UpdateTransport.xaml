@@ -12,71 +12,43 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="10*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
-            <Grid.RowDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="8*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                
-                <RowDefinition Height="0.5*"></RowDefinition>
-            </Grid.RowDefinitions>
-            
-            <StackPanel>
-                <Label FontSize="17" Content="Employee"></Label>
-                <ComboBox SelectionChanged="EmployeesCBX_SelectionChanged" Name="EmployeesCBX">
-                   
-                </ComboBox>
-            </StackPanel>
+        <UniformGrid Columns="2" Rows="8" Grid.Row="1" Grid.Column="1">
+            <Label FontSize="17" Content="Employee" Margin="5"></Label>
+            <ComboBox SelectionChanged="EmployeesCBX_SelectionChanged" Name="EmployeesCBX" Margin="5"/>
 
-            <StackPanel Grid.Row="1">
-                <Label FontSize="17" Content="Car"></Label>
-                <ComboBox SelectionChanged="CarsCBX_SelectionChanged" Name="CarsCBX">
-                   
-                </ComboBox>
-            </StackPanel>
+            <Label FontSize="17" Content="Warehouse" Margin="5"></Label>
+            <ComboBox SelectionChanged="WarehouseCBX_SelectionChanged" Name="WarehouseCBX" Margin="5"/>
 
-            
+            <Label FontSize="17" Content="Car" Margin="5"></Label>
+            <ComboBox SelectionChanged="CarsCBX_SelectionChanged" Name="CarsCBX" Margin="5"/>
 
-            <StackPanel Grid.Row="2">
-                <Label Content="Start date" FontSize="17"></Label>
-                <xctk:DateTimePicker TimeFormat="Custom" TimeFormatString="yyyy-MM-dd HH:mm:ss" Format="Custom" FormatString="yyyy-MM-dd HH:mm:ss" InputValidationError="start_date_InputValidationError" FontSize="17" Value="{Binding Path=[start_date]}" Name="start_date" />
-            </StackPanel>
+            <Label Content="Start date" FontSize="17" Margin="5"></Label>
+            <xctk:DateTimePicker TimeFormat="Custom" TimeFormatString="yyyy-MM-dd HH:mm:ss" Format="Custom" Margin="5" FormatString="yyyy-MM-dd HH:mm:ss" InputValidationError="start_date_InputValidationError" FontSize="17" Value="{Binding Path=[start_date]}" Name="start_date" />
 
-            <StackPanel Grid.Row="3">
-                <Label Content="End date" FontSize="17"></Label>
-                <xctk:DateTimePicker TimeFormat="Custom" TimeFormatString="yyyy-MM-dd HH:mm:ss" Format="Custom" FormatString="yyyy-MM-dd HH:mm:ss" InputValidationError="start_date_InputValidationError" FontSize="17" Value="{Binding Path=[end_date]}" Name="end_date" />
-            </StackPanel>
+            <Label Content="End date" FontSize="17" Margin="5"></Label>
+            <xctk:DateTimePicker TimeFormat="Custom" TimeFormatString="yyyy-MM-dd HH:mm:ss" Margin="5" Format="Custom" FormatString="yyyy-MM-dd HH:mm:ss" InputValidationError="start_date_InputValidationError" FontSize="17" Value="{Binding Path=[end_date]}" Name="end_date" />
 
-            <StackPanel Grid.Row="4">
-                <Label FontSize="17" Content="Dock"></Label>
-                <ComboBox SelectionChanged="DocksCBX_SelectionChanged" Name="DocksCBX">
-                   
-                </ComboBox>
-            </StackPanel>
+            <Label FontSize="17" Content="Dock" Margin="5"></Label>
+            <ComboBox SelectionChanged="DocksCBX_SelectionChanged" Name="DocksCBX" Margin="5"/>
 
-            <StackPanel Grid.Row="5">
-                <Label FontSize="17" Content="Status"></Label>
-                <ComboBox SelectedIndex="0" SelectionChanged="StatusCBX_SelectionChanged"  Name="StatusCBX">
-                    <ComboBoxItem Content="Docking"></ComboBoxItem>
-                    <ComboBoxItem Content="On route"></ComboBoxItem>
-                    <ComboBoxItem Content="Finished"></ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
+            <Label FontSize="17" Content="Status" Margin="5"/>
+            <ComboBox SelectedIndex="0" SelectionChanged="StatusCBX_SelectionChanged"  Name="StatusCBX" Margin="5">
+                <ComboBoxItem Content="Docking"></ComboBoxItem>
+                <ComboBoxItem Content="On route"></ComboBoxItem>
+                <ComboBoxItem Content="Finished"></ComboBoxItem>
+            </ComboBox>
 
-            <Button Grid.Row="6" FontSize="17" Name="save" Click="save_Click" Content="Save"></Button>
-        </Grid>
+        </UniformGrid>
+        <Button Grid.Row="2" Grid.Column="1" Margin="5" Name="save" Click="save_Click" Content="Save"/>
     </Grid>
 </Page>

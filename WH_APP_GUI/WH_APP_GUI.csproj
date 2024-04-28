@@ -333,6 +333,9 @@
     <Compile Include="transport\CreateTransportPage.xaml.cs">
       <DependentUpon>CreateTransportPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="transport\InspectTransportPage.xaml.cs">
+      <DependentUpon>InspectTransportPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="transport\TransportsPage.xaml.cs">
       <DependentUpon>TransportsPage.xaml</DependentUpon>
     </Compile>
@@ -513,6 +516,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="transport\CreateTransportPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="transport\InspectTransportPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

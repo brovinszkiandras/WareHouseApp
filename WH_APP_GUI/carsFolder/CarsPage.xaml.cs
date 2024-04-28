@@ -1,114 +1,229 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WH_APP_GUI;
 using WH_APP_GUI.carsFolder;
 using WH_APP_GUI.transport;
+using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI.carsFolder
 {
     public partial class CarsPage : Page
     {
-        public void DisplayCars()
-        {
-            carsGrid.Children.Clear();
-            
-            int lastRow = 0;
-            foreach (DataRow car in Tables.cars.database.Rows)
-            {
-                RowDefinition rowDefinition = new RowDefinition();
-                rowDefinition.Height = GridLength.Auto;
-                carsGrid.RowDefinitions.Add(rowDefinition);
-
-                TextBlock plate_number = new TextBlock();
-                plate_number.Text = car["plate_number"].ToString();
-                plate_number.FontSize = 15;
-                plate_number.TextWrapping = TextWrapping.Wrap;
-                Grid.SetRow(plate_number, lastRow);
-                Grid.SetColumn(plate_number, 0);
-
-                TextBlock type = new TextBlock();
-                type.Text = car["type"].ToString();
-                type.FontSize = 15;
-                type.TextWrapping = TextWrapping.Wrap;
-                Grid.SetRow(type, lastRow);
-                Grid.SetColumn(type, 1);
-
-                CheckBox ready = new CheckBox();
-                ready.IsEnabled = false;
-                ready.IsChecked = (bool)car["ready"];
-                Grid.SetRow(ready, lastRow);
-                Grid.SetColumn(ready, 2);
-
-                carsGrid.Children.Add(plate_number);
-                carsGrid.Children.Add(type);
-                carsGrid.Children.Add(ready);
-
-
-                Button inspect = new Button();
-                inspect.Content = "Details";
-                inspect.FontSize = 15;
-                inspect.Background = Brushes.Green;
-                inspect.Tag = car["id"];
-                inspect.Click += Details_Click;
-                Grid.SetRow(inspect, lastRow);
-                Grid.SetColumn(inspect, 3);
-
-                carsGrid.Children.Add(inspect);
-                if(User.DoesHavePermission("Modify Car") || User.DoesHavePermission("Modify all Car"))
-                {
-                    Button edit = new Button();
-                    edit.Content = "Edit";
-                    edit.FontSize = 15;
-                    edit.Foreground = Brushes.White;
-                    edit.Background = Brushes.Black;
-                    edit.Click += Edit_Click;
-                    edit.Tag = car["id"];
-
-                    Grid.SetRow(edit, lastRow);
-                    Grid.SetColumn(edit, 4);
-
-                    carsGrid.Children.Add(edit);
-
-                    Button delete = new Button();
-                    delete.Content = "Delete";
-                    delete.FontSize = 15;
-                    delete.Foreground = Brushes.White;
-                    delete.Background = Brushes.Black;
-                    delete.Tag = car["id"];
-                    delete.Click += Delete_Click;
-                    Grid.SetRow(delete, lastRow);
-                    Grid.SetColumn(delete, 5);
-
-                    carsGrid.Children.Add(delete);
-                }
-                else
-                {
-                    Create.Visibility = Visibility.Collapsed;
-                }
-                
-
-                lastRow++;
-            }
-        }
         public CarsPage()
         {
             InitializeComponent();
-
+            Back.Visibility = Visibility.Collapsed;
             DisplayCars();
+        }
+        private DataRow Warehouse = null;
+        public CarsPage(DataRow warehouse)
+        {
+            InitializeComponent();
+            Warehouse = warehouse;
+            DisplayCars();
+        }
+        private void DisplayOneCar(DataRow car, int lastRow)
+        {
+            Border border = new Border();
+            border.BorderBrush = Brushes.Black;
+            border.BorderThickness = new Thickness(2);
+            border.Background = Brushes.White;
+            border.Margin = new Thickness(5);
 
-           
+            StackPanel mainStackPanel = new StackPanel();
+            
+            Image image = new Image();
+            image.Width = 80;
+            image.Height = 80;
+
+            string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
+            if (Directory.Exists(targetDirectory))
+            {
+                string imageFileName = "DefaultCarPicture.png";
+                string imagePath = Path.Combine(targetDirectory, imageFileName);
+                if (File.Exists(imagePath))
+                {
+                    string fileName = Path.GetFileName(imagePath);
+                    string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                    BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+                    image.Source = bitmap;
+                }
+            }
+
+            Label plateNumber = new Label();
+            plateNumber.Content = "Platenumber: " + car["plate_number"];
+            plateNumber.HorizontalContentAlignment = HorizontalAlignment.Center;
+            plateNumber.Margin = new Thickness(5);
+            plateNumber.BorderBrush = Brushes.Black;
+            plateNumber.BorderThickness = new Thickness(1,0,1,1);
+
+            mainStackPanel.Children.Add(image);
+            mainStackPanel.Children.Add(plateNumber);
+
+            Expander datas = new Expander();
+            datas.Header = "Datas";
+            datas.Margin = new Thickness(5);
+
+            StackPanel grids = new StackPanel();
+
+            UniformGrid defaultDatas = new UniformGrid();
+            defaultDatas.Rows = 3;
+            defaultDatas.Margin = new Thickness(5);
+
+            Label type = new Label();
+            type.Content = $"Type: {car["type"]}";
+            type.BorderBrush = Brushes.Black;
+            type.BorderThickness = new Thickness(1, 0, 0, 1);
+            defaultDatas.Children.Add(type);
+
+            Label ready = new Label();
+            ready.Content = $"Ready: " + ((bool)car["ready"] ? "Ready" : "Not ready");
+            ready.BorderBrush = Brushes.Black;
+            ready.BorderThickness = new Thickness(1, 0, 0, 1);
+            defaultDatas.Children.Add(ready);
+
+            Label km = new Label();
+            km.Content = $"Km: {car["km"]}";
+            km.BorderBrush = Brushes.Black;
+            km.BorderThickness = new Thickness(1, 0, 0, 1);
+            defaultDatas.Children.Add(km);
+
+            Label lastService = new Label();
+            lastService.Content = $"Last service: {car["last_service"]}";
+            lastService.BorderBrush = Brushes.Black;
+            lastService.BorderThickness = new Thickness(1, 0, 0, 1);
+            defaultDatas.Children.Add(lastService);
+
+            Label lastexam = new Label();
+            lastexam.Content = $"Last exam: {car["last_exam"]}";
+            lastexam.BorderBrush = Brushes.Black;
+            lastexam.BorderThickness = new Thickness(1, 0, 0, 1);
+            defaultDatas.Children.Add(lastexam);
+
+            Label warehouse = new Label();
+            warehouse.Content = $"Warehouse: {Tables.cars.getWarehouse(car)["name"]}";
+            warehouse.BorderBrush = Brushes.Black;
+            warehouse.BorderThickness = new Thickness(1, 0, 0, 1);
+            defaultDatas.Children.Add(warehouse);
+
+            grids.Children.Add(defaultDatas);
+
+            if (Tables.features.isFeatureInUse("Storage"))
+            {
+                UniformGrid storageFeature = new UniformGrid();
+                storageFeature.Columns = 2;
+                storageFeature.Margin = new Thickness(5);
+
+                Label storage = new Label();
+                storage.Content = $"Storage: {car["storage"]}";
+                storage.BorderBrush = Brushes.Black;
+                storage.BorderThickness = new Thickness(1, 0, 0, 1);
+                storageFeature.Children.Add(storage);
+
+                Label carrying_capacity = new Label();
+                carrying_capacity.Content = $"Carrying capacity: {car["carrying_capacity"]}";
+                carrying_capacity.BorderBrush = Brushes.Black;
+                carrying_capacity.BorderThickness = new Thickness(1, 0, 0, 1);
+                storageFeature.Children.Add(carrying_capacity);
+
+                grids.Children.Add(storageFeature);
+            }
+
+            if (Tables.features.isFeatureInUse("Fuel"))
+            {
+                UniformGrid fuelFeature = new UniformGrid();
+                fuelFeature.Columns = 2;
+                fuelFeature.Margin = new Thickness(5);
+
+                Label consumption = new Label();
+                consumption.Content = $"Consumption: {car["consumption"]}";
+                consumption.BorderBrush = Brushes.Black;
+                consumption.BorderThickness = new Thickness(1, 0, 0, 1);
+                fuelFeature.Children.Add(consumption);
+
+                Label gas_tank_size = new Label();
+                gas_tank_size.Content = $"Gas tank size: {car["gas_tank_size"]}";
+                gas_tank_size.BorderBrush = Brushes.Black;
+                gas_tank_size.BorderThickness = new Thickness(1, 0, 0, 1);
+                fuelFeature.Children.Add(gas_tank_size);
+
+                grids.Children.Add(fuelFeature);
+            }
+
+            datas.Content = grids;
+            mainStackPanel.Children.Add(datas);
+
+            if (User.DoesHavePermission("Modify Car") || User.DoesHavePermission("Modify all Car"))
+            {
+                Button edit = new Button();
+                edit.Content = "Edit";
+                edit.FontSize = 15;
+                edit.Foreground = Brushes.White;
+                edit.Background = Brushes.Black;
+                edit.Click += Edit_Click;
+                edit.Tag = car["id"];
+
+                Grid.SetRow(edit, lastRow);
+                Grid.SetColumn(edit, 4);
+
+                mainStackPanel.Children.Add(edit);
+
+                Button delete = new Button();
+                delete.Content = "Delete";
+                delete.FontSize = 15;
+                delete.Foreground = Brushes.White;
+                delete.Background = Brushes.Black;
+                delete.Tag = car["id"];
+                delete.Click += Delete_Click;
+                Grid.SetRow(delete, lastRow);
+                Grid.SetColumn(delete, 5);
+
+                mainStackPanel.Children.Add(delete);
+            }
+            else
+            {
+                Create.Visibility = Visibility.Collapsed;
+            }
+
+            border.Child = mainStackPanel;
+            CarsDisplay.Children.Add(border);
+        }
+        public void DisplayCars()
+        {
+            CarsDisplay.Children.Clear();
+            if (Warehouse != null)
+            {
+                int lastRow = 0;
+                foreach (DataRow car in Tables.warehouses.getCars(Warehouse))
+                {
+                    DisplayOneCar(car, lastRow);
+                    lastRow++;
+                }
+            }
+            else
+            {
+                int lastRow = 0;
+                foreach (DataRow car in Tables.cars.database.Rows)
+                {
+                    DisplayOneCar(car, lastRow);
+                    lastRow++;
+                }
+            }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -120,17 +235,12 @@ namespace WH_APP_GUI.carsFolder
                 DataRow car = Tables.cars.database.Select($"id = {button.Tag}")[0];
                 if (car != null)
                 {
-
                     car.Delete();
                     Tables.cars.updateChanges();
-
-                    
 
                     DisplayCars();
                 }
             }
-
-
         }
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
@@ -153,6 +263,25 @@ namespace WH_APP_GUI.carsFolder
             DataRow car = Tables.cars.database.Select($"id = {button.Tag}")[0];
             InspectCarWindow inspectCarWindow = new InspectCarWindow(car);
             inspectCarWindow.ShowDialog();
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                if (Warehouse != null)
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), Warehouse);
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("InspectWarehouse"));
+            }
         }
     }
 }

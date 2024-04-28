@@ -183,11 +183,6 @@ namespace WH_APP_GUI.Warehouse
             //Navigation.OpenPage(Navigation.GetTypeByName("ProductsPage"), Warehouse);
         }
 
-        private void FleetInspectToWarehouse_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void DocksInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
             Navigation.OpenPage(Navigation.GetTypeByName("DockPage"), Warehouse);
@@ -224,6 +219,16 @@ namespace WH_APP_GUI.Warehouse
         private void MapDisplay_MouseLeave(object sender, MouseEventArgs e)
         {
             mainScrollviewer.CanContentScroll = true;
+        }
+
+        private void CarsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.GetTypeByName("CarsPage"), Warehouse);
+        }
+
+        private void TransportsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"), Warehouse);
         }
     }
 }

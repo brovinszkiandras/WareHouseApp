@@ -156,9 +156,16 @@ namespace WH_APP_GUI.Dock
             if (Tables.features.isFeatureInUse("Fleet"))
             {
                 Label transport = new Label();
-                DataRow transportRow = Tables.docks.getTransports(dock)[0];
-                transport.Content = $"{Tables.transports.getEmployee(transportRow)["name"]} - {Tables.transports.getCar(transportRow)["type"]}: {transportRow["end_date"]}";
-                transport.BorderBrush = Brushes.Black;
+                //transport.BorderBrush = Brushes.Black;
+                if (Tables.docks.getTransports(dock).Length != 0)
+                {
+                    DataRow transportRow = Tables.docks.getTransports(dock)[0];
+                    transport.Content = $"{Tables.transports.getEmployee(transportRow)["name"]} - {Tables.transports.getCar(transportRow)["type"]}: {transportRow["end_date"]}";
+                }
+                else
+                {
+                    transport.Content = "This dock does not have a transport";
+                }
                 leftStackPanel.Children.Add(transport);
             }
             else if (Tables.features.isFeatureInUse("Dock") && ! Tables.features.isFeatureInUse("Fleet"))

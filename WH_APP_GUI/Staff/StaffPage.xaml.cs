@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -75,24 +76,28 @@ namespace WH_APP_GUI.Staff
             staffLabel.BorderThickness = new Thickness(0, 0, 0, 1);
             panel.Children.Add(staffLabel);
 
-            foreach (DataRow role in Tables.roles.database.Rows)
+            foreach (DataRow staff in Tables.staff.database.Rows)
             {
-                if (!(bool)role["in_warehouse"])
-                {
-                    InitializeStaffsByRole(panel, role);
-                }
+                DisplayOneStaff(panel, staff);
             }
         }
 
         private void DisplayOneStaff(Panel panel, DataRow staff)
         {
+            Border border = new Border();
+            border.BorderThickness = new Thickness(2);
+            border.Margin = new Thickness(5);
+            border.BorderBrush = Brushes.Black;
+            border.Background = Brushes.White;
+
             StackPanel mainStackPanel = new StackPanel();
-            mainStackPanel.Height = 100;
+            mainStackPanel.MinHeight = 100;
             mainStackPanel.Orientation = Orientation.Horizontal;
 
             Image image = new Image();
             image.Width = 100;
             image.Height = 100;
+            image.Margin = new Thickness(5);
             image.HorizontalAlignment = HorizontalAlignment.Left;
             image.SetValue(Grid.RowSpanProperty, 3);
 
@@ -140,8 +145,15 @@ namespace WH_APP_GUI.Staff
 
             Label roleLabel = new Label();
             roleLabel.Content = "Role: " + Tables.staff.getRole(staff)["role"];
-            roleLabel.BorderBrush = Brushes.Black;
-            roleLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+
+            if (staff["role_id"] != DBNull.Value)
+            {
+                roleLabel.Content = "Role: " + Tables.staff.getRole(staff)["role"];
+            }
+            else
+            {
+                roleLabel.Content = "This staff does not have a role";
+            }
 
             leftStackPanel.Children.Add(nameLabel);
             leftStackPanel.Children.Add(emailLabel);
@@ -150,6 +162,7 @@ namespace WH_APP_GUI.Staff
             StackPanel rightStackPanel = new StackPanel();
             rightStackPanel.Orientation = Orientation.Vertical;
             rightStackPanel.Width = 130;
+            rightStackPanel.HorizontalAlignment = HorizontalAlignment.Center;
 
             if (User.currentUser != staff)
             {
@@ -157,12 +170,14 @@ namespace WH_APP_GUI.Staff
                 deleteButton.Content = "Delete";
                 deleteButton.Click += deleteStaff_Click;
                 deleteButton.Tag = staff;
+                deleteButton.Margin = new Thickness(5);
                 rightStackPanel.Children.Add(deleteButton);
 
                 Button resetPasswordButton = new Button();
                 resetPasswordButton.Content = "Reset Password";
                 resetPasswordButton.Click += resetPassword_Click;
                 resetPasswordButton.Tag = staff;
+                resetPasswordButton.Margin = new Thickness(5);
                 rightStackPanel.Children.Add(resetPasswordButton);
             }
             else
@@ -171,6 +186,7 @@ namespace WH_APP_GUI.Staff
                 changePassword.Content = "Change Password";
                 changePassword.Tag = staff;
                 changePassword.Click += ModifyPassword;
+                changePassword.Margin = new Thickness(5);
                 rightStackPanel.Children.Add(changePassword);
             }
 
@@ -178,6 +194,7 @@ namespace WH_APP_GUI.Staff
             Button editButton = new Button();
             editButton.Content = "Edit Staff";
             editButton.Click += editStaff_Click;
+            editButton.Margin = new Thickness(5);
             editButton.Tag = staff;
 
             rightStackPanel.Children.Add(editButton);
@@ -185,8 +202,9 @@ namespace WH_APP_GUI.Staff
             mainStackPanel.Children.Add(image);
             mainStackPanel.Children.Add(leftStackPanel);
             mainStackPanel.Children.Add(rightStackPanel);
-
-            panel.Children.Add(mainStackPanel);
+            
+            border.Child = mainStackPanel;
+            panel.Children.Add(border);
         }
 
         public void InitializeStaffsByRole(Panel panel, DataRow role)
@@ -195,6 +213,7 @@ namespace WH_APP_GUI.Staff
             {
                 StaffsDisplay.Visibility = Visibility.Visible;
                 panel.Visibility = Visibility.Visible;
+                panel.Children.Clear();
 
                 Label stafflabel = new Label();
                 stafflabel.Content = role["role"] + ":";
@@ -204,7 +223,7 @@ namespace WH_APP_GUI.Staff
 
                 foreach (DataRow staff in Tables.roles.getStaff(role))
                 {
-                    
+                    DisplayOneStaff(panel, staff);
                 }
             }
         }

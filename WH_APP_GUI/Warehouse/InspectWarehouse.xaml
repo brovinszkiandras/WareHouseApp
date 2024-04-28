@@ -159,10 +159,11 @@
                 <Button Margin="20, 5" Content="Employees" Name="EmployeesInspectToWarehouse"  Click="EmployeesInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
                 <Button Margin="20, 5" Content="Orders" Name="OrdersInspectToWarehouse"  Click="OrdersInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
                 <Button Margin="20, 5" Content="Products" Name="ProductsInspectToWarehouse"  Click="ProductsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Margin="20, 5" Content="Fleet" Name="FleetInspectToWarehouse"  Click="FleetInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
                 <Button Margin="20, 5" Content="Docks" Name="DocksInspectToWarehouse"  Click="DocksInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
                 <Button Margin="20, 5" Content="Forklift" Name="ForkliftInspectToWarehouse"  Click="ForkliftInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Margin="20, 5" Content="back" Name="back_all_Warehouse" Click="Back_AllWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Cars" Name="CarsInspectToWarehouse" Click="CarsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Transports" Name="TransportsInspectToWarehouse" Click="TransportsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Back" Name="back_all_Warehouse" Click="Back_AllWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
             </StackPanel>
             </Border>
             <Frame Name="InspectWarehouseContent" Visibility="Collapsed" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3"/>

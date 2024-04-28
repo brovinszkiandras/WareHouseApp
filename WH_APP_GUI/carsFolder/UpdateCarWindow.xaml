@@ -32,6 +32,10 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel>
                     <Label FontSize="17" Content="Plate number"></Label>
@@ -41,29 +45,31 @@
                     <Label FontSize="17" Content="Type"></Label>
                     <xctk:ValueRangeTextBox Name="type" Text="{Binding Path=[type]}" MaxLength="255" MaxLines="255" FontSize="17"></xctk:ValueRangeTextBox>
                 </StackPanel>
+                <StackPanel Grid.Row="2">
+                    <Label FontSize="17" Content="Warehouse:"></Label>
+                    <ComboBox Name="warehouse_id" FontSize="17"></ComboBox>
+                </StackPanel>
                 <CheckBox Content="Ready" 
-                          Grid.Row="2" 
-                          FontSize="17"
-                          VerticalContentAlignment="Center"
-                          IsChecked="{Binding Path=[ready]}"></CheckBox>
-                <StackPanel Grid.Row="3">
+              Grid.Row="3" 
+              FontSize="17"
+              VerticalContentAlignment="Center"
+              IsChecked="{Binding Path=[ready]}"></CheckBox>
+                <StackPanel Grid.Row="4">
                     <Label FontSize="17" Content="Km*"></Label>
                     <xctk:ValueRangeTextBox Name="km" FontSize="17" Text="{Binding Path=[km]}" MaxLength="13" MaxLines="13"></xctk:ValueRangeTextBox>
                 </StackPanel>
-                <StackPanel Grid.Row="4">
+                <StackPanel Grid.Row="5">
                     <Label FontSize="17" Content="last service*"></Label>
                     <DatePicker SelectedDate="{Binding Path=[last_service]}" SelectedDateFormat="Short"></DatePicker>
                 </StackPanel>
-                <StackPanel Grid.Row="5">
+                <StackPanel Grid.Row="6">
                     <Label FontSize="17" Content="last exam*"></Label>
                     <DatePicker SelectedDate="{Binding Path=[last_exam]}" SelectedDateFormat="Short"></DatePicker>
                 </StackPanel>
-                <Button  Click="Button_Click" Grid.Row="10" FontSize="17" Content="Save"></Button>
+                <Button  Click="Button_Click" Grid.Row="11" FontSize="17" Content="Save"></Button>
             </Grid>
-          
-
         </ScrollViewer>
 
-        
+
     </Grid>
 </Page>
