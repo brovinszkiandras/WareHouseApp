@@ -89,7 +89,8 @@
                 <Label Content="Area in use" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
 
 
-                <Button Grid.Column="8" Name="Create" Content="Add new" Click="Create_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Grid.Column="6" Name="Back" Content="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}" Margin="2"/>
+                <Button Grid.Column="7" Name="Create" Content="Add new" Click="Create_Click" Style="{StaticResource GreenButtonStyle}" Margin="2"/>
 
             </Grid>
             </Border>

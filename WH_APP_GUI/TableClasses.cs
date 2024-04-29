@@ -530,7 +530,7 @@ namespace WH_APP_GUI
 
             database.Columns["product_id"].AllowDBNull = false;
             database.Columns["qty"].AllowDBNull = false;
-            database.Columns["shelf_id"].AllowDBNull=false;
+            //database.Columns["shelf_id"].AllowDBNull=false;
             database.Columns["on_shelf_level"].AllowDBNull = false;
 
             if (Tables.features.isFeatureInUse("Storage"))
@@ -550,8 +550,6 @@ namespace WH_APP_GUI
         {
             return Tables.shelf.database.Select($"id = {item["shelf_id"]}")[0];
         }
-
-    
     }
     #endregion
 

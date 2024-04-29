@@ -31,5 +31,10 @@ namespace WH_APP_GUI.sectors
                 FontSize = e.NewSize.Height * 0.03;
             }
         }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.GetTypeByName("sectorIndexWindow"));
+        }
     }
 }

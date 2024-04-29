@@ -16,18 +16,12 @@ using Xceed.Wpf.Toolkit.Primitives;
 
 namespace WH_APP_GUI
 {
-    /// <summary>
-    /// Interaction logic for SectorWindow.xaml
-    /// </summary>
     public partial class SectorWindow : Page
     {
         #region constructor
         public SectorWindow()
         {
             InitializeComponent();
-
-            
-
             //Az oldal datacontexte a kiválasztott szector lesz
             this.DataContext = Visual.sector;
 
@@ -767,5 +761,17 @@ namespace WH_APP_GUI
             toolPanel.Visibility = Visibility.Visible;
         }
         #endregion
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("InspectWarehouse"));
+            }
+        }
     }
 }

@@ -77,5 +77,10 @@ namespace WH_APP_GUI.sectors
             }
             headlabel.FontSize = e.NewSize.Height * 0.06;
         }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.GetTypeByName("sectorIndexWindow"));
+        }
     }
 }

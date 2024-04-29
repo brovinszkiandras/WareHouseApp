@@ -72,6 +72,7 @@
             <StackPanel Grid.Column="1">
                 <Label Content="Name: " Style="{StaticResource labelstyle}"/>
                 <xctk:ValueRangeTextBox Width="auto" Text="Johny" Background="#395250" BorderBrush="Black" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Button FontSize="17" Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}" Margin="5"/>
             </StackPanel>
         </Grid>
     </Border>

@@ -85,6 +85,7 @@
                 <xctk:ValueRangeTextBox Name="width" Text="{Binding Path=[width]}" Background="#395250" BorderBrush="Black" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
 
                 <Button FontSize="17" Content="Save" Name="save" Click="Button_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button FontSize="17" Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Border>

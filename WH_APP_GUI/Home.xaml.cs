@@ -163,56 +163,67 @@ namespace WH_APP_GUI
         }
         private void InspectAllWarehouses_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("WarehousesPage"));
         }
 
         private void InspectAllEmployees_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("EmployeesPage"));
         }
 
         private void InspectAllOrders_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("AllOrdersPage"));
         }
 
         private void InspectProducts_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("ProductsPage"));
         }
 
         private void InspectAllStaff_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("StaffPage"));
         }
 
         private void InspectAllCars_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("CarsPage"));
         }
 
         private void InspectAllTransport_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
         }
 
         private void InspectAllForkliftst_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("ForkliftsPage"));
         }
 
         private void InspectLog_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("LogDisplay"));
         }
 
         private void InspectDock_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("DockPage"));
         }
 
         private void Database_Click(object sender, RoutedEventArgs e)
         {
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("AdminHomePage"));
         }
 
@@ -252,6 +263,15 @@ namespace WH_APP_GUI
             else
             {
                 Menu.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void logout_Click(object sender, RoutedEventArgs e)
+        {
+            if (User.currentUser != null)
+            {
+                User.currentUser = null;
+                Navigation.OpenPage(Navigation.GetTypeByName("MainWindow"));
             }
         }
     }
