@@ -14,13 +14,7 @@ namespace WH_APP_GUI
     {
         private static List<string> ListOfDefaultTables = new List<string>() { "staff", "warehouses", "roles", "employees", "products", "orders", "permission" };
         #region Migrations Feture
-        public static void CreateMigration()
-        {
-            if (!SQL.Tables().Contains("migrations"))
-            {
-                SQL.SqlCommand("CREATE TABLE migrations(id int AUTO_INCREMENT PRIMARY KEY NOT NULL, name varchar(50) UNIQUE, actual_name varchar(100), nice_name varchar(150) NULL);");
-            }
-        }
+    
         public static void CreateFeature()
         {
             if (!SQL.Tables().Contains("feature"))
@@ -95,17 +89,13 @@ namespace WH_APP_GUI
         {
             try
             {
-                string warehousesActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'warehouses'");
-                string ordersActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'orders'");
+                
 
                 CreateAndFillCityTable();
-                if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'cities'") == string.Empty)
-                {
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('cities', 'cities', 'Cities');");
-                }
+               
 
-                SQL.SqlCommand($"ALTER TABLE {warehousesActualName} ADD city_id INT, ADD CONSTRAINT fk_city_id FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE;");
-                SQL.SqlCommand($"ALTER TABLE {ordersActualName} ADD city_id INT, ADD CONSTRAINT fk_city_id_orders FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE;");
+                SQL.SqlCommand($"ALTER TABLE warehouses ADD city_id INT, ADD CONSTRAINT fk_city_id FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE;");
+                SQL.SqlCommand($"ALTER TABLE orders ADD city_id INT, ADD CONSTRAINT fk_city_id_orders FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE;");
             }
             catch (Exception ex)
             {
@@ -113,7 +103,7 @@ namespace WH_APP_GUI
                 throw;
             }
         }
-        public static void CreateDefaultTables(List<string> TableNames)
+        public static void CreateDefaultTables()
         {
             try
             {
@@ -121,15 +111,15 @@ namespace WH_APP_GUI
                 CreateAndFillRoles();
 
                 /*STAFF*/
-                SQL.SqlCommand($"CREATE TABLE {TableNames[0]} (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), email VARCHAR(255) UNIQUE, password VARCHAR(255), profile_picture VARCHAR(255) DEFAULT 'DefaultStaffProfilePicture.png', role_id INT, FOREIGN KEY (role_id) REFERENCES roles(id));");
+                SQL.SqlCommand($"CREATE TABLE staff (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), email VARCHAR(255) UNIQUE, password VARCHAR(255), profile_picture VARCHAR(255) DEFAULT 'DefaultStaffProfilePicture.png', role_id INT, FOREIGN KEY (role_id) REFERENCES roles(id));");
                 /*WAREHOUSES*/
-                SQL.SqlCommand($"CREATE TABLE {TableNames[1]} (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) UNIQUE, length DOUBLE, width DOUBLE, height DOUBLE, volume DOUBLE);");
+                SQL.SqlCommand($"CREATE TABLE warehouses (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) UNIQUE, length DOUBLE, width DOUBLE, height DOUBLE, volume DOUBLE);");
                 /*EMPLOYEES*/
-                SQL.SqlCommand($"CREATE TABLE {TableNames[2]} (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), email VARCHAR(255) UNIQUE, password VARCHAR(255), role_id INT, warehouse_id INT, profile_picture VARCHAR(255) DEFAULT 'DefaultEmployeeProfile.png', FOREIGN KEY (role_id) REFERENCES roles(id), FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id));");
+                SQL.SqlCommand($"CREATE TABLE employees (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), email VARCHAR(255) UNIQUE, password VARCHAR(255), role_id INT, warehouse_id INT, profile_picture VARCHAR(255) DEFAULT 'DefaultEmployeeProfile.png', FOREIGN KEY (role_id) REFERENCES roles(id), FOREIGN KEY (warehouse_id) REFERENCES warehouses(id));");
                 /*PRODUCTS*/
-                SQL.SqlCommand($"CREATE TABLE {TableNames[3]} (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), buying_price DOUBLE, selling_price DOUBLE, description TEXT, image VARCHAR(255) DEFAULT 'DefaultProductImage.png');");
+                SQL.SqlCommand($"CREATE TABLE products (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), buying_price DOUBLE, selling_price DOUBLE, description TEXT, image VARCHAR(255) DEFAULT 'DefaultProductImage.png');");
                 /*ORDERS*/
-                SQL.SqlCommand($"CREATE TABLE {TableNames[4]} (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, product_id INT, qty INT, status VARCHAR(255) DEFAULT 'Registered', user_name VARCHAR(255), address VARCHAR(255), payment_method VARCHAR(255), order_date TIMESTAMP DEFAULT NOW(), FOREIGN KEY (product_id) REFERENCES {TableNames[3]}(id) ON DELETE CASCADE, FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id));");
+                SQL.SqlCommand($"CREATE TABLE orders (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, product_id INT, qty INT, status VARCHAR(255) DEFAULT 'Registered', user_name VARCHAR(255), address VARCHAR(255), payment_method VARCHAR(255), order_date TIMESTAMP DEFAULT NOW(), FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE, FOREIGN KEY (warehouse_id) REFERENCES warehouses(id));");
 
                 /*CITY*/
                 City();
@@ -141,7 +131,7 @@ namespace WH_APP_GUI
 
                 //TODO: Display missing for the boxes
                 /*SECTOR*/
-                SQL.SqlCommand($"CREATE TABLE sector (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) UNIQUE, length DOUBLE, width DOUBLE, area DOUBLE, area_in_use DOUBLE DEFAULT 0, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES {TableNames[1]}(id) ON DELETE CASCADE);");
+                SQL.SqlCommand($"CREATE TABLE sector (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) UNIQUE, length DOUBLE, width DOUBLE, area DOUBLE, area_in_use DOUBLE DEFAULT 0, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES warehouses(id) ON DELETE CASCADE);");
                 /*SHELF*/
                 SQL.SqlCommand($"CREATE TABLE shelf (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), number_of_levels INT DEFAULT 1 NOT NULL, length DOUBLE, actual_length DOUBLE, width DOUBLE, sector_id INT, startXindex INT, startYindex INT, orientation VARCHAR(20), FOREIGN KEY (sector_id) REFERENCES sector(id) ON DELETE CASCADE);");
                 /*LEVEL OF SHELF*/
@@ -155,90 +145,7 @@ namespace WH_APP_GUI
                 throw;
             }
         }
-        private static List<string> NameRowsInMigrations()
-        {
-            List<string> returnList = new List<string>();
-            List<string[]> lis = SQL.SqlQuery("SELECT name FROM migrations");
-            for (int i = 0; i < lis.Count; i++)
-            {
-                returnList.Add(lis[i][0]);
-            }
-            return returnList;
-        }
 
-        public static void CreateDefaultTablesWithMigrationInsert()
-        {
-            if (!NameRowsInMigrations().OrderBy(e => e).SequenceEqual(ListOfDefaultTables.OrderBy(e => e)))
-            {
-                try
-                {
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('staff', 'staff', 'Staff');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('warehouses', 'warehouses', 'Warehouses');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('roles', 'roles', 'Roles');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('employees', 'employees', 'Employees');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('products', 'products', 'Products');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('orders', 'orders', 'Orders');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('permission', 'permission', 'Permission');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('role_permission', 'role_permission', 'Role Permission');");
-
-                    List<string> TablesNeedName = new List<string>() { "staff", "warehouses", "employees", "products", "orders" };
-                    CreateDefaultTables(TablesNeedName);
-                }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show("Error", "Can not create the requerd tables");
-                    Debug.WriteError(ex);
-
-                    throw;
-                }
-            }
-        }
-        public static void CreateDefaultTablesWithMigrationInsert(List<string> TableNamesByUser)
-        {
-            if (!NameRowsInMigrations().OrderBy(e => e).SequenceEqual(ListOfDefaultTables.OrderBy(e => e)))
-            {
-                try
-                {
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('staff', '{TableNamesByUser[0]}', 'Staff');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('warehouses', '{TableNamesByUser[1]}', 'Warehouses');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('roles', 'roles', 'Roles');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('employees', '{TableNamesByUser[2]}', 'Employees');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('products', '{TableNamesByUser[3]}', 'Products');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('orders', '{TableNamesByUser[4]}', 'Orders');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('permission', 'permission', 'Permission');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('role_permission', 'role_permission', 'Role Permission');");
-                    CreateDefaultTables(TableNamesByUser);
-                }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show("Error", "Can not create the requerd tables");
-                    Debug.WriteError(ex);
-                }
-            }
-        }
-        public static void CreateDefaultTablesWithMigrationInsert(List<string> TableNamesByUser, List<string> TableNiceNamesByUser)
-        {
-            if (!NameRowsInMigrations().OrderBy(e => e).SequenceEqual(ListOfDefaultTables.OrderBy(e => e)))
-            {
-                try
-                {
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('staff', '{TableNamesByUser[0]}', '{TableNiceNamesByUser[0]}');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('warehouses', '{TableNamesByUser[1]}', '{TableNiceNamesByUser[1]}');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('roles', 'roles', 'Roles');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('employees', '{TableNamesByUser[3]}', '{TableNiceNamesByUser[3]}');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('products', '{TableNamesByUser[4]}', '{TableNiceNamesByUser[4]}');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('orders', '{TableNamesByUser[5]}', '{TableNiceNamesByUser[5]}');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('permission', 'permission', 'Permission');");
-                    SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('role_permission', 'role_permission', 'Role Permission');");
-                    CreateDefaultTables(TableNamesByUser);
-                }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show("Error", "Can not create the requerd tables");
-                    Debug.WriteError(ex);
-                }
-            }
-        }
         #endregion
         #region Features
         private static bool FeatureInUse(string FeatureName)
@@ -253,6 +160,7 @@ namespace WH_APP_GUI
                 try
                 {
                     Dictionary<string, Action> Tables_Refresh = new Dictionary<string, Action>();
+                    MessageBox.Show(Tables.staff.ToString());
                     Tables_Refresh.Add(Tables.staff.actual_name, Tables.staff.Refresh);
                     Tables_Refresh.Add(Tables.warehouses.actual_name, Tables.warehouses.Refresh);
                     Tables_Refresh.Add(Tables.employees.actual_name, Tables.employees.Refresh);
@@ -309,27 +217,19 @@ namespace WH_APP_GUI
                     )");
 
 
-                    if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name IN ('cars', 'transports')") == string.Empty)
-                    {
-                        SQL.SqlCommand(@"INSERT INTO migrations (name, actual_name, nice_name) 
-                            VALUES ('cars', 'cars', 'Cars'), ('transports', 'transports', 'Transports'
-                        )");
-                    }
-
-                    string TransportsActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'transports'");
-                    string OrdersActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'orders'");
+                    
 
                     if (Tables.features.isFeatureInUse("Dock"))
                     {
-                        SQL.SqlCommand($@"ALTER TABLE {TransportsActualName} 
+                        SQL.SqlCommand($@"ALTER TABLE {Tables.transports.actual_name} 
                             ADD dock_id INT,
                             ADD CONSTRAINT fk_dock_id_to_transports FOREIGN KEY (dock_id) REFERENCES DOCK(id) ON DELETE CASCADE;
                         ");
 
-                        SQL.SqlCommand($@"ALTER TABLE {OrdersActualName} DROP FOREIGN KEY fk_dock_id;
-                            ALTER TABLE {OrdersActualName} DROP COLUMN dock_id;
-                            ALTER TABLE {OrdersActualName} ADD transport_id INT;
-                            ALTER TABLE {OrdersActualName} ADD CONSTRAINT fk_transport_id FOREIGN KEY (transport_id) REFERENCES {TransportsActualName}(id) ON DELETE CASCADE;
+                        SQL.SqlCommand($@"ALTER TABLE {Tables.orders.actual_name} DROP FOREIGN KEY fk_dock_id;
+                            ALTER TABLE {Tables.orders.actual_name} DROP COLUMN dock_id;
+                            ALTER TABLE {Tables.orders.actual_name} ADD transport_id INT;
+                            ALTER TABLE {Tables.orders.actual_name} ADD CONSTRAINT fk_transport_id FOREIGN KEY (transport_id) REFERENCES {Tables.transports.actual_name}(id) ON DELETE CASCADE;
                         ");
                         Tables.orders.Refresh();
                         Tables.orders.database.Columns.Remove("dock_id");
@@ -364,13 +264,9 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    string employeesActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'employees'");
+                   
                     SQL.SqlCommand($"CREATE TABLE LOG (id INT PRIMARY KEY AUTO_INCREMENT, email VARCHAR(255), log_message TEXT, updated_at TIMESTAMP DEFAULT NOW());");
 
-                    if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'log'") == string.Empty)
-                    {
-                        SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('log', 'log', 'Log');");
-                    }
 
                     Tables.features.getFeature("Log")["in_use"] = true;
                     Tables.features.updateChanges();
@@ -415,12 +311,6 @@ namespace WH_APP_GUI
                     SQL.SqlCommand($"ALTER TABLE {Tables.warehouses.actual_name} ADD total_value DOUBLE, ADD total_spending DOUBLE, ADD total_income DOUBLE;");
 
                     SQL.SqlCommand($"CREATE TABLE revenue_a_day (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, date DATE, total_expenditure DOUBLE, total_income DOUBLE, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
-
-                    if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'revenue_a_day'") == string.Empty)
-                    {
-                        SQL.SqlCommand("INSERT INTO migrations (name, actual_name, nice_name) VALUE ('revenue_a_day', 'revenue_a_day', 'Revenue and expenditure');");
-                    }
-
                     Tables.employees.Refresh();
                     Tables.warehouses.Refresh();
 
@@ -490,9 +380,9 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    string carsActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'cars'");
+                    
 
-                    SQL.SqlCommand($"ALTER TABLE {carsActualName} ADD consumption DOUBLE DEFAULT 0, ADD gas_tank_size DOUBLE DEFAULT 0;");
+                    SQL.SqlCommand($"ALTER TABLE {Tables.cars.actual_name} ADD consumption DOUBLE DEFAULT 0, ADD gas_tank_size DOUBLE DEFAULT 0;");
                     Tables.features.getFeature("Fuel")["in_use"] = true;
                     Tables.features.updateChanges();
 
@@ -516,11 +406,6 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'dock'") == string.Empty)
-                    {
-                        SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('dock', 'dock', 'Dock');");
-                    }
-
                     SQL.SqlCommand($"CREATE TABLE DOCK (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), free BOOLEAN DEFAULT TRUE, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
 
                     if (Tables.features.isFeatureInUse("Fleet"))
@@ -553,14 +438,7 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    string warehousesActualName = SQL.FindOneDataFromQuery("SELECT actual_name FROM migrations WHERE name = 'warehouses'");
-
-                    if (SQL.FindOneDataFromQuery("SELECT name FROM migrations WHERE name = 'forklift'") == string.Empty)
-                    {
-                        SQL.SqlCommand($"INSERT INTO migrations (name, actual_name, nice_name) VALUE ('forklift', 'forklift', 'Forklift');");
-                    }
-
-                    SQL.SqlCommand($"CREATE TABLE FORKLIFT(id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, type VARCHAR(255), status VARCHAR(255), operating_hours INT DEFAULT 0, FOREIGN KEY (warehouse_id) REFERENCES {warehousesActualName}(id) ON DELETE CASCADE);");
+                    SQL.SqlCommand($"CREATE TABLE FORKLIFT(id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, type VARCHAR(255), status VARCHAR(255), operating_hours INT DEFAULT 0, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
                     Tables.features.getFeature("Forklift")["in_use"] = true;
                     Tables.features.updateChanges();
 
@@ -585,22 +463,16 @@ namespace WH_APP_GUI
                     Tables_Refresh.Add(Tables.staff.actual_name, Tables.staff.Refresh);
                     Tables_Refresh.Add(Tables.warehouses.actual_name, Tables.warehouses.Refresh);
                     Tables_Refresh.Add(Tables.employees.actual_name, Tables.employees.Refresh);
-                    Tables_Refresh.Add(Tables.orders.actual_name, Tables.orders.Refresh);
                     Tables_Refresh.Add(Tables.products.actual_name, Tables.products.Refresh);
                     Tables_Refresh.Add(Tables.roles.actual_name, Tables.roles.Refresh);
 
                     foreach (var Tables in Tables_Refresh)
                     {
-                        if (Tables.Key == "orders")
-                        {
-                            SQL.SqlCommand($"ALTER TABLE {Tables.Key} DROP COLUMN created_at");
-                            Tables.Value();
-                        }
-                        else
-                        {
+                        
+                       
                             SQL.SqlCommand($"ALTER TABLE {Tables.Key} DROP COLUMN created_at, DROP COLUMN updated_at");
                             Tables.Value();
-                        }
+                        
                     }
                     Tables.features.getFeature("Date log")["in_use"] = false;
                     Tables.features.updateChanges();
@@ -799,8 +671,8 @@ namespace WH_APP_GUI
                     if (FeatureInUse("Fleet"))
                     {
                         SQL.SqlCommand($"ALTER TABLE `{Tables.transports.actual_name}` DROP CONSTRAINT `fk_dock_id_to_transports`; ALTER TABLE `{Tables.transports.actual_name}` DROP `dock_id`;");
-                        SQL.SqlCommand($"DROP TABLE `{Tables.docks.actual_name}`;");
                     }
+                        SQL.SqlCommand($"DROP TABLE `{Tables.docks.actual_name}`;");
 
                     Tables.disableDockFeature();
 
@@ -835,27 +707,6 @@ namespace WH_APP_GUI
         }
         #endregion
 
-        public static bool IsMigrationContainsAllDefaultTables()
-        {
-            if (SQL.Tables().Contains("migrations"))
-            {
-                List<string> TablesInMigrations = SQL.GetElementOfListArray(SQL.SqlQuery("SELECT name FROM migrations"));
-
-                for (int i = 0; i < ListOfDefaultTables.Count; i++)
-                {
-                    if (!TablesInMigrations.Contains(ListOfDefaultTables[i]))
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         public static void CreateWarehouse(string WarehouseName)
         {

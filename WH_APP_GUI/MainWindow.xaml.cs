@@ -36,7 +36,7 @@ namespace WH_APP_GUI
             else
             {
                 SQL.FillStaticDatabaseValues();
-                if (SQL.Tables().Contains("migrations") && SQL.Tables().Contains("feature"))
+                if (SQL.Tables().Contains("feature"))
                 {
                     Tables.Ini();
                     if (SQL.Tables().Contains(Tables.staff.actual_name))

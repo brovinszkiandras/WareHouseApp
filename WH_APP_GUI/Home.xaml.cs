@@ -268,10 +268,8 @@ namespace WH_APP_GUI
 
         private void logout_Click(object sender, RoutedEventArgs e)
         {
-           Xceed.Wpf.Toolkit.MessageBox.Show("Lefutott");
             if (User.currentUser != null)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show("Lefutott ez is");
                 User.currentUser = null;
                 Navigation.OpenPage(Navigation.GetTypeByName("MainWindow"));
             }
