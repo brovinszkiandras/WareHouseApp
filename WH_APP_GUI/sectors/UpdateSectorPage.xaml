@@ -7,63 +7,72 @@
       xmlns:local="clr-namespace:WH_APP_GUI.sectors"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="600"
-      Title="UpdateSectorPage">
+      Title="UpdateSectorPage"
+      SizeChanged="WtfJohny_SizeChanged">
+    
     <Page.Resources>
-        <Style x:Key="MyTextBoxStyle" x:Name="MyTextBoxStyle" TargetType="TextBox">
+        <Style TargetType="Button" x:Key="GreenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate x:Name="mytextbox" TargetType="{x:Type TextBox}">
-                        <Border x:Name="Border" CornerRadius="3" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
-                            </ScrollViewer>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+               BorderBrush="{TemplateBinding BorderBrush}"
+               BorderThickness="{TemplateBinding BorderThickness}"
+               CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+         VerticalAlignment="Center"
+         Content="{TemplateBinding Content}"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsFocused" Value="true">
-                                <Setter Property="BorderBrush" TargetName="Border" Value="black"></Setter>
-                                <!--<Setter Property="Background" TargetName="Border" Value="#FF5F1F"></Setter>-->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Background" Value="#FF5b00"></Setter>
-            <Setter Property="CaretBrush" Value="White"></Setter>
-            <Setter Property="Foreground" Value="White"></Setter>
-            <Setter Property="BorderBrush" Value="Black"></Setter>
-            <Setter Property="BorderThickness" Value="0,0,0,1"></Setter>
-            <Setter Property="Width" Value="auto"></Setter>
-            <Setter Property="Height" Value="auto"></Setter>
-            <Setter Property="FontSize" Value="4"></Setter>
         </Style>
 
-        <Style TargetType="Label" x:Key="mylabelStyle">
-            <Setter Property="Background" Value="#1F1F1F"></Setter>
-            <Setter Property="Foreground" Value="White"></Setter>
-            <Setter Property="FontWeight" Value="UltraBlack"></Setter>
-            <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
-            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
-            <Setter Property="Width" Value="auto"></Setter>
-            <Setter Property="Height" Value="auto"></Setter>
-            <Setter Property="FontSize" Value="4"></Setter>
+        <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+       BorderBrush="{TemplateBinding BorderBrush}"
+       BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{x:Static SystemColors.ControlLightBrush}"/>
+                    <Setter Property="Foreground" Value="{x:Static SystemColors.GrayTextBrush}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
         </Style>
     </Page.Resources>
-    <Grid Background="#1F1F1F">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"></ColumnDefinition>
-            <ColumnDefinition Width="4*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Viewbox Grid.Column="1" HorizontalAlignment="Left" Stretch="Uniform">
-            <Grid Width="100" Height="100">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"></RowDefinition>
-                </Grid.RowDefinitions>
 
-                <StackPanel>
-                    <Label Content="Name: " Style="{StaticResource mylabelStyle}"></Label>
-                    <xctk:ValueRangeTextBox Text="Johny" Style="{StaticResource MyTextBoxStyle}"></xctk:ValueRangeTextBox>
-                </StackPanel>
-            </Grid>
-        </Viewbox>
-    </Grid>
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
+        <Grid Name="alapgrid" Margin="10" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="1">
+                <Label Content="Name: " Style="{StaticResource labelstyle}"/>
+                <xctk:ValueRangeTextBox Width="auto" Text="Johny" Background="#395250" BorderBrush="Black" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Page>

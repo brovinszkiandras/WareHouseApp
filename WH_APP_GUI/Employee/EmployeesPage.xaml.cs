@@ -80,24 +80,30 @@ namespace WH_APP_GUI
                 DisplayOneEmployee(panel, employee);
             }
         }
+        //double imagesW = 0;
+        //double imagesH = 0;
 
         private void DisplayOneEmployee(Panel panel, DataRow employee)
         {
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
+            border.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+            border.CornerRadius = new CornerRadius(15);
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
-            border.MinHeight = 100;
-            border.MaxHeight = 170;
 
-            StackPanel mainStackPanel = new StackPanel();
-            mainStackPanel.Orientation = Orientation.Horizontal;
-            mainStackPanel.Background = Brushes.White;
+            Grid mainStackPanel = new Grid();
+            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
 
             Image image = new Image();
             image.Margin = new Thickness(5);
-            image.Width = 80;
-            image.Height = 80;
+            image.MaxHeight = 100;
+            image.MaxWidth = 100;
+
+            Grid.SetColumn(image, 0);
+            mainStackPanel.Children.Add(image);
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -128,21 +134,20 @@ namespace WH_APP_GUI
 
             StackPanel leftStackPanel = new StackPanel();
             leftStackPanel.Orientation = Orientation.Vertical;
-            leftStackPanel.Width = 550;
+
+            Grid.SetColumn(leftStackPanel, 1);
+            mainStackPanel.Children.Add(leftStackPanel);
 
             Label nameLabel = new Label();
             nameLabel.Content = employee["name"];
-            nameLabel.BorderBrush = Brushes.Black;
-            nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+            nameLabel.Style = (Style)this.Resources["labelstyle"];
 
             Label emailLabel = new Label();
             emailLabel.Content = employee["email"];
-            emailLabel.BorderBrush = Brushes.Black;
-            emailLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+            emailLabel.Style = (Style)this.Resources["labelstyle"];
 
             Label warehouseLBL = new Label();
-            warehouseLBL.BorderBrush = Brushes.Black;
-            warehouseLBL.BorderThickness = new Thickness(0, 0, 0, 1);
+            warehouseLBL.Style = (Style)this.Resources["labelstyle"];
 
             if (employee["warehouse_id"] != DBNull.Value)
             {
@@ -154,7 +159,7 @@ namespace WH_APP_GUI
             }
 
             Label roleLabel = new Label(); 
-            roleLabel.BorderBrush = Brushes.Black;
+            roleLabel.Style = (Style)this.Resources["labelstyle"];
 
             if (employee["role_id"] != DBNull.Value)
             {
@@ -172,8 +177,8 @@ namespace WH_APP_GUI
 
             StackPanel rightStackPanel = new StackPanel();
             rightStackPanel.Orientation = Orientation.Vertical;
-            rightStackPanel.VerticalAlignment = VerticalAlignment.Center;
-            rightStackPanel.Width = 140;
+            Grid.SetColumn(rightStackPanel, 2);
+            mainStackPanel.Children.Add(rightStackPanel);
 
             if (User.currentUser != employee)
             {
@@ -181,7 +186,7 @@ namespace WH_APP_GUI
                 deleteButton.Content = "Delete";
                 deleteButton.Tag = employee;
                 deleteButton.Click += deleteEmployee_Click;
-                deleteButton.Margin = new Thickness(5);
+                deleteButton.Style = (Style)this.Resources["GreenButtonStyle"];
                 rightStackPanel.Children.Add(deleteButton);
 
                 Button resetPasswordButton = new Button();
@@ -189,6 +194,7 @@ namespace WH_APP_GUI
                 resetPasswordButton.Click += resetPassword_Click;
                 resetPasswordButton.Tag = employee;
                 resetPasswordButton.Margin = new Thickness(5);
+                resetPasswordButton.Style = (Style)this.Resources["GreenButtonStyle"];
                 rightStackPanel.Children.Add(resetPasswordButton);
             }
             else
@@ -197,7 +203,7 @@ namespace WH_APP_GUI
                 modifyPassword.Content = "Reset Password";
                 modifyPassword.Click += ModifyPassword;
                 modifyPassword.Tag = employee;
-                modifyPassword.Margin = new Thickness(5);
+                modifyPassword.Style = (Style)this.Resources["GreenButtonStyle"];
                 rightStackPanel.Children.Add(modifyPassword);
             }
 
@@ -205,13 +211,9 @@ namespace WH_APP_GUI
             editButton.Content = "Edit";
             editButton.Click += EditEmployee_Click;
             editButton.Tag = employee;
-            editButton.Margin = new Thickness(5);
+            editButton.Style = (Style)this.Resources["GreenButtonStyle"];
 
             rightStackPanel.Children.Add(editButton);
-
-            mainStackPanel.Children.Add(image);
-            mainStackPanel.Children.Add(leftStackPanel);
-            mainStackPanel.Children.Add(rightStackPanel);
 
             border.Child = mainStackPanel;
             panel.Children.Add(border);
@@ -329,6 +331,14 @@ namespace WH_APP_GUI
                 {
                     Navigation.OpenPage(Navigation.PreviousPage.GetType());
                 }
+            }
+        }
+
+        private void EmployePage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
             }
         }
     }

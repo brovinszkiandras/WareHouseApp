@@ -28,6 +28,7 @@ namespace WH_APP_GUI.Warehouse
                     FontSize = e.NewSize.Height * 0.03;
             }
             MapDisplay.Height = e.NewSize.Height * 0.4;
+            WarehouseNameDisplay.FontSize = e.NewSize.Height * 0.04;
 
         }
         private Map terkep = new Map();

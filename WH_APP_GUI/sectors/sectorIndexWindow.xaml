@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:WH_APP_GUI.sectors"
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
-        Title="sectorIndexWindow">
+        Title="sectorIndexWindow"
+        SizeChanged="SectorPage_SizeChanged">
 
     <Page.Resources>
         <Style TargetType="Button" x:Key="GreenButtonStyle">
@@ -73,7 +74,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1.3*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -88,13 +89,13 @@
                 <Label Content="Area in use" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
 
 
-                <Button Grid.Column="8" Name="Create" Content="Create new" Click="Create_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Grid.Column="8" Name="Create" Content="Add new" Click="Create_Click" Style="{StaticResource GreenButtonStyle}"/>
 
             </Grid>
             </Border>
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                <Grid Background="#395250" x:Name="sectorGrid">
+                <Grid Background="#425C5A" x:Name="sectorGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
