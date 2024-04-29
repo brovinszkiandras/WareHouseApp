@@ -103,19 +103,8 @@ namespace WH_APP_GUI.sectors
             sectorGrid.Children.Add(inspect);
 
 
-            if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
-            {
-                Button edit = new Button();
-                edit.Content = "Edit";
-                edit.Style = (Style)this.Resources["GreenButtonStyle"];
-                edit.Click += Edit_Click;
-                edit.Margin = new Thickness(5);
-                edit.Tag = sector["id"];
-
-                Grid.SetRow(edit, lastRow);
-                Grid.SetColumn(edit, 6);
-
-                sectorGrid.Children.Add(edit);
+                if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
+                {
 
                 Button delete = new Button();
                 delete.Content = "Delete";
@@ -172,17 +161,9 @@ namespace WH_APP_GUI.sectors
                     DisplaySectors();
                 }
             }
-        }
-        private void Edit_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = e.Source as Button;
-            DataRow sector = Tables.sector.database.Select($"id = '{button.Tag}'")[0];
 
-            Navigation.SkipParam = true;
-            Navigation.OpenPage(Navigation.GetTypeByName("UpdateSectorPage"));
-            Navigation.ReturnParam = Warehouse;
-        }
 
+        }
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             CreateSectorPage createSectorPage = new CreateSectorPage();

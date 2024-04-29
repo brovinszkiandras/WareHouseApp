@@ -34,6 +34,9 @@ namespace WH_APP_GUI
         #region ini
         static public void Ini()
         {
+            databases.Relations.Clear();
+            databases.Tables.Clear();
+            
             addRequriedTablesToTables();
             if ((bool)features.database.Select("name = 'Dock'")[0]["in_use"])
             {
@@ -205,6 +208,7 @@ namespace WH_APP_GUI
                 warehouseTables.Add(new warehouse(warehouse["name"].ToString()));
             }
         }
+        
 
     }
 }
