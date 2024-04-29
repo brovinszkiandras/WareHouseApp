@@ -270,8 +270,14 @@ namespace WH_APP_GUI
         {
             if (User.currentUser != null)
             {
+                Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been logged out from the application.");
+
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+
+                User.MainWindow.Close();
                 User.currentUser = null;
-                Navigation.OpenPage(Navigation.GetTypeByName("MainWindow"));
+                User.MainWindow = mainWindow;
             }
         }
     }

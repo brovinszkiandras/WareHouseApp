@@ -79,7 +79,7 @@ namespace WH_APP_GUI.Order
             foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
             {
                 qtyOfAllProd += int.Parse(order["qty"].ToString());
-                maxPrice += int.Parse(Tables.orders.getProduct(order)["selling_price"].ToString());
+                maxPrice += int.Parse(Tables.orders.getProduct(order)["selling_price"].ToString()) * (int)order["qty"];
                 if (Tables.features.isFeatureInUse("Storage"))
                 {
                     string sum = Tables.orders.getProduct(order)["volume"].ToString();
@@ -419,7 +419,6 @@ namespace WH_APP_GUI.Order
             return true;
         }
 
-
         private bool IsOrderInDock(string username, string address)
         {
             foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
@@ -464,10 +463,10 @@ namespace WH_APP_GUI.Order
             {
                 if (Warehouse != null)
                 {
-                    DataRow orderInWarehouse = null;
+                    DataRow productInWarehouse = null;
                     try
                     {
-                        orderInWarehouse = WarehouseTable.database.Select($"product_id = {order["product_id"]}")[0];
+                        productInWarehouse = WarehouseTable.database.Select($"product_id = {order["product_id"]}")[0];
                     }
                     catch (Exception)
                     {
@@ -475,11 +474,15 @@ namespace WH_APP_GUI.Order
                         //throw;
                     }
 
-                    if (orderInWarehouse != null)
+                    if (productInWarehouse != null)
                     {
-                        if (int.Parse(orderInWarehouse["qty"].ToString()) >= int.Parse(order["qty"].ToString()))
+                        if (int.Parse(productInWarehouse["qty"].ToString()) >= int.Parse(order["qty"].ToString()))
                         {
-                            orderInWarehouse["qty"] = int.Parse(orderInWarehouse["qty"].ToString()) - int.Parse(order["qty"].ToString());
+                            productInWarehouse["qty"] = int.Parse(productInWarehouse["qty"].ToString()) - int.Parse(order["qty"].ToString());
+                            if ((int)productInWarehouse["qty"] == 0)
+                            {
+                                productInWarehouse.Delete();
+                            }
                             order["status"] = "Finished";
                             WarehouseTable.updateChanges();
                             Tables.orders.updateChanges();
@@ -490,7 +493,7 @@ namespace WH_APP_GUI.Order
                         {
                             if (MessageBox.Show("The warehouse does not contain all the products related to this order. Would you like to continue the transaction?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                             {
-                                orderInWarehouse["qty"] = 0;
+                                productInWarehouse["qty"] = 0;
                                 order["status"] = "Finished";
                                 WarehouseTable.updateChanges();
                                 Tables.orders.updateChanges();
@@ -559,6 +562,19 @@ namespace WH_APP_GUI.Order
                 {
                     order["warehouse_id"] = Warehouse["id"];
                     order["status"] = "In Warehouse";
+
+                    if (Tables.features.isFeatureInUse("Storage"))
+                    {
+                        if (order["sum_volume"] == DBNull.Value)
+                        {
+                            if (order["product_id"] != DBNull.Value)
+                            {
+                                DataRow product = Tables.orders.getProduct(order);
+                                double volume = product["volume"] != DBNull.Value ? (double)product["volume"] : 0;
+                                order["sum_volume"] = volume * (int)order["qty"];
+                            }
+                        }
+                    }
                 }
                 Tables.orders.updateChanges();
                 MessageBox.Show($"The order has been added to the warehouse[{Warehouse["name"]}]!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
