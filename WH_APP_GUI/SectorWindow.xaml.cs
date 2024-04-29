@@ -55,7 +55,7 @@ namespace WH_APP_GUI
                     //Megadom a click eventet
                     button.Click += box_Click;
                     //Megadom a gombok kinézetét
-                    button.BorderBrush = Brushes.Black;
+                    button.BorderBrush = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2)); ;
                     button.BorderThickness = new System.Windows.Thickness(0.03);
                     button.Background = new SolidColorBrush(Color.FromArgb(0, 0xCE, 0xA2, 0xFF));
 
@@ -285,7 +285,7 @@ namespace WH_APP_GUI
                         {
                             if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
                             {
-                                children.Background = Brushes.DarkMagenta;
+                                children.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2)); ;
                             }
                         }
                     }
@@ -300,7 +300,7 @@ namespace WH_APP_GUI
                         {
                             if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
                             {
-                                children.Background = Brushes.DarkMagenta;
+                                children.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2));;
                             }
                         }
                     }
@@ -455,7 +455,7 @@ namespace WH_APP_GUI
                     //és az X pozició egyezik a jelenleg vizsált X poziciíóval)
                     if (Grid.GetRow(square) == (int)row["startYindex"] && Grid.GetColumn(square) == i)
                     {
-                        square.Background = Brushes.DarkMagenta;
+                        square.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2));
                         square.BorderThickness = new System.Windows.Thickness(0);
                         square.Width = Visual.sizeHorizontally;
                         square.Height = (double)row["width"];
@@ -483,7 +483,7 @@ namespace WH_APP_GUI
                 {
                     if (Grid.GetColumn(square) == (int)row["startXindex"] && Grid.GetRow(square) == i)
                     {
-                        square.Background = Brushes.DarkMagenta;
+                        square.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2));
                         square.BorderThickness = new System.Windows.Thickness(0);
                         square.Width = (double)row["width"];
                         square.Height = Visual.sizeVertically;

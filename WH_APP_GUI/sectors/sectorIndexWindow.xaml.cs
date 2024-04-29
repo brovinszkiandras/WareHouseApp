@@ -98,13 +98,12 @@ namespace WH_APP_GUI.sectors
             inspect.Tag = sector["id"];
             inspect.Click += Inspect_Click;
             Grid.SetRow(inspect, lastRow);
-            Grid.SetColumn(inspect, 5);
+            Grid.SetColumn(inspect, 6);
 
             sectorGrid.Children.Add(inspect);
 
-
-                if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
-                {
+            if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
+            {
 
                 Button delete = new Button();
                 delete.Content = "Delete";
