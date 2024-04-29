@@ -17,9 +17,6 @@ using WH_APP_GUI.transport;
 
 namespace WH_APP_GUI.sectors
 {
-    /// <summary>
-    /// Interaction logic for sectorIndexWindow.xaml
-    /// </summary>
     public partial class sectorIndexWindow : Page
     {
         public void DisplaySectors()
