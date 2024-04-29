@@ -31,7 +31,6 @@ namespace WH_APP_GUI.sectors
 
                 TextBlock name = new TextBlock();
                 name.Text = sector["name"].ToString();
-                name.FontSize = 15;
                 name.TextWrapping = TextWrapping.Wrap;
                 name.Foreground = Brushes.White;
                 name.HorizontalAlignment = HorizontalAlignment.Center;
@@ -42,7 +41,6 @@ namespace WH_APP_GUI.sectors
 
                 TextBlock length = new TextBlock();
                 length.Text = sector["length"].ToString();
-                length.FontSize = 15;
                 length.Foreground = Brushes.White;
                 length.TextWrapping = TextWrapping.Wrap;
                 length.HorizontalAlignment = HorizontalAlignment.Center;
@@ -53,7 +51,6 @@ namespace WH_APP_GUI.sectors
 
                 TextBlock width = new TextBlock();
                 width.Text = sector["width"].ToString();
-                width.FontSize = 15;
                 width.Foreground = Brushes.White;
                 width.TextWrapping = TextWrapping.Wrap;
                 width.HorizontalAlignment = HorizontalAlignment.Center;
@@ -65,7 +62,6 @@ namespace WH_APP_GUI.sectors
                 TextBlock area = new TextBlock();
                 
                 area.Text = sector["area"].ToString();
-                area.FontSize = 15;
                 area.Foreground = Brushes.White;
                 area.TextWrapping = TextWrapping.Wrap;
                 area.HorizontalAlignment = HorizontalAlignment.Center;
@@ -76,7 +72,6 @@ namespace WH_APP_GUI.sectors
 
                 TextBlock area_in_use = new TextBlock();
                 area_in_use.Text = sector["area_in_use"].ToString();
-                area_in_use.FontSize = 15;
                 area_in_use.Foreground = Brushes.White;
                 area_in_use.TextWrapping = TextWrapping.Wrap;
                 area_in_use.HorizontalAlignment = HorizontalAlignment.Center;
@@ -85,16 +80,10 @@ namespace WH_APP_GUI.sectors
 
                 sectorGrid.Children.Add(area_in_use);
 
-
-                
-
-
-                
                     Button inspect = new Button();
                     inspect.Content = "Inspect";
-                    inspect.FontSize = 15;
-                    inspect.Foreground = Brushes.White;
-                    inspect.Background = Brushes.Green;
+                    inspect.Style = (Style)this.Resources["GreenButtonStyle"];
+                    inspect.Margin = new Thickness(5);
                     inspect.Tag = sector["id"];
                     inspect.Click += Inspect_Click;
                     Grid.SetRow(inspect, lastRow);
@@ -107,10 +96,9 @@ namespace WH_APP_GUI.sectors
                 {
                     Button edit = new Button();
                     edit.Content = "Edit";
-                    edit.FontSize = 15;
-                    edit.Foreground = Brushes.White;
-                    edit.Background = Brushes.Green;
+                    edit.Style = (Style)this.Resources["GreenButtonStyle"];
                     edit.Click += Edit_Click;
+                    edit.Margin = new Thickness(5);
                     edit.Tag = sector["id"];
 
                     Grid.SetRow(edit, lastRow);
@@ -120,9 +108,8 @@ namespace WH_APP_GUI.sectors
 
                     Button delete = new Button();
                     delete.Content = "Delete";
-                    delete.FontSize = 15;
-                    delete.Foreground = Brushes.White;
-                    delete.Background = Brushes.Green;
+                    delete.Style = (Style)this.Resources["GreenButtonStyle"];
+                    delete.Margin = new Thickness(5);
                     delete.Tag = sector["id"];
                     delete.Click += Delete_Click;
                     Grid.SetRow(delete, lastRow);
@@ -193,6 +180,12 @@ namespace WH_APP_GUI.sectors
             SectorWindow page = new SectorWindow();
             Navigation.content2.Navigate(page);
         }
-
+        private void SectorPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+        }
     }
 }

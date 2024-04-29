@@ -24,5 +24,12 @@ namespace WH_APP_GUI.sectors
         {
             InitializeComponent();
         }
+        private void WtfJohny_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+        }
     }
 }

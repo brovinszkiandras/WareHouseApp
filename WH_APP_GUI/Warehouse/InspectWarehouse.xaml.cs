@@ -28,6 +28,7 @@ namespace WH_APP_GUI.Warehouse
                     FontSize = e.NewSize.Height * 0.03;
             }
             MapDisplay.Height = e.NewSize.Height * 0.4;
+            WarehouseNameDisplay.FontSize = e.NewSize.Height * 0.04;
 
         }
         private Map terkep = new Map();
@@ -38,7 +39,7 @@ namespace WH_APP_GUI.Warehouse
         {
             InitializeComponent();
             Warehouse = warehouse;
-            MessageBox.Show(warehouse["name"].ToString());
+            
             this.warehouseTable = Tables.getWarehosue(warehouse["name"].ToString());
 
             WarehouseNameDisplay.Content = $"{warehouse["name"]} - {Tables.warehouses.getCity(warehouse)["city_name"]}";

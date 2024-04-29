@@ -14,6 +14,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI.Employee
 {
@@ -26,13 +27,9 @@ namespace WH_APP_GUI.Employee
             IniRoles();
             IniPicture();
 
-            profile_picture.Height = this.Height * 0.25;
-            profile_picture.Width = this.Height * 0.25;
-
             name.ValueDataType = typeof(string);
             email.ValueDataType = typeof(string);
         }
-
         private Dictionary<string, DataRow> Warehouses = new Dictionary<string, DataRow>();
         private void IniWarehouses()
         {
@@ -165,6 +162,15 @@ namespace WH_APP_GUI.Employee
                     throw;
                 }
             }
+        }
+        private void CreateEmploye_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+            profile_picture.Height = alapgrid.Height;
+            profile_picture.Width = alapgrid.Height;
         }
     }
 }

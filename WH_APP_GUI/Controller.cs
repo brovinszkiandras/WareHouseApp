@@ -741,7 +741,7 @@ namespace WH_APP_GUI
                             {
                                 warehosueTable.Columns.Remove("width");
                                 warehosueTable.Columns.Remove("height");
-                                warehosueTable.Columns.Remove("lenght");
+                                warehosueTable.Columns.Remove("length");
                             }
                         }
                     }

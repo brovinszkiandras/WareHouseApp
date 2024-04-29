@@ -21,6 +21,7 @@ namespace WH_APP_GUI
     /// </summary>
     public partial class SectorWindow : Page
     {
+        #region constructor
         public SectorWindow()
         {
             InitializeComponent();
@@ -30,8 +31,8 @@ namespace WH_APP_GUI
             //Az oldal datacontexte a kiválasztott szector lesz
             this.DataContext = Visual.sector;
 
-            
 
+            #region calculate and initailize
             //Kiszámolom a sector mérete alapján a vízszintesen található kockák számát
             Visual.calculaTeNumberOfSquares((double)Visual.sector["length"]);
             ////Kiszámolom a sector mérete alapján a vízszintesen található kockák számát
@@ -44,8 +45,9 @@ namespace WH_APP_GUI
 
             //Hozzáadom a kiszámolt mennyiségű sorokat és oszlopokat a polcokat tartalmazó gridhez
             Visual.addRowsAndColumns(boxGrid);
+            #endregion
 
-
+            #region show standard squares
             //Végigmegyek a grid oszlopain
             for (int i = 0; i < boxGrid.ColumnDefinitions.Count; i++)
             {
@@ -73,8 +75,9 @@ namespace WH_APP_GUI
                     boxGrid.Children.Add(button);
                 }
             }
+            #endregion
 
-
+            #region show shelfs
             //Végigmegyek a kiválasztott sector polcain
             foreach (DataRow row in Tables.sector.getShelfs(Visual.sector))
             {
@@ -96,13 +99,11 @@ namespace WH_APP_GUI
             }
             //Eltűntetek minden olyan kockát ami nem tartozik egy polchoz
             Visual.hideSquaresThatDoNotBelongToAShelf(boxGrid);
-
-           
-
-
-            
+            #endregion
         }
+        #endregion
 
+        #region box_click
         //Gomb hozzáadása vagy törlése a polcból
         public void box_Click(object sender, RoutedEventArgs e)
         {
@@ -212,6 +213,7 @@ namespace WH_APP_GUI
                 }
             }
             //Ha egy polc nem készül
+            #region delete functiom
             else
             {
                 //Ha törlés funkció nincs bekapcsolva
@@ -231,10 +233,12 @@ namespace WH_APP_GUI
                         MessageBox.Show("This square doesnt belong to a shelf");
                     }
                 }
-
             }
+            #endregion
         }
+        #endregion
 
+        #region create shelf window
         //Új polc készítése gomb
         private void New_shelf_Click(object sender, RoutedEventArgs e)
         {
@@ -251,46 +255,82 @@ namespace WH_APP_GUI
         //Funkció amikor a createshelf window bezáródik
         private void CreateShelf_Closed(object sender, EventArgs e)
         {
-            showShelfInfo();
+            if(shelfBuilder.isAShelfBeingCreated == true)
+            {
+                showShelfInfo(shelfBuilder.newShelf);
+                Delete.Visibility = Visibility.Visible;
+            }
         }
-
+        #endregion
         //Befejezem a polc készítését
+
+        #region shelf display
+        //Shelf készítés befejezése
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            //Át állítom a változót ami egy polc készítését jelzi
-            shelfBuilder.isAShelfBeingCreated = false;
-            //Hogyha a polc még nem volt hozzáadva a polcok táblához akkor hozzáadom
-            if(shelfBuilder.newShelf.RowState == DataRowState.Detached)
+            if(shelfBuilder.isDeleteBeingUsed == false)
             {
-                Tables.shelf.database.Rows.Add(shelfBuilder.newShelf);
-                MessageBox.Show("You have created a new shelf");
-            }
-            //Ha már hozzá volt adva de meg az user megváltoztatta
-            else if(shelfBuilder.newShelf.RowState == DataRowState.Modified)
-            {
-              MessageBox.Show($"You have updated shelf {shelfBuilder.newShelf["name"]}");
-
-                foreach (Button children in boxGrid.Children)
+                #region save data
+                //Át állítom a változót ami egy polc készítését jelzi
+                shelfBuilder.isAShelfBeingCreated = false;
+                //Hogyha a polc még nem volt hozzáadva a polcok táblához akkor hozzáadom
+                MessageBox.Show(shelfBuilder.newShelf.RowState.ToString());
+                if (shelfBuilder.newShelf.RowState == DataRowState.Detached)
                 {
-                    if(children.Tag != null)
-                    {
-                        if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
-                        {
-                            children.Background = Brushes.DarkMagenta;
-                        }
-                    }  
+                    Tables.shelf.database.Rows.Add(shelfBuilder.newShelf);
+                    MessageBox.Show("You have created a new shelf");
                 }
+                //Ha már hozzá volt adva de meg az user megváltoztatta
+                else if (shelfBuilder.newShelf.RowState == DataRowState.Modified)
+                {
+                    MessageBox.Show($"You have updated shelf {shelfBuilder.newShelf["name"]}");
+
+                    foreach (Button children in boxGrid.Children)
+                    {
+                        if (children.Tag != null)
+                        {
+                            if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
+                            {
+                                children.Background = Brushes.DarkMagenta;
+                            }
+                        }
+                    }
+                    toolPanel.Visibility = Visibility.Collapsed;
+                    ProductsSRCW.Visibility = Visibility.Visible;
+                }
+                else if(shelfBuilder.newShelf.RowState == DataRowState.Unchanged)
+                {
+                    foreach (Button children in boxGrid.Children)
+                    {
+                        if (children.Tag != null)
+                        {
+                            if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
+                            {
+                                children.Background = Brushes.DarkMagenta;
+                            }
+                        }
+                    }
+                    toolPanel.Visibility = Visibility.Collapsed;
+                    ProductsSRCW.Visibility = Visibility.Visible;
+                }
+
+                //Frissítem a kiválasztott sectort az adatbázisban
+                Tables.sector.updateChanges();
+
+                //Feltöltöm a polcot ad adatbázisba
+                Tables.shelf.updateChanges();
+                #endregion
+                //Megváltoztatom a polcok click eventjét select clickre
+                #region ui_elements
+                Delete.Visibility = Visibility.Collapsed;
+                changeClickEventToSelect();
+                shelfInfoSPNL.Visibility = Visibility.Collapsed;
+                #endregion
             }
-
-            //Frissítem a kiválasztott sectort az adatbázisban
-            Tables.sector.updateChanges();
-
-            //Feltöltöm a polcot ad adatbázisba
-            Tables.shelf.updateChanges();
-
-            //Megváltoztatom a polcok click eventjét select clickre
-            changeClickEventToSelect();
-            shelfInfoSPNL.Visibility = Visibility.Visible;
+            else
+            {
+                MessageBox.Show("Please turn offf delete mode");
+            }
             
         }
 
@@ -318,12 +358,6 @@ namespace WH_APP_GUI
 
         }
 
-        //Ha a zoombox betöltött
-        private void zBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            zBox.FillToBounds();
-        }
-
         //Ki meg bekapcsolja a designert (azoknak a gomboknak is a megjeleítése
         //amik nem tartoznak polcokhoz) 
         private void Designer_Click(object sender, RoutedEventArgs e)
@@ -337,7 +371,7 @@ namespace WH_APP_GUI
 
                 New_shelf.Visibility = Visibility.Visible;
                 Done.Visibility = Visibility.Visible;
-                Delete.Visibility = Visibility.Visible;
+                
             }
             //Ha be van kapcsolva a designer mód és egyik desinger funkció sincs használatban
             //(törlés, hozzáadás, editelés) kikapcsolja és elrejti a designer mód gombokat
@@ -358,43 +392,20 @@ namespace WH_APP_GUI
                 MessageBox.Show("Cannot turn off designer view while a shelf is being created or deleted");
             }
         }
-
-        //Akkor fut le ha ezt az oldalt elhagyják
-        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        
+        //Polc megváltoztatása
+        private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            //Ha úgy hagyja el az oldalt hogy egy shelf készülőben van
-            if(shelfBuilder.isAShelfBeingCreated == true)
-            {
-                //Kitörlöm az adatbázisból a változásokat mert nem mentett a felhasznákó
-                Tables.sector.database.RejectChanges();
-
-                //newshelfet üresre állítom
-                shelfBuilder.newShelf = null;
-
-                
-               //újra ki számolom a polchoz tartozó kockák számát 
-               Visual.calculateSquaresInUse();
-                
-                //MessageBox.Show(Tables.sector.getShelfs(Visual.sector).Length.ToString());
-            }
-        }
-
-        //Kiválasztok egy polcot
-        private void Select_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Selected");
-            Button button = (Button)sender;
-
-            //Kiválasztom azt a shelfet aminek a neve a gomb azonosítója
-            DataRow shelf = Tables.shelf.database.Select($"name = '{button.Tag}'")[0];
-
-            //Végigmegyek azokon a gombokon amiknek az azonosítója a gomb neve
+            DataRow shelf = productsPanel.DataContext as DataRow;
             foreach (Button children in boxGrid.Children)
             {
                 //Beállítom a háttérszűket fehérre
-                if(children.Tag == button.Tag)
+                if(children.Tag != null)
                 {
-                    children.Background = Brushes.White;
+                    if (children.Tag.ToString() == shelf["name"].ToString())
+                    {
+                        children.Background = Brushes.White;
+                    }
                 }
             }
 
@@ -416,36 +427,14 @@ namespace WH_APP_GUI
                 shelfBuilder.lastYindex = (int)shelf["startYindex"] + (int)(double)shelf["length"] - 1;
                 Visual.orientation = Orientation.Vertical;
             }
-            showShelfInfo();
-        }
 
-        private void changeClickEventToSelect()
-        {
-            //Eltávolítom a box click eventet(shelfek létrehozása) és hozzáadom
-            //a select click eventet(egy shelf kiválasztása) a gombokhoz 
-            foreach (Button children in boxGrid.Children)
-            {
-                if(children.Tag != null)
-                {
-                    children.Click -= box_Click;
-                    children.Click += Select_Click;
-                }
-            }
+            Delete.Visibility = Visibility.Visible;
+            ProductsSRCW.Visibility = Visibility.Collapsed;
+            toolPanel.Visibility = Visibility.Visible;
+            showShelfInfo(shelfBuilder.newShelf);
         }
-
-        private void changeClickEventToBoxClick()
-        {
-            foreach (Button children in boxGrid.Children)
-            {
-                if(children.Tag != null)
-                {
-                    children.Click -= Select_Click;
-                    children.Click += box_Click;
-                }
-                
-            }
-        }
-
+        
+        //Vízszintes polcok megjelenítése adatbázísból
         private void displayHorizontalShelf(Grid boxGrid, DataRow row)
         {
             //A gombok mennyisége ami a polcban található
@@ -482,6 +471,7 @@ namespace WH_APP_GUI
             }
         }
 
+        //Függőleges polcok megjelenítése adatbázísból
         private void DisplayVerticalShelf(Grid boxGrid, DataRow row)
         {
             double numberOfSquaresToFind = (double)row["length"];
@@ -506,6 +496,62 @@ namespace WH_APP_GUI
 
                 }
                 index++;
+            }
+        }
+        #endregion
+
+        #region ui
+        //Ha a zoombox betöltött
+        private void zBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            zBox.FillToBounds();
+        }
+
+        //Akkor fut le ha ezt az oldalt elhagyják
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            //Ha úgy hagyja el az oldalt hogy egy shelf készülőben van
+            if(shelfBuilder.isAShelfBeingCreated == true)
+            {
+                //Kitörlöm az adatbázisból a változásokat mert nem mentett a felhasznákó
+                Tables.sector.database.RejectChanges();
+
+                shelfBuilder.newShelf.RejectChanges();
+                //newshelfet üresre állítom
+                shelfBuilder.newShelf = null;
+
+                
+               //újra ki számolom a polchoz tartozó kockák számát 
+               Visual.calculateSquaresInUse();
+                
+                //MessageBox.Show(Tables.sector.getShelfs(Visual.sector).Length.ToString());
+            }
+        }
+
+        private void changeClickEventToSelect()
+        {
+            //Eltávolítom a box click eventet(shelfek létrehozása) és hozzáadom
+            //a select click eventet(egy shelf kiválasztása) a gombokhoz 
+            foreach (Button children in boxGrid.Children)
+            {
+                if(children.Tag != null)
+                {
+                    children.Click -= box_Click;
+                    children.Click += Select_Click;
+                }
+            }
+        }
+
+        private void changeClickEventToBoxClick()
+        {
+            foreach (Button children in boxGrid.Children)
+            {
+                if(children.Tag != null)
+                {
+                    children.Click -= Select_Click;
+                    children.Click += box_Click;
+                }
+                
             }
         }
 
@@ -549,22 +595,177 @@ namespace WH_APP_GUI
             }
         }
 
-        private void showShelfInfo()
+        //Megmutatja egy polc adatait
+        private void showShelfInfo(DataRow shelf)
         {
             //Megmutatom az információkat a készülő polcról
             shelfInfoSPNL.Visibility = Visibility.Visible;
             //Hogyha egy polc készül készülőben van (a createshelf oldalon sikeresen elkezdte
             //az user a polc készítését)
-            if (shelfBuilder.isAShelfBeingCreated == true)
-            {
-                MessageBox.Show("Lefutott");
+            
+               
                 //Megmutatom a polc adatait
-                MessageBox.Show(shelfBuilder.newShelf["name"].ToString());
-                shelfName.Content = shelfBuilder.newShelf["name"].ToString();
-                MessageBox.Show(shelfName.Content.ToString());
-                Size.Content = $"{shelfBuilder.newShelf["width"]}x{shelfBuilder.newShelf["actual_length"]} m2";
-                shelfOrientation.Content = Visual.orientation.ToString();
+                
+                shelfName.Content = shelf["name"].ToString();
+                Size.Content = $"{shelf["width"]}x{shelf["actual_length"]} m2";
+                shelfOrientation.Content = shelf["orientation"].ToString();
+            
+        }
+        #endregion
+
+        #region products
+        //Kiválasztok egy polcot
+        private void Select_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Selected");
+            Button button = (Button)sender;
+
+            //Kiválasztom azt a shelfet aminek a neve a gomb azonosítója
+            DataRow shelf = Tables.shelf.database.Select($"name = '{button.Tag}'")[0];
+
+            //Végigmegyek azokon a gombokon amiknek az azonosítója a gomb neve
+        
+            showShelfInfo(shelf);
+            toolPanel.Visibility = Visibility.Collapsed;
+            ProductsSRCW.Visibility = Visibility.Visible;
+            showProducts(shelf);
+        }
+
+        private void showProducts(DataRow shelf)
+        {
+            productsPanel.Children.Clear();
+            productsPanel.DataContext = shelf;
+            warehouse warehouseTable = Tables.getWarehosue(Tables.shelf.getWarehouse(shelf)["name"].ToString());
+            for (int i = 1; i <= (int)shelf["number_of_levels"]; i++)
+            {
+                #region levelLabel
+                StackPanel levelPanel = new StackPanel();
+                levelPanel.Orientation = Orientation.Horizontal;
+                productsPanel.Children.Add(levelPanel);
+
+                Label level_of_shelf = new Label();
+                level_of_shelf.FontSize = 17;
+                level_of_shelf.Content = "Level " + i;
+                levelPanel.Children.Add(level_of_shelf);
+                
+
+                DataRow[] productsOfLevel = Tables.shelf.getWarehouseProducts(shelf)
+                    .Where(product => (int)product["on_shelf_level"] == i)
+                    .ToArray();
+
+                if(i == (int)shelf["number_of_levels"])
+                {
+                    Button deleteLevel = new Button();
+                    deleteLevel.Background = Brushes.Crimson;
+                    deleteLevel.FontSize = 17;
+                    deleteLevel.Content = "Delete";
+                    deleteLevel.Tag = shelf;
+                    deleteLevel.Click += deleteLevel_Click;
+                    levelPanel.Children.Add(deleteLevel);
+                }
+                #endregion
+
+                if (productsOfLevel.Length > 0)
+                {
+                    foreach (DataRow warehouseProduct in productsOfLevel)
+                    {
+                        DataRow product = warehouseTable.getProduct(warehouseProduct);
+
+                        #region showProductInfo
+                        Expander expander = new Expander();
+                        expander.Header = $"{product["name"]} x {warehouseProduct["qty"]}";
+                        expander.Margin = new Thickness(0, 0, 2, 0);
+                        productsPanel.Children.Add(expander);
+
+                        StackPanel productinfo = new StackPanel();
+                        expander.Content = productinfo;
+
+                        if(Tables.features.isFeatureInUse("Storage") == true)
+                        {
+                            TextBlock widthLBL = new TextBlock();
+                            widthLBL.Text = "Width";
+                            widthLBL.Style = (Style)this.Resources["LabelTextblockStyle"];
+                            productinfo.Children.Add(widthLBL);
+
+                            TextBlock width = new TextBlock();
+                            width.Text = warehouseProduct["width"].ToString();
+                            width.Style = (Style)this.Resources["ValueTextblockStyle"];
+                            productinfo.Children.Add(width);
+
+                            TextBlock heightLBL = new TextBlock();
+                            heightLBL.Text = "Height";
+                            heightLBL.Style = (Style)this.Resources["LabelTextblockStyle"];
+                            productinfo.Children.Add(heightLBL);
+
+                            TextBlock height = new TextBlock();
+                            height.Text = warehouseProduct["height"].ToString();
+                            height.Style = (Style)this.Resources["ValueTextblockStyle"];
+                            productinfo.Children.Add(height);
+
+                            TextBlock lengthLBL = new TextBlock();
+                            lengthLBL.Text = "Length";
+                            lengthLBL.Style = (Style)this.Resources["LabelTextblockStyle"];
+                            productinfo.Children.Add(lengthLBL);
+
+                            TextBlock length = new TextBlock();
+                            length.Text = warehouseProduct["length"].ToString();
+                            length.Style = (Style)this.Resources["ValueTextblockStyle"];
+                            productinfo.Children.Add(length);
+                        }
+
+                        TextBlock isInBoxLBL = new TextBlock();
+                        isInBoxLBL.Text = "Is in a box";
+                        isInBoxLBL.Style = (Style)this.Resources["LabelTextblockStyle"];
+                        productinfo.Children.Add(isInBoxLBL);
+
+                        TextBlock isInBox = new TextBlock();
+                        isInBox.Text = warehouseProduct["is_in_box"].ToString();
+                        isInBox.Style = (Style)this.Resources["ValueTextblockStyle"];
+                        productinfo.Children.Add(isInBox);
+                        #endregion
+                    }
+                }
             }
         }
+
+        private void deleteLevel_Click(object sender, RoutedEventArgs e)
+        {
+            DataRow shelf = productsPanel.DataContext as DataRow;
+            int lastLevelOfShelf = (int)shelf["number_of_levels"];
+
+            DataRow[] productsOfLevel = Tables.shelf.getWarehouseProducts(shelf)
+                    .Where(product => (int)product["on_shelf_level"] == lastLevelOfShelf)
+                    .ToArray();
+
+            if(productsOfLevel.Length == 0)
+            {
+                shelf["number_of_levels"] = (int)shelf["number_of_levels"] - 1;
+                Tables.shelf.updateChanges();
+                productsPanel.Children.Clear();
+                showProducts(shelf);
+            }
+            else
+            {
+                MessageBox.Show("Cant delete level while there are still products on it");
+            }
+        }
+
+        private void add_level_Click(object sender, RoutedEventArgs e)
+        {
+            DataRow shelf = productsPanel?.DataContext as DataRow;
+
+            shelf["number_of_levels"] = (int)shelf["number_of_levels"] + 1;
+            Tables.shelf.updateChanges();
+            productsPanel.Children.Clear();
+            showProducts(shelf);
+        }
+
+
+        private void CloseBTN_Click(object sender, RoutedEventArgs e)
+        {
+            ProductsSRCW.Visibility = Visibility.Collapsed;
+            toolPanel.Visibility = Visibility.Visible;
+        }
+        #endregion
     }
 }

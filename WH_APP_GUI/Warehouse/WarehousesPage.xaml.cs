@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Security;
@@ -75,6 +76,7 @@ namespace WH_APP_GUI.Warehouse
                 Label label = new Label();
                 label.HorizontalAlignment = HorizontalAlignment.Center;
                 label.Content = Tables.warehouses.database.Rows[i]["name"];
+                label.FontFamily = new FontFamily("Baskerville Old Face");
                 Grid.SetColumn(label, 1);
                 grid.Children.Add(label);
 

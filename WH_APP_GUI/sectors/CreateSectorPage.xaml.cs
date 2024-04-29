@@ -69,5 +69,13 @@ namespace WH_APP_GUI.sectors
                 Navigation.content2.Navigate(sectorIndexWindow);
             }
         }
+        private void CreateSectorPaage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+            headlabel.FontSize = e.NewSize.Height * 0.06;
+        }
     }
 }

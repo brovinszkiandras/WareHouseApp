@@ -7,36 +7,84 @@
       xmlns:local="clr-namespace:WH_APP_GUI.sectors"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
-      Title="CreateSectorPage">
+      Title="CreateSectorPage"
+      SizeChanged="CreateSectorPaage_SizeChanged">
 
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
-        <Grid Name="alapgrid" Margin="10">
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GreenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+               BorderBrush="{TemplateBinding BorderBrush}"
+               BorderThickness="{TemplateBinding BorderThickness}"
+               CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+         VerticalAlignment="Center"
+         Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+       BorderBrush="{TemplateBinding BorderBrush}"
+       BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{x:Static SystemColors.ControlLightBrush}"/>
+                    <Setter Property="Foreground" Value="{x:Static SystemColors.GrayTextBrush}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+    </Page.Resources>
+
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
+        <Grid Name="alapgrid" Margin="10" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="6*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
+            
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="5*"></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <Label Grid.Column="1" 
-               Foreground="Black" 
-               FontSize="30" 
-               Content="Create Sector"
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center"></Label>
 
             <StackPanel x:Name="sectorPanel" Grid.Column="1" Grid.Row="1">
-                <Label FontSize="17" Content="Name:"></Label>
-                <xctk:ValueRangeTextBox Name="name" FontSize="17" Text="{Binding Path=[name]}"></xctk:ValueRangeTextBox>
-                <Label FontSize="17" Content="Length: "></Label>
-                <xctk:ValueRangeTextBox Name="length" FontSize="17" Text="{Binding Path=[length]}"></xctk:ValueRangeTextBox>
-                <Label FontSize="17" Content="Width: "></Label>
-                <xctk:ValueRangeTextBox Name="width" FontSize="17" Text="{Binding Path=[width]}"></xctk:ValueRangeTextBox>
-                <Button FontSize="17" Content="Save" Name="save" Click="Button_Click"></Button>
+            <Label Name="headlabel" Grid.Column="1" Content="Create Sector" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+
+                <Label Content="Name:" Style="{StaticResource labelstyle}"/>
+                <xctk:ValueRangeTextBox Name="name" Text="{Binding Path=[name]}" Background="#395250" BorderBrush="Black" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+
+                <Label Content="Length: " Style="{StaticResource labelstyle}"/>
+                <xctk:ValueRangeTextBox Name="length" Text="{Binding Path=[length]}" Background="#395250" BorderBrush="Black" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+
+                <Label Content="Width: " Style="{StaticResource labelstyle}"/>
+                <xctk:ValueRangeTextBox Name="width" Text="{Binding Path=[width]}" Background="#395250" BorderBrush="Black" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+
+                <Button FontSize="17" Content="Save" Name="save" Click="Button_Click" Style="{StaticResource GreenButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Border>
