@@ -35,6 +35,11 @@ namespace WH_APP_GUI.Forklift
 
             Done.Tag = forklift;
 
+            if (! User.DoesHavePermission("Change status of Forklift"))
+            {
+                status.IsEnabled = false;
+            }
+
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
             {

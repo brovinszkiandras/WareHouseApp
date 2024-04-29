@@ -93,33 +93,66 @@ namespace WH_APP_GUI.Warehouse
                 }
             }
 
-            if (User.DoesHavePermission("Inspect Transport") || User.DoesHavePermission("Inspect all Transport") || User.DoesHavePermission("Inspect own Transport"))
+            if (Tables.features.isFeatureInUse("Fleet"))
             {
-                if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                if (User.DoesHavePermission("Inspect Transport") || User.DoesHavePermission("Inspect all Transport") || User.DoesHavePermission("Inspect own Transport"))
                 {
-                    if (User.currentUser["warehouse_id"] == warehouse["id"])
+                    if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
                     {
-                        TransportsInspectToWarehouse.Visibility = Visibility.Visible;
+                        if (User.currentUser["warehouse_id"] == warehouse["id"])
+                        {
+                            TransportsInspectToWarehouse.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            TransportsInspectToWarehouse.Visibility = Visibility.Collapsed;
+                        }
                     }
                     else
                     {
-                        TransportsInspectToWarehouse.Visibility = Visibility.Collapsed;
+                        TransportsInspectToWarehouse.Visibility = Visibility.Visible;
                     }
                 }
-                else
-                {
-                    TransportsInspectToWarehouse.Visibility = Visibility.Visible;
-                }
+            }
+            else
+            {
+                TransportsInspectToWarehouse.Visibility = Visibility.Collapsed;
             }
 
-            if (!User.DoesHavePermission("Inspect Car") || !User.DoesHavePermission("Inspect all Car"))
+            if (Tables.features.isFeatureInUse("Fleet"))
+            {
+                if (!User.DoesHavePermission("Inspect Car") || !User.DoesHavePermission("Inspect all Car"))
+                {
+                    CarsInspectToWarehouse.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
             {
                 CarsInspectToWarehouse.Visibility = Visibility.Collapsed;
             }
 
-            if (!User.DoesHavePermission("Inspect Dock"))
+            if (Tables.features.isFeatureInUse("Dock"))
+            {
+                if (!User.DoesHavePermission("Inspect Dock"))
+                {
+                    DocksInspectToWarehouse.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
             {
                 DocksInspectToWarehouse.Visibility = Visibility.Collapsed;
+            }
+
+            if (Tables.features.isFeatureInUse("Forklift"))
+            {
+                if (!User.DoesHavePermission("Inspect Forklift") || !User.DoesHavePermission("Inspect all Forklift"))
+                {
+                    ForkliftInspectToWarehouse.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                ForkliftInspectToWarehouse.Visibility = Visibility.Collapsed;
             }
 
             Ini_City();

@@ -42,6 +42,11 @@ namespace WH_APP_GUI.transport
             {
                 DocksCBX.IsEnabled = false;
             }
+
+            if (! User.DoesHavePermission("Assign Dock for transport"))
+            {
+                DocksCBX.IsEnabled = false;
+            }
         }
 
         private DataRow Warehouse = null;

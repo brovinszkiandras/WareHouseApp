@@ -26,6 +26,11 @@ namespace WH_APP_GUI
             Ini_warehouse_id();
             DisplayAllForklifts(DisplayForkliftsStackPanel);
             Back.Visibility = Visibility.Collapsed;
+
+            if (!User.DoesHavePermission("Modify all Forklift"))
+            {
+                AddNewforklift.Visibility = Visibility.Collapsed;
+            }
         }
         private DataRow WarehouseFromPage;
         public ForkliftsPage(DataRow warehouse)
@@ -34,6 +39,12 @@ namespace WH_APP_GUI
             InitializeComponent();
             forkliftFilter.Visibility = Visibility.Collapsed;
             Allforklift.Visibility = Visibility.Collapsed;
+
+            if (!User.DoesHavePermission("Modify all Forklift") || !User.DoesHavePermission("Modify Forklift"))
+            {
+                AddNewforklift.Visibility = Visibility.Collapsed;
+            }
+
             Ini_warehouse_id();
             DisplayAllForklifts(DisplayForkliftsStackPanel);
         }
@@ -145,20 +156,23 @@ namespace WH_APP_GUI
             rightStackPanel.Width = 130;
             rightStackPanel.VerticalAlignment = VerticalAlignment.Center;
 
-            Button deleteButton = new Button();
-            deleteButton.Content = "Delete";
-            deleteButton.Margin = new Thickness(5);
-            deleteButton.Tag = forklift;
-            deleteButton.Click += deleteForklift_Click;
+            if (User.DoesHavePermission("Modify all Forklift") || User.DoesHavePermission("Modify all Forklift"))
+            {
+                Button deleteButton = new Button();
+                deleteButton.Content = "Delete";
+                deleteButton.Margin = new Thickness(5);
+                deleteButton.Tag = forklift;
+                deleteButton.Click += deleteForklift_Click;
 
-            Button editButton = new Button();
-            editButton.Content = "Edit";
-            editButton.Margin = new Thickness(5);
-            editButton.Tag = forklift;
-            editButton.Click += editForklift_Click;
+                Button editButton = new Button();
+                editButton.Content = "Edit";
+                editButton.Margin = new Thickness(5);
+                editButton.Tag = forklift;
+                editButton.Click += editForklift_Click;
 
-            rightStackPanel.Children.Add(deleteButton);
-            rightStackPanel.Children.Add(editButton);
+                rightStackPanel.Children.Add(deleteButton);
+                rightStackPanel.Children.Add(editButton);
+            }
 
             mainStackPanel.Children.Add(image);
             mainStackPanel.Children.Add(leftStackPanel);

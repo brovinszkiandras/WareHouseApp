@@ -80,6 +80,7 @@
             <RowDefinition Height="8*"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <Button x:Name="Back" Content="Back" Grid.Column="2" Click="Back_Click"/>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1">
             <Grid x:Name="productGrid">
