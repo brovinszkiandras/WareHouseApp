@@ -22,30 +22,30 @@ namespace WH_APP_GUI.warehouseTableFolder
 {
     public partial class CreateWHProductPage : Page
     {
-       private DataRow warehouseProduct;
+        private DataRow warehouseProduct;
 
         private void CheckifProductsFitInbox()
         {
-           
-                double boxvolume = (double)warehouseProduct["width"]
-               * (double)warehouseProduct["height"]
-               * (double)warehouseProduct["length"];
 
-                double productsFullVolume = (double)warehouseTable.getProduct(warehouseProduct)["volume"]
-                    * (int)warehouseProduct["qty"];
+            double boxvolume = (double)warehouseProduct["width"]
+           * (double)warehouseProduct["height"]
+           * (double)warehouseProduct["length"];
 
-                if (boxvolume < productsFullVolume)
+            double productsFullVolume = (double)warehouseTable.getProduct(warehouseProduct)["volume"]
+                * (int)warehouseProduct["qty"];
+
+            if (boxvolume < productsFullVolume)
+            {
+                MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("The prouducts dont fit inside the box\n" +
+                    $"Full volume of products: {productsFullVolume} cm3\n" +
+                    $"Volume of the box: {boxvolume} cm3\n" +
+                    $"Are you sure you want to proceed?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
                 {
-                    MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("The prouducts dont fit inside the box\n" +
-                        $"Full volume of products: {productsFullVolume} cm3\n" +
-                        $"Volume of the box: {boxvolume} cm3\n" +
-                        $"Are you sure you want to proceed?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        
-                    if(result == MessageBoxResult.Yes)
-                    {
-                        updateDatabase();
-                    }
+                    updateDatabase();
                 }
+            }
             else
             {
                 updateDatabase();
@@ -60,7 +60,7 @@ namespace WH_APP_GUI.warehouseTableFolder
             WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
             Navigation.content2.Navigate(page);
         }
-       private warehouse warehouseTable;
+        private warehouse warehouseTable;
         public CreateWHProductPage(warehouse WarehouseTable)
         {
             InitializeComponent();
@@ -78,14 +78,14 @@ namespace WH_APP_GUI.warehouseTableFolder
             foreach (DataRow sector in Tables.warehouses.getSectors(User.Warehouse()))
             {
                 foreach (DataRow shelf in Tables.sector.getShelfs(sector))
-                { 
+                {
                     shelfs.Add(shelf);
                 }
             }
 
             shelf_id.ItemsSource = shelfs;
 
-            if(Tables.features.isFeatureInUse("Storage") == false)
+            if (Tables.features.isFeatureInUse("Storage") == false)
             {
                 width.Visibility = Visibility.Collapsed;
                 height.Visibility = Visibility.Collapsed;
@@ -97,7 +97,7 @@ namespace WH_APP_GUI.warehouseTableFolder
             }
             else
             {
-                
+
                 Binding widthBinding = new Binding("[width]");
                 widthBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                 width.SetBinding(TextBox.TextProperty, widthBinding);
@@ -117,11 +117,11 @@ namespace WH_APP_GUI.warehouseTableFolder
 
         private void shelf_id_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(shelf_id.SelectedIndex > -1)
+            if (shelf_id.SelectedIndex > -1)
             {
                 on_shelf_level.IsEnabled = true;
                 DataRow shelf = shelf_id.SelectedItem as DataRow;
-                
+
                 for (int i = 0; i < (int)shelf["number_of_levels"]; i++)
                 {
                     on_shelf_level.Items.Add(i + 1);
@@ -132,9 +132,9 @@ namespace WH_APP_GUI.warehouseTableFolder
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if(this.IsLoaded == true)
+            if (this.IsLoaded == true)
             {
-                if(Tables.features.isFeatureInUse("Storage") == true)
+                if (Tables.features.isFeatureInUse("Storage") == true)
                 {
                     widhtLabel.Content = "Box width (cm)";
                     heightLabel.Content = "Box height (cm)";
@@ -154,7 +154,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                     }
                 }
             }
-           
+
         }
 
         private void is_in_a_box_Unchecked(object sender, RoutedEventArgs e)
@@ -191,7 +191,8 @@ namespace WH_APP_GUI.warehouseTableFolder
             {
                 DataRowView selectedItem = product_id.SelectedItem as DataRowView;
                 DataRow product = selectedItem.Row;
-                if (is_in_a_box.IsChecked == false && Tables.features.isFeatureInUse("Storage") == true) {
+                if (is_in_a_box.IsChecked == false && Tables.features.isFeatureInUse("Storage") == true)
+                {
                     width.Text = product["width"].ToString();
                     height.Text = product["heigth"].ToString();
                     length.Text = product["length"].ToString();
@@ -199,7 +200,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 warehouseProduct["product_id"] = product["id"];
 
-               
+
             }
         }
 
@@ -213,7 +214,7 @@ namespace WH_APP_GUI.warehouseTableFolder
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             bool thereIsAnError = false;
-            
+
 
             foreach (var gridElement in productGrid.Children)
             {
@@ -230,7 +231,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                             thereIsAnError = Validation.ValidateTextbox(VTextBox, warehouseProduct);
 
                         }
-                        else if(element.GetType() == typeof(ComboBox))
+                        else if (element.GetType() == typeof(ComboBox))
                         {
                             ComboBox comboBox = (ComboBox)element;
 
@@ -255,7 +256,15 @@ namespace WH_APP_GUI.warehouseTableFolder
                 {
                     updateDatabase();
                 }
-               
+
+            }
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
     }

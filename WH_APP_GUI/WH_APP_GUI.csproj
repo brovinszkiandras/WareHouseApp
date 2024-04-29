@@ -339,11 +339,18 @@
     <Compile Include="User.cs" />
     <Compile Include="Validation.cs" />
     <Compile Include="Visual.cs" />
-    <Compile Include="WarehouseTableFolder\AddProductToBoxPage.xaml.cs" />
-    <Compile Include="WarehouseTableFolder\CreateWHProductPage.xaml.cs" />
-    <Compile Include="WarehouseTableFolder\EditWHProductPage.xaml.cs" />
-    <Compile Include="WarehouseTableFolder\WarehouseProductsPage.xaml.cs" />
-    <Compile Include="WarehouseTableFolder\WHProudctQuantityPage.xaml.cs" />
+    <Compile Include="WarehouseTableFolder\CreateWHProductPage.xaml.cs">
+      <DependentUpon>CreateWHProductPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WarehouseTableFolder\EditWHProductPage.xaml.cs">
+      <DependentUpon>EditWHProductPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WarehouseTableFolder\WarehouseProductsPage.xaml.cs">
+      <DependentUpon>WarehouseProductsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WarehouseTableFolder\WHProudctQuantityPage.xaml.cs">
+      <DependentUpon>WHProudctQuantityPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Warehouse\CreateWarehouse.xaml.cs">
       <DependentUpon>CreateWarehouse.xaml</DependentUpon>
     </Compile>
@@ -510,25 +517,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WarehouseTableFolder\AddProductToBoxPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="WarehouseTableFolder\CreateWHProductPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WarehouseTableFolder\EditWHProductPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WarehouseTableFolder\WarehouseProductsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WarehouseTableFolder\WHProudctQuantityPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Warehouse\CreateWarehouse.xaml">
       <SubType>Designer</SubType>

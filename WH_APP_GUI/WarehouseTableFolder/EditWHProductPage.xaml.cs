@@ -24,7 +24,7 @@ namespace WH_APP_GUI.warehouseTableFolder
     {
         private void CheckifProductsFitInbox()
         {
-           
+
             double boxvolume = (double)warehouseProduct["width"]
            * (double)warehouseProduct["height"]
            * (double)warehouseProduct["length"];
@@ -56,7 +56,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
         private void updateDatabase()
         {
-           
+
             warehouseTable.updateChanges();
             Xceed.Wpf.Toolkit.MessageBox.Show($"The product has been updated");
             WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
@@ -77,9 +77,9 @@ namespace WH_APP_GUI.warehouseTableFolder
 
             product_id.ItemsSource = Tables.products.database.Rows;
             product_id.SelectedItem = warehouseTable.getProduct(warehouseProduct);
-            
 
-            
+
+
 
             List<DataRow> shelfs = new List<DataRow>();
             foreach (DataRow sector in Tables.warehouses.getSectors(User.Warehouse()))
@@ -154,7 +154,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                     length.IsEnabled = true;
                     if (product_id.SelectedIndex > -1)
                     {
-                        
+
                         DataRow product = product_id.SelectedItem as DataRow;
 
 
