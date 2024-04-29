@@ -35,19 +35,19 @@ namespace WH_APP_GUI
 
             UserNameDisplay.Content = User.currentUser["name"].ToString();
             UserEmailDisplay.Content = User.currentUser["email"].ToString();
+
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("WarehousesPage"));
+
             Navigation.content2.NavigationUIVisibility = NavigationUIVisibility.Hidden;
 
             #region Show Permission btns
 
-            if (User.DoesHavePermission("Inspect all Warehouses"))
-            {
-                Button btn = new Button();
-                btn.Content = "Warehouses";
-                btn.Click += InspectAllWarehouses_Click;
-                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
-                Menu.Children.Add(btn);
-            }
+            Button WarehouseBtn = new Button();
+            WarehouseBtn.Content = "Warehouses";
+            WarehouseBtn.Click += InspectAllWarehouses_Click;
+            WarehouseBtn.Style = (Style)this.Resources["GoldenButtonStyle"];
+            Menu.Children.Add(WarehouseBtn);
 
             if (User.DoesHavePermission("Inspect all Employees"))
             {
@@ -87,14 +87,26 @@ namespace WH_APP_GUI
                 Menu.Children.Add(btn);
             }
 
-            if (User.DoesHavePermission("Inspect all Transport") && Tables.features.isFeatureInUse("Fleet") == true)
+            if (true)
             {
-                Button btn = new Button();
-                btn.Content = "Transports";
-                btn.Click += InspectAllTransport_Click;
-                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
-                Menu.Children.Add(btn);
+                if (User.DoesHavePermission("Inspect all Transport"))
+                {
+                    Button btn = new Button();
+                    btn.Content = "Transports";
+                    btn.Click += InspectAllTransport_Click;
+                    btn.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    Menu.Children.Add(btn);
+                }
+                else if (User.DoesHavePermission("Inspect own Transport"))
+                {
+                    Button btn = new Button();
+                    btn.Content = "Own Transports";
+                    btn.Click += InspectAllTransport_Click;
+                    btn.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    Menu.Children.Add(btn);
+                }
             }
+
 
             if (User.DoesHavePermission("Inspect all Car") && Tables.features.isFeatureInUse("Fleet") == true)
             {

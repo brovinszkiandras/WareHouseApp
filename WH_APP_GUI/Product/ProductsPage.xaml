@@ -44,6 +44,10 @@
             <Setter Property="Foreground" Value="#FFCEA2"/>
             <Setter Property="FontFamily" Value="Baskerville Old Face"/>
         </Style>
+        <Style TargetType="TextBlock" x:Key="textBlock">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
     </Page.Resources>
 
     <Border CornerRadius="30,0,0,0" Background="#425C5A">

@@ -40,6 +40,16 @@ namespace WH_APP_GUI.Product
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
 
+            StackPanel outerStack = new StackPanel();
+            if (Tables.features.isFeatureInUse("Date Log"))
+            {
+                Label dateLog = new Label();
+                dateLog.Content = $"Created at: {product["created_at"]} \tUpdated at: {product["updated_at"]}";
+                dateLog.Style = (Style)this.Resources["labelstyle"];
+                dateLog.HorizontalContentAlignment = HorizontalAlignment.Center;
+                outerStack.Children.Add(dateLog);
+            }
+
             Grid mainStackPanel = new Grid();
             mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
             mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
@@ -108,6 +118,7 @@ namespace WH_APP_GUI.Product
 
             TextBlock descriptionLabel = new TextBlock();
             descriptionLabel.TextWrapping = TextWrapping.Wrap;
+            descriptionLabel.Style = (Style)this.Resources["textBlock"];
             descriptionLabel.Text = $"{product["description"]}";
 
             Border borderDescription = new Border();
@@ -182,7 +193,8 @@ namespace WH_APP_GUI.Product
             Grid.SetColumn(buttonsStackPanel, 2);
             mainStackPanel.Children.Add(buttonsStackPanel);
 
-            border.Child = mainStackPanel;
+            outerStack.Children.Add(mainStackPanel);
+            border.Child = outerStack;
             panel.Children.Add(border);
         }
 

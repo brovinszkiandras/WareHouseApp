@@ -202,6 +202,21 @@ namespace WH_APP_GUI
 
             if (User.currentUser != employee)
             {
+<<<<<<< HEAD
+                Button deleteButton = new Button();
+                deleteButton.Content = "Delete";
+                deleteButton.Tag = employee;
+                deleteButton.Click += deleteEmployee_Click;
+                deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                rightStackPanel.Children.Add(deleteButton);
+
+                Button resetPasswordButton = new Button();
+                resetPasswordButton.Content = "Reset Password";
+                resetPasswordButton.Click += resetPassword_Click;
+                resetPasswordButton.Tag = employee;
+                resetPasswordButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                rightStackPanel.Children.Add(resetPasswordButton);
+=======
                 if (User.DoesHavePermission("Modify employees") || User.DoesHavePermission("Modify all employees"))
                 {
                     Button deleteButton = new Button();
@@ -226,6 +241,7 @@ namespace WH_APP_GUI
 
                     rightStackPanel.Children.Add(editButton);
                 }
+>>>>>>> 7a81a5b4e8efcedce8c154c8c39c3906a525029b
             }
             else
             {
@@ -237,15 +253,20 @@ namespace WH_APP_GUI
                 rightStackPanel.Children.Add(modifyPassword);
             }
 
+<<<<<<< HEAD
             Button editButton = new Button();
             editButton.Content = "Edit";
             editButton.Click += EditEmployee_Click;
             editButton.Tag = employee;
-            editButton.Style = (Style)this.Resources["GreenButtonStyle"];
+            editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
 
             rightStackPanel.Children.Add(editButton);
 
             border.Child = mainStackPanel;
+=======
+            outerStack.Children.Add(mainStackPanel);
+            border.Child = outerStack;
+>>>>>>> 7a81a5b4e8efcedce8c154c8c39c3906a525029b
             panel.Children.Add(border);
         }
 

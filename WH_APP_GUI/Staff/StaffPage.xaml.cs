@@ -90,10 +90,21 @@ namespace WH_APP_GUI.Staff
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
 
-            Grid mainStackPanel = new Grid();
-            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
-            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            StackPanel outerStack = new StackPanel();
+            if (Tables.features.isFeatureInUse("Date Log"))
+            {
+                Label dateLog = new Label();
+                dateLog.Content = $"Created at - {staff["created_at"]} \tUpdated at - {staff["updated_at"]}";
+                dateLog.Style = (Style)this.Resources["labelstyle"];
+                dateLog.HorizontalContentAlignment = HorizontalAlignment.Center;
+                outerStack.Children.Add(dateLog);
+            }
+
+
+            Grid mainGrid = new Grid();
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
 
             Image image = new Image();
             image.Width = 100;
@@ -101,7 +112,7 @@ namespace WH_APP_GUI.Staff
             image.Margin = new Thickness(5);
 
             Grid.SetColumn(image, 0);
-            mainStackPanel.Children.Add(image);
+            mainGrid.Children.Add(image);
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -135,7 +146,7 @@ namespace WH_APP_GUI.Staff
             leftStackPanel.Orientation = Orientation.Vertical;
 
             Grid.SetColumn(leftStackPanel, 1);
-            mainStackPanel.Children.Add(leftStackPanel);
+            mainGrid.Children.Add(leftStackPanel);
 
             Label nameLabel = new Label();
             nameLabel.Content = "Name: " + staff["name"];
@@ -165,7 +176,7 @@ namespace WH_APP_GUI.Staff
             StackPanel rightStackPanel = new StackPanel();
             rightStackPanel.Orientation = Orientation.Vertical;
             Grid.SetColumn(rightStackPanel, 2);
-            mainStackPanel.Children.Add(rightStackPanel);
+            mainGrid.Children.Add(rightStackPanel);
 
             if (User.currentUser != staff)
             {
@@ -201,8 +212,9 @@ namespace WH_APP_GUI.Staff
             editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
 
             rightStackPanel.Children.Add(editButton);
-            
-            border.Child = mainStackPanel;
+
+            outerStack.Children.Add(mainGrid);
+            border.Child = outerStack;
             panel.Children.Add(border);
         }
 

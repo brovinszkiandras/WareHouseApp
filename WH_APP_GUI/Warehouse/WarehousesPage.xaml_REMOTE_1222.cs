@@ -102,25 +102,6 @@ namespace WH_APP_GUI.Warehouse
                 Grid.SetColumn(innerGrid, 2);
                 grid.Children.Add(innerGrid);
 
-<<<<<<< HEAD
-                Button inspectButton = new Button();
-                inspectButton.Tag = Tables.warehouses.database.Rows[i];
-                inspectButton.Content = "Inspect Warehouse";
-                inspectButton.Click += inspect_warehouse_Click;
-                inspectButton.Margin = new Thickness(10);
-                inspectButton.Style = (Style)this.Resources["GoldenButtonStyle"];
-                Grid.SetRow(inspectButton, 0);
-                innerGrid.Children.Add(inspectButton);
-
-                Button deleteButton = new Button();
-                deleteButton.Content = "Delete Warehouse";
-                deleteButton.Tag = Tables.warehouses.database.Rows[i];
-                deleteButton.Click += delete_warehouse_Click;
-                deleteButton.Margin = new Thickness(10);
-                deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
-                Grid.SetRow(deleteButton, 1);
-                innerGrid.Children.Add(deleteButton);
-=======
                 if (User.DoesHavePermission("Inspect all Warehouses") || User.DoesHavePermission("Inspect Warehouse"))
                 {
                     if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
@@ -179,7 +160,6 @@ namespace WH_APP_GUI.Warehouse
                         innerGrid.Children.Add(deleteButton);
                     }
                 }
->>>>>>> 7a81a5b4e8efcedce8c154c8c39c3906a525029b
 
                 panel.Children.Add(border);
             }

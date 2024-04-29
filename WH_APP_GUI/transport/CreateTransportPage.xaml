@@ -20,7 +20,9 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
-        
+
+        <Button x:Name="Back" Content="Back" Grid.Column="2" Click="Back_Click"/>
+
         <UniformGrid Columns="2" Rows="7" Grid.Row="1" Grid.Column="1">
             <Label FontSize="17" Content="Employee" Margin="5"></Label>
             <ComboBox SelectionChanged="EmployeesCBX_SelectionChanged" Name="EmployeesCBX" Margin="5"/>

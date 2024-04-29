@@ -30,12 +30,22 @@ namespace WH_APP_GUI.Dock
             Back.Visibility = Visibility.Collapsed;
             DocksByWarehouses.Visibility = Visibility.Visible;
             AllDocks.Visibility = Visibility.Visible;
+
+            if (!User.DoesHavePermission("Modify all Dock"))
+            {
+                AddNewDock.Visibility = Visibility.Collapsed;
+            }
         }
         private DataRow WarehouseFromPage = null;
         public DockPage(DataRow warehouseFromPage)
         {
             InitializeComponent();
             IniWarehouses();
+
+            if (!User.DoesHavePermission("Modify all Dock") || !User.DoesHavePermission("Modify Dock"))
+            {
+                AddNewDock.Visibility = Visibility.Collapsed;
+            }
 
             WarehouseFromPage = warehouseFromPage;
             InitializeAllDocks(DockDisplaySTACK);
@@ -134,24 +144,34 @@ namespace WH_APP_GUI.Dock
             rightStackPanel.Orientation = Orientation.Vertical;
             rightStackPanel.MinWidth = 100;
 
-            Button deleteButton = new Button();
-            deleteButton.Content = "Delete";
-            deleteButton.Click += deleteDock_Click;
-            deleteButton.Tag = dock;
-            deleteButton.Margin = new Thickness(5);
-
-            Button editButton = new Button();
-            editButton.Content = "Edit";
-            editButton.Click += EditDock_Click;
-            editButton.Tag = dock;
-            editButton.Margin = new Thickness(5);
-
             Button isDockFree = new Button();
             isDockFree.Content = bool.Parse(dock["free"].ToString()) ? "Free" : "In use";
             isDockFree.Background = bool.Parse(dock["free"].ToString()) ? Brushes.RoyalBlue : Brushes.Red;
             isDockFree.Click += isDockFree_Click;
             isDockFree.Tag = dock;
             isDockFree.Margin = new Thickness(5);
+            isDockFree.IsEnabled = false;
+            rightStackPanel.Children.Add(isDockFree);
+
+            if (User.DoesHavePermission("Modify all Dock") || User.DoesHavePermission("Modify Dock"))
+            {
+                Button deleteButton = new Button();
+                deleteButton.Content = "Delete";
+                deleteButton.Click += deleteDock_Click;
+                deleteButton.Tag = dock;
+                deleteButton.Margin = new Thickness(5);
+
+                Button editButton = new Button();
+                editButton.Content = "Edit";
+                editButton.Click += EditDock_Click;
+                editButton.Tag = dock;
+                editButton.Margin = new Thickness(5);
+
+                isDockFree.IsEnabled = true;
+                rightStackPanel.Children.Add(deleteButton);
+                rightStackPanel.Children.Add(editButton);
+            }
+
 
             if (Tables.features.isFeatureInUse("Fleet"))
             {
@@ -227,10 +247,6 @@ namespace WH_APP_GUI.Dock
                     }
                 }
             }
-
-            rightStackPanel.Children.Add(deleteButton);
-            rightStackPanel.Children.Add(editButton);
-            rightStackPanel.Children.Add(isDockFree);
 
             mainStackPanel.Children.Add(image);
             mainStackPanel.Children.Add(leftStackPanel);

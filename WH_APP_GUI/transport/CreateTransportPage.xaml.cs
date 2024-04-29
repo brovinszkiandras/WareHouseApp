@@ -42,6 +42,11 @@ namespace WH_APP_GUI.transport
             {
                 DocksCBX.IsEnabled = false;
             }
+
+            if (! User.DoesHavePermission("Assign Dock for transport"))
+            {
+                DocksCBX.IsEnabled = false;
+            }
         }
 
         private DataRow Warehouse = null;
@@ -248,6 +253,11 @@ namespace WH_APP_GUI.transport
                     }
                 }
             }
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
     }
 }

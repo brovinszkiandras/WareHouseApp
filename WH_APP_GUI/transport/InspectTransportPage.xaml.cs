@@ -27,7 +27,6 @@ namespace WH_APP_GUI.transport
             DisplayOneTransport(transport);
         }
 
-
         private void DisplayOneTransport(DataRow transport)
         {
             Border border = new Border();

@@ -29,6 +29,11 @@ namespace WH_APP_GUI.carsFolder
             InitializeComponent();
             Back.Visibility = Visibility.Collapsed;
             DisplayCars();
+
+            if (!User.DoesHavePermission("Modify all Car"))
+            {
+                Create.Visibility = Visibility.Collapsed;
+            }
         }
         private DataRow Warehouse = null;
         public CarsPage(DataRow warehouse)
@@ -36,6 +41,11 @@ namespace WH_APP_GUI.carsFolder
             InitializeComponent();
             Warehouse = warehouse;
             DisplayCars();
+
+            if (!User.DoesHavePermission("Modify all Car") || !User.DoesHavePermission("Modify Car"))
+            {
+                Create.Visibility = Visibility.Collapsed;
+            }
 
             InspectWarehouse inspectWarehouse = new InspectWarehouse(warehouse);
             Navigation.PreviousPage = inspectWarehouse;

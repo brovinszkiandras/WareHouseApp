@@ -48,6 +48,113 @@ namespace WH_APP_GUI.Warehouse
             {
                 User.tempWarehouse = Warehouse;
             }
+
+            if (! User.DoesHavePermission("Handle Products"))
+            {
+                ProductsInspectToWarehouse.Visibility = Visibility.Collapsed;
+            }
+
+
+            if (User.DoesHavePermission("Inspect Employees") || User.DoesHavePermission("Inspect all Employees"))
+            {
+                if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                {
+                    if (User.currentUser["warehouse_id"] == warehouse["id"])
+                    {
+                        EmployeesInspectToWarehouse.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        EmployeesInspectToWarehouse.Visibility = Visibility.Collapsed;
+                    }
+                }
+                else
+                {
+                    EmployeesInspectToWarehouse.Visibility = Visibility.Visible;
+                }
+            }
+
+            if (User.DoesHavePermission("Inspect Orders") || User.DoesHavePermission("Inspect all Orders"))
+            {
+                if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                {
+                    if (User.currentUser["warehouse_id"] == warehouse["id"])
+                    {
+                        OrdersInspectToWarehouse.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        OrdersInspectToWarehouse.Visibility = Visibility.Collapsed;
+                    }
+                }
+                else
+                {
+                    OrdersInspectToWarehouse.Visibility = Visibility.Visible;
+                }
+            }
+
+            if (Tables.features.isFeatureInUse("Fleet"))
+            {
+                if (User.DoesHavePermission("Inspect Transport") || User.DoesHavePermission("Inspect all Transport") || User.DoesHavePermission("Inspect own Transport"))
+                {
+                    if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                    {
+                        if (User.currentUser["warehouse_id"] == warehouse["id"])
+                        {
+                            TransportsInspectToWarehouse.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            TransportsInspectToWarehouse.Visibility = Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        TransportsInspectToWarehouse.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+            else
+            {
+                TransportsInspectToWarehouse.Visibility = Visibility.Collapsed;
+            }
+
+            if (Tables.features.isFeatureInUse("Fleet"))
+            {
+                if (!User.DoesHavePermission("Inspect Car") || !User.DoesHavePermission("Inspect all Car"))
+                {
+                    CarsInspectToWarehouse.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                CarsInspectToWarehouse.Visibility = Visibility.Collapsed;
+            }
+
+            if (Tables.features.isFeatureInUse("Dock"))
+            {
+                if (!User.DoesHavePermission("Inspect Dock"))
+                {
+                    DocksInspectToWarehouse.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                DocksInspectToWarehouse.Visibility = Visibility.Collapsed;
+            }
+
+            if (Tables.features.isFeatureInUse("Forklift"))
+            {
+                if (!User.DoesHavePermission("Inspect Forklift") || !User.DoesHavePermission("Inspect all Forklift"))
+                {
+                    ForkliftInspectToWarehouse.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                ForkliftInspectToWarehouse.Visibility = Visibility.Collapsed;
+            }
+
             Ini_City();
             Ini_Revnue_A_Day();
         }
