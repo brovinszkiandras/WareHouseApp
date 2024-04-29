@@ -36,7 +36,6 @@ namespace WH_APP_GUI.Warehouse
             panel.Visibility = Visibility.Visible;
             for (int i = 0; i < Tables.warehouses.database.Rows.Count; i++)
             {
-
                 Border border = new Border();
                 border.BorderBrush = Brushes.Black;
                 border.CornerRadius = new CornerRadius(30);
@@ -46,14 +45,26 @@ namespace WH_APP_GUI.Warehouse
 
                 Grid grid = new Grid();
 
+                StackPanel outerStack = new StackPanel();
+                if (Tables.features.isFeatureInUse("Date Log"))
+                {
+                    Label dateLog = new Label();
+                    dateLog.Content = $"Created at: {Tables.warehouses.database.Rows[i]["created_at"]} \tUpdated at: {Tables.warehouses.database.Rows[i]["updated_at"]}";
+                    dateLog.FontFamily = new FontFamily("Baskerville Old Face");
+                    dateLog.HorizontalContentAlignment = HorizontalAlignment.Center;
+                    outerStack.Children.Add(dateLog);
+                }
+
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0.5, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(4, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                 // Grid.SetColumnSpan(border, 3);
-                border.Child = grid;
+                outerStack.Children.Add(grid);
+                border.Child = outerStack;
 
                 Image image = new Image();
-                image.HorizontalAlignment = HorizontalAlignment.Left;;
+                image.HorizontalAlignment = HorizontalAlignment.Left;
+                image.Margin = new Thickness(5);
 
                 string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
                 if (Directory.Exists(targetDirectory))

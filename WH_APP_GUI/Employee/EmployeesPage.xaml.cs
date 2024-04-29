@@ -92,6 +92,16 @@ namespace WH_APP_GUI
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
 
+            StackPanel outerStack = new StackPanel();
+            if (Tables.features.isFeatureInUse("Date Log"))
+            {
+                Label dateLog = new Label();
+                dateLog.Content = $"Created at: {employee["created_at"]} \tUpdated at: {employee["updated_at"]}";
+                dateLog.HorizontalContentAlignment = HorizontalAlignment.Center;
+                dateLog.Style = (Style)this.Resources["labelstyle"];
+                outerStack.Children.Add(dateLog);
+            }
+
             Grid mainStackPanel = new Grid();
             mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
             mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
@@ -214,7 +224,8 @@ namespace WH_APP_GUI
 
             rightStackPanel.Children.Add(editButton);
 
-            border.Child = mainStackPanel;
+            outerStack.Children.Add(mainStackPanel);
+            border.Child = outerStack;
             panel.Children.Add(border);
         }
 
