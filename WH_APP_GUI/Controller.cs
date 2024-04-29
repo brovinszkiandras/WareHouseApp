@@ -848,7 +848,6 @@ namespace WH_APP_GUI
                         return false;
                     }
                 }
-
                 return true;
             }
             else

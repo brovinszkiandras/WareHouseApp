@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WH_APP_GUI.carsFolder;
+using WH_APP_GUI.Warehouse;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Primitives;
 
@@ -243,6 +244,14 @@ namespace WH_APP_GUI
             //        car[column] = car[column, DataRowVersion.Original];
             //    }
             //}
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            }
         }
     }
 }

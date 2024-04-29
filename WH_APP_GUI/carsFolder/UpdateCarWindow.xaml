@@ -21,6 +21,8 @@
             <RowDefinition Height="8*"></RowDefinition>
             <RowDefinition Height="0.5*"></RowDefinition>
         </Grid.RowDefinitions>
+        
+        <Button Click="Back_Click" Grid.Row="0" Grid.Column="2" FontSize="17" Name="Back" Content="Back"></Button>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="1">
             <Grid x:Name="carsGrid">
@@ -69,7 +71,5 @@
                 <Button  Click="Button_Click" Grid.Row="11" FontSize="17" Content="Save"></Button>
             </Grid>
         </ScrollViewer>
-
-
     </Grid>
 </Page>

@@ -104,7 +104,6 @@ namespace WH_APP_GUI.sectors
 
             if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
             {
-
                 Button delete = new Button();
                 delete.Content = "Delete";
                 delete.Style = (Style)this.Resources["GreenButtonStyle"];

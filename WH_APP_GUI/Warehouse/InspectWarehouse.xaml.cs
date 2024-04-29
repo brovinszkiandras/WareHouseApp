@@ -181,9 +181,10 @@ namespace WH_APP_GUI.Warehouse
 
         private void ProductsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
-            WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
-            Navigation.content2.Navigate(page);
-            //Navigation.OpenPage(Navigation.GetTypeByName("ProductsPage"), Warehouse);
+            //WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
+            //Navigation.content2.Navigate(page);
+            Navigation.OpenPage(Navigation.GetTypeByName("WarehouseProductsPage"), warehouseTable);
+            Navigation.ReturnParam = Warehouse;
         }
 
         private void DocksInspectToWarehouse_Click(object sender, RoutedEventArgs e)
