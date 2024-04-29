@@ -516,6 +516,8 @@ namespace WH_APP_GUI.Order
                             {
                                 foreach (DataRow orderGroupBy in Tables.orders.getOrdersOfAUser(order["user_name"], order["address"]))
                                 {
+
+
                                     orderGroupBy.Delete();
                                     Tables.orders.updateChanges();
                                 }

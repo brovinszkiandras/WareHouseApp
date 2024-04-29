@@ -327,7 +327,6 @@ namespace WH_APP_GUI
                 else
                 {
                     RegisterEmployee.IsEnabled = false;
-                    ImportEmployees.IsEnabled = false;
                     manageRoles.IsEnabled = false;
                 }
             }
@@ -421,7 +420,6 @@ namespace WH_APP_GUI
         private void CreateRequiredTablesBTN_Click(object sender, RoutedEventArgs e)
         {
             RegisterEmployee.IsEnabled = true;
-            ImportEmployees.IsEnabled = true;
             manageRoles.IsEnabled = true;
 
             Controller.CreateMigration();
@@ -618,7 +616,6 @@ namespace WH_APP_GUI
 
             RegisterEmployee.FontSize = e.NewSize.Height * 0.03;
             RegisterStaff.FontSize = e.NewSize.Height * 0.03;
-            ImportEmployees.FontSize = e.NewSize.Height * 0.03;
             ManageDatabase.FontSize = e.NewSize.Height * 0.03;
             manageRoles.FontSize = e.NewSize.Height * 0.03;
             ToTheApp.FontSize = e.NewSize.Height * 0.03;
@@ -627,8 +624,7 @@ namespace WH_APP_GUI
             AddNewRoleBTN.FontSize = e.NewSize.Height * 0.03;
             CancelRoleCreation.FontSize = e.NewSize.Height * 0.03;
             CreateRequiredTablesBTN.FontSize = e.NewSize.Height * 0.03;
-            IncludeFeture.FontSize = e.NewSize.Height * 0.03;
-            
+            IncludeFeture.FontSize = e.NewSize.Height * 0.03;            
         }
 
         private static DataRow SelectedRole = null;

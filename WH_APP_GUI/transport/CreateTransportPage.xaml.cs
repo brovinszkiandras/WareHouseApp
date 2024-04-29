@@ -176,7 +176,10 @@ namespace WH_APP_GUI.transport
             else
             {
                 transport["start_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["start_date"]);
-                transport["end_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["end_date"]);
+                if (transport["end_date"] != DBNull.Value)
+                {
+                    transport["end_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["end_date"]);
+                }
                 transport["warehouse_id"] = warehouse_id_Dictionary[WarehouseCBX.SelectedItem.ToString()]["id"];
 
                 Tables.transports.database.Rows.Add(transport);

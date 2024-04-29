@@ -410,10 +410,22 @@ namespace WH_APP_GUI.transport
                             {
                                 DataRow productInWarehouse = WarehouseTable.database.Select($"product_id = {product["id"]}")[0];
                                 productInWarehouse["qty"] = (int)productInWarehouse["qty"] + qty;
+                                WarehouseTable.updateChanges();
                             }
                             else
                             {
-                                //Big problem
+                                DataRow productInWarehouse = WarehouseTable.database.NewRow();
+                                productInWarehouse["product_id"] = product["id"];
+                                productInWarehouse["qty"] = order["qty"];
+                                productInWarehouse["shelf_id "] = DBNull.Value;
+                                productInWarehouse["width"] = 0;
+                                productInWarehouse["height"] = 0;
+                                productInWarehouse["length"] = 0;
+                                productInWarehouse["on_shelf_level"] = DBNull.Value;
+                                productInWarehouse["is_in_box"] = false;
+
+                                WarehouseTable.database.Rows.Add(productInWarehouse);
+                                WarehouseTable.updateChanges();
                             }
                         }
                     }
