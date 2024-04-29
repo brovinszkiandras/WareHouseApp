@@ -116,7 +116,6 @@ namespace WH_APP_GUI
                 {
                     MessageBox.Show("Couldnt connect to the specified database");
                 }
-
             }
             else
             {
@@ -162,6 +161,7 @@ namespace WH_APP_GUI
                     if (datasOfUser[0][4] != "")
                     {
                         User.SetCurrentUser(Emali.Text, hpsw);
+                        User.MainWindow = this;
                         if (User.currentUser != null)
                         {
                             LogIn.Visibility = Visibility.Visible;

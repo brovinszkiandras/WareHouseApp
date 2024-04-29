@@ -73,8 +73,7 @@
                 <StackPanel VerticalAlignment="Center">
                 <Button Margin="20, 5" Content="Register a new Employee" Name="RegisterEmployee" Click="RegisterEmployee_Click"  Style="{StaticResource ElegantButtonStyle}"/>
                 <Button Margin="20, 5" Content="Register a new Staff" Name="RegisterStaff" Click="RegisterStaff_Click"  Style="{StaticResource ElegantButtonStyle}"/>
-                <Button Margin="20, 5" Content="Import Employees" Name="ImportEmployees" Click="ImportEmployees_Click" Style="{StaticResource ElegantButtonStyle}"/>
-                <Button Margin="20, 5" Content="Manage Database" Name="ManageDatabase" Click="ManageDatabase_Click" Style="{StaticResource ElegantButtonStyle}"/>
+                    <Button Margin="20, 5" Content="Manage Database" Name="ManageDatabase" Click="ManageDatabase_Click" Style="{StaticResource ElegantButtonStyle}"/>
                 <Button Margin="20, 5" Content="Manage Roles" Name="manageRoles" Click="manageRoles_Click" Style="{StaticResource ElegantButtonStyle}"/>
                 <Button Margin="20, 5" Content="To the app" Name="ToTheApp" Visibility="Collapsed" Style="{StaticResource ElegantButtonStyle}" Click="ToTheApp_Click"/>
                 <ScrollViewer Margin="0, 40" x:Name="RolesScrollViewer" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">

@@ -118,7 +118,7 @@ namespace WH_APP_GUI.Order
             foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
             {
                 qtyOfAllProd += int.Parse(order["qty"].ToString());
-                maxPrice += int.Parse(Tables.orders.getProduct(order)["selling_price"].ToString());
+                maxPrice += int.Parse(Tables.orders.getProduct(order)["selling_price"].ToString()) * (int)order["qty"];
                 if (Tables.features.isFeatureInUse("Storage"))
                 {
                     string sum = Tables.orders.getProduct(order)["volume"].ToString();

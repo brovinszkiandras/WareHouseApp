@@ -200,7 +200,10 @@ namespace WH_APP_GUI.transport
         private void save_Click(object sender, RoutedEventArgs e)
         {
             transport["start_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["start_date"]);
-            transport["end_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["end_date"]);
+            if (transport["end_date"] != DBNull.Value)
+            {
+                transport["end_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["end_date"]);
+            }
 
             Tables.transports.updateChanges();
             Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully updated transport number {transport["id"]}");
