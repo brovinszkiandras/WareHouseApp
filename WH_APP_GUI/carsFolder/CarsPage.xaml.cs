@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -35,6 +36,9 @@ namespace WH_APP_GUI.carsFolder
             InitializeComponent();
             Warehouse = warehouse;
             DisplayCars();
+
+            InspectWarehouse inspectWarehouse = new InspectWarehouse(warehouse);
+            Navigation.PreviousPage = inspectWarehouse;
         }
         private void DisplayOneCar(DataRow car, int lastRow)
         {
@@ -246,15 +250,28 @@ namespace WH_APP_GUI.carsFolder
         {
             Button button = e.Source as Button;
             DataRow car = Tables.cars.database.Select($"id = {button.Tag}")[0];
-            UpdateCarWindow updateCarWindow = new UpdateCarWindow(car);
 
-            Navigation.content2.Navigate(updateCarWindow);
+            Navigation.OpenPage(Navigation.GetTypeByName("UpdateCarWindow"), car);
+            if (Warehouse != null)
+            {
+                Navigation.ReturnParam = Warehouse;
+            }
+
+            //UpdateCarWindow updateCarWindow = new UpdateCarWindow(car);
+            //Navigation.content2.Navigate(updateCarWindow);
         }
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-           CreateCarWindow createCar = new CreateCarWindow();
-            Navigation.content2.Navigate(createCar);
+            //CreateCarWindow createCar = new CreateCarWindow();
+            //Navigation.content2.Navigate(createCar);
+
+            Navigation.SkipParam = true;
+            Navigation.OpenPage(Navigation.GetTypeByName("CreateCarWindow"));
+            if (Warehouse != null)
+            {
+                Navigation.ReturnParam = Warehouse;
+            }
         }
         private void Back_Click(object sender, RoutedEventArgs e)
         {

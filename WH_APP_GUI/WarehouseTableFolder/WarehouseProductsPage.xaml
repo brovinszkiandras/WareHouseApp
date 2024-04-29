@@ -7,33 +7,64 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="WarehouseProductsPage">
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GreenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                     BorderBrush="{TemplateBinding BorderBrush}"
+                     BorderThickness="{TemplateBinding BorderThickness}"
+                     CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid Background="White">
+        <Grid Background="LightYellow">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"></RowDefinition>
+                <RowDefinition Height="7*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Background="#425C5A" Name="labelsGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
 
-	<Grid Background="White">
-		<Grid Background="LightYellow">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="1.5*"></RowDefinition>
-				<RowDefinition Height="7*"></RowDefinition>
-			</Grid.RowDefinitions>
-			<Grid Background="DarkMagenta" Name="labelsGrid">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="auto"></ColumnDefinition>
-					<ColumnDefinition Width="*"></ColumnDefinition>
-					<ColumnDefinition Width="*"></ColumnDefinition>
-					<ColumnDefinition Width="*"></ColumnDefinition>
-					<ColumnDefinition Width="*"></ColumnDefinition>
-					<ColumnDefinition Width="*"></ColumnDefinition>
-					<ColumnDefinition Width="*"></ColumnDefinition>
-					<ColumnDefinition Width="*"></ColumnDefinition>
-					
 
-				</Grid.ColumnDefinitions>
+                </Grid.ColumnDefinitions>
 
-				<Label Content="Product Name"
+                <Label Content="Product Name"
        Foreground="White"
        FontSize="15"
        VerticalAlignment="Center"
        HorizontalContentAlignment="Center"></Label>
-				<Label Content="Quantity"
+                <Label Content="Quantity"
        Foreground="White"
        Grid.Column="1" VerticalAlignment="Center"
        FontSize="15"
@@ -52,7 +83,7 @@
                 FontSize="13"
                 HorizontalContentAlignment="Center"></Label>
 
-				<Label Content="In a box"
+                <Label Content="In a box"
                 Foreground="White"
                 Grid.Column="4"
                 VerticalAlignment="Center"
@@ -60,31 +91,31 @@
                 HorizontalContentAlignment="Center"></Label>
 
 
-				<Button Grid.Column="10" Background="DarkMagenta" Foreground="White" Name="Create" Content="Create new" Click="Create_Click"></Button>
+                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}" Grid.Column="9"/>
+                <Button Content="Create New" Name="Create" Click="Create_Click" Style="{StaticResource GreenButtonStyle}" Grid.Column="10"/>
+            </Grid>
 
-			</Grid>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                <Grid Background="#425C5A" x:Name="productGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
 
-			<ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-				<Grid Background="Black" x:Name="productGrid">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"></ColumnDefinition>
-						<ColumnDefinition Width="*"></ColumnDefinition>
-						<ColumnDefinition Width="*"></ColumnDefinition>
-						<ColumnDefinition Width="*"></ColumnDefinition>
-						<ColumnDefinition Width="*"></ColumnDefinition>
-						<ColumnDefinition Width="*"></ColumnDefinition>
-						<ColumnDefinition Width="*"></ColumnDefinition>
-						<ColumnDefinition Width="*"></ColumnDefinition>
-						
 
-					</Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>
 
-					<Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
 
-					</Grid.RowDefinitions>
-				</Grid>
-			</ScrollViewer>
+                    </Grid.RowDefinitions>
+                </Grid>
+            </ScrollViewer>
 
-		</Grid>
-	</Grid>
+        </Grid>
+    </Grid>
 </Page>

@@ -16,18 +16,12 @@ using Xceed.Wpf.Toolkit.Primitives;
 
 namespace WH_APP_GUI
 {
-    /// <summary>
-    /// Interaction logic for SectorWindow.xaml
-    /// </summary>
     public partial class SectorWindow : Page
     {
         #region constructor
         public SectorWindow()
         {
             InitializeComponent();
-
-            
-
             //Az oldal datacontexte a kiválasztott szector lesz
             this.DataContext = Visual.sector;
 
@@ -61,9 +55,9 @@ namespace WH_APP_GUI
                     //Megadom a click eventet
                     button.Click += box_Click;
                     //Megadom a gombok kinézetét
-                    button.BorderBrush = Brushes.GreenYellow;
+                    button.BorderBrush = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2)); ;
                     button.BorderThickness = new System.Windows.Thickness(0.03);
-                    button.Background = Brushes.Black;
+                    button.Background = new SolidColorBrush(Color.FromArgb(0, 0xCE, 0xA2, 0xFF));
 
                     //Beállítom a gombok méretét a max méretük felére a kinézet miatt
                     button.Height = (double)Visual.sizeVertically / 2;
@@ -291,7 +285,7 @@ namespace WH_APP_GUI
                         {
                             if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
                             {
-                                children.Background = Brushes.DarkMagenta;
+                                children.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2)); ;
                             }
                         }
                     }
@@ -306,7 +300,7 @@ namespace WH_APP_GUI
                         {
                             if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
                             {
-                                children.Background = Brushes.DarkMagenta;
+                                children.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2));;
                             }
                         }
                     }
@@ -369,7 +363,10 @@ namespace WH_APP_GUI
                 desinger_viewButton.Content = "Designer view: ON";
                 shelfBuilder.isDesignerModeActive = true;
 
-                New_shelf.Visibility = Visibility.Visible;
+                if(shelfBuilder.isAShelfBeingCreated == false)
+                {
+                    New_shelf.Visibility = Visibility.Visible;
+                }
                 Done.Visibility = Visibility.Visible;
                 
             }
@@ -381,7 +378,10 @@ namespace WH_APP_GUI
                 desinger_viewButton.Content = "Designer view: OFF";
                 shelfBuilder.isDesignerModeActive = false;
 
-                New_shelf.Visibility = Visibility.Hidden;
+                if (shelfBuilder.isAShelfBeingCreated == false)
+                {
+                    New_shelf.Visibility = Visibility.Hidden;
+                }
                 Done.Visibility = Visibility.Hidden;
                 Delete.Visibility = Visibility.Hidden;
             }
@@ -455,7 +455,7 @@ namespace WH_APP_GUI
                     //és az X pozició egyezik a jelenleg vizsált X poziciíóval)
                     if (Grid.GetRow(square) == (int)row["startYindex"] && Grid.GetColumn(square) == i)
                     {
-                        square.Background = Brushes.DarkMagenta;
+                        square.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2));
                         square.BorderThickness = new System.Windows.Thickness(0);
                         square.Width = Visual.sizeHorizontally;
                         square.Height = (double)row["width"];
@@ -483,7 +483,7 @@ namespace WH_APP_GUI
                 {
                     if (Grid.GetColumn(square) == (int)row["startXindex"] && Grid.GetRow(square) == i)
                     {
-                        square.Background = Brushes.DarkMagenta;
+                        square.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2));
                         square.BorderThickness = new System.Windows.Thickness(0);
                         square.Width = (double)row["width"];
                         square.Height = Visual.sizeVertically;
@@ -767,5 +767,17 @@ namespace WH_APP_GUI
             toolPanel.Visibility = Visibility.Visible;
         }
         #endregion
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("InspectWarehouse"));
+            }
+        }
     }
 }

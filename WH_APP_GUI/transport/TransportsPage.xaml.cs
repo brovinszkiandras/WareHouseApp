@@ -41,6 +41,7 @@ namespace WH_APP_GUI.transport
             border.BorderBrush = Brushes.Black;
             border.BorderThickness = new Thickness(2);
             border.Background = Brushes.White;
+            border.Margin = new Thickness(5);
 
             StackPanel mainStackPanel = new StackPanel();
 
@@ -211,8 +212,6 @@ namespace WH_APP_GUI.transport
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             CreateTransportPage createTransportPage = new CreateTransportPage();
-
-
             Navigation.content2.Navigate(createTransportPage);
         }
 

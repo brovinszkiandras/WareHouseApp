@@ -14,18 +14,28 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WH_APP_GUI.carsFolder;
+using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI.warehouseTableFolder
 {
     public partial class WarehouseProductsPage : Page
     {
+        warehouse warehouseTable;
+        public WarehouseProductsPage(warehouse WarehouseTable)
+        {
+            InitializeComponent();
+
+            this.warehouseTable = WarehouseTable;
+
+            Displayproducts();
+        }
         public void Displayproducts()
         {
             addStorageFeautoreElementsToDisplay();
 
             productGrid.Children.Clear();
             int lastRow = 0;
-           
+
 
             foreach (DataRow product in warehouseTable.database.Rows)
             {
@@ -72,10 +82,6 @@ namespace WH_APP_GUI.warehouseTableFolder
                 #region StorageElements
                 if (Tables.features.isFeatureInUse("Storage"))
                 {
-                    
-
-                   
-
                     width.Text = product["width"].ToString();
                     width.FontSize = 15;
                     width.Foreground = Brushes.White;
@@ -179,7 +185,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                 lastRow++;
             }
         }
-        
+
         public void addStorageFeautoreElementsToDisplay()
         {
             for (int i = 1; i <= 3; i++)
@@ -220,18 +226,6 @@ namespace WH_APP_GUI.warehouseTableFolder
             Grid.SetColumn(lengthLabel, 7);
             labelsGrid.Children.Add(lengthLabel);
         }
-
-      
-       warehouse warehouseTable;
-        public WarehouseProductsPage(warehouse WarehouseTable)
-        {
-            InitializeComponent();
-
-            this.warehouseTable = WarehouseTable;
-            
-            Displayproducts();
-        }
-
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             Button button = e.Source as Button;
@@ -241,17 +235,11 @@ namespace WH_APP_GUI.warehouseTableFolder
                 DataRow product = warehouseTable.database.Select($"id = {button.Tag}")[0];
                 if (product != null)
                 {
-
                     product.Delete();
                     warehouseTable.updateChanges();
-
-
-
                     Displayproducts();
                 }
             }
-
-
         }
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
@@ -264,8 +252,11 @@ namespace WH_APP_GUI.warehouseTableFolder
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            CreateWHProductPage page = new CreateWHProductPage(warehouseTable);
-            Navigation.content2.Navigate(page);
+            //CreateWHProductPage page = new CreateWHProductPage(warehouseTable);
+            //Navigation.content2.Navigate(page);
+
+            Navigation.OpenPage(Navigation.GetTypeByName("CreateWHProductPage"), warehouseTable);
+            Navigation.ReturnParam = warehouseTable;
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
@@ -275,6 +266,30 @@ namespace WH_APP_GUI.warehouseTableFolder
             WHProudctQuantityPage page = new WHProudctQuantityPage(product);
 
             page.ShowDialog();
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                if (warehouseTable.database.TableName != null)
+                {
+                    DataRow warehouse = Tables.warehouses.database.Select($"name = '{warehouseTable.database.TableName}'")[0];
+
+                    InspectWarehouse inspectWarehouse = new InspectWarehouse(warehouse);
+                    Navigation.PreviousPage = inspectWarehouse;
+
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), warehouse);
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("InspectWarehouse"));
+            }
         }
     }
 }

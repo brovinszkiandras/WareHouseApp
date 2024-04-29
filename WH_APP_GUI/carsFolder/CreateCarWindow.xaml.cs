@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WH_APP_GUI.Warehouse;
 using Xceed.Wpf.Toolkit.Primitives;
 
 namespace WH_APP_GUI.carsFolder
@@ -225,6 +226,14 @@ namespace WH_APP_GUI.carsFolder
         private void last_exam_InputValidationError(object sender, Xceed.Wpf.Toolkit.Core.Input.InputValidationErrorEventArgs e)
         {
             MessageBox.Show($"You can only input a date", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            }
         }
     }
 }

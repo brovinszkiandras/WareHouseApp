@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="CreateCarWindow"
         d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
+    <Grid>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"></ColumnDefinition>
         <ColumnDefinition Width="8*"></ColumnDefinition>
@@ -20,6 +20,8 @@
         <RowDefinition Height="8*"></RowDefinition>
         <RowDefinition Height="0.5*"></RowDefinition>
     </Grid.RowDefinitions>
+
+        <Button Click="Back_Click" Grid.Row="0" Grid.Column="2" FontSize="17" Name="Back" Content="Back"/>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="1">
             <Grid x:Name="carsGrid">

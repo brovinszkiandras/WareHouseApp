@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,13 @@ namespace WH_APP_GUI
         #region ini
         static public void Ini()
         {
+            databases.Relations.Clear();
+            foreach (DataTable table in databases.Tables)
+            {
+                table.Constraints.Clear();
+            }
+            databases.Tables.Clear();
+
             addRequriedTablesToTables();
             if ((bool)features.database.Select("name = 'Dock'")[0]["in_use"])
             {
@@ -52,16 +60,16 @@ namespace WH_APP_GUI
         public static void addRequriedTablesToTables()
         {
             features = new feature("feature");
-            staff = new staff();
-            warehouses = new warehouses();
-            employees = new employees();
-            orders = new orders();
-            products = new products();
-            roles = new roles();
-            permissions = new permission();
+            staff = new staff("staff");
+            warehouses = new warehouses("warehouses");
+            employees = new employees("employees");
+            orders = new orders("orders");
+            products = new products("products");
+            roles = new roles("roles");
+            permissions = new permission("permission");
             sector = new Sector("sector");
             shelf = new shelf("shelf");
-            cities = new cities();
+            cities = new cities("cities");
 
 
             Relations.makeRelation("staffRole", roles.database, staff.database, "id", "role_id");
@@ -81,8 +89,8 @@ namespace WH_APP_GUI
         #region fleet
         public static void addFleetTablesToTables()
         {
-            transports = new transports();
-            cars = new cars();
+            transports = new transports("transports");
+            cars = new cars("cars");
             Relations.makeRelation("transportEmployee", employees.database, transports.database, "id", "employee_id");
             Relations.makeRelation("transportCar", cars.database, transports.database, "id", "car_id");
             Relations.makeRelation("orderTransport", transports.database, orders.database, "id", "transport_id");
@@ -104,33 +112,33 @@ namespace WH_APP_GUI
 
         public static void DisableFleetFeature()
         {
+            DeleteRelationsWithDataTable(transports.database);
+            DeleteRelationsWithDataTable(cars.database);
             transports = null;
             cars = null;
-            databases.Relations.Remove("transportEmployee");
-            databases.Relations.Remove("transportCar");
-            databases.Relations.Remove("transportWarehouse");
-            databases.Relations.Remove("carWarehosue");
-            //Kikapcsolom az ordertransportot
-            databases.Relations.Remove("orderTransport");
-            orders.database.Constraints.Remove("orderTransport");
-            orders.database.Columns.Remove("transport_id");
+            
             //Hozzáadom az orderDock relationt és kikapcsolom a transport dock relationt 
             if (Tables.features.isFeatureInUse("Dock") == true)
             {
-                databases.Relations.Remove("orderDock");
+                
                 Relations.makeRelation("orderDock", docks.database, orders.database, "id", "dock_id");
             }
+
+
+
+            databases.Tables.Remove("transports");
+            databases.Tables.Remove("cars");
         }
         #endregion
 
         #region dock
         public static void addDockTableToTables()
         {
-            docks = new dock();
+            docks = new dock("dock");
             //transportDock relation létrehozása
             if (bool.Parse(Tables.features.database.Select("name = 'Fleet'")[0]["in_use"].ToString()))
             {
-                if (transports != null)
+                if (transports != null && databases.Tables["transports"] != null)
                 {
                     Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
                 }
@@ -144,31 +152,33 @@ namespace WH_APP_GUI
         }
         public static void disableDockFeature()
         {
+            DeleteRelationsWithDataTable(docks.database);
             docks = null;
+
 
             if (Tables.features.isFeatureInUse("Fleet"))
             {
                 //Kikapcsolom a transport dock relationt
-                databases.Relations.Remove("transportDock");
-                transports.database.Constraints.Remove("transportDock");
+                
                 Tables.transports.database.Columns.Remove("dock_id");
             }
             else
             {
                 //Kikapcsolom az orderDock relationt
-                databases.Relations.Remove("orderDock");
+               
                 Tables.orders.database.Columns.Remove("dock_id");
             }
 
+           
 
-            databases.Relations.Remove("dockWarehouse");
+            databases.Tables.Remove("dock");
         }
         #endregion
 
         #region forklift
         public static void addForkliftTableToTables()
         {
-            forklifts = new forklift();
+            forklifts = new forklift("forklift");
 
             Relations.makeRelation("forkliftWarehouse", warehouses.database, forklifts.database, "id", "warehouse_id");
         }
@@ -177,9 +187,9 @@ namespace WH_APP_GUI
 
         public static void disableForkliftFeauture()
         {
+            DeleteRelationsWithDataTable(forklifts.database);
             forklifts = null;
-
-            databases.Relations.Remove("forkliftWarehouse");
+            databases.Tables.Remove("forklift");
         }
         #endregion
 
@@ -206,5 +216,62 @@ namespace WH_APP_GUI
             }
         }
 
+        private static void DeleteRelationsWithDataTable(DataTable targetDataTable)
+        {
+            if(targetDataTable.ChildRelations != null)
+            {
+                targetDataTable.ChildRelations.Clear();
+            }
+            if (targetDataTable.ParentRelations != null)
+            {
+                targetDataTable.ChildRelations.Clear();
+            }
+            if(targetDataTable.Constraints != null)
+            {
+                targetDataTable.Constraints.Clear();
+            }
+           
+            foreach (DataTable table in databases.Tables)
+            {
+               
+                    // Check if the table has any constraints
+                    if (table.Constraints.Count > 0)
+                    {
+                    
+                    // Iterate through each Constraint
+                    for (int i = 0; i < table.Constraints.Count; i++)
+                        {
+                            Constraint constraint = table.Constraints[i];
+                            // Check if the constraint is a ForeignKeyConstraint
+                           
+                            if (constraint is ForeignKeyConstraint foreignKeyConstraint)
+                            {
+                           
+                                // Check if the ForeignKeyConstraint is related to the target DataTable
+                                if (foreignKeyConstraint.RelatedTable == targetDataTable)
+                                {
+                                    table.Constraints.Remove(constraint); // Remove the constraint
+                                   
+                                }
+                            }
+                        }
+                    }
+            }
+
+            if (databases.Relations.Count > 0)
+            {
+                // Iterate through each DataRelation
+                for (int i = 0; i < databases.Relations.Count; i++)
+                {
+                    DataRelation relation = databases.Relations[i];
+                    // Check if the relation is related to the target DataTable
+                    if (relation.ParentTable == targetDataTable || relation.ChildTable == targetDataTable)
+                    {
+                        databases.Relations.Remove(relation); // Remove the relation
+                        
+                    }
+                }
+            }
+        }
     }
 }

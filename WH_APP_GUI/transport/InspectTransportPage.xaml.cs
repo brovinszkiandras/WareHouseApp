@@ -57,11 +57,32 @@ namespace WH_APP_GUI.transport
             car.Margin = new Thickness(0, 0, 5, 0);
             datas.Children.Add(car);
 
-            Label status = new Label();
-            status.Content = $"Status: {transport["status"]}";
+            ComboBox status = new ComboBox();
             status.BorderBrush = Brushes.Black;
             status.BorderThickness = new Thickness(1, 0, 0, 1);
             status.Margin = new Thickness(0, 0, 5, 0);
+            status.Tag = transport;
+
+            if (transport["status"].ToString() == "Docking")
+            {
+                status.Items.Add("Docking");
+                status.Items.Add("On route");
+                status.SelectedItem = "Docking";
+            }
+            else if (transport["status"].ToString() == "On route")
+            {
+                status.Items.Add("On route");
+                status.Items.Add("On Way Back");
+                status.SelectedItem = "On route";
+            }
+            else if (transport["status"].ToString() == "On Way Back")
+            {
+                status.Items.Add("On Way Back");
+                status.Items.Add("Finished");
+                status.SelectedItem = "On Way Back";
+            }
+
+            status.SelectionChanged += TransportStatusChange;
             datas.Children.Add(status);
 
             Label start_date = new Label();
@@ -111,13 +132,71 @@ namespace WH_APP_GUI.transport
                 List<string[]> name_address = SQL.SqlQuery($"SELECT user_name, address FROM {Tables.orders.actual_name} WHERE transport_id = {transport["id"]} GROUP BY user_name, address");
                 for (int i = 0; i < name_address.Count; i++)
                 {
-                    DisplayOneOrder(orders, name_address[0][0], name_address[0][1]);
+                    DisplayOneOrder(orders, name_address[i][0], name_address[i][1]);
                 }
                 mainStackPanel.Children.Add(orders);
             }
 
             border.Child = mainStackPanel;
             transportDisplay.Children.Add(border);
+        }
+
+        private bool CanTransportFinished(DataRow transport)
+        {
+            foreach (DataRow order in Tables.transports.getOrders(transport))
+            {
+                if (order["status"].ToString() != "Delivered" && order["status"].ToString() != "Sent Back")
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        private void TransportStatusChange(object sender, RoutedEventArgs e)
+        {
+            DataRow transport = (sender as ComboBox).Tag as DataRow;
+            if (transport != null)
+            {
+                if ((sender as ComboBox).SelectedItem.ToString() == "On Way Back")
+                {
+                    if (! CanTransportFinished(transport))
+                    {
+                        MessageBox.Show("The transport can not be finished while still have active orders in it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        (sender as ComboBox).SelectedItem = "On route";
+                    }
+                    else
+                    {
+                        Transport["status"] = (sender as ComboBox).SelectedItem.ToString();
+                        Tables.transports.updateChanges();
+                        transportDisplay.Children.Clear();
+                        DisplayOneTransport(Transport);
+                    }
+
+                }
+                else if ((sender as ComboBox).SelectedItem.ToString() == "Finished")
+                {
+                    transport.Delete();
+                    Tables.transports.updateChanges();
+                    Tables.transports.Refresh();
+                    MessageBox.Show("The transport has been completed", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    if (Navigation.PreviousPage != null)
+                    {
+                        Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                    }
+                    else
+                    {
+                        Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
+                    }
+                }
+                else
+                {
+                    Transport["status"] = (sender as ComboBox).SelectedItem.ToString();
+                    Tables.transports.updateChanges();
+                    transportDisplay.Children.Clear();
+                    DisplayOneTransport(Transport);
+                }
+            }
         }
 
         private void DisplayOneOrder(Panel panel, string username, string address)
@@ -227,11 +306,39 @@ namespace WH_APP_GUI.transport
             status.BorderThickness = new Thickness(1, 0, 1, 1);
             status.Margin = new Thickness(5);
 
-            Label statusLBL = new Label();
-            statusLBL.Content = $"Status: {dataOfOrder["status"]}";
-            statusLBL.HorizontalAlignment = HorizontalAlignment.Center;
+            
+            if (dataOfOrder["status"].ToString() == "Finished" || dataOfOrder["status"].ToString() == "Sent Back" || dataOfOrder["status"].ToString() == "Delivered") 
+            {
+                ComboBox statusCBX = new ComboBox();
+                statusCBX.Margin = new Thickness(5);
+                statusCBX.HorizontalAlignment = HorizontalAlignment.Center;
+                statusCBX.Tag = Tables.orders.getOrdersOfAUser(dataOfOrder["user_name"], dataOfOrder["address"]);
+                statusCBX.MinWidth = 150;
+                statusCBX.Items.Add("Delivered");
+                statusCBX.Items.Add("Sent Back");
+                if (statusCBX.Items.Contains(dataOfOrder["status"].ToString()))
+                {
+                    statusCBX.SelectedItem = dataOfOrder["status"].ToString();
+                }
+                statusCBX.SelectionChanged += OrderStatusChange;
+                status.Child = statusCBX;
 
-            status.Child = statusLBL;
+                if (Transport != null)
+                {
+                    if (Transport["status"].ToString() != "On route")
+                    {
+                        statusCBX.IsEnabled = false;
+                    }
+                }
+            }
+            else
+            {
+                Label statusLBL = new Label();
+                statusLBL.Content = $"Status: {dataOfOrder["status"]}";
+                statusLBL.HorizontalAlignment = HorizontalAlignment.Center;
+                status.Child = statusLBL;
+            }
+
             mainStackPanel.Children.Add(status);
 
             if (Tables.features.isFeatureInUse("Storage"))
@@ -266,6 +373,58 @@ namespace WH_APP_GUI.transport
             panel.Children.Add(border);
         }
 
+        private void OrderStatusChange(object sender, RoutedEventArgs e)
+        {
+            DataRow[] orders = (sender as ComboBox).Tag as DataRow[];
+            if (orders.Length != 0)
+            {
+                foreach (DataRow order in orders)
+                {
+                    if ((sender as ComboBox).SelectedItem.ToString() == "Delivered")
+                    {
+                        if (order["warehouse_id"] != DBNull.Value && order["product_id"] != DBNull.Value)
+                        {
+                            DataRow warehouse = Tables.orders.getWarehouse(order);
+                            DataRow product = Tables.orders.getProduct(order);
+                            double totalincome = warehouse["total_income"] != DBNull.Value ? (double)warehouse["total_income"] : 0;
+                            double sellingPrice = product["selling_price"] != DBNull.Value ? (double)product["selling_price"] : 0;
+                            int qty = order["qty"] != DBNull.Value ? (int)order["qty"] : 0;
+                            warehouse["total_income"] = totalincome + (sellingPrice * qty);
+                            
+                            Tables.warehouses.updateChanges();
+                        }
+                    }
+                    else if ((sender as ComboBox).SelectedItem.ToString() == "Sent Back")
+                    {
+                        if (order["warehouse_id"] != DBNull.Value && order["product_id"] != DBNull.Value)
+                        {
+                            DataRow warehouse = Tables.orders.getWarehouse(order);
+                            DataRow product = Tables.orders.getProduct(order);
+                            double totalValue = warehouse["total_value"] != DBNull.Value ? (double)warehouse["total_value"] : 0;
+                            double sellingPrice = product["selling_price"] != DBNull.Value ? (double)product["selling_price"] : 0;
+                            int qty = order["qty"] != DBNull.Value ? (int)order["qty"] : 0;
+                            warehouse["total_value"] = totalValue + (sellingPrice * qty);
+
+                            warehouse WarehouseTable = Tables.getWarehosue(warehouse["name"].ToString());
+                            if (WarehouseTable.database.Select($"product_id = {product["id"]}").Length != 0)
+                            {
+                                DataRow productInWarehouse = WarehouseTable.database.Select($"product_id = {product["id"]}")[0];
+                                productInWarehouse["qty"] = (int)productInWarehouse["qty"] + qty;
+                            }
+                            else
+                            {
+                                //Big problem
+                            }
+                        }
+                    }
+
+                    order["status"] = (sender as ComboBox).SelectedItem.ToString();
+                    Tables.orders.updateChanges();
+                }
+
+                MessageBox.Show("Order has been updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {

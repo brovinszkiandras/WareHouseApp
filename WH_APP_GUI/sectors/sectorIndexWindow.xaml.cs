@@ -4,7 +4,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,125 +13,134 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WH_APP_GUI.transport;
+using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI.sectors
 {
-    /// <summary>
-    /// Interaction logic for sectorIndexWindow.xaml
-    /// </summary>
     public partial class sectorIndexWindow : Page
     {
+        public sectorIndexWindow()
+        {
+            InitializeComponent();
+            DisplaySectors();
+        }
+
+        private DataRow Warehouse = null;
+        public sectorIndexWindow(DataRow warehouse)
+        {
+            InitializeComponent();
+            Warehouse = warehouse;
+            Navigation.ReturnParam = warehouse;
+            DisplaySectors();
+        }
+
+        private void DisplayOneSector(DataRow sector, int lastRow)
+        {
+            RowDefinition rowDefinition = new RowDefinition();
+            rowDefinition.Height = GridLength.Auto;
+            sectorGrid.RowDefinitions.Add(rowDefinition);
+
+            TextBlock name = new TextBlock();
+            name.Text = sector["name"].ToString();
+            name.TextWrapping = TextWrapping.Wrap;
+            name.Foreground = Brushes.White;
+            name.HorizontalAlignment = HorizontalAlignment.Center;
+            Grid.SetRow(name, lastRow);
+            Grid.SetColumn(name, 0);
+
+            sectorGrid.Children.Add(name);
+
+            TextBlock length = new TextBlock();
+            length.Text = sector["length"].ToString();
+            length.Foreground = Brushes.White;
+            length.TextWrapping = TextWrapping.Wrap;
+            length.HorizontalAlignment = HorizontalAlignment.Center;
+            Grid.SetRow(length, lastRow);
+            Grid.SetColumn(length, 1);
+
+            sectorGrid.Children.Add(length);
+
+            TextBlock width = new TextBlock();
+            width.Text = sector["width"].ToString();
+            width.Foreground = Brushes.White;
+            width.TextWrapping = TextWrapping.Wrap;
+            width.HorizontalAlignment = HorizontalAlignment.Center;
+            Grid.SetRow(width, lastRow);
+            Grid.SetColumn(width, 2);
+
+            sectorGrid.Children.Add(width);
+
+            TextBlock area = new TextBlock();
+
+            area.Text = sector["area"].ToString();
+            area.Foreground = Brushes.White;
+            area.TextWrapping = TextWrapping.Wrap;
+            area.HorizontalAlignment = HorizontalAlignment.Center;
+            Grid.SetRow(area, lastRow);
+            Grid.SetColumn(area, 3);
+
+            sectorGrid.Children.Add(area);
+
+            TextBlock area_in_use = new TextBlock();
+            area_in_use.Text = sector["area_in_use"].ToString();
+            area_in_use.Foreground = Brushes.White;
+            area_in_use.TextWrapping = TextWrapping.Wrap;
+            area_in_use.HorizontalAlignment = HorizontalAlignment.Center;
+            Grid.SetRow(area_in_use, lastRow);
+            Grid.SetColumn(area_in_use, 4);
+
+            sectorGrid.Children.Add(area_in_use);
+
+            Button inspect = new Button();
+            inspect.Content = "Inspect";
+            inspect.Style = (Style)this.Resources["GreenButtonStyle"];
+            inspect.Margin = new Thickness(5);
+            inspect.Tag = sector["id"];
+            inspect.Click += Inspect_Click;
+            Grid.SetRow(inspect, lastRow);
+            Grid.SetColumn(inspect, 6);
+
+            sectorGrid.Children.Add(inspect);
+
+            if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
+            {
+                Button delete = new Button();
+                delete.Content = "Delete";
+                delete.Style = (Style)this.Resources["GreenButtonStyle"];
+                delete.Margin = new Thickness(5);
+                delete.Tag = sector["id"];
+                delete.Click += Delete_Click;
+                Grid.SetRow(delete, lastRow);
+                Grid.SetColumn(delete, 7);
+
+                sectorGrid.Children.Add(delete);
+            }
+            else
+            {
+                Create.Visibility = Visibility.Collapsed;
+            }
+        }
+
         public void DisplaySectors()
         {
             sectorGrid.Children.Clear();
             int lastRow = 0;
-            foreach (DataRow sector in Tables.sector.database.Rows)
+            if (Warehouse != null)
             {
-                RowDefinition rowDefinition = new RowDefinition();
-                rowDefinition.Height = GridLength.Auto;
-                sectorGrid.RowDefinitions.Add(rowDefinition);
-
-                TextBlock name = new TextBlock();
-                name.Text = sector["name"].ToString();
-                name.TextWrapping = TextWrapping.Wrap;
-                name.Foreground = Brushes.White;
-                name.HorizontalAlignment = HorizontalAlignment.Center;
-                Grid.SetRow(name, lastRow);
-                Grid.SetColumn(name, 0);
-
-                sectorGrid.Children.Add(name);
-
-                TextBlock length = new TextBlock();
-                length.Text = sector["length"].ToString();
-                length.Foreground = Brushes.White;
-                length.TextWrapping = TextWrapping.Wrap;
-                length.HorizontalAlignment = HorizontalAlignment.Center;
-                Grid.SetRow(length, lastRow);
-                Grid.SetColumn(length, 1);
-
-                sectorGrid.Children.Add(length);
-
-                TextBlock width = new TextBlock();
-                width.Text = sector["width"].ToString();
-                width.Foreground = Brushes.White;
-                width.TextWrapping = TextWrapping.Wrap;
-                width.HorizontalAlignment = HorizontalAlignment.Center;
-                Grid.SetRow(width, lastRow);
-                Grid.SetColumn(width, 2);
-
-                sectorGrid.Children.Add(width);
-
-                TextBlock area = new TextBlock();
-                
-                area.Text = sector["area"].ToString();
-                area.Foreground = Brushes.White;
-                area.TextWrapping = TextWrapping.Wrap;
-                area.HorizontalAlignment = HorizontalAlignment.Center;
-                Grid.SetRow(area, lastRow);
-                Grid.SetColumn(area, 3);
-
-                sectorGrid.Children.Add(area);
-
-                TextBlock area_in_use = new TextBlock();
-                area_in_use.Text = sector["area_in_use"].ToString();
-                area_in_use.Foreground = Brushes.White;
-                area_in_use.TextWrapping = TextWrapping.Wrap;
-                area_in_use.HorizontalAlignment = HorizontalAlignment.Center;
-                Grid.SetRow(area_in_use, lastRow);
-                Grid.SetColumn(area_in_use, 4);
-
-                sectorGrid.Children.Add(area_in_use);
-
-                    Button inspect = new Button();
-                    inspect.Content = "Inspect";
-                    inspect.Style = (Style)this.Resources["GreenButtonStyle"];
-                    inspect.Margin = new Thickness(5);
-                    inspect.Tag = sector["id"];
-                    inspect.Click += Inspect_Click;
-                    Grid.SetRow(inspect, lastRow);
-                    Grid.SetColumn(inspect, 5);
-
-                    sectorGrid.Children.Add(inspect);
-                
-
-                if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
+                foreach (DataRow sector in Tables.sector.database.Select($"warehouse_id = {Warehouse["id"]}"))
                 {
-                    Button edit = new Button();
-                    edit.Content = "Edit";
-                    edit.Style = (Style)this.Resources["GreenButtonStyle"];
-                    edit.Click += Edit_Click;
-                    edit.Margin = new Thickness(5);
-                    edit.Tag = sector["id"];
-
-                    Grid.SetRow(edit, lastRow);
-                    Grid.SetColumn(edit, 6);
-
-                    sectorGrid.Children.Add(edit);
-
-                    Button delete = new Button();
-                    delete.Content = "Delete";
-                    delete.Style = (Style)this.Resources["GreenButtonStyle"];
-                    delete.Margin = new Thickness(5);
-                    delete.Tag = sector["id"];
-                    delete.Click += Delete_Click;
-                    Grid.SetRow(delete, lastRow);
-                    Grid.SetColumn(delete, 7);
-
-                    sectorGrid.Children.Add(delete);
+                    DisplayOneSector(sector, lastRow);
+                    lastRow++;
                 }
-                else
-                {
-                    Create.Visibility = Visibility.Collapsed;
-                }
-
-                lastRow++;
             }
-        }
-        public sectorIndexWindow()
-        {
-            InitializeComponent();
-
-            DisplaySectors();
+            else
+            {
+                foreach (DataRow sector in Tables.sector.database.Rows)
+                {
+                    DisplayOneSector(sector, lastRow);
+                    lastRow++;
+                }
+            }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -145,12 +153,8 @@ namespace WH_APP_GUI.sectors
                 DataRow sector = Tables.sector.database.Select($"id = '{button.Tag}'")[0];
                 if (sector != null)
                 {
-                    
-
                     sector.Delete();
                     Tables.sector.updateChanges();
-
-
 
                     DisplaySectors();
                 }
@@ -158,21 +162,12 @@ namespace WH_APP_GUI.sectors
 
 
         }
-        private void Edit_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = e.Source as Button;
-            DataRow sector = Tables.sector.database.Select($"id = '{button.Tag}'")[0];
-            UpdateSectorPage updateSectorPage = new UpdateSectorPage();
-
-            Navigation.content2.Navigate(updateSectorPage);
-        }
-
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             CreateSectorPage createSectorPage = new CreateSectorPage();
 
-
             Navigation.content2.Navigate(createSectorPage);
+            Navigation.ReturnParam = Warehouse;
         }
         private void Inspect_Click(object sender, RoutedEventArgs e)
         {
@@ -180,6 +175,15 @@ namespace WH_APP_GUI.sectors
             DataRow sector = Tables.sector.database.Select($"id = '{button.Tag}'")[0];
             Visual.sector = sector;
 
+            if (Warehouse != null)
+            {
+                Navigation.ReturnParam = Warehouse;
+            }
+            else
+            {
+                Navigation.SkipParam = true;
+            }
+            Navigation.PreviousPage = this;
             SectorWindow page = new SectorWindow();
             Navigation.content2.Navigate(page);
         }
@@ -188,6 +192,27 @@ namespace WH_APP_GUI.sectors
             foreach (var child in alapgrid.Children)
             {
                 FontSize = e.NewSize.Height * 0.03;
+            }
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                if (Warehouse != null)
+                {
+                    InspectWarehouse inspectWarehouse = new InspectWarehouse(Warehouse);
+                    Navigation.PreviousPage = inspectWarehouse;
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), Warehouse);
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("InspectWarehouse"));
             }
         }
     }
