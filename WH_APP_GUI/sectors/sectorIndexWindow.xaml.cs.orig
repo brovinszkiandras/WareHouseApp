@@ -97,6 +97,8 @@ namespace WH_APP_GUI.sectors
 
                 if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
                 {
+<<<<<<< HEAD
+=======
                     Button edit = new Button();
                     edit.Content = "Edit";
                     edit.Style = (Style)this.Resources["GreenButtonStyle"];
@@ -109,6 +111,7 @@ namespace WH_APP_GUI.sectors
 
                     sectorGrid.Children.Add(edit);
 
+>>>>>>> 56b3fbb8fd8e5109749856c71a622e28976031df
                     Button delete = new Button();
                     delete.Content = "Delete";
                     delete.Style = (Style)this.Resources["GreenButtonStyle"];

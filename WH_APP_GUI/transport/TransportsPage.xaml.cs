@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -36,121 +37,128 @@ namespace WH_APP_GUI.transport
         }
         private void DisplayOneTransport(DataRow transport, int lastRow)
         {
-            RowDefinition rowDefinition = new RowDefinition();
-            rowDefinition.Height = GridLength.Auto;
-            transportGrid.RowDefinitions.Add(rowDefinition);
+            Border border = new Border();
+            border.BorderBrush = Brushes.Black;
+            border.BorderThickness = new Thickness(2);
+            border.Background = Brushes.White;
 
-            TextBlock driver = new TextBlock();
-            driver.Text = Tables.transports.getEmployee(transport)["name"].ToString();
-            driver.FontSize = 15;
-            driver.TextWrapping = TextWrapping.Wrap;
-            Grid.SetRow(driver, lastRow);
-            Grid.SetColumn(driver, 0);
+            StackPanel mainStackPanel = new StackPanel();
 
-            transportGrid.Children.Add(driver);
+            Label driver = new Label();
+            driver.Content = $"{Tables.transports.getEmployee(transport)["name"]}";
+            driver.HorizontalContentAlignment = HorizontalAlignment.Center;
+            driver.Margin = new Thickness(5);
+            driver.BorderBrush = Brushes.Black;
+            driver.BorderThickness = new Thickness(0, 0, 0, 1);
 
-            TextBlock car = new TextBlock();
-            car.Text = Tables.transports.getCar(transport)["type"].ToString();
-            car.FontSize = 15;
-            car.TextWrapping = TextWrapping.Wrap;
-            Grid.SetRow(car, lastRow);
-            Grid.SetColumn(car, 1);
+            mainStackPanel.Children.Add(driver);
 
-            transportGrid.Children.Add(car);
+            UniformGrid datas = new UniformGrid();
+            datas.Rows = 2;
+            datas.Margin = new Thickness(5);
 
-            TextBlock status = new TextBlock();
-            status.Text = transport["status"].ToString();
-            status.FontSize = 15;
-            status.TextWrapping = TextWrapping.Wrap;
+            Label car = new Label();
+            car.Content = $"Car: {Tables.transports.getCar(transport)["type"]}";
+            car.BorderBrush = Brushes.Black;
+            car.BorderThickness = new Thickness(1, 0, 0, 1);
+            car.Margin = new Thickness(0,0,5,0);
+            datas.Children.Add(car);
 
-            Grid.SetRow(status, lastRow);
-            Grid.SetColumn(status, 2);
+            Label status = new Label();
+            status.Content = $"Status: {transport["status"]}";
+            status.BorderBrush = Brushes.Black;
+            status.BorderThickness = new Thickness(1, 0, 0, 1);
+            status.Margin = new Thickness(0, 0, 5, 0);
+            datas.Children.Add(status);
 
-            transportGrid.Children.Add(status);
+            Label start_date = new Label();
+            start_date.Content = $"Start date: {transport["start_date"]}";
+            start_date.BorderBrush = Brushes.Black;
+            start_date.BorderThickness = new Thickness(1, 0, 0, 1);
+            start_date.Margin = new Thickness(0, 0, 5, 0);
+            datas.Children.Add(start_date);
 
-            TextBlock start_date = new TextBlock();
-            DateTime startDate = (DateTime)transport["start_date"];
-            start_date.Text = startDate.ToString("yyyy-MM-dd HH:mm:ss");
-            start_date.FontSize = 15;
-            start_date.TextWrapping = TextWrapping.Wrap;
-            Grid.SetRow(start_date, lastRow);
-            Grid.SetColumn(start_date, 3);
+            Label end_date = new Label();
+            end_date.Content = $"End date: {transport["end_date"]}";
+            end_date.BorderBrush = Brushes.Black;
+            end_date.BorderThickness = new Thickness(1, 0, 0, 1);
+            end_date.Margin = new Thickness(0, 0, 5, 0);
+            datas.Children.Add(end_date);
 
-            transportGrid.Children.Add(start_date);
-
-            TextBlock end_date = new TextBlock();
-            if (transport["end_date"] != DBNull.Value)
-            {
-                DateTime endDate = (DateTime)transport["end_date"];
-                end_date.Text = endDate.ToString("yyyy-MM-dd HH:mm:ss");
-            }
-            end_date.FontSize = 15;
-            end_date.TextWrapping = TextWrapping.Wrap;
-            Grid.SetRow(end_date, lastRow);
-            Grid.SetColumn(end_date, 4);
-
-            transportGrid.Children.Add(end_date);
-
+            Label warehouse = new Label();
+            warehouse.Content = $"Warehouse: {Tables.transports.getWarehouse(transport)["name"]}";
+            warehouse.BorderBrush = Brushes.Black;
+            warehouse.BorderThickness = new Thickness(1, 0, 0, 1);
+            warehouse.Margin = new Thickness(0, 0, 5, 0);
+            datas.Children.Add(warehouse);
 
             if (Tables.features.isFeatureInUse("Dock") == true)
             {
-                TextBlock dock = new TextBlock();
-                dock.Text = Tables.transports.getDock(transport)["name"].ToString();
-                dock.FontSize = 15;
-                dock.TextWrapping = TextWrapping.Wrap;
-                Grid.SetRow(dock, lastRow);
-                Grid.SetColumn(dock, 5);
+                Label dock = new Label();
+                dock.Content = $"Dock: {Tables.transports.getDock(transport)["name"]}";
+                dock.BorderBrush = Brushes.Black;
+                dock.BorderThickness = new Thickness(1, 0, 0, 1);
+                dock.Margin = new Thickness(0, 0, 5, 0);
+                datas.Children.Add(dock);
 
-                transportGrid.Children.Add(dock);
+                mainStackPanel.Children.Add(datas);
             }
 
-
-            if (User.DoesHavePermission("Assign to transport"))
-            {
-                Button inspect = new Button();
-                inspect.Content = "Inspect";
-                inspect.FontSize = 15;
-                inspect.Background = Brushes.Green;
-                inspect.Tag = transport["id"];
-                Grid.SetRow(inspect, lastRow);
-                Grid.SetColumn(inspect, 6);
-
-                transportGrid.Children.Add(inspect);
-            }
+            StackPanel buttons = new StackPanel();
+            buttons.Orientation = Orientation.Horizontal;
+            buttons.HorizontalAlignment = HorizontalAlignment.Center;
 
             if (User.DoesHavePermission("Modify Transport") || User.DoesHavePermission("Modify all Transport"))
             {
-                Button edit = new Button();
-                edit.Content = "Edit";
-                edit.FontSize = 15;
-                edit.Background = Brushes.Green;
-                edit.Click += Edit_Click;
-                edit.Tag = transport["id"];
-
-                Grid.SetRow(edit, lastRow);
-                Grid.SetColumn(edit, 7);
-
-                transportGrid.Children.Add(edit);
+                Button update = new Button();
+                update.Content = "Update";
+                update.MinWidth = 150;
+                update.Margin = new Thickness(5);
+                update.Tag = transport["id"];
+                update.Click += Edit_Click;
+                buttons.Children.Add(update);
 
                 Button delete = new Button();
                 delete.Content = "Delete";
-                delete.FontSize = 15;
-                delete.Background = Brushes.Green;
+                delete.MinWidth = 150;
+                delete.Margin = new Thickness(5);
                 delete.Tag = transport["id"];
                 delete.Click += Delete_Click;
-                Grid.SetRow(delete, lastRow);
-                Grid.SetColumn(delete, 8);
-
-                transportGrid.Children.Add(delete);
+                buttons.Children.Add(delete);
             }
             else
             {
                 Create.Visibility = Visibility.Collapsed;
             }
+
+            if (User.DoesHavePermission("Assign to transport"))
+            {
+                Button inspect = new Button();
+                inspect.Content = "Inspect";
+                inspect.MinWidth = 150;
+                inspect.Tag = transport;
+                inspect.Click += InspectTransport;
+                inspect.Margin = new Thickness(5);
+                buttons.Children.Add(inspect);
+            }
+
+            mainStackPanel.Children.Add(buttons);
+            border.Child = mainStackPanel;
+            transportDisplay.Children.Add(border);
         }
+
+        private void InspectTransport(object sender, RoutedEventArgs e)
+        {
+            DataRow transport = (sender as Button).Tag as DataRow;
+            if (transport != null)
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("InspectTransportPage"), transport);
+            }
+        }
+
         public void displayTransports()
         {
-            transportGrid.Children.Clear();
+            transportDisplay.Children.Clear();
             if (Warehouse != null)
             {
                 int lastRow = 0;
@@ -187,13 +195,9 @@ namespace WH_APP_GUI.transport
                     transport.Delete();
                     Tables.transports.updateChanges();
 
-                  
-
                     displayTransports();
                 }
-            }
-            
-            
+            }  
         }
         private void Edit_Click(object sender, RoutedEventArgs e)
         {

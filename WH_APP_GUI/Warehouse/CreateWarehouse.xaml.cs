@@ -105,5 +105,14 @@ namespace WH_APP_GUI.Warehouse
         {
             GoBack();
         }
+
+        private void WareHouseCreate_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+            WarehouseImage.Width = WarehouseImage.Height;
+        }
     }
 }

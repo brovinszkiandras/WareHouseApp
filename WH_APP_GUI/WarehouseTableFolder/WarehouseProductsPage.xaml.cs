@@ -21,11 +21,7 @@ namespace WH_APP_GUI.warehouseTableFolder
     {
         public void Displayproducts()
         {
-            if(Tables.features.isFeatureInUse("Storage") == true)
-            {
-                addStorageFeautoreElementsToDisplay();
-            }
-            
+            addStorageFeautoreElementsToDisplay();
 
             productGrid.Children.Clear();
             int lastRow = 0;

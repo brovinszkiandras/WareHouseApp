@@ -69,22 +69,18 @@ namespace WH_APP_GUI.warehouseTableFolder
         {
             InitializeComponent();
 
-            #region set context
             this.warehouseProduct = WarehouseProduct;
 
             warehouseTable = Tables.getWarehosue(warehouseProduct.Table.TableName);
 
             this.DataContext = warehouseProduct;
 
-            #endregion
-
-            #region product combobox
             product_id.ItemsSource = Tables.products.database.Rows;
             product_id.SelectedItem = warehouseTable.getProduct(warehouseProduct);
-            #endregion
+            
 
+            
 
-            #region shelfs
             List<DataRow> shelfs = new List<DataRow>();
             foreach (DataRow sector in Tables.warehouses.getSectors(User.Warehouse()))
             {
@@ -98,9 +94,7 @@ namespace WH_APP_GUI.warehouseTableFolder
             shelf_id.SelectedItem = warehouseTable.getShelf(warehouseProduct);
 
             on_shelf_level.SelectedItem = (int)warehouseProduct["on_shelf_level"];
-            #endregion
 
-            #region Storage feature
             if (Tables.features.isFeatureInUse("Storage") == false)
             {
                 width.Visibility = Visibility.Collapsed;
@@ -113,7 +107,6 @@ namespace WH_APP_GUI.warehouseTableFolder
             }
             else
             {
-                #region bindings
                 Binding widthBinding = new Binding("[width]");
                 widthBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                 width.SetBinding(TextBox.TextProperty, widthBinding);
@@ -123,18 +116,8 @@ namespace WH_APP_GUI.warehouseTableFolder
                 Binding heightBinding = new Binding("[height]");
                 heightBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                 height.SetBinding(TextBox.TextProperty, heightBinding);
-                #endregion
-
-                #region set enabled
-                if ((bool)warehouseProduct["is_in_box"] == false)
-                {
-                    width.IsEnabled = false;
-                    height.IsEnabled = false;
-                    length.IsEnabled = false;
-                }
-                #endregion
             }
-            #endregion
+
             qty.ValueDataType = typeof(string);
             width.ValueDataType = typeof(double);
             height.ValueDataType = typeof(double);

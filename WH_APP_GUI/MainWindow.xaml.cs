@@ -27,7 +27,7 @@ namespace WH_APP_GUI
         public MainWindow()
         {
             InitializeComponent();
-            Console.IniConsole();
+            //Console.IniConsole();
             //Email.send("szsoly04@gmail.com", "Megkérdezzem?", "Mivan mivan mivan");
             if (! SQL.IsDatabasetxtExist())
             {

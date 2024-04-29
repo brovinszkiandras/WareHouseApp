@@ -227,9 +227,6 @@
     <Compile Include="carsFolder\CreateCarWindow.xaml.cs">
       <DependentUpon>CreateCarWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="carsFolder\InspectCarWindow.xaml.cs">
-      <DependentUpon>InspectCarWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="carsFolder\UpdateCarWindow.xaml.cs">
       <DependentUpon>UpdateCarWindow.xaml</DependentUpon>
     </Compile>
@@ -342,18 +339,11 @@
     <Compile Include="User.cs" />
     <Compile Include="Validation.cs" />
     <Compile Include="Visual.cs" />
-    <Compile Include="WarehouseTableFolder\CreateWHProductPage.xaml.cs">
-      <DependentUpon>CreateWHProductPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WarehouseTableFolder\EditWHProductPage.xaml.cs">
-      <DependentUpon>EditWHProductPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WarehouseTableFolder\WarehouseProductsPage.xaml.cs">
-      <DependentUpon>WarehouseProductsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WarehouseTableFolder\WHProudctQuantityPage.xaml.cs">
-      <DependentUpon>WHProudctQuantityPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="WarehouseTableFolder\AddProductToBoxPage.xaml.cs" />
+    <Compile Include="WarehouseTableFolder\CreateWHProductPage.xaml.cs" />
+    <Compile Include="WarehouseTableFolder\EditWHProductPage.xaml.cs" />
+    <Compile Include="WarehouseTableFolder\WarehouseProductsPage.xaml.cs" />
+    <Compile Include="WarehouseTableFolder\WHProudctQuantityPage.xaml.cs" />
     <Compile Include="Warehouse\CreateWarehouse.xaml.cs">
       <DependentUpon>CreateWarehouse.xaml</DependentUpon>
     </Compile>
@@ -372,10 +362,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="carsFolder\CreateCarWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="carsFolder\InspectCarWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -524,21 +510,25 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WarehouseTableFolder\CreateWHProductPage.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="WarehouseTableFolder\AddProductToBoxPage.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WarehouseTableFolder\CreateWHProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WarehouseTableFolder\EditWHProductPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WarehouseTableFolder\WarehouseProductsPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WarehouseTableFolder\WHProudctQuantityPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Warehouse\CreateWarehouse.xaml">
       <SubType>Designer</SubType>

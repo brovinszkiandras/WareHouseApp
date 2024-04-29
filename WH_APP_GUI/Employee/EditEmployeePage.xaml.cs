@@ -227,5 +227,12 @@ namespace WH_APP_GUI.Employee
                 }
             }
         }
+        private void EditEmploye_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+        }
     }
 }

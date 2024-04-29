@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="CarsPage"
         d:DesignHeight="450" d:DesignWidth="800">
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0">
         <Grid Name="alapgrid" Margin="10">
             <Grid Grid.Row="1" Grid.Column="1">
 
@@ -35,32 +35,7 @@
 
                 <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
                     <StackPanel Name="CarsDisplay">
-                        <Border BorderBrush="Black" BorderThickness="2" MaxWidth="550">
-                            <StackPanel>
-                                <Image Width="80" Height="80"/>
-                                <Label Content="plate_number" HorizontalContentAlignment="Center" Margin="5" BorderBrush="Black" BorderThickness="1,0,1,1"/>
-                                <Expander Header="Datas" Margin="5">
-                                    <StackPanel>
-                                        <UniformGrid Name="Default" Rows="3" Margin="5">
-                                            <Label Content="type" BorderBrush="Black" BorderThickness="1,0,0,1"/>
-                                            <Label Content="ready" BorderBrush="Black" BorderThickness="1,0,1,1"/>
-                                            <Label Content="km" BorderBrush="Black" BorderThickness="1,0,0,1"/>
-                                            <Label Content="last_service" BorderBrush="Black" BorderThickness="1,0,1,1"/>
-                                            <Label Content="last_exam" BorderBrush="Black" BorderThickness="1,0,0,1"/>
-                                            <Label Content="warehouse_id" BorderBrush="Black" BorderThickness="1,0,1,1"/>
-                                        </UniformGrid>
-                                        <UniformGrid Name="StorageFeature" Columns="2" Margin="5">
-                                            <Label Content="storage" BorderBrush="Black" BorderThickness="1,0,0,1"/>
-                                            <Label Content="carrying_capacity" BorderBrush="Black" BorderThickness="1,0,1,1"/>
-                                        </UniformGrid>
-                                        <UniformGrid Name="FuelFeature" Columns="2" Margin="5">
-                                            <Label Content="consumption" BorderBrush="Black" BorderThickness="1,0,0,1"/>
-                                            <Label Content="gas_tank_size" BorderBrush="Black" BorderThickness="1,0,1,1"/>
-                                        </UniformGrid>
-                                    </StackPanel>
-                                </Expander>
-                            </StackPanel>
-                        </Border>
+                        
                     </StackPanel>
                 </ScrollViewer>
             </Grid>

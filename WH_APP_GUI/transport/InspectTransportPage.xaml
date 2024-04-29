@@ -8,13 +8,34 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="InspectTransportPage">
 
-    <Grid Background="White">
-        <Label Content="Employee"/>
-        <Label Content="Car"/>
-        <Label Content="Status"/>
-        <Label Content="Start date"/>
-        <Label Content="End date"/>
-        <Label Content="Warehouse"/>
-        <Label Content="Dock"/>
-    </Grid>
+    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" Background="#FFCEA2">
+        <Grid Name="alapgrid" Margin="10">
+
+            <Grid Grid.Row="1" Name="mainGrid" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="7*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="8" Background="#425C5A" Foreground="White" Name="Back" Content="Back" Click="Back_Click" Margin="5"></Button>
+                </Grid>
+
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                    <StackPanel x:Name="transportDisplay">
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Border>
 </Page>
