@@ -9,7 +9,44 @@
         Title="ProductsPage"
         d:DesignHeight="450" d:DesignWidth="800">
 
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GreenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                         BorderBrush="{TemplateBinding BorderBrush}"
+                         BorderThickness="{TemplateBinding BorderThickness}"
+                         CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+    </Page.Resources>
+
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -17,16 +54,14 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="Add Product" Name="AddProducts" Click="AddProducts_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+                <Button Content="Add Product" Name="AddProducts" Click="AddProducts_Click" Style="{StaticResource GreenButtonStyle}"/>
             </StackPanel>
 
-            <Grid x:Name="Display" Grid.Column="1">
+            <Grid Name="ProductsDisplay" Visibility="Visible" Grid.Column="1">
+                <ScrollViewer Name="ProductsDiaplay" Margin="20">
+                    <StackPanel Name="ProductsDiaplayStackPanel"/>
 
-                <Grid Name="ProductsDisplay" Visibility="Visible">
-                    <ScrollViewer Name="ProductsDiaplay">
-                        <StackPanel Name="ProductsDiaplayStackPanel"/>
-                    </ScrollViewer>
-                </Grid>
+                </ScrollViewer>
             </Grid>
 
             <Frame x:Name="ProductsContent" Grid.ColumnSpan="2" Visibility="Collapsed"/>
