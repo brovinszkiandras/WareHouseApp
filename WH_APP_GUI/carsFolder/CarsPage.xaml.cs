@@ -29,6 +29,11 @@ namespace WH_APP_GUI.carsFolder
             InitializeComponent();
             Back.Visibility = Visibility.Collapsed;
             DisplayCars();
+
+            if (! User.DoesHavePermission("Modify Car") || ! User.DoesHavePermission("Modify all Car"))
+            {
+                Create.Visibility = Visibility.Collapsed;
+            }
         }
         private DataRow Warehouse = null;
         public CarsPage(DataRow warehouse)

@@ -93,7 +93,7 @@ namespace WH_APP_GUI.sectors
 
             Button inspect = new Button();
             inspect.Content = "Inspect";
-            inspect.Style = (Style)this.Resources["GreenButtonStyle"];
+            inspect.Style = (Style)this.Resources["GoldenButtonStyle"];
             inspect.Margin = new Thickness(5);
             inspect.Tag = sector["id"];
             inspect.Click += Inspect_Click;
@@ -106,7 +106,7 @@ namespace WH_APP_GUI.sectors
             {
                 Button delete = new Button();
                 delete.Content = "Delete";
-                delete.Style = (Style)this.Resources["GreenButtonStyle"];
+                delete.Style = (Style)this.Resources["GoldenButtonStyle"];
                 delete.Margin = new Thickness(5);
                 delete.Tag = sector["id"];
                 delete.Click += Delete_Click;

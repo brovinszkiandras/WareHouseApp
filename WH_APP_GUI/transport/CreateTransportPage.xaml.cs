@@ -249,5 +249,10 @@ namespace WH_APP_GUI.transport
                 }
             }
         }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
+        }
     }
 }

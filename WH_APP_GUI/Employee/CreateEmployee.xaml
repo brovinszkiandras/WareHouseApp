@@ -11,7 +11,7 @@
         SizeChanged="CreateEmploye_SizeChanged">
 
     <Page.Resources>
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -62,8 +62,8 @@
             </Grid>
 
             <StackPanel Grid.Column="8" Grid.Row="2" Margin="30">
-                <Button Name="Done" Content="Done" Margin="0, 5" Click="Done_Click" Padding="30, 10" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Name="Cancel" Content="Cancel" Margin="0, 5" Padding="30, 10" Click="Cancel_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Name="Done" Content="Done" Margin="0, 5" Click="Done_Click" Padding="30, 10" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Name="Cancel" Content="Cancel" Margin="0, 5" Padding="30, 10" Click="Cancel_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Border>

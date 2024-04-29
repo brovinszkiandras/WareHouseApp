@@ -10,7 +10,7 @@
         d:DesignHeight="450" d:DesignWidth="800">
 
     <Page.Resources>
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -58,7 +58,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="Add Product" Name="AddProducts" Click="AddProducts_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Content="Add Product" Name="AddProducts" Click="AddProducts_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
 
             <Grid Name="ProductsDisplay" Visibility="Visible" Grid.Column="1">

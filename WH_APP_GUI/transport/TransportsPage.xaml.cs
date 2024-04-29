@@ -24,7 +24,7 @@ namespace WH_APP_GUI.transport
         public TransportsPage()
         {
             InitializeComponent();
-            displayTransports();
+            IniTransports();
             Back.Visibility = Visibility.Collapsed;
         }
 
@@ -32,9 +32,30 @@ namespace WH_APP_GUI.transport
         public TransportsPage(DataRow warehouseFromPage)
         {
             InitializeComponent();
-            displayTransports();
+            IniTransports();
             Warehouse = warehouseFromPage;
         }
+
+        private void IniTransports()
+        {
+            if (User.DoesHavePermission("Inspect own Transport"))
+            {
+                if (Tables.employees.database.Select($"email = '{User.currentUser["email"]}'").Length != 0)
+                {
+                    int lastRow = 0;
+                    foreach (DataRow transport in Tables.transports.database.Select($"employee_id = {User.currentUser["id"]}"))
+                    {
+                        DisplayOneTransport(transport, lastRow);
+                        lastRow++;
+                    }
+                }
+                else
+                {
+                    displayTransports();
+                }
+            }
+        }
+
         private void DisplayOneTransport(DataRow transport, int lastRow)
         {
             Border border = new Border();
@@ -132,7 +153,7 @@ namespace WH_APP_GUI.transport
                 Create.Visibility = Visibility.Collapsed;
             }
 
-            if (User.DoesHavePermission("Assign to transport"))
+            if (User.DoesHavePermission("Assign to transport") || User.DoesHavePermission("Inspect own Transport"))
             {
                 Button inspect = new Button();
                 inspect.Content = "Inspect";
@@ -211,8 +232,11 @@ namespace WH_APP_GUI.transport
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            CreateTransportPage createTransportPage = new CreateTransportPage();
-            Navigation.content2.Navigate(createTransportPage);
+            Navigation.OpenPage(Navigation.GetTypeByName("CreateTransportPage"));
+            if (Warehouse != null)
+            {
+                Navigation.ReturnParam = Warehouse;
+            }
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

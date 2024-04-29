@@ -179,12 +179,12 @@ namespace WH_APP_GUI.Product
             deleteButton.Content = "Delete";
             deleteButton.Click += DeleteProduct_Click;
             deleteButton.Tag = product;
-            deleteButton.Style = (Style)this.Resources["GreenButtonStyle"];
+            deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
             buttonsStackPanel.Children.Add(deleteButton);
 
             Button editButton = new Button();
             editButton.Content = "Edit";
-            editButton.Style = (Style)this.Resources["GreenButtonStyle"];
+            editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
             editButton.Click += EditProduct_Click;
             editButton.Tag = product;
             buttonsStackPanel.Children.Add(editButton);

@@ -30,6 +30,11 @@ namespace WH_APP_GUI.Dock
             Back.Visibility = Visibility.Collapsed;
             DocksByWarehouses.Visibility = Visibility.Visible;
             AllDocks.Visibility = Visibility.Visible;
+
+            if (!User.DoesHavePermission("Modify Dock") || !User.DoesHavePermission("Modify all Dock"))
+            {
+                AddNewDock.Visibility = Visibility.Collapsed;
+            }
         }
         private DataRow WarehouseFromPage = null;
         public DockPage(DataRow warehouseFromPage)

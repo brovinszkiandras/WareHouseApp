@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="WarehouseProductsPage">
     <Page.Resources>
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -91,8 +91,8 @@
                 HorizontalContentAlignment="Center"></Label>
 
 
-                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}" Grid.Column="9"/>
-                <Button Content="Create New" Name="Create" Click="Create_Click" Style="{StaticResource GreenButtonStyle}" Grid.Column="10"/>
+                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}" Grid.Column="9"/>
+                <Button Content="Create New" Name="Create" Click="Create_Click" Style="{StaticResource GoldenButtonStyle}" Grid.Column="10"/>
             </Grid>
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
