@@ -12,7 +12,7 @@
 
 
     <Page.Resources>
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -56,10 +56,10 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="Add new staff" Name="AddNewStaff" Click="AddNewStaff_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Content="All Staffs" Name="AllStaffs" Click="AllStaffs_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Content="Add new staff" Name="AddNewStaff" Click="AddNewStaff_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Content="All Staffs" Name="AllStaffs" Click="AllStaffs_Click" Style="{StaticResource GoldenButtonStyle}"/>
                 <ComboBox Name="StaffRoles" SelectionChanged="StaffRoles_SelectionChanged" Margin="5" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
-                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
 
             <Grid x:Name="Display" Grid.Column="1">

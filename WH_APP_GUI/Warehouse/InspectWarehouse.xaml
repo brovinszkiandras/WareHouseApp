@@ -12,7 +12,7 @@
       SizeChanged="inspectWarehouse_SizeChanged">
 
     <Page.Resources>
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -172,15 +172,15 @@
 
             <Border Grid.Column="3" Grid.RowSpan="2" Grid.Row="1" Background="#395250" CornerRadius="15">
                 <StackPanel Margin="5">
-                <Button Margin="20, 5" Content="Sectors" Name="SectorsInspectToWarehouse" Click="SectorsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Margin="20, 5" Content="Employees" Name="EmployeesInspectToWarehouse"  Click="EmployeesInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Margin="20, 5" Content="Orders" Name="OrdersInspectToWarehouse"  Click="OrdersInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Margin="20, 5" Content="Products" Name="ProductsInspectToWarehouse"  Click="ProductsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Margin="20, 5" Content="Docks" Name="DocksInspectToWarehouse"  Click="DocksInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Margin="20, 5" Content="Forklift" Name="ForkliftInspectToWarehouse"  Click="ForkliftInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Margin="20, 5" Content="Cars" Name="CarsInspectToWarehouse" Click="CarsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Margin="20, 5" Content="Transports" Name="TransportsInspectToWarehouse" Click="TransportsInspectToWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Margin="20, 5" Content="Back" Name="back_all_Warehouse" Click="Back_AllWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Sectors" Name="SectorsInspectToWarehouse" Click="SectorsInspectToWarehouse_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Employees" Name="EmployeesInspectToWarehouse"  Click="EmployeesInspectToWarehouse_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Orders" Name="OrdersInspectToWarehouse"  Click="OrdersInspectToWarehouse_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Products" Name="ProductsInspectToWarehouse"  Click="ProductsInspectToWarehouse_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Docks" Name="DocksInspectToWarehouse"  Click="DocksInspectToWarehouse_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Forklift" Name="ForkliftInspectToWarehouse"  Click="ForkliftInspectToWarehouse_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Cars" Name="CarsInspectToWarehouse" Click="CarsInspectToWarehouse_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Transports" Name="TransportsInspectToWarehouse" Click="TransportsInspectToWarehouse_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Back" Name="back_all_Warehouse" Click="Back_AllWarehouse_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
             </Border>
             <Frame Name="InspectWarehouseContent" Visibility="Collapsed" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3"/>

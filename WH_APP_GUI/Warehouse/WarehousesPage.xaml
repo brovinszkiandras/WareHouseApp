@@ -11,7 +11,7 @@
       SizeChanged="WarehausePage_SizeChanged">
 
     <Page.Resources>
-    <Style TargetType="Button" x:Key="GreenButtonStyle">
+    <Style TargetType="Button" x:Key="GoldenButtonStyle">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="#FFCEA2"/>
         <Setter Property="Foreground" Value="#425C5A"/>
@@ -50,7 +50,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Button Content="Add new warehouse" Name="AddNewWarehouse" Click="AddNewWarehouse_Click" Style="{StaticResource GreenButtonStyle}"/>
+            <Button Content="Add new warehouse" Name="AddNewWarehouse" Click="AddNewWarehouse_Click" Style="{StaticResource GoldenButtonStyle}"/>
 
             <ScrollViewer Name="DisplayWarehouses" Visibility="Visible" Grid.Row="1">
                 <StackPanel Name="DisplayWarehousesStackpanel" Orientation="Vertical" Visibility="Visible">

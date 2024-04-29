@@ -11,7 +11,7 @@
         SizeChanged="EditEmploye_SizeChanged">
 
     <Page.Resources>
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -67,10 +67,10 @@
             </Grid>
 
             <StackPanel Grid.Column="8" Grid.Row="2" Margin="30">
-                <Button Name="activity" Content="Activity" Style="{StaticResource GreenButtonStyle}" Margin="0, 5" Padding="10, 5" Click="activity_Click"/>
-                <Button Name="PasswordReset" Content="Reset Password" Style="{StaticResource GreenButtonStyle}" Margin="0, 5" Padding="10, 5" Click="PasswordReset_Click"/>
-                <Button Name="Done" Content="Done" Style="{StaticResource GreenButtonStyle}" Margin="0, 5" Click="Done_Click" Padding="10, 5"/>
-                <Button Name="Cancel" Content="Cancel" Style="{StaticResource GreenButtonStyle}" Margin="0, 5" Padding="10, 5" Click="Cancel_Click"/>
+                <Button Name="activity" Content="Activity" Style="{StaticResource GoldenButtonStyle}" Margin="0, 5" Padding="10, 5" Click="activity_Click"/>
+                <Button Name="PasswordReset" Content="Reset Password" Style="{StaticResource GoldenButtonStyle}" Margin="0, 5" Padding="10, 5" Click="PasswordReset_Click"/>
+                <Button Name="Done" Content="Done" Style="{StaticResource GoldenButtonStyle}" Margin="0, 5" Click="Done_Click" Padding="10, 5"/>
+                <Button Name="Cancel" Content="Cancel" Style="{StaticResource GoldenButtonStyle}" Margin="0, 5" Padding="10, 5" Click="Cancel_Click"/>
             </StackPanel>
         </Grid>
     </Border>

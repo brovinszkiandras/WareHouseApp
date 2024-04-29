@@ -186,14 +186,14 @@ namespace WH_APP_GUI
                 deleteButton.Content = "Delete";
                 deleteButton.Tag = employee;
                 deleteButton.Click += deleteEmployee_Click;
-                deleteButton.Style = (Style)this.Resources["GreenButtonStyle"];
+                deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
                 rightStackPanel.Children.Add(deleteButton);
 
                 Button resetPasswordButton = new Button();
                 resetPasswordButton.Content = "Reset Password";
                 resetPasswordButton.Click += resetPassword_Click;
                 resetPasswordButton.Tag = employee;
-                resetPasswordButton.Style = (Style)this.Resources["GreenButtonStyle"];
+                resetPasswordButton.Style = (Style)this.Resources["GoldenButtonStyle"];
                 rightStackPanel.Children.Add(resetPasswordButton);
             }
             else
@@ -202,7 +202,7 @@ namespace WH_APP_GUI
                 modifyPassword.Content = "Reset Password";
                 modifyPassword.Click += ModifyPassword;
                 modifyPassword.Tag = employee;
-                modifyPassword.Style = (Style)this.Resources["GreenButtonStyle"];
+                modifyPassword.Style = (Style)this.Resources["GoldenButtonStyle"];
                 rightStackPanel.Children.Add(modifyPassword);
             }
 
@@ -210,7 +210,7 @@ namespace WH_APP_GUI
             editButton.Content = "Edit";
             editButton.Click += EditEmployee_Click;
             editButton.Tag = employee;
-            editButton.Style = (Style)this.Resources["GreenButtonStyle"];
+            editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
 
             rightStackPanel.Children.Add(editButton);
 

@@ -91,7 +91,7 @@ namespace WH_APP_GUI.Warehouse
                 inspectButton.Content = "Inspect Warehouse";
                 inspectButton.Click += inspect_warehouse_Click;
                 inspectButton.Margin = new Thickness(10);
-                inspectButton.Style = (Style)this.Resources["GreenButtonStyle"];
+                inspectButton.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Grid.SetRow(inspectButton, 0);
                 innerGrid.Children.Add(inspectButton);
 
@@ -100,7 +100,7 @@ namespace WH_APP_GUI.Warehouse
                 deleteButton.Tag = Tables.warehouses.database.Rows[i];
                 deleteButton.Click += delete_warehouse_Click;
                 deleteButton.Margin = new Thickness(10);
-                deleteButton.Style = (Style)this.Resources["GreenButtonStyle"];
+                deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Grid.SetRow(deleteButton, 1);
                 innerGrid.Children.Add(deleteButton);
 

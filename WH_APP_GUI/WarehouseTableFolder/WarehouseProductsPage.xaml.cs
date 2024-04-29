@@ -46,9 +46,8 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 TextBlock name = new TextBlock();
                 name.Text = warehouseTable.getProduct(product)["name"].ToString();
-                name.FontSize = 15;
+                name.Style = (Style)this.Resources["textblockstyle"];
                 name.TextWrapping = TextWrapping.Wrap;
-                name.Foreground = Brushes.White;
                 name.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(name, lastRow);
                 Grid.SetColumn(name, 0);
@@ -57,8 +56,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 TextBlock qty = new TextBlock();
                 qty.Text = product["qty"].ToString();
-                qty.FontSize = 15;
-                qty.Foreground = Brushes.White;
+                qty.Style = (Style)this.Resources["textblockstyle"];
                 qty.TextWrapping = TextWrapping.Wrap;
                 qty.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(qty, lastRow);
@@ -68,8 +66,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 TextBlock shelf = new TextBlock();
                 shelf.Text = warehouseTable.getShelf(product)["name"].ToString();
-                shelf.FontSize = 15;
-                shelf.Foreground = Brushes.White;
+                shelf.Style = (Style)this.Resources["textblockstyle"];
                 shelf.TextWrapping = TextWrapping.Wrap;
                 shelf.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(shelf, lastRow);
@@ -83,8 +80,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                 if (Tables.features.isFeatureInUse("Storage"))
                 {
                     width.Text = product["width"].ToString();
-                    width.FontSize = 15;
-                    width.Foreground = Brushes.White;
+                    width.Style = (Style)this.Resources["textblockstyle"];
                     width.TextWrapping = TextWrapping.Wrap;
                     width.HorizontalAlignment = HorizontalAlignment.Center;
                     Grid.SetRow(width, lastRow);
@@ -95,8 +91,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                     TextBlock length = new TextBlock();
                     length.Text = product["length"].ToString();
-                    length.FontSize = 15;
-                    length.Foreground = Brushes.White;
+                    length.Style = (Style)this.Resources["textblockstyle"];
                     length.TextWrapping = TextWrapping.Wrap;
                     length.HorizontalAlignment = HorizontalAlignment.Center;
                     Grid.SetRow(length, lastRow);
@@ -106,8 +101,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                     TextBlock height = new TextBlock();
                     height.Text = product["height"].ToString();
-                    height.FontSize = 15;
-                    height.Foreground = Brushes.White;
+                    height.Style = (Style)this.Resources["textblockstyle"];
                     height.TextWrapping = TextWrapping.Wrap;
                     height.HorizontalAlignment = HorizontalAlignment.Center;
                     Grid.SetRow(height, lastRow);
@@ -119,8 +113,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 TextBlock on_shelf_level = new TextBlock();
                 on_shelf_level.Text = product["on_shelf_level"].ToString();
-                on_shelf_level.FontSize = 15;
-                on_shelf_level.Foreground = Brushes.White;
+                on_shelf_level.Style = (Style)this.Resources["textblockstyle"];
                 on_shelf_level.TextWrapping = TextWrapping.Wrap;
                 on_shelf_level.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(on_shelf_level, lastRow);
@@ -139,9 +132,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 Button add = new Button();
                 add.Content = "Quantity";
-                add.FontSize = 15;
-                add.Foreground = Brushes.White;
-                add.Background = Brushes.Green;
+                add.Style = (Style)this.Resources["GoldenButtonStyle"];
                 add.Tag = product["id"];
                 add.Click += Add_Click;
                 Grid.SetRow(add, lastRow);
@@ -154,9 +145,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                 {
                     Button edit = new Button();
                     edit.Content = "Edit";
-                    edit.FontSize = 15;
-                    edit.Foreground = Brushes.White;
-                    edit.Background = Brushes.Green;
+                    edit.Style = (Style)this.Resources["GoldenButtonStyle"];
                     edit.Click += Edit_Click;
                     edit.Tag = product["id"];
 
@@ -167,9 +156,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                     Button delete = new Button();
                     delete.Content = "Delete";
-                    delete.FontSize = 15;
-                    delete.Foreground = Brushes.White;
-                    delete.Background = Brushes.Green;
+                    delete.Style = (Style)this.Resources["GoldenButtonStyle"];
                     delete.Tag = product["id"];
                     //delete.Click += Delete_Click;
                     Grid.SetRow(delete, lastRow);
@@ -179,7 +166,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                 }
                 else
                 {
-                    //Create.Visibility = Visibility.Collapsed;
+                    Create.Visibility = Visibility.Collapsed;
                 }
 
                 lastRow++;
@@ -200,8 +187,7 @@ namespace WH_APP_GUI.warehouseTableFolder
             }
 
             Label widthLabel = new Label();
-            widthLabel.FontSize = 15;
-            widthLabel.Foreground = Brushes.White;
+            widthLabel.Style = (Style)this.Resources["labelstyle"];
             widthLabel.HorizontalAlignment = HorizontalAlignment.Center;
             widthLabel.VerticalAlignment = VerticalAlignment.Center;
             widthLabel.Content = "Width";
@@ -209,8 +195,7 @@ namespace WH_APP_GUI.warehouseTableFolder
             labelsGrid.Children.Add(widthLabel);
 
             Label heightLabel = new Label();
-            heightLabel.FontSize = 15;
-            heightLabel.Foreground = Brushes.White;
+            heightLabel.Style = (Style)this.Resources["labelstyle"];
             heightLabel.HorizontalAlignment = HorizontalAlignment.Center;
             heightLabel.VerticalAlignment = VerticalAlignment.Center;
             heightLabel.Content = "Height";
@@ -218,11 +203,10 @@ namespace WH_APP_GUI.warehouseTableFolder
             labelsGrid.Children.Add(heightLabel);
 
             Label lengthLabel = new Label();
-            lengthLabel.FontSize = 15;
-            lengthLabel.Foreground = Brushes.White;
+            lengthLabel.Style = (Style)this.Resources["labelstyle"];
             lengthLabel.HorizontalAlignment = HorizontalAlignment.Center;
             lengthLabel.VerticalAlignment = VerticalAlignment.Center;
-            lengthLabel.Content = "Height";
+            lengthLabel.Content = "Length";
             Grid.SetColumn(lengthLabel, 7);
             labelsGrid.Children.Add(lengthLabel);
         }

@@ -45,7 +45,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Warehouses";
                 btn.Click += InspectAllWarehouses_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -54,7 +54,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Employees";
                 btn.Click += InspectAllEmployees_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -64,7 +64,7 @@ namespace WH_APP_GUI
                 
                 btn.Content = "Orders";
                 btn.Click += InspectAllOrders_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 btn.Tag = "Orders";
                 Menu.Children.Add(btn);
             }
@@ -74,7 +74,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Products";
                 btn.Click += InspectProducts_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -83,7 +83,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Staffs";
                 btn.Click += InspectAllStaff_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -92,7 +92,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Transports";
                 btn.Click += InspectAllTransport_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -101,7 +101,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Cars";
                 btn.Click += InspectAllCars_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -110,7 +110,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Forklifts";
                 btn.Click += InspectAllForkliftst_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -119,7 +119,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Log";
                 btn.Click += InspectLog_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -128,7 +128,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Dock";
                 btn.Click += InspectDock_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -137,7 +137,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Settings";
                 btn.Click += Database_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
