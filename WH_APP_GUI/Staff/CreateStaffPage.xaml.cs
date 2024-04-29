@@ -118,5 +118,12 @@ namespace WH_APP_GUI.Staff
         {
             Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
+        private void CreateStaff_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+        }
     }
 }

@@ -7,26 +7,65 @@
       xmlns:local="clr-namespace:WH_APP_GUI.Staff"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="StaffPage">
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0">
+      Title="StaffPage"
+      SizeChanged="Staff_SizeChanged">
+
+
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GreenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                         BorderBrush="{TemplateBinding BorderBrush}"
+                         BorderThickness="{TemplateBinding BorderThickness}"
+                         CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+    </Page.Resources>
+    
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel HorizontalAlignment="Center" Margin="0, 20">
-                <Button Content="Add new staff" Name="AddNewStaff" Click="AddNewStaff_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
-                <Button Content="All Staffs" Name="AllStaffs" Click="AllStaffs_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
-                <ComboBox Name="StaffRoles" BorderBrush="Black" SelectionChanged="StaffRoles_SelectionChanged" Margin="5"/>
-                <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="10"/>
+            <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="Add new staff" Name="AddNewStaff" Click="AddNewStaff_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Content="All Staffs" Name="AllStaffs" Click="AllStaffs_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <ComboBox Name="StaffRoles" SelectionChanged="StaffRoles_SelectionChanged" Margin="5" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
+                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}"/>
             </StackPanel>
 
             <Grid x:Name="Display" Grid.Column="1">
                 <Grid Name="StaffsDisplay" Grid.Column="1" Visibility="Collapsed">
-                    <ScrollViewer Name="DisplayStaffs" Visibility="Visible">
-                        <StackPanel Name="DisplayStaffsStackpanel" Orientation="Vertical" HorizontalAlignment="Center">
+                    <ScrollViewer Name="DisplayStaffs" Visibility="Visible"  Margin="20">
+                        <StackPanel Name="DisplayStaffsStackpanel" Orientation="Vertical">
 
                         </StackPanel>
                     </ScrollViewer>

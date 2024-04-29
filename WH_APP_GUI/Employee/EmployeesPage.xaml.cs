@@ -193,7 +193,6 @@ namespace WH_APP_GUI
                 resetPasswordButton.Content = "Reset Password";
                 resetPasswordButton.Click += resetPassword_Click;
                 resetPasswordButton.Tag = employee;
-                resetPasswordButton.Margin = new Thickness(5);
                 resetPasswordButton.Style = (Style)this.Resources["GreenButtonStyle"];
                 rightStackPanel.Children.Add(resetPasswordButton);
             }

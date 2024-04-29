@@ -68,7 +68,7 @@
             </Grid.RowDefinitions>
 
             <Border CornerRadius="10, 10, 0, 0" Background="#395250">
-                <Grid Background="#395250" Margin="5">
+                <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
