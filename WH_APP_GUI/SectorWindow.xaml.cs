@@ -55,9 +55,9 @@ namespace WH_APP_GUI
                     //Megadom a click eventet
                     button.Click += box_Click;
                     //Megadom a gombok kinézetét
-                    button.BorderBrush = Brushes.GreenYellow;
+                    button.BorderBrush = Brushes.Black;
                     button.BorderThickness = new System.Windows.Thickness(0.03);
-                    button.Background = Brushes.Black;
+                    button.Background = new SolidColorBrush(Color.FromArgb(0, 0xCE, 0xA2, 0xFF));
 
                     //Beállítom a gombok méretét a max méretük felére a kinézet miatt
                     button.Height = (double)Visual.sizeVertically / 2;

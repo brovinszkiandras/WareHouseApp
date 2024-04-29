@@ -35,8 +35,12 @@ namespace WH_APP_GUI
         static public void Ini()
         {
             databases.Relations.Clear();
+            foreach (DataTable table in databases.Tables)
+            {
+                table.Constraints.Clear();
+            }
             databases.Tables.Clear();
-            
+
             addRequriedTablesToTables();
             if ((bool)features.database.Select("name = 'Dock'")[0]["in_use"])
             {

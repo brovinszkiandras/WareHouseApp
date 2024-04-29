@@ -116,13 +116,13 @@
             <!-- Toolpanel -->
             <StackPanel Visibility="Visible" Name="toolPanel" Grid.Row="1" Grid.Column="2">
                 <!-- Desinger view -->
-                <Button Height="50" Content="Designer view: OFF" Name="desinger_viewButton" Click="Designer_Click" Margin="10" Style="{StaticResource GreenButtonStyle}"></Button>
+                <Button Height="50" Content="Designer view: OFF" Name="desinger_viewButton" Click="Designer_Click" Margin="10" MaxHeight="30" Style="{StaticResource GreenButtonStyle}"></Button>
                 <!-- New shelf button -->
-                <Button Height="50" Visibility="Hidden" Content="New shelf" Name="New_shelf" Click="New_shelf_Click" Margin="10" Style="{StaticResource GreenButtonStyle}"></Button>
+                <Button Height="50" Visibility="Hidden" Content="New shelf" Name="New_shelf" Click="New_shelf_Click" MaxHeight="30" Margin="10" Style="{StaticResource GreenButtonStyle}"></Button>
                 <!-- Done building shelf -->
-                <Button Height="50" Content="Done" Visibility="Hidden" Name="Done" Click="Done_Click" Margin="10" Style="{StaticResource GreenButtonStyle}"></Button>
+                <Button Height="50" Content="Done" Visibility="Hidden" Name="Done" Click="Done_Click" Margin="10" MaxHeight="30" Style="{StaticResource GreenButtonStyle}"></Button>
                 <!-- Delete button -->
-                <Button Height="50" Content="Delete" Foreground="White" Visibility="Hidden" Name="Delete" Background="Red" Margin="10" Click="Delete_Click" Style="{StaticResource GreenButtonStyle}"></Button>
+                <Button Height="50" Content="Delete" Foreground="White" Visibility="Hidden" Name="Delete" MaxHeight="30" Background="Red" Margin="10" Click="Delete_Click" Style="{StaticResource GreenButtonStyle}"></Button>
             </StackPanel>
 
             <!-- Products info -->
