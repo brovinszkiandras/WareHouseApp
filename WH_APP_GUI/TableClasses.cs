@@ -84,6 +84,7 @@ namespace WH_APP_GUI
 
             adapter.Fill(database);
             database.AcceptChanges();
+            database.TableName = actual_name;
             Tables.databases.Tables.Add(database);
 
             SQL.con.Close();
