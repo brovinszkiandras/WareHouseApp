@@ -137,7 +137,7 @@ namespace WH_APP_GUI
             //transportDock relation létrehozása
             if (bool.Parse(Tables.features.database.Select("name = 'Fleet'")[0]["in_use"].ToString()))
             {
-                if (transports != null)
+                if (transports != null && databases.Tables["transports"] != null)
                 {
                     Relations.makeRelation("transportDock", docks.database, transports.database, "id", "dock_id");
                 }
@@ -213,6 +213,9 @@ namespace WH_APP_GUI
             }
         }
         
+        private void refreshDatabase()
+        {
 
+        }
     }
 }
