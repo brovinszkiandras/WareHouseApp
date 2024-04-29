@@ -81,7 +81,7 @@
         </StackPanel>
         <StackPanel HorizontalAlignment="Right" Grid.Column="2">
             <Border Background="#3A5351" CornerRadius="20" Margin="10" BorderThickness="0">
-                <Button Content="Logout" Background="#3A5351" Foreground="#FFCEA2" BorderThickness="0" Name="logout"/>
+                <Button Content="Logout" Background="#3A5351" Foreground="#FFCEA2" BorderThickness="0" Name="logout" Click="logout_Click"/>
             </Border>
         </StackPanel>
     </Grid>

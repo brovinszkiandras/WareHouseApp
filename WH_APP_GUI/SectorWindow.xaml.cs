@@ -16,18 +16,12 @@ using Xceed.Wpf.Toolkit.Primitives;
 
 namespace WH_APP_GUI
 {
-    /// <summary>
-    /// Interaction logic for SectorWindow.xaml
-    /// </summary>
     public partial class SectorWindow : Page
     {
         #region constructor
         public SectorWindow()
         {
             InitializeComponent();
-
-            
-
             //Az oldal datacontexte a kiválasztott szector lesz
             this.DataContext = Visual.sector;
 
@@ -61,9 +55,9 @@ namespace WH_APP_GUI
                     //Megadom a click eventet
                     button.Click += box_Click;
                     //Megadom a gombok kinézetét
-                    button.BorderBrush = Brushes.GreenYellow;
+                    button.BorderBrush = Brushes.Black;
                     button.BorderThickness = new System.Windows.Thickness(0.03);
-                    button.Background = Brushes.Black;
+                    button.Background = new SolidColorBrush(Color.FromArgb(0, 0xCE, 0xA2, 0xFF));
 
                     //Beállítom a gombok méretét a max méretük felére a kinézet miatt
                     button.Height = (double)Visual.sizeVertically / 2;
@@ -773,5 +767,17 @@ namespace WH_APP_GUI
             toolPanel.Visibility = Visibility.Visible;
         }
         #endregion
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("InspectWarehouse"));
+            }
+        }
     }
 }

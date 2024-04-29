@@ -16,6 +16,7 @@ namespace WH_APP_GUI
         public static Frame content2 = new Frame();
         public static Page PreviousPage = null;
         public static object ReturnParam = null;
+        public static bool SkipParam = false;
         public static void RemoveParent()
         {
             if (content2.Parent != null)
@@ -35,15 +36,36 @@ namespace WH_APP_GUI
                 
                 if (page != null)
                 {
-                    if (ReturnParam != null)
+                    try
                     {
-                        OpenPage(page, ReturnParam);                    
+                        if (ReturnParam != null && !SkipParam)
+                        {
+                            OpenPage(page, ReturnParam);                    
+                        }
+                        else
+                        {
+                            SkipParam = false;
+                            Page toPage = (Page)Activator.CreateInstance(page);
+                            content2.Navigate(toPage);
+                            Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been opened this page: {page.Name}.");
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        Page toPage = (Page)Activator.CreateInstance(page);
-                        content2.Navigate(toPage);
-                        Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been opened this page: {page.Name}.");
+                        Debug.WriteError(ex);
+
+                        try
+                        {
+                            SkipParam = false;
+                            Page toPage = (Page)Activator.CreateInstance(page);
+                            content2.Navigate(toPage);
+                            Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been opened this page: {page.Name}.");
+
+                        }
+                        catch (Exception ex2)
+                        {
+                            Debug.WriteError(ex2);
+                        }
                     }
                 }
             }

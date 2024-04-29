@@ -543,7 +543,21 @@ namespace WH_APP_GUI.Order
                 {
                     order["warehouse_id"] = Warehouse["id"];
                     order["status"] = "In Warehouse";
+
+                    if (Tables.features.isFeatureInUse("Storage"))
+                    {
+                        if (order["sum_volume"] == DBNull.Value)
+                        {
+                            if (order["product_id"] != DBNull.Value)
+                            {
+                                DataRow product = Tables.orders.getProduct(order);
+                                double volume = product["volume"] != DBNull.Value ? (double)product["volume"] : 0;
+                                order["sum_volume"] = volume * (int)order["qty"];
+                            }
+                        }
+                    }
                 }
+
                 Tables.orders.updateChanges();
                 MessageBox.Show($"The order has been added to the warehouse[{Warehouse["name"]}]!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 

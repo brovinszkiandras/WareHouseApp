@@ -162,8 +162,10 @@ namespace WH_APP_GUI.Warehouse
 
         private void SectorsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
-            sectorIndexWindow page = new sectorIndexWindow();
-            Navigation.content2.Navigate(page);
+            //sectorIndexWindow page = new sectorIndexWindow();
+            //Navigation.content2.Navigate(page);
+            Navigation.OpenPage(Navigation.GetTypeByName("sectorIndexWindow"), Warehouse);
+            Navigation.ReturnParam = Warehouse;
         }
 
         private void EmployeesInspectToWarehouse_Click(object sender, RoutedEventArgs e)
