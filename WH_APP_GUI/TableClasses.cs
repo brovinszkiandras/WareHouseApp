@@ -23,17 +23,12 @@ namespace WH_APP_GUI
         public DataTable database = new DataTable();
         public MySqlDataAdapter adapter;
 
-        public table()
-        {
-            GetNames();
-            fill();
-            setupAutoIncrement(); 
-        }
+        
 
         public table(string actualname)
         {
             this.actual_name = actualname;
-            GetNames();
+           
             fill();
             setupAutoIncrement();
         }
@@ -58,15 +53,7 @@ namespace WH_APP_GUI
         #endregion
 
         #region getname
-        private void GetNames()
-        {
-            if (actual_name == null && name == null && nice_name == null)
-            {
-                name = this.GetType().Name;
-                actual_name = SQL.FindOneDataFromQuery($"SELECT actual_name FROM migrations WHERE name = '{this.GetType().Name}'");
-                nice_name = SQL.FindOneDataFromQuery($"SELECT nice_name FROM migrations WHERE name = '{this.GetType().Name}'");
-            }
-        }
+    
         #endregion
 
         #region queris
@@ -163,7 +150,7 @@ namespace WH_APP_GUI
     #region staff
     class staff : table
     {
-        public staff() : base() 
+        public staff(string actualname) : base(actualname)
         {
             if (Tables.features.isFeatureInUse("Date log") == true)
             {
@@ -194,7 +181,7 @@ namespace WH_APP_GUI
     #region cities
     class cities : table
     {
-        public cities() : base()
+        public cities(string actualname) : base(actualname)
         {
 
         }
@@ -214,7 +201,7 @@ namespace WH_APP_GUI
     #region warehouses
     class warehouses : table
     {
-        public warehouses() : base()
+        public warehouses(string actualname) : base(actualname)
         {
             database.Columns["name"].Unique = true;
             database.Columns["name"].AllowDBNull = false;
@@ -274,7 +261,7 @@ namespace WH_APP_GUI
     #region dock
     class dock : table
     {
-        public dock() : base()
+        public dock(string actualname) : base(actualname)
         {
             database.Columns["name"].Unique = true;
             database.Columns["name"].AllowDBNull = false;
@@ -301,7 +288,7 @@ namespace WH_APP_GUI
     #region orders
     class orders : table
     {
-        public orders() : base()
+        public orders(string actualname) : base(actualname)
         {
 
         }
@@ -342,7 +329,7 @@ namespace WH_APP_GUI
     #region employees
     class employees : staff
     {
-        public employees() : base() 
+        public employees(string actualname) : base(actualname)
         {
             database.Columns["profile_picture"].DefaultValue = "DefaultEmployeeProfile.png";
             database.Columns["name"].AllowDBNull = false;
@@ -373,7 +360,7 @@ namespace WH_APP_GUI
     #region products
     class products : table
     {
-        public products() : base()
+        public products(string actualname) : base(actualname)
         {
             database.Columns["name"].AllowDBNull = false;
             database.Columns["buying_price"].AllowDBNull = false;
@@ -405,7 +392,7 @@ namespace WH_APP_GUI
     #region roles
     class roles : table
     {
-        public roles() : base()
+        public roles(string actualname) : base(actualname)
         {
             database.Columns["role"].Unique = true;
             database.Columns["role"].AllowDBNull = false;
@@ -438,7 +425,10 @@ namespace WH_APP_GUI
     #region permissions
     class permission : table
     {
-        public permission() : base() { }
+        public permission(string actualname) : base(actualname)
+        {
+
+        }
 
         public DataRow[] getRoles(DataRow permission)
         {
@@ -450,7 +440,7 @@ namespace WH_APP_GUI
     #region cars
     class cars : table
     {
-        public cars() : base()
+        public cars(string actualname) : base(actualname)
         {
            
             database.Columns["plate_number"].AllowDBNull = false;
@@ -476,7 +466,7 @@ namespace WH_APP_GUI
     #region transports
     class transports : table
     {
-        public transports() : base()
+        public transports(string actualname) : base(actualname)
         {
             database.Columns["employee_id"].AllowDBNull = false;
             database.Columns["car_id"].AllowDBNull=false;
@@ -622,7 +612,7 @@ namespace WH_APP_GUI
     #region forklift
     class forklift : table
     {
-        public forklift() : base()
+        public forklift(string actualname) : base(actualname)
         {
             database.Columns["type"].AllowDBNull = false;
             database.Columns["status"].AllowDBNull = false;
@@ -634,4 +624,6 @@ namespace WH_APP_GUI
         }
     }
     #endregion
+
+
 }

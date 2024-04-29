@@ -319,15 +319,17 @@ namespace WH_APP_GUI
 
             try
             {
-                if (Controller.IsMigrationContainsAllDefaultTables())
+                if (Tables.databases.Tables.Count != 0)
                 {
                     CreateRequiredTablesBTN.IsEnabled = false;
                     CreateCheckBoxes(FeaturesDisplayG);
                 }
                 else
                 {
+                    
                     RegisterEmployee.IsEnabled = false;
                     manageRoles.IsEnabled = false;
+                    RegisterStaff.IsEnabled = false;
                 }
             }
             catch (Exception ex)
@@ -344,7 +346,7 @@ namespace WH_APP_GUI
 
             try
             {
-                if (Controller.IsMigrationContainsAllDefaultTables())
+                if (Tables.databases.Tables.Count != 0)
                 {
                     CreateRequiredTablesBTN.IsEnabled = false;
                     CreateCheckBoxes(FeaturesDisplayG);
@@ -422,13 +424,12 @@ namespace WH_APP_GUI
             RegisterEmployee.IsEnabled = true;
             manageRoles.IsEnabled = true;
 
-            Controller.CreateMigration();
             Controller.CreateFeature();
 
             /*Required*/
-            Controller.CreateDefaultTablesWithMigrationInsert();
+            Controller.CreateDefaultTables();
 
-            if (SQL.Tables().Contains("migrations") && SQL.Tables().Contains(Tables.staff.actual_name))
+            if (SQL.Tables().Contains(Tables.staff.actual_name))
             {
                 SQL.SqlCommand($"INSERT INTO `{Tables.staff.actual_name}`(`name`, `email`, `password`, `role_id`) VALUES ('{SAdminName}', '{SAdminEmail}', '{SAdminPassword}', 1)");
                 MessageBox.Show("You have been registered as an Admin", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -436,11 +437,11 @@ namespace WH_APP_GUI
                 User.SetCurrentUser(SAdminEmail, SAdminPassword);
             }
 
-            if (Controller.IsMigrationContainsAllDefaultTables())
-            {
+           
+            
                 CreateRequiredTablesBTN.IsEnabled = false;
                 CreateCheckBoxes(FeaturesDisplayG);
-            }
+            
 
             MessageBox.Show("Requierd tables and Feature tables created and filled with the datas.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -929,13 +930,16 @@ namespace WH_APP_GUI
 
         private void ToTheApp_Click(object sender, RoutedEventArgs e)
         {
-            SAdminName = string.Empty;
-            SAdminEmail = string.Empty;
-            SAdminPassword = string.Empty;
+            if(Tables.databases.Tables.Count > 0)
+            {
+                SAdminName = string.Empty;
+                SAdminEmail = string.Empty;
+                SAdminPassword = string.Empty;
 
-            MainWindow currentWindow = Window.GetWindow(this) as MainWindow;
-            Home newHome = new Home();
-            currentWindow.content.Navigate(newHome);
+                MainWindow currentWindow = Window.GetWindow(this) as MainWindow;
+                Home newHome = new Home();
+                currentWindow.content.Navigate(newHome);
+            }
         }
 
         private bool FirstOpen()
