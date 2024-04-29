@@ -49,7 +49,7 @@ namespace WH_APP_GUI.Warehouse
                 User.tempWarehouse = Warehouse;
             }
 
-            if (! User.DoesHavePermission("Handle Products"))
+            if (! User.DoesHavePermission("Inspect Products"))
             {
                 ProductsInspectToWarehouse.Visibility = Visibility.Collapsed;
             }

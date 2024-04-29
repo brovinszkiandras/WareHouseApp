@@ -87,7 +87,7 @@ namespace WH_APP_GUI
                 Menu.Children.Add(btn);
             }
 
-            if (true)
+            if (Tables.features.isFeatureInUse("Fleet"))
             {
                 if (User.DoesHavePermission("Inspect all Transport"))
                 {
@@ -107,14 +107,16 @@ namespace WH_APP_GUI
                 }
             }
 
-
-            if (User.DoesHavePermission("Inspect all Car") && Tables.features.isFeatureInUse("Fleet") == true)
+            if (Tables.features.isFeatureInUse("Fleet"))
             {
-                Button btn = new Button();
-                btn.Content = "Cars";
-                btn.Click += InspectAllCars_Click;
-                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
-                Menu.Children.Add(btn);
+                if (User.DoesHavePermission("Inspect all Car") && Tables.features.isFeatureInUse("Fleet") == true)
+                {
+                    Button btn = new Button();
+                    btn.Content = "Cars";
+                    btn.Click += InspectAllCars_Click;
+                    btn.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    Menu.Children.Add(btn);
+                }
             }
 
             if (User.DoesHavePermission("Inspect all Forklift") && Tables.features.isFeatureInUse("Forklift") == true)

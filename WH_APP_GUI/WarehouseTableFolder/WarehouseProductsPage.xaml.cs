@@ -27,6 +27,11 @@ namespace WH_APP_GUI.warehouseTableFolder
 
             this.warehouseTable = WarehouseTable;
 
+            if (! User.DoesHavePermission("Handle Products"))
+            {
+                Create.Visibility = Visibility.Collapsed;
+            }
+
             Displayproducts();
         }
         public void Displayproducts()
@@ -137,21 +142,20 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 productGrid.Children.Add(is_in_box);
 
-                Button add = new Button();
-                add.Content = "Quantity";
-                add.FontSize = 15;
-                add.Foreground = Brushes.White;
-                add.Background = Brushes.Green;
-                add.Tag = product["id"];
-                add.Click += Add_Click;
-                Grid.SetRow(add, lastRow);
-                Grid.SetColumn(add, productGrid.ColumnDefinitions.Count - 3);
-
-                productGrid.Children.Add(add);
-
-
-                if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
+                if (User.DoesHavePermission("Handle Products"))
                 {
+                    Button add = new Button();
+                    add.Content = "Quantity";
+                    add.FontSize = 15;
+                    add.Foreground = Brushes.White;
+                    add.Background = Brushes.Green;
+                    add.Tag = product["id"];
+                    add.Click += Add_Click;
+                    Grid.SetRow(add, lastRow);
+                    Grid.SetColumn(add, productGrid.ColumnDefinitions.Count - 3);
+
+                    productGrid.Children.Add(add);
+
                     Button edit = new Button();
                     edit.Content = "Edit";
                     edit.FontSize = 15;
@@ -176,10 +180,6 @@ namespace WH_APP_GUI.warehouseTableFolder
                     Grid.SetColumn(delete, productGrid.ColumnDefinitions.Count - 1);
 
                     productGrid.Children.Add(delete);
-                }
-                else
-                {
-                    //Create.Visibility = Visibility.Collapsed;
                 }
 
                 lastRow++;

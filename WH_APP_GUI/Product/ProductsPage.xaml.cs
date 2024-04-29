@@ -22,12 +22,23 @@ namespace WH_APP_GUI.Product
         {
             InitializeComponent();
             DisplayAllProducts(ProductsDiaplayStackPanel);
+
+            if (!User.DoesHavePermission("Add Products"))
+            {
+                AddProducts.Visibility = Visibility.Collapsed;
+            }
         }
         private DataRow WarehouseFromPage;
         public ProductsPage(DataRow warehouseFromPage)
         {
             InitializeComponent();
             DisplayAllProducts(ProductsDiaplayStackPanel);
+
+            if (!User.DoesHavePermission("Add Products"))
+            {
+                AddProducts.Visibility = Visibility.Collapsed;
+            }
+
             WarehouseFromPage = warehouseFromPage;
         }
 
@@ -175,19 +186,22 @@ namespace WH_APP_GUI.Product
 
             StackPanel buttonsStackPanel = new StackPanel();
 
-            Button deleteButton = new Button();
-            deleteButton.Content = "Delete";
-            deleteButton.Click += DeleteProduct_Click;
-            deleteButton.Tag = product;
-            deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
-            buttonsStackPanel.Children.Add(deleteButton);
+            if (User.DoesHavePermission("Change Products"))
+            {
+                Button deleteButton = new Button();
+                deleteButton.Content = "Delete";
+                deleteButton.Click += DeleteProduct_Click;
+                deleteButton.Tag = product;
+                deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                buttonsStackPanel.Children.Add(deleteButton);
 
-            Button editButton = new Button();
-            editButton.Content = "Edit";
-            editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
-            editButton.Click += EditProduct_Click;
-            editButton.Tag = product;
-            buttonsStackPanel.Children.Add(editButton);
+                Button editButton = new Button();
+                editButton.Content = "Edit";
+                editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                editButton.Click += EditProduct_Click;
+                editButton.Tag = product;
+                buttonsStackPanel.Children.Add(editButton);
+            }
 
 
             Grid.SetColumn(buttonsStackPanel, 2);
