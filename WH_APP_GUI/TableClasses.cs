@@ -74,6 +74,10 @@ namespace WH_APP_GUI
         {
             adapter = new MySqlDataAdapter($"SELECT * FROM {actual_name}", SQL.con);
 
+            database.Rows.Clear();
+            database.Columns.Clear();
+            database.Constraints.Clear();
+
             adapter.AcceptChangesDuringUpdate = true;
 
             SQL.con.Open();
