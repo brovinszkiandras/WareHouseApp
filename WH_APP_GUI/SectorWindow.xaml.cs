@@ -369,7 +369,10 @@ namespace WH_APP_GUI
                 desinger_viewButton.Content = "Designer view: ON";
                 shelfBuilder.isDesignerModeActive = true;
 
-                New_shelf.Visibility = Visibility.Visible;
+                if(shelfBuilder.isAShelfBeingCreated == false)
+                {
+                    New_shelf.Visibility = Visibility.Visible;
+                }
                 Done.Visibility = Visibility.Visible;
                 
             }
@@ -381,7 +384,10 @@ namespace WH_APP_GUI
                 desinger_viewButton.Content = "Designer view: OFF";
                 shelfBuilder.isDesignerModeActive = false;
 
-                New_shelf.Visibility = Visibility.Hidden;
+                if (shelfBuilder.isAShelfBeingCreated == false)
+                {
+                    New_shelf.Visibility = Visibility.Hidden;
+                }
                 Done.Visibility = Visibility.Hidden;
                 Delete.Visibility = Visibility.Hidden;
             }

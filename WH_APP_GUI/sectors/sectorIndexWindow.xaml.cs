@@ -108,19 +108,6 @@ namespace WH_APP_GUI.sectors
 
                 if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
                 {
-                    Button edit = new Button();
-                    edit.Content = "Edit";
-                    edit.FontSize = 15;
-                    edit.Foreground = Brushes.White;
-                    edit.Background = Brushes.Green;
-                    edit.Click += Edit_Click;
-                    edit.Tag = sector["id"];
-
-                    Grid.SetRow(edit, lastRow);
-                    Grid.SetColumn(edit, 6);
-
-                    sectorGrid.Children.Add(edit);
-
                     Button delete = new Button();
                     delete.Content = "Delete";
                     delete.FontSize = 15;
@@ -171,15 +158,6 @@ namespace WH_APP_GUI.sectors
 
 
         }
-        private void Edit_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = e.Source as Button;
-            DataRow sector = Tables.sector.database.Select($"id = '{button.Tag}'")[0];
-            UpdateSectorPage updateSectorPage = new UpdateSectorPage();
-
-            Navigation.content2.Navigate(updateSectorPage);
-        }
-
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             CreateSectorPage createSectorPage = new CreateSectorPage();

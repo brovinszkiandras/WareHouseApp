@@ -308,9 +308,6 @@
     <Compile Include="sectors\sectorIndexWindow.xaml.cs">
       <DependentUpon>sectorIndexWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="sectors\UpdateSectorPage.xaml.cs">
-      <DependentUpon>UpdateSectorPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SectorWindow.xaml.cs">
       <DependentUpon>SectorWindow.xaml</DependentUpon>
     </Compile>
@@ -488,10 +485,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="sectors\sectorIndexWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="sectors\UpdateSectorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

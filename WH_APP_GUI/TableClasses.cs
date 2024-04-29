@@ -162,6 +162,7 @@ namespace WH_APP_GUI
         {
             if (Tables.features.isFeatureInUse("Date log") == true)
             {
+                database.Columns["profile_picture"].DefaultValue = "DefaultStaffProfilePicture.png";
                 database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
                 database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
             }
@@ -338,6 +339,7 @@ namespace WH_APP_GUI
     {
         public employees() : base() 
         {
+            database.Columns["profile_picture"].DefaultValue = "DefaultEmployeeProfile.png";
             database.Columns["name"].AllowDBNull = false;
             database.Columns["email"].Unique = true;
             database.Columns["email"].AllowDBNull = false;
