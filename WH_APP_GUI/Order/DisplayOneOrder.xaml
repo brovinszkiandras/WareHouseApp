@@ -8,22 +8,24 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DisplayOneOrder">
 
-    <Grid Background="#676F9D">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Button Name="Back" Content="Back" Grid.Row="0" Width="150" Margin="5" HorizontalAlignment="Right" Click="Back_Click"/>
+            <Button Name="Back" Content="Back" Grid.Row="0" Width="150" Margin="5" HorizontalAlignment="Right" Click="Back_Click"/>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
-            <StackPanel x:Name="Orders">
-                <Border BorderBrush="Black" BorderThickness="3" Margin="5">
-                    <StackPanel x:Name="OrdersDisplay" Margin="5">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                <StackPanel x:Name="Orders">
+                    <Border BorderBrush="Black" BorderThickness="3" Margin="5">
+                        <StackPanel x:Name="OrdersDisplay" Margin="5">
 
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Border>
 </Page>

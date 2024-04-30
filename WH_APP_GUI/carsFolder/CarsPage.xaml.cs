@@ -54,15 +54,16 @@ namespace WH_APP_GUI.carsFolder
         {
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
+            border.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+            border.CornerRadius = new CornerRadius(15);
             border.BorderThickness = new Thickness(2);
-            border.Background = Brushes.White;
             border.Margin = new Thickness(5);
 
             StackPanel mainStackPanel = new StackPanel();
             
             Image image = new Image();
-            image.Width = 80;
-            image.Height = 80;
+            image.Width = 100;
+            image.Height = 100;
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))

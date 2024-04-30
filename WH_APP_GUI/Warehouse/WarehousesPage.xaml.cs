@@ -92,7 +92,7 @@ namespace WH_APP_GUI.Warehouse
                 Label label = new Label();
                 label.HorizontalAlignment = HorizontalAlignment.Center;
                 label.Content = Tables.warehouses.database.Rows[i]["name"];
-                label.FontFamily = new FontFamily("Baskerville Old Face");
+                label.Style = (Style)this.Resources["labelstyle"];
                 Grid.SetColumn(label, 1);
                 grid.Children.Add(label);
 
