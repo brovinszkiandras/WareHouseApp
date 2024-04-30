@@ -8,6 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="InspectTransportPage"
       SizeChanged="InspectTransportPage_SizeChanged">
+    
     <Page.Resources>
         <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>

@@ -83,7 +83,7 @@ namespace WH_APP_GUI.carsFolder
             Label plateNumber = new Label();
             plateNumber.Content = "Platenumber: " + car["plate_number"];
             plateNumber.HorizontalContentAlignment = HorizontalAlignment.Center;
-            plateNumber.Margin = new Thickness(5);
+            plateNumber.Style = (Style)this.Resources["labelstyle"];
             plateNumber.BorderBrush = Brushes.Black;
             plateNumber.BorderThickness = new Thickness(1,0,1,1);
 
@@ -102,6 +102,7 @@ namespace WH_APP_GUI.carsFolder
 
             Label type = new Label();
             type.Content = $"Type: {car["type"]}";
+            type.Style = (Style)this.Resources["labelstyle"];
             type.BorderBrush = Brushes.Black;
             type.BorderThickness = new Thickness(1, 0, 0, 1);
             defaultDatas.Children.Add(type);
@@ -109,30 +110,35 @@ namespace WH_APP_GUI.carsFolder
             Label ready = new Label();
             ready.Content = $"Ready: " + ((bool)car["ready"] ? "Ready" : "Not ready");
             ready.BorderBrush = Brushes.Black;
+            ready.Style = (Style)this.Resources["labelstyle"];
             ready.BorderThickness = new Thickness(1, 0, 0, 1);
             defaultDatas.Children.Add(ready);
 
             Label km = new Label();
             km.Content = $"Km: {car["km"]}";
             km.BorderBrush = Brushes.Black;
+            km.Style = (Style)this.Resources["labelstyle"];
             km.BorderThickness = new Thickness(1, 0, 0, 1);
             defaultDatas.Children.Add(km);
 
             Label lastService = new Label();
             lastService.Content = $"Last service: {car["last_service"]}";
             lastService.BorderBrush = Brushes.Black;
+            lastService.Style = (Style)this.Resources["labelstyle"];
             lastService.BorderThickness = new Thickness(1, 0, 0, 1);
             defaultDatas.Children.Add(lastService);
 
             Label lastexam = new Label();
             lastexam.Content = $"Last exam: {car["last_exam"]}";
             lastexam.BorderBrush = Brushes.Black;
+            lastexam.Style = (Style)this.Resources["labelstyle"];
             lastexam.BorderThickness = new Thickness(1, 0, 0, 1);
             defaultDatas.Children.Add(lastexam);
 
             Label warehouse = new Label();
             warehouse.Content = $"Warehouse: {Tables.cars.getWarehouse(car)["name"]}";
             warehouse.BorderBrush = Brushes.Black;
+            warehouse.Style = (Style)this.Resources["labelstyle"];
             warehouse.BorderThickness = new Thickness(1, 0, 0, 1);
             defaultDatas.Children.Add(warehouse);
 
@@ -147,12 +153,14 @@ namespace WH_APP_GUI.carsFolder
                 Label storage = new Label();
                 storage.Content = $"Storage: {car["storage"]}";
                 storage.BorderBrush = Brushes.Black;
+                storage.Style = (Style)this.Resources["labelstyle"];
                 storage.BorderThickness = new Thickness(1, 0, 0, 1);
                 storageFeature.Children.Add(storage);
 
                 Label carrying_capacity = new Label();
                 carrying_capacity.Content = $"Carrying capacity: {car["carrying_capacity"]}";
                 carrying_capacity.BorderBrush = Brushes.Black;
+                carrying_capacity.Style = (Style)this.Resources["labelstyle"];
                 carrying_capacity.BorderThickness = new Thickness(1, 0, 0, 1);
                 storageFeature.Children.Add(carrying_capacity);
 
@@ -168,12 +176,14 @@ namespace WH_APP_GUI.carsFolder
                 Label consumption = new Label();
                 consumption.Content = $"Consumption: {car["consumption"]}";
                 consumption.BorderBrush = Brushes.Black;
+                consumption.Style = (Style)this.Resources["labelstyle"];
                 consumption.BorderThickness = new Thickness(1, 0, 0, 1);
                 fuelFeature.Children.Add(consumption);
 
                 Label gas_tank_size = new Label();
                 gas_tank_size.Content = $"Gas tank size: {car["gas_tank_size"]}";
                 gas_tank_size.BorderBrush = Brushes.Black;
+                gas_tank_size.Style = (Style)this.Resources["labelstyle"];
                 gas_tank_size.BorderThickness = new Thickness(1, 0, 0, 1);
                 fuelFeature.Children.Add(gas_tank_size);
 
@@ -187,9 +197,7 @@ namespace WH_APP_GUI.carsFolder
             {
                 Button edit = new Button();
                 edit.Content = "Edit";
-                edit.FontSize = 15;
-                edit.Foreground = Brushes.White;
-                edit.Background = Brushes.Black;
+                edit.Style = (Style)this.Resources["GoldenButtonStyle"];
                 edit.Click += Edit_Click;
                 edit.Tag = car["id"];
 
@@ -200,9 +208,7 @@ namespace WH_APP_GUI.carsFolder
 
                 Button delete = new Button();
                 delete.Content = "Delete";
-                delete.FontSize = 15;
-                delete.Foreground = Brushes.White;
-                delete.Background = Brushes.Black;
+                delete.Style = (Style)this.Resources["GoldenButtonStyle"];
                 delete.Tag = car["id"];
                 delete.Click += Delete_Click;
                 Grid.SetRow(delete, lastRow);
