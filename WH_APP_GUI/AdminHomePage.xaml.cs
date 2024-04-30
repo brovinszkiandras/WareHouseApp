@@ -437,11 +437,8 @@ namespace WH_APP_GUI
                 User.SetCurrentUser(SAdminEmail, SAdminPassword);
             }
 
-           
-            
-                CreateRequiredTablesBTN.IsEnabled = false;
-                CreateCheckBoxes(FeaturesDisplayG);
-            
+            CreateRequiredTablesBTN.IsEnabled = false;
+            CreateCheckBoxes(FeaturesDisplayG);
 
             MessageBox.Show("Requierd tables and Feature tables created and filled with the datas.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -496,61 +493,10 @@ namespace WH_APP_GUI
         {
             Navigation.OpenPage(Navigation.GetTypeByName("CreateStaffPage"));
         }
-        private void ImportEmployees_Click(object sender, RoutedEventArgs e)
-        {
-            CloseBeforeOpen();
-            MessageBox.Show("Work in progress", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void RegisterEmployeeWithDatas_Click(object sender, RoutedEventArgs e)
-        {
-            if (EmployeeStatus.SelectedIndex != -1 && EmployeeRole.SelectedIndex != -1 && EmployeeName.Text != string.Empty && EmployeeEmail.Text != string.Empty)
-            {
-                if (Tables.staff.database.Select($"email = '{EmployeeEmail.Text}'").Length == 0 && Tables.employees.database.Select($"email = '{EmployeeEmail.Text}'").Length == 0)
-                {
-                    string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
-                    string HashedPassword = Hash.HashPassword(password);
-                    /*DEBUG*/
-                    MessageBox.Show("Admin Page: " + password);
-                    MessageBox.Show("Admin Page: " + HashedPassword);
-                    /*DEBUG*/
-
-                    if (EmployeeStatus.SelectedIndex == 0)
-                    {
-                        SQL.SqlCommand($"INSERT INTO `{Tables.staff.actual_name}`(`name`, `email`, `password`, `role_id`) VALUES ('{EmployeeName.Text}', '{EmployeeEmail.Text}', '{HashedPassword}', {Role_Id[EmployeeRole.SelectedItem.ToString()]})");
-                    }
-                    else if (EmployeeStatus.SelectedIndex == 1)
-                    {
-                        SQL.SqlCommand($"INSERT INTO `{Tables.employees.actual_name}`(`name`, `email`, `password`, `role_id`) VALUES ('{EmployeeName.Text}', '{EmployeeEmail.Text}', '{HashedPassword}' , {Role_Id[EmployeeRole.SelectedItem.ToString()]})");
-                    }
-                    MessageBox.Show("New employees has been added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    RegisterEmployeDatas.Visibility = Visibility.Collapsed;
-                    EmployeeStatus.SelectedIndex = -1;
-                    EmployeeName.Text = string.Empty;
-                    EmployeeEmail.Text = string.Empty;
-                    EmployeeRole.SelectedIndex = -1;
-                }
-                else
-                {
-                    MessageBox.Show("A person with this email alreday exist!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Empty input fileds!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
 
         private void ManageDatabase_Click(object sender, RoutedEventArgs e)
         {
             CloseBeforeOpen();
-
-            RegisterEmployeDatas.Visibility = Visibility.Collapsed;
-            EmployeeStatus.SelectedIndex = -1;
-            EmployeeName.Text = string.Empty;
-            EmployeeEmail.Text = string.Empty;
-            EmployeeRole.SelectedIndex = -1;
 
             ManagedatabaseGrid.Visibility = Visibility.Visible;
 
@@ -575,33 +521,6 @@ namespace WH_APP_GUI
             }
         }
 
-        private void EmployeeStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            EmployeeRole.IsEnabled = true;
-
-            if (EmployeeStatus.SelectedIndex == 0)
-            {
-                EmployeeRole.Items.Clear();
-                for (int i = 0; i < Tables.roles.database.Rows.Count; i++)
-                {
-                    if (! (bool)Tables.roles.database.Rows[i]["in_warehouse"])
-                    {
-                        EmployeeRole.Items.Add(Tables.roles.database.Rows[i]["role"]);
-                    }
-                }
-            }
-            else if (EmployeeStatus.SelectedIndex == 1)
-            {
-                EmployeeRole.Items.Clear();
-                for (int i = 0; i < Tables.roles.database.Rows.Count; i++)
-                {
-                    if ((bool)Tables.roles.database.Rows[i]["in_warehouse"])
-                    {
-                        EmployeeRole.Items.Add(Tables.roles.database.Rows[i]["role"]);
-                    }
-                }
-            }
-        }
         private void AdminHome_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             foreach (var child in alapgrid.Children)
@@ -786,7 +705,6 @@ namespace WH_APP_GUI
                     Tables.roles.Refresh();
                     Tables.permissions.Refresh();
 
-                    MessageBox.Show("Status updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     PermissionDisplayToRole(SelectedRole);
                 }
                 catch (Exception ex)
@@ -858,7 +776,6 @@ namespace WH_APP_GUI
                     Tables.roles.Refresh();
                     Tables.permissions.Refresh();
 
-                    MessageBox.Show("Status updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     PermissionDisplayToRole(SelectedRole);
                 }
                 catch (Exception ex)

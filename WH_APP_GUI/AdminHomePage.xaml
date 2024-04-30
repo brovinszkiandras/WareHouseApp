@@ -93,31 +93,6 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-
-                <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="RegisterEmployeDatas" Visibility="Collapsed" Grid.Row="1">
-
-                    <Label Content="The employee belongs to a warehouse?" VerticalContentAlignment="Bottom"/>
-                    <ComboBox Name="EmployeeStatus" BorderBrush="Black" SelectionChanged="EmployeeStatus_SelectionChanged" Margin="10"/>
-
-                    <Label Content="Employee Name:" VerticalContentAlignment="Bottom"/>
-                    <TextBox x:Name="EmployeeName" SelectionBrush="Black" BorderBrush="Black" Margin="10"/>
-
-                    <Label Content="Employee Email:" VerticalContentAlignment="Bottom"/>
-                    <TextBox x:Name="EmployeeEmail" BorderBrush="Black" SelectionBrush="Black" Margin="10"/>
-
-                    <Label Content="Employee Role:" VerticalContentAlignment="Bottom"/>
-                    <ComboBox Name="EmployeeRole" BorderBrush="Black" Margin="10">
-                        <ComboBox.Background>
-                            <LinearGradientBrush EndPoint="0,1">
-                                <GradientStop Color="#FFF0F0F0"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </ComboBox.Background>
-                    </ComboBox>
-
-                    <Button x:Name="RegisterEmployeeWithDatas" Content="Register Employee" Background="White" BorderBrush="Black" Click="RegisterEmployeeWithDatas_Click" Margin="30"/>
-                </StackPanel>
-
                 <StackPanel Grid.ColumnSpan="2" x:Name="ManagedatabaseGrid" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1">
 
                     <Label Content="Enter the datasource:"/>

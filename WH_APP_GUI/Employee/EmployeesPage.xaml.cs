@@ -175,7 +175,7 @@ namespace WH_APP_GUI
             }
             else
             {
-                warehouseLBL.Content = "This emplyee does not belongs to a warehouse";
+                warehouseLBL.Content = "Not in warehouse.";
             }
 
             Label roleLabel = new Label();

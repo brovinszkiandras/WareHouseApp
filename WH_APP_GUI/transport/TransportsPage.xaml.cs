@@ -26,6 +26,11 @@ namespace WH_APP_GUI.transport
             InitializeComponent();
             IniTransports();
             Back.Visibility = Visibility.Collapsed;
+
+            if (User.DoesHavePermission("Modify Transport") || User.DoesHavePermission("Modify all Transport"))
+            {
+                Create.Visibility = Visibility.Collapsed;
+            }
         }
 
         private DataRow Warehouse = null;
@@ -34,6 +39,11 @@ namespace WH_APP_GUI.transport
             InitializeComponent();
             IniTransports();
             Warehouse = warehouseFromPage;
+
+            if (User.DoesHavePermission("Modify Transport") || User.DoesHavePermission("Modify all Transport"))
+            {
+                Create.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void IniTransports()
@@ -132,10 +142,6 @@ namespace WH_APP_GUI.transport
                 delete.Tag = transport["id"];
                 delete.Click += Delete_Click;
                 buttons.Children.Add(delete);
-            }
-            else
-            {
-                Create.Visibility = Visibility.Collapsed;
             }
 
             if (User.DoesHavePermission("Assign to transport") || User.DoesHavePermission("Inspect own Transport"))

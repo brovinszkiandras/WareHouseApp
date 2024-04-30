@@ -69,6 +69,10 @@ namespace WH_APP_GUI.transport
                 status.Items.Add("Docking");
                 status.Items.Add("On route");
                 status.SelectedItem = "Docking";
+                if (Tables.transports.getOrders(transport).Length == 0)
+                {
+                    status.IsEnabled = false;
+                }
             }
             else if (transport["status"].ToString() == "On route")
             {
@@ -92,6 +96,7 @@ namespace WH_APP_GUI.transport
             datas.Children.Add(start_date);
 
             Label end_date = new Label();
+            string endDate = transport["end_date"] != DBNull.Value ? transport["end_date"].ToString() : "No end date yet.";
             end_date.Content = $"End date: {transport["end_date"]}";
             end_date.Style = (Style)this.Resources["labelstyle"];
             datas.Children.Add(end_date);
