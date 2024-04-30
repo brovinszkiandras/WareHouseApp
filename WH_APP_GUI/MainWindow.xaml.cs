@@ -27,6 +27,10 @@ namespace WH_APP_GUI
         public MainWindow()
         {
             InitializeComponent();
+
+            Console.IniConsole();
+            Console.WriteLine("Teszt");
+
             //Console.IniConsole();
             //Email.send("szsoly04@gmail.com", "Megkérdezzem?", "Mivan mivan mivan");
             if (! SQL.IsDatabasetxtExist())
@@ -68,7 +72,6 @@ namespace WH_APP_GUI
                     AdminLogInshow();
                 }
             }
-            //TODO: úgy kéne megcsinálni az első belépést egy felhasználó(staff-nál) hogy az admin bejelntkezik(adatai eltárolása static válzoóként) majd beállitja a connection string adatait, ellennörzésként lekérdezi a megadott adatokat úgy hogy lekérdezi az adatbázisból a megadot connection-al az admin nevét WHERE email = this.email, ha egyezzik akkor jó ha nem akkor...megismétli a setup-ot
         }
         private void AdminLogInshow()
         {
@@ -76,7 +79,6 @@ namespace WH_APP_GUI
             Login_button.Visibility = Visibility.Collapsed;
             RegisterAsAdmin.Visibility = Visibility.Visible;
 
-            //Belépéshez nem kell név csak email meg jelszó
             Name.Visibility = Visibility.Visible;
             NameLBL.Visibility = Visibility.Visible;
         }
@@ -139,7 +141,8 @@ namespace WH_APP_GUI
                     if (datasOfUser[0][4] != "" || datasOfUser[0][5] != "")
                     {
                         User.SetCurrentUser(Emali.Text, hpsw);
-                        Controller.LogWrite(User.currentUser["email"].ToString(),"The user has been logged in to the application");
+                        User.MainWindow = this;
+                        Controller.LogWrite(User.currentUser["email"].ToString(),"User has been logged in to the application");
                         if (User.currentUser != null)
                         {
                             LogIn.Visibility = Visibility.Visible;
@@ -162,6 +165,7 @@ namespace WH_APP_GUI
                     {
                         User.SetCurrentUser(Emali.Text, hpsw);
                         User.MainWindow = this;
+                        Controller.LogWrite(User.currentUser["email"].ToString(), "User has been logged in to the application");
                         if (User.currentUser != null)
                         {
                             LogIn.Visibility = Visibility.Visible;
@@ -209,13 +213,7 @@ namespace WH_APP_GUI
 
         private void content_Navigating(object sender, NavigatingCancelEventArgs e)
         {
-           
-            //if(Navigation.content2.Parent != null)
-            //{
-            //    Navigation.RemoveParent();
-                
-            //}
-            
+          
         }
     }
 }
