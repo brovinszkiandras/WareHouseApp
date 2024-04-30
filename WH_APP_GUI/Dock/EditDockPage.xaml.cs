@@ -91,5 +91,14 @@ namespace WH_APP_GUI.Dock
                 Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
+
+        private void EditDockPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+            image.Width = image.Height;
+        }
     }
 }

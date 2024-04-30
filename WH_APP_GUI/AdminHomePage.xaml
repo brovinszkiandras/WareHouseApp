@@ -61,7 +61,7 @@
         </ControlTemplate>
     </Page.Resources>
 
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+    <Border CornerRadius="30,0,0,0" Background="#676F9D">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

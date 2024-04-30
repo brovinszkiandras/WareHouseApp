@@ -7,9 +7,21 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="CreateDockPage">
+      Title="CreateDockPage"
+      SizeChanged="CreateDock_SizeChanged">
 
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Page.Resources>
+
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -22,9 +34,9 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Image Name="image" Margin="20" Grid.Column="1" Width="100" Height="100" MaxHeight="100" MaxWidth="100"/>
+            <Image Name="image" Grid.Column="1"/>
 
-            <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20" VerticalAlignment="Center">
+            <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
@@ -36,16 +48,16 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Name:" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                <Label Content="Warehouse:" Grid.Column="0" Grid.Row="3" Margin="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Name:" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Warehouse:" Grid.Column="0" Grid.Row="3" Margin="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
 
-                <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="0" Width="auto" VerticalContentAlignment="Center"/>
-                <ComboBox Name="warehouse_id" Margin="5" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="0" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
+                <ComboBox Name="warehouse_id" Margin="5" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
             </Grid>
 
             <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
-                <Button Name="Done" Content="Done" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="Done_Click" Padding="40, 10"/>
-                <Button Name="Cancel" Content="Cancel" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Padding="40, 10" Click="Cancel_Click"/>
+                <Button Name="Done" Content="Done" Margin="0, 5" Click="Done_Click" Padding="20, 10" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Name="Cancel" Content="Cancel" Margin="0, 5" Padding="20, 10" Click="Cancel_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Border>

@@ -7,12 +7,44 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="CreateProduct" 
-        d:DesignHeight="450" d:DesignWidth="800">
+        d:DesignHeight="450" d:DesignWidth="800"
+        SizeChanged="CreateProductsPage_SizeChanged">
 
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{x:Static SystemColors.ControlLightBrush}"/>
+                    <Setter Property="Foreground" Value="{x:Static SystemColors.GrayTextBrush}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+    </Page.Resources>
+
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
@@ -22,12 +54,11 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Button Name="image" BorderBrush="Black" Margin="20" Click="image_Click" Grid.Row="1" MaxHeight="100" MaxWidth="100"/>
+            <Button Name="image" BorderBrush="Black" Margin="20" Click="image_Click" Grid.RowSpan="3" Height="200" Width="200"/>
 
-            <Grid Grid.Column="1" Grid.RowSpan="2" Margin="20">
+            <Grid Grid.Column="1" Grid.RowSpan="3" Margin="20" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -41,28 +72,28 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                <Label Content="Buying Price:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                <Label Content="Selling Price:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                <Label Content="Width:" Name="widthLabel" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                <Label Content="Heigth:" Name="heigthLabel" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                <Label Content="Length:" Name="lengthLabel" Margin="5" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                <Label Content="Description:" Margin="5" Grid.Column="0" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                <Label Content="Weight:" Name="WeightLBL" Margin="5" Grid.Column="0" Grid.Row="7" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Buying Price:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Selling Price:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Width:" Name="widthLabel" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Heigth:" Name="heigthLabel" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Length:" Name="lengthLabel" Margin="5" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Description:" Margin="5" Grid.Column="0" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Weight:" Name="WeightLBL" Margin="5" Grid.Column="0" Grid.Row="7" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
 
-                <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-                <xctk:ValueRangeTextBox Name="buying_price" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-                <xctk:ValueRangeTextBox Name="selling_price" Grid.Column="1" Grid.Row="2" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-                <xctk:ValueRangeTextBox Name="width" Grid.Column="1" Grid.Row="3" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-                <xctk:ValueRangeTextBox Name="heigth" Grid.Column="1" Grid.Row="4" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-                <xctk:ValueRangeTextBox Name="length" Grid.Column="1" Grid.Row="5" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-                <xctk:ValueRangeTextBox Name="description" Grid.Column="1" Grid.Row="6" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
-                <xctk:ValueRangeTextBox Name="weight" Grid.Column="1" Grid.Row="7" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto"/>
+                <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
+                <xctk:ValueRangeTextBox Name="buying_price" Grid.Column="1" Grid.Row="1" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
+                <xctk:ValueRangeTextBox Name="selling_price" Grid.Column="1" Grid.Row="2" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
+                <xctk:ValueRangeTextBox Name="width" Grid.Column="1" Grid.Row="3" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
+                <xctk:ValueRangeTextBox Name="heigth" Grid.Column="1" Grid.Row="4" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
+                <xctk:ValueRangeTextBox Name="length" Grid.Column="1" Grid.Row="5" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
+                <xctk:ValueRangeTextBox Name="description" Grid.Column="1" Grid.Row="6" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
+                <xctk:ValueRangeTextBox Name="weight" Grid.Column="1" Grid.Row="7" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
             </Grid>
 
             <StackPanel Grid.Column="2" Grid.Row="2" Margin="30">
-                <Button Name="Done" Content="Done" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Click="Done_Click" Padding="40, 10"/>
-                <Button Name="Cancel" Content="Cancel" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="0, 5" Padding="40, 10" Click="Cancel_Click"/>
+                <Button Name="Done" Content="Done" Margin="0, 5" Click="Done_Click" Padding="20, 10" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Name="Cancel" Content="Cancel" Margin="0, 5" Padding="20, 10" Click="Cancel_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Border>

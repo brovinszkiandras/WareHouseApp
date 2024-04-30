@@ -58,12 +58,12 @@
                 <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="0" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
                 <xctk:ValueRangeTextBox Name="email" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="1" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
                 <ComboBox Name="role_id" Margin="5" Grid.Column="1" Grid.Row="2" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
-                <ComboBox Name="warehouse_id" Margin="5" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
+                <ComboBox Name="warehouse_id" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
             </Grid>
 
             <StackPanel Grid.Column="8" Grid.Row="2" Margin="30">
-                <Button Name="Done" Content="Done" Margin="0, 5" Click="Done_Click" Padding="30, 10" Style="{StaticResource GoldenButtonStyle}"/>
-                <Button Name="Cancel" Content="Cancel" Margin="0, 5" Padding="30, 10" Click="Cancel_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Name="Done" Content="Done" Margin="0, 5" Click="Done_Click" Padding="20, 10" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Name="Cancel" Content="Cancel" Margin="0, 5" Padding="20, 10" Click="Cancel_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Border>

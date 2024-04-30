@@ -135,7 +135,22 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 productGrid.Children.Add(is_in_box);
 
+<<<<<<< HEAD
+                Button add = new Button();
+                add.Content = "Quantity";
+                add.Style = (Style)this.Resources["GoldenButtonStyle"];
+                add.Tag = product["id"];
+                add.Click += Add_Click;
+                Grid.SetRow(add, lastRow);
+                Grid.SetColumn(add, productGrid.ColumnDefinitions.Count - 3);
+
+                productGrid.Children.Add(add);
+
+
+                if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
+=======
                 if (User.DoesHavePermission("Handle Products"))
+>>>>>>> 2bad03c74ee5dc353dd509c2aa17fc10c2d5098d
                 {
                     Button add = new Button();
                     add.Content = "Quantity";
@@ -170,6 +185,13 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                     productGrid.Children.Add(delete);
                 }
+<<<<<<< HEAD
+                else
+                {
+                    Create.Visibility = Visibility.Collapsed;
+                }
+=======
+>>>>>>> 2bad03c74ee5dc353dd509c2aa17fc10c2d5098d
 
                 lastRow++;
             }

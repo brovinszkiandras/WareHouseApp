@@ -7,7 +7,8 @@
         xmlns:local="clr-namespace:WH_APP_GUI.Product"
         mc:Ignorable="d"
         Title="ProductsPage"
-        d:DesignHeight="450" d:DesignWidth="800">
+        d:DesignHeight="450" d:DesignWidth="800"
+        SizeChanged="ProductsPage_SizeChanged">
 
     <Page.Resources>
         <Style TargetType="Button" x:Key="GoldenButtonStyle">

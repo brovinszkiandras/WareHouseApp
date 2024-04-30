@@ -27,6 +27,11 @@ namespace WH_APP_GUI.Staff
             InitializeAllStaffs(DisplayStaffsStackpanel);
             Ini_role_id();
             Back.Visibility = Visibility.Collapsed;
+
+            if (!User.DoesHavePermission("Modify Staff"))
+            {
+                AddNewStaff.Visibility = Visibility.Collapsed;
+            }
         }
         private DataRow WarehouseFromPage;
         public StaffPage(DataRow warehouseFromPage)
@@ -37,6 +42,11 @@ namespace WH_APP_GUI.Staff
             Ini_role_id();
             Back.Visibility = Visibility.Collapsed;
             WarehouseFromPage = warehouseFromPage;
+
+            if (!User.DoesHavePermission("Modify Staff"))
+            {
+                AddNewStaff.Visibility = Visibility.Collapsed;
+            }
         }
         private static Type PreviousPageType;
         public StaffPage(Page previousPage)
@@ -143,8 +153,6 @@ namespace WH_APP_GUI.Staff
             }
 
             StackPanel leftStackPanel = new StackPanel();
-            leftStackPanel.Orientation = Orientation.Vertical;
-
             Grid.SetColumn(leftStackPanel, 1);
             mainGrid.Children.Add(leftStackPanel);
 
@@ -180,19 +188,29 @@ namespace WH_APP_GUI.Staff
 
             if (User.currentUser != staff)
             {
-                Button deleteButton = new Button();
-                deleteButton.Content = "Delete";
-                deleteButton.Click += deleteStaff_Click;
-                deleteButton.Tag = staff;
-                deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
-                rightStackPanel.Children.Add(deleteButton);
+                if (User.DoesHavePermission("Modify Staff"))
+                {
+                    Button deleteButton = new Button();
+                    deleteButton.Content = "Delete";
+                    deleteButton.Click += deleteStaff_Click;
+                    deleteButton.Tag = staff;
+                    deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    rightStackPanel.Children.Add(deleteButton);
 
-                Button resetPasswordButton = new Button();
-                resetPasswordButton.Content = "Reset Password";
-                resetPasswordButton.Click += resetPassword_Click;
-                resetPasswordButton.Tag = staff;
-                resetPasswordButton.Style = (Style)this.Resources["GoldenButtonStyle"];
-                rightStackPanel.Children.Add(resetPasswordButton);
+                    Button resetPasswordButton = new Button();
+                    resetPasswordButton.Content = "Reset Password";
+                    resetPasswordButton.Click += resetPassword_Click;
+                    resetPasswordButton.Tag = staff;
+                    resetPasswordButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    rightStackPanel.Children.Add(resetPasswordButton);
+
+                    Button editButton = new Button();
+                    editButton.Content = "Edit Staff";
+                    editButton.Click += editStaff_Click;
+                    editButton.Tag = staff;
+                    editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    rightStackPanel.Children.Add(editButton);
+                }
             }
             else
             {
@@ -203,15 +221,6 @@ namespace WH_APP_GUI.Staff
                 changePassword.Style = (Style)this.Resources["GoldenButtonStyle"];
                 rightStackPanel.Children.Add(changePassword);
             }
-
-
-            Button editButton = new Button();
-            editButton.Content = "Edit Staff";
-            editButton.Click += editStaff_Click;
-            editButton.Tag = staff;
-            editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
-
-            rightStackPanel.Children.Add(editButton);
 
             outerStack.Children.Add(mainGrid);
             border.Child = outerStack;

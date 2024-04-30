@@ -259,5 +259,13 @@ namespace WH_APP_GUI.transport
         {
             Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
+
+        private void CreateTransportPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+        }
     }
 }

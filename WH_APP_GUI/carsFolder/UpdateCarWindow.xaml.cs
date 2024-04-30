@@ -253,5 +253,13 @@ namespace WH_APP_GUI
                 Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
+
+        private void UpdateCarWindowPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+        }
     }
 }

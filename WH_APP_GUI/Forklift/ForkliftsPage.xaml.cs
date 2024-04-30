@@ -82,21 +82,24 @@ namespace WH_APP_GUI
         {
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
+            border.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+            border.CornerRadius = new CornerRadius(15);
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
-            border.Width = 600;
 
-            StackPanel mainStackPanel = new StackPanel();
-            mainStackPanel.MaxHeight = 250;
-            mainStackPanel.Orientation = Orientation.Horizontal;
-            mainStackPanel.Background = Brushes.White;
+            Grid mainGrid = new Grid();
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+
 
             Image image = new Image();
             image.Width = 100;
             image.Height = 100;
             image.Margin = new Thickness(5);
-            image.HorizontalAlignment = HorizontalAlignment.Left;
-            image.SetValue(Grid.RowSpanProperty, 3);
+
+            Grid.SetColumn(image, 0);
+            mainGrid.Children.Add(image);
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -116,22 +119,19 @@ namespace WH_APP_GUI
             }
 
             StackPanel leftStackPanel = new StackPanel();
-            leftStackPanel.Orientation = Orientation.Vertical;
-            leftStackPanel.Width = 350;
+            Grid.SetColumn(leftStackPanel, 1);
+            mainGrid.Children.Add(leftStackPanel);
 
             Label type = new Label();
             type.Content = "Type: " + forklift["type"];
-            type.BorderBrush = Brushes.Black;
-            type.BorderThickness = new Thickness(0, 0, 0, 1);
+            type.Style = (Style)this.Resources["labelstyle"];
 
             Label status = new Label();
             status.Content = "Status: " + forklift["status"];
-            status.BorderBrush = Brushes.Black;
-            status.BorderThickness = new Thickness(0, 0, 0, 1);
+            status.Style = (Style)this.Resources["labelstyle"];
 
             Label warehouseName = new Label();
-            warehouseName.BorderBrush = Brushes.Black;
-            warehouseName.BorderThickness = new Thickness(0, 0, 0, 1);
+            warehouseName.Style = (Style)this.Resources["labelstyle"];
 
             if (forklift["warehouse_id"] != DBNull.Value)
             {
@@ -144,7 +144,7 @@ namespace WH_APP_GUI
 
             Label operating_hours = new Label();
             operating_hours.Content = "Operating hours: " + forklift["operating_hours"];
-            operating_hours.BorderBrush = Brushes.Black;
+            operating_hours.Style = (Style)this.Resources["labelstyle"];
 
             leftStackPanel.Children.Add(type);
             leftStackPanel.Children.Add(status);
@@ -153,32 +153,28 @@ namespace WH_APP_GUI
 
             StackPanel rightStackPanel = new StackPanel();
             rightStackPanel.Orientation = Orientation.Vertical;
-            rightStackPanel.Width = 130;
-            rightStackPanel.VerticalAlignment = VerticalAlignment.Center;
+            Grid.SetColumn(rightStackPanel, 2);
+            mainGrid.Children.Add(rightStackPanel);
 
             if (User.DoesHavePermission("Modify all Forklift") || User.DoesHavePermission("Modify all Forklift"))
             {
                 Button deleteButton = new Button();
                 deleteButton.Content = "Delete";
-                deleteButton.Margin = new Thickness(5);
                 deleteButton.Tag = forklift;
+                deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
                 deleteButton.Click += deleteForklift_Click;
 
                 Button editButton = new Button();
                 editButton.Content = "Edit";
-                editButton.Margin = new Thickness(5);
                 editButton.Tag = forklift;
+                editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
                 editButton.Click += editForklift_Click;
 
                 rightStackPanel.Children.Add(deleteButton);
                 rightStackPanel.Children.Add(editButton);
             }
 
-            mainStackPanel.Children.Add(image);
-            mainStackPanel.Children.Add(leftStackPanel);
-            mainStackPanel.Children.Add(rightStackPanel);
-
-            border.Child = mainStackPanel;
+            border.Child = mainGrid;
             panel.Children.Add(border);
         }
         public void DisplayForkliftsInWarehouse(Panel panel, DataRow warehouse)

@@ -178,7 +178,7 @@ namespace WH_APP_GUI
                 warehouseLBL.Content = "This emplyee does not belongs to a warehouse";
             }
 
-            Label roleLabel = new Label(); 
+            Label roleLabel = new Label();
             roleLabel.Style = (Style)this.Resources["labelstyle"];
 
             if (employee["role_id"] != DBNull.Value)
@@ -237,15 +237,8 @@ namespace WH_APP_GUI
                 rightStackPanel.Children.Add(modifyPassword);
             }
 
-            Button editButton = new Button();
-            editButton.Content = "Edit";
-            editButton.Click += EditEmployee_Click;
-            editButton.Tag = employee;
-            editButton.Style = (Style)this.Resources["GreenButtonStyle"];
-
-            rightStackPanel.Children.Add(editButton);
-
-            border.Child = mainStackPanel;
+            outerStack.Children.Add(mainStackPanel);
+            border.Child = outerStack;
             panel.Children.Add(border);
         }
 
@@ -278,7 +271,7 @@ namespace WH_APP_GUI
                 }
                 else
                 {
-                    if(Navigation.GetTypeByName("EditEmployeePage") != null)
+                    if (Navigation.GetTypeByName("EditEmployeePage") != null)
                     {
                         Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);
                     }
@@ -289,7 +282,7 @@ namespace WH_APP_GUI
         {
             if (WarehouseFromPage != null)
             {
-                Navigation.OpenPage(Navigation.GetTypeByName("CreateEmployee"));   
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateEmployee"));
                 Navigation.ReturnParam = WarehouseFromPage;
             }
             else
