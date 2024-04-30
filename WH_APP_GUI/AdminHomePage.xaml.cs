@@ -359,6 +359,12 @@ namespace WH_APP_GUI
                 throw;
             }
 
+            if (! User.DoesHavePermission("Access to Database"))
+            {
+                CreateRequiredTablesBTN.Visibility = Visibility.Collapsed;
+                FeaturesDisplayG.Visibility = Visibility.Collapsed;
+                ModifyDatabase.Visibility = Visibility.Collapsed;
+            }
         }
         public static void CreateCheckBoxes(Panel Display)
         {
@@ -442,7 +448,7 @@ namespace WH_APP_GUI
 
             MessageBox.Show("Requierd tables and Feature tables created and filled with the datas.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        private void IncludeFeture_Click(object sender, RoutedEventArgs e)
+        private void ModifyDatabase_Click(object sender, RoutedEventArgs e)
         {
             string message = string.Empty;
             foreach (FeatureCheckbox cbx in FeaturesDisplayG.Children)
@@ -539,310 +545,14 @@ namespace WH_APP_GUI
             ManageDatabase.FontSize = e.NewSize.Height * 0.03;
             manageRoles.FontSize = e.NewSize.Height * 0.03;
             ToTheApp.FontSize = e.NewSize.Height * 0.03;
-            AddRole.FontSize = e.NewSize.Height * 0.03;
-            CancelRoles.FontSize = e.NewSize.Height * 0.03;
-            AddNewRoleBTN.FontSize = e.NewSize.Height * 0.03;
-            CancelRoleCreation.FontSize = e.NewSize.Height * 0.03;
             CreateRequiredTablesBTN.FontSize = e.NewSize.Height * 0.03;
-            IncludeFeture.FontSize = e.NewSize.Height * 0.03;            
+            ModifyDatabase.FontSize = e.NewSize.Height * 0.03;            
         }
 
-        private static DataRow SelectedRole = null;
-        private void DisplayRoles(Panel panel)
-        {
-            ManageRoleGrid.Visibility = Visibility.Visible;
-            RolesScrollViewer.Visibility = Visibility.Visible;
-            PermmissionsScrollViewer.Visibility = Visibility.Visible;
-            panel.Visibility = Visibility.Visible;
-            panel.Children.Clear();
-            for (int i = 0; i < Tables.roles.database.Rows.Count; i++)
-            {
-                Button btn = new Button();
-                btn.Content = Tables.roles.database.Rows[i]["role"];
-                btn.Tag = Tables.roles.database.Rows[i];
-
-                btn.Background = new SolidColorBrush(Color.FromArgb(255, 66, 71, 105));
-                btn.Foreground = Brushes.White;
-                btn.BorderThickness = new Thickness(1);
-                btn.BorderBrush = Brushes.White;
-                btn.Click += RoleButton_Click;
-                btn.Margin = new Thickness(5);
-                panel.Children.Add(btn);
-            }
-        }
         private void manageRoles_Click(object sender, RoutedEventArgs e)
         {
-            CloseBeforeOpen();
-            DisplayRoles(RolesStackpanel);
-        }
-
-        private void PermissionDisplayToRole(DataRow role)
-        {
-            if (role != null)
-            {
-                PermissonsStackpanel.Children.Clear();
-                for (int i = 0; i < Tables.permissions.database.Rows.Count; i++)
-                {
-                    StackPanel stackPanel = new StackPanel();
-                    stackPanel.Orientation = Orientation.Horizontal;
-                    stackPanel.HorizontalAlignment = HorizontalAlignment.Right;
-                    stackPanel.VerticalAlignment = VerticalAlignment.Top;
-
-                    Label content = new Label();
-                    content.Content = Tables.permissions.database.Rows[i]["name"];
-                    content.Background = Background = new SolidColorBrush(Color.FromArgb(0, 66, 71, 105));
-                    content.Foreground = Brushes.Black;
-                    content.BorderThickness = new Thickness(1);
-                    content.HorizontalAlignment = HorizontalAlignment.Left;
-                    content.Margin = new Thickness(5);
-                    stackPanel.Children.Add(content);
-
-                    if (Tables.roles.getPermission(role).Contains(Tables.permissions.database.Rows[i]))
-                    {
-                        Button on = new Button();
-                        on.Tag = Tables.permissions.database.Rows[i];
-                        on.Click += btnOff_Click;
-                        on.Content = "On";
-                        on.Background = Brushes.Green;
-                        on.Foreground = Brushes.Black;
-                        on.BorderThickness = new Thickness(1);
-                        on.BorderBrush = Brushes.Black;
-                        on.HorizontalAlignment = HorizontalAlignment.Right;
-                        on.Margin = new Thickness(5);
-                        stackPanel.Children.Add(on);
-                    }
-                    else
-                    {
-                        Button off = new Button();
-                        off.Tag = Tables.permissions.database.Rows[i];
-                        off.Click += btnOn_Click;
-                        off.Content = "Off";
-                        off.Background = Brushes.Red;
-                        off.Foreground = Brushes.Black;
-                        off.BorderThickness = new Thickness(1);
-                        off.BorderBrush = Brushes.Black;
-                        off.HorizontalAlignment = HorizontalAlignment.Right;
-                        off.Margin = new Thickness(5);
-                        stackPanel.Children.Add(off);
-                    }
-
-                    PermissonsStackpanel.Children.Add(stackPanel);
-                }
-            }
-        }
-
-        private void RoleButton_Click(object sender, RoutedEventArgs e)
-        {
-            PermissonsStackpanel.Children.Clear();
-            Button clickedButton = sender as Button;
-            DataRow role = clickedButton.Tag as DataRow;
-            SelectedRole = role;
-
-            Button deleteRole = new Button();
-            deleteRole.Content = $"Delete {role["role"]}";
-            deleteRole.Click += DeleteRole_Click;
-            PermissonsStackpanel.Children.Add(deleteRole);;
-
-            for (int i = 0; i < Tables.permissions.database.Rows.Count; i++)
-            {
-                StackPanel stackPanel = new StackPanel();
-                stackPanel.Orientation = Orientation.Horizontal;
-                stackPanel.HorizontalAlignment = HorizontalAlignment.Right;
-                stackPanel.VerticalAlignment = VerticalAlignment.Top;
-
-                Label content = new Label();
-                content.Content = Tables.permissions.database.Rows[i]["name"];
-                content.Background = Background = new SolidColorBrush(Color.FromArgb(0, 66, 71, 105));
-                content.Foreground = Brushes.Black;
-                content.BorderThickness = new Thickness(1);
-                content.HorizontalAlignment = HorizontalAlignment.Left;
-                content.Margin = new Thickness(5);
-                stackPanel.Children.Add(content);
-
-                if (Tables.roles.getPermission(role).Contains(Tables.permissions.database.Rows[i]))
-                {
-                    Button on = new Button();
-                    on.Tag = Tables.permissions.database.Rows[i];
-                    on.Click += btnOff_Click;
-                    on.Content = "On";
-                    on.Background = Brushes.Green;
-                    on.Foreground = Brushes.Black;
-                    on.BorderThickness = new Thickness(1);
-                    on.BorderBrush = Brushes.Black;
-                    on.HorizontalAlignment = HorizontalAlignment.Right;
-                    on.Margin = new Thickness(5);
-                    stackPanel.Children.Add(on);
-                }
-                else
-                {
-                    Button off = new Button();
-                    off.Tag = Tables.permissions.database.Rows[i];
-                    off.Click += btnOn_Click;
-                    off.Content = "Off";
-                    off.Background = Brushes.Red;
-                    off.Foreground = Brushes.Black;
-                    off.BorderThickness = new Thickness(1);
-                    off.BorderBrush = Brushes.Black;
-                    off.HorizontalAlignment = HorizontalAlignment.Right;
-                    off.Margin = new Thickness(5);
-                    stackPanel.Children.Add(off);
-                }
-
-                PermissonsStackpanel.Children.Add(stackPanel);
-            }
-        }
-
-        private void btnOff_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedRole != null)
-            {
-                Button clickedButton = sender as Button;
-                DataRow permission = clickedButton.Tag as DataRow;
-                try
-                {
-                    SQL.SqlCommand($"DELETE FROM `role_permission` WHERE `role_id` = '{SelectedRole["id"]}' AND `permission_id` = '{permission["id"]}'");
-
-                    Tables.roles.Refresh();
-                    Tables.permissions.Refresh();
-
-                    PermissionDisplayToRole(SelectedRole);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteError(ex);
-                    throw;
-                }
-            }
-        }
-
-        private void DeleteRole_Click(object sender, RoutedEventArgs e)
-        {
-            //UPDATE `staff` SET `role_id`= null WHERE `role_id`= 13;
-            if (SelectedRole != null)
-            {
-                try
-                {
-                    if ((bool)SelectedRole["in_warehouse"])
-                    {
-                        foreach (DataRow employee in Tables.employees.database.Select($"role_id = {SelectedRole["id"]}"))
-                        {
-                            employee["role_id"] = null;
-                        }
-                        Tables.employees.updateChanges();
-
-                        SelectedRole.Delete();
-
-                        SelectedRole = null;
-                        Tables.roles.updateChanges();
-                        DisplayRoles(RolesStackpanel);
-
-                        MessageBox.Show("Role successfully deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
-                    {
-                        foreach (DataRow staff in Tables.staff.database.Select($"role_id = {SelectedRole["id"]}"))
-                        {
-                            staff["role_id"] = null;
-                        }
-                        Tables.staff.Refresh();
-
-                        SelectedRole.Delete();
-
-                        SelectedRole = null;
-                        Tables.roles.updateChanges();
-                        DisplayRoles(RolesStackpanel);
-
-                        MessageBox.Show("Role successfully deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteError(ex);
-                    throw;
-                }
-            }
-        }
-
-        private void btnOn_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedRole != null)
-            {
-                Button clickedButton = sender as Button;
-                DataRow permission = clickedButton.Tag as DataRow;
-                try
-                {
-                    SQL.SqlCommand($"INSERT INTO `role_permission`(`role_id`, `permission_id`) VALUES ('{SelectedRole["id"]}','{permission["id"]}')");
-
-                    Tables.roles.Refresh();
-                    Tables.permissions.Refresh();
-
-                    PermissionDisplayToRole(SelectedRole);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteError(ex);
-                    throw;
-                }
-            }
-        }
-
-        private void CancelRoles_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedRole = null;
-            ManageRoleGrid.Visibility = Visibility.Collapsed;
-            RolesScrollViewer.Visibility = Visibility.Collapsed;
-            PermmissionsScrollViewer.Visibility = Visibility.Collapsed;
-        }
-
-        private void AddRole_Click(object sender, RoutedEventArgs e)
-        {
-            RolesScrollViewer.Visibility = Visibility.Collapsed;
-            PermmissionsScrollViewer.Visibility = Visibility.Collapsed;
-            AddRoleGrid.Visibility = Visibility.Visible;
-        }
-
-        private void AddNewRoleBTN_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (NewRoleName.Text != string.Empty && NewRoleDescription.Text != string.Empty)
-                {
-                    SQL.SqlCommand($"INSERT INTO `{Tables.roles.actual_name}`(`role`, `in_warehouse`, `description`) VALUES ('{NewRoleName.Text}', {Is_Belongst_To_Warehouse.IsChecked}, '{NewRoleDescription.Text}');");
-                    Tables.roles.Refresh();
-                    CancelRoleCreationM();
-                    DisplayRoles(RolesStackpanel);
-                    MessageBox.Show("Role hase been added, now you can set the permmsions to it!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Missing datas!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteError(ex);
-                throw;
-            }
-
-            RolesScrollViewer.Visibility = Visibility.Visible;
-            PermmissionsScrollViewer.Visibility = Visibility.Visible;
-        }
-
-        private void CancelRoleCreationM()
-        {
-            AddRoleGrid.Visibility = Visibility.Collapsed;
-            NewRoleName.Text = string.Empty;
-            NewRoleDescription.Text = string.Empty;
-            Is_Belongst_To_Warehouse.IsChecked = false;
-
-            RolesScrollViewer.Visibility = Visibility.Collapsed;
-            PermmissionsScrollViewer.Visibility = Visibility.Collapsed;
-        }
-
-        private void CancelRoleCreation_Click(object sender, RoutedEventArgs e)
-        {
-            CloseBeforeOpen();
-            CancelRoleCreationM();
+            ManageRolePage manageRolePage = new ManageRolePage();
+            RolesContent.Content = manageRolePage;
         }
 
         private void ToTheApp_Click(object sender, RoutedEventArgs e)

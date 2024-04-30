@@ -23,6 +23,11 @@ namespace WH_APP_GUI
             InitializeComponent();
             IniDatasInLog();
             IniEmails();
+
+            if ((int)User.currentUser["role_id"] != 1)
+            {
+                ClearLog.Visibility = Visibility.Collapsed;
+            }
         }
         private void IniEmails()
         {
