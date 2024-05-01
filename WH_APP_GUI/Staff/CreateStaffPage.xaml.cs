@@ -26,6 +26,26 @@ namespace WH_APP_GUI.Staff
             name.ValueDataType = typeof(string);
             email.ValueDataType = typeof(string);
             Ini_role_id();
+            IniPicture();
+        }
+        private void IniPicture()
+        {
+            string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
+            if (Directory.Exists(targetDirectory))
+            {
+                string imageFileName = "DefaultStaffProfilePicture.png";
+                string imagePath = Path.Combine(targetDirectory, imageFileName);
+                if (File.Exists(imagePath))
+                {
+                    string fileName = Path.GetFileName(imagePath);
+                    string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+                    BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+                    ImageBrush brush = new ImageBrush(bitmap);
+
+                    profile_picture.Background = brush;
+                }
+            }
         }
         private Dictionary<string, DataRow> role_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_role_id()

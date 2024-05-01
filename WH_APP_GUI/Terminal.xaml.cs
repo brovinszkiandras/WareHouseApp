@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace WH_APP_GUI
 {
-    /// <summary>
-    /// Interaction logic for Terminal.xaml
-    /// </summary>
     public partial class Terminal : Window
     {
         public Terminal()

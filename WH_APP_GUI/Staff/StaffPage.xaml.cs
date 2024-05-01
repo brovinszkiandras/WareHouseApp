@@ -174,7 +174,7 @@ namespace WH_APP_GUI.Staff
             }
             else
             {
-                roleLabel.Content = "This staff does not have a role";
+                roleLabel.Content = "Without role";
             }
 
             leftStackPanel.Children.Add(nameLabel);

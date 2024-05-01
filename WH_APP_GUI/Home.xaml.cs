@@ -16,7 +16,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WH_APP_GUI.carsFolder;
 using WH_APP_GUI.transport;
-using Xceed.Wpf.Toolkit;
 
 
 namespace WH_APP_GUI
@@ -27,6 +26,8 @@ namespace WH_APP_GUI
         {
             InitializeComponent();
             Navigation.RemoveParent();
+
+            Loaded += HomeLoaded;
 
             Grid.SetColumn(Navigation.content2, 1);
             Grid.SetRow(Navigation.content2, 1);
@@ -157,6 +158,31 @@ namespace WH_APP_GUI
 
             #endregion
         }
+        private void HomeLoaded(object sender, RoutedEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            if (parentWindow != null)
+            {
+                parentWindow.Closed += UserLogOut;
+            }
+        }
+
+        private void UserLogOut(object sender, EventArgs e)
+        {
+            if (User.currentUser != null)
+            {
+                if (Tables.features.isFeatureInUse("Activity"))
+                {
+                    if (Tables.employees.database.Select($"email = '{User.currentUser["email"]}'").Length != 0)
+                    {
+                        Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been logged out from the application.");
+                        User.currentUser["is_loggedin"] = false;
+                        Tables.employees.updateChanges();
+                    }
+                }
+            }
+        }
 
         private void menucolum_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -285,6 +311,11 @@ namespace WH_APP_GUI
             if (User.currentUser != null)
             {
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been logged out from the application.");
+                if (Tables.features.isFeatureInUse("Activity"))
+                {
+                    User.currentUser["is_loggedin"] = false;
+                    Tables.employees.updateChanges();
+                }
 
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();

@@ -68,7 +68,6 @@ namespace WH_APP_GUI
                     AdminLogInshow();
                 }
             }
-            //TODO: úgy kéne megcsinálni az első belépést egy felhasználó(staff-nál) hogy az admin bejelntkezik(adatai eltárolása static válzoóként) majd beállitja a connection string adatait, ellennörzésként lekérdezi a megadott adatokat úgy hogy lekérdezi az adatbázisból a megadot connection-al az admin nevét WHERE email = this.email, ha egyezzik akkor jó ha nem akkor...megismétli a setup-ot
         }
         private void AdminLogInshow()
         {
@@ -76,7 +75,6 @@ namespace WH_APP_GUI
             Login_button.Visibility = Visibility.Collapsed;
             RegisterAsAdmin.Visibility = Visibility.Visible;
 
-            //Belépéshez nem kell név csak email meg jelszó
             Name.Visibility = Visibility.Visible;
             NameLBL.Visibility = Visibility.Visible;
         }
@@ -139,13 +137,38 @@ namespace WH_APP_GUI
                     if (datasOfUser[0][4] != "" || datasOfUser[0][5] != "")
                     {
                         User.SetCurrentUser(Emali.Text, hpsw);
-                        Controller.LogWrite(User.currentUser["email"].ToString(),"The user has been logged in to the application");
-                        if (User.currentUser != null)
+                        User.MainWindow = this;
+                        if (Tables.features.isFeatureInUse("Activity"))
                         {
-                            LogIn.Visibility = Visibility.Visible;
-                            content.Visibility = Visibility.Visible;
-                            content.Content = null;
-                            content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                            if (!(bool)User.currentUser["activity"])
+                            {
+                                MessageBox.Show("Your activity is set to Inactive. You won't be able to log in until you're active again", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                            else
+                            {
+                                Controller.LogWrite(User.currentUser["email"].ToString(), "User has been logged in to the application");
+                                if (User.currentUser != null)
+                                {
+                                    User.currentUser["is_loggedin"] = true;
+                                    Tables.employees.updateChanges();
+
+                                    LogIn.Visibility = Visibility.Visible;
+                                    content.Visibility = Visibility.Visible;
+                                    content.Content = null;
+                                    content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Controller.LogWrite(User.currentUser["email"].ToString(),"User has been logged in to the application");
+                            if (User.currentUser != null)
+                            {
+                                LogIn.Visibility = Visibility.Visible;
+                                content.Visibility = Visibility.Visible;
+                                content.Content = null;
+                                content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                            }
                         }
                     }
                     else
@@ -162,6 +185,7 @@ namespace WH_APP_GUI
                     {
                         User.SetCurrentUser(Emali.Text, hpsw);
                         User.MainWindow = this;
+                        Controller.LogWrite(User.currentUser["email"].ToString(), "User has been logged in to the application");
                         if (User.currentUser != null)
                         {
                             LogIn.Visibility = Visibility.Visible;
@@ -209,13 +233,7 @@ namespace WH_APP_GUI
 
         private void content_Navigating(object sender, NavigatingCancelEventArgs e)
         {
-           
-            //if(Navigation.content2.Parent != null)
-            //{
-            //    Navigation.RemoveParent();
-                
-            //}
-            
+          
         }
     }
 }

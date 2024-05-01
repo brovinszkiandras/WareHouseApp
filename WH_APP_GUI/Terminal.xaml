@@ -10,7 +10,7 @@
         <ListBox Name="TerminalBox" Background="#FF000000">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Foreground" Value="Green" />
                     <Setter Property="Template">
                         <Setter.Value>
