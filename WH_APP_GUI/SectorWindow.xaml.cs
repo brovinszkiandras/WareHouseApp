@@ -252,6 +252,7 @@ namespace WH_APP_GUI
             if(shelfBuilder.isAShelfBeingCreated == true)
             {
                 showShelfInfo(shelfBuilder.newShelf);
+                New_shelf.Visibility = Visibility.Collapsed;
                 Delete.Visibility = Visibility.Visible;
             }
         }
@@ -268,7 +269,6 @@ namespace WH_APP_GUI
                 //Át állítom a változót ami egy polc készítését jelzi
                 shelfBuilder.isAShelfBeingCreated = false;
                 //Hogyha a polc még nem volt hozzáadva a polcok táblához akkor hozzáadom
-                MessageBox.Show(shelfBuilder.newShelf.RowState.ToString());
                 if (shelfBuilder.newShelf.RowState == DataRowState.Detached)
                 {
                     Tables.shelf.database.Rows.Add(shelfBuilder.newShelf);
@@ -291,6 +291,7 @@ namespace WH_APP_GUI
                     }
                     toolPanel.Visibility = Visibility.Collapsed;
                     ProductsSRCW.Visibility = Visibility.Visible;
+                    
                 }
                 else if(shelfBuilder.newShelf.RowState == DataRowState.Unchanged)
                 {
@@ -319,6 +320,7 @@ namespace WH_APP_GUI
                 Delete.Visibility = Visibility.Collapsed;
                 changeClickEventToSelect();
                 shelfInfoSPNL.Visibility = Visibility.Collapsed;
+                New_shelf.Visibility = Visibility.Visible;
                 #endregion
             }
             else
@@ -378,10 +380,9 @@ namespace WH_APP_GUI
                 desinger_viewButton.Content = "Designer view: OFF";
                 shelfBuilder.isDesignerModeActive = false;
 
-                if (shelfBuilder.isAShelfBeingCreated == false)
-                {
-                    New_shelf.Visibility = Visibility.Hidden;
-                }
+                
+                    New_shelf.Visibility = Visibility.Collapsed;
+                
                 Done.Visibility = Visibility.Hidden;
                 Delete.Visibility = Visibility.Hidden;
             }
@@ -431,6 +432,7 @@ namespace WH_APP_GUI
             Delete.Visibility = Visibility.Visible;
             ProductsSRCW.Visibility = Visibility.Collapsed;
             toolPanel.Visibility = Visibility.Visible;
+            New_shelf.Visibility = Visibility.Collapsed;
             showShelfInfo(shelfBuilder.newShelf);
         }
         
@@ -639,14 +641,16 @@ namespace WH_APP_GUI
             for (int i = 1; i <= (int)shelf["number_of_levels"]; i++)
             {
                 #region levelLabel
-                StackPanel levelPanel = new StackPanel();
-                levelPanel.Orientation = Orientation.Horizontal;
-                productsPanel.Children.Add(levelPanel);
+                Grid levelGrid = new Grid();
+                levelGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                levelGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                productsPanel.Children.Add(levelGrid);
 
                 Label level_of_shelf = new Label();
                 level_of_shelf.FontSize = 17;
                 level_of_shelf.Content = "Level " + i;
-                levelPanel.Children.Add(level_of_shelf);
+                Grid.SetColumn(level_of_shelf, 0);
+                levelGrid.Children.Add(level_of_shelf);
                 
 
                 DataRow[] productsOfLevel = Tables.shelf.getWarehouseProducts(shelf)
@@ -661,7 +665,8 @@ namespace WH_APP_GUI
                     deleteLevel.Content = "Delete";
                     deleteLevel.Tag = shelf;
                     deleteLevel.Click += deleteLevel_Click;
-                    levelPanel.Children.Add(deleteLevel);
+                    Grid.SetColumn(deleteLevel, 1);
+                    levelGrid.Children.Add(deleteLevel);
                 }
                 #endregion
 
@@ -765,6 +770,7 @@ namespace WH_APP_GUI
         {
             ProductsSRCW.Visibility = Visibility.Collapsed;
             toolPanel.Visibility = Visibility.Visible;
+            New_shelf.Visibility = Visibility.Visible;
         }
         #endregion
 

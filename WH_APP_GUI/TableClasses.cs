@@ -154,7 +154,7 @@ namespace WH_APP_GUI
         {
             if (Tables.features.isFeatureInUse("Date log") == true)
             {
-                database.Columns["profile_picture"].DefaultValue = "DefaultStaffProfilePicture.png";
+                
                 database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
                 database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
             }
@@ -528,7 +528,7 @@ namespace WH_APP_GUI
             database.Columns["product_id"].AllowDBNull = false;
             database.Columns["qty"].AllowDBNull = false;
             //database.Columns["shelf_id"].AllowDBNull=false;
-            database.Columns["on_shelf_level"].AllowDBNull = false;
+            //database.Columns["on_shelf_level"].AllowDBNull = false;
 
             if (Tables.features.isFeatureInUse("Storage"))
             {

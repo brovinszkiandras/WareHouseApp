@@ -59,7 +59,7 @@ namespace WH_APP_GUI
             button.Tag = newShelf["name"];
             if(newShelf.RowState == DataRowState.Detached)
             {
-                button.Background = Brushes.DarkMagenta;
+                button.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2));
             }
             else if(newShelf.RowState == DataRowState.Modified)
             {
@@ -99,7 +99,7 @@ namespace WH_APP_GUI
             button.Tag = newShelf["name"];
             if (newShelf.RowState == DataRowState.Detached)
             {
-                button.Background = Brushes.DarkMagenta;
+                button.Background = button.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2));
             }
             else if (newShelf.RowState == DataRowState.Modified)
             {
@@ -222,11 +222,10 @@ namespace WH_APP_GUI
                         button.Tag = null;
                         //Lekapcsolja a polcról
                         shelf["length"] = (double)shelf["length"] - 1;
-                        button.Background = Brushes.Black;
+                        button.Background = Brushes.Transparent;
                         button.Width = Visual.sizeHorizontally / 2;
                         button.Height = Visual.sizeVertically / 2;
                         button.BorderThickness = new Thickness(0.03);
-                        button.BorderBrush = Brushes.YellowGreen;
 
                         //Ha a gomb a polc kezdő pozicióján van és a polc vízszintes
                         if (shelf["orientation"].ToString() == "Horizontal" && (int)shelf["startXindex"] == Grid.GetColumn(button))
