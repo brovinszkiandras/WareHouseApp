@@ -303,7 +303,6 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.employees.actual_name} ADD payment DOUBLE;");
                     SQL.SqlCommand($"ALTER TABLE {Tables.warehouses.actual_name} ADD total_value DOUBLE, ADD total_spending DOUBLE, ADD total_income DOUBLE;");
 
                     SQL.SqlCommand($"CREATE TABLE revenue_a_day (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, date DATE, total_expenditure DOUBLE, total_income DOUBLE, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
@@ -568,7 +567,6 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.employees.actual_name}` DROP `payment`;");
                     SQL.SqlCommand($"ALTER TABLE `{Tables.warehouses.actual_name}` DROP `total_value`, DROP `total_spending`,DROP `total_income`;");
 
                     SQL.SqlCommand($"ALTER TABLE `revenue_a_day` DROP CONSTRAINT `revenue_a_day_ibfk_1`;");
@@ -580,7 +578,6 @@ namespace WH_APP_GUI
                     Tables.warehouses.database.Columns.Remove("total_value");
                     Tables.warehouses.database.Columns.Remove("total_spending");
                     Tables.warehouses.database.Columns.Remove("total_income");
-                    Tables.employees.database.Columns.Remove("payment");
                 }
                 catch (Exception ex)
                 {
@@ -702,7 +699,6 @@ namespace WH_APP_GUI
             }
         }
         #endregion
-
 
         public static void CreateWarehouse(string WarehouseName)
         {
