@@ -27,10 +27,6 @@ namespace WH_APP_GUI
         public MainWindow()
         {
             InitializeComponent();
-
-            Console.IniConsole();
-            Console.WriteLine("Teszt");
-
             //Console.IniConsole();
             //Email.send("szsoly04@gmail.com", "Megkérdezzem?", "Mivan mivan mivan");
             if (! SQL.IsDatabasetxtExist())
@@ -142,13 +138,37 @@ namespace WH_APP_GUI
                     {
                         User.SetCurrentUser(Emali.Text, hpsw);
                         User.MainWindow = this;
-                        Controller.LogWrite(User.currentUser["email"].ToString(),"User has been logged in to the application");
-                        if (User.currentUser != null)
+                        if (Tables.features.isFeatureInUse("Activity"))
                         {
-                            LogIn.Visibility = Visibility.Visible;
-                            content.Visibility = Visibility.Visible;
-                            content.Content = null;
-                            content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                            if (!(bool)User.currentUser["activity"])
+                            {
+                                MessageBox.Show("Your activity is set to Inactive. You won't be able to log in until you're active again", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                            else
+                            {
+                                Controller.LogWrite(User.currentUser["email"].ToString(), "User has been logged in to the application");
+                                if (User.currentUser != null)
+                                {
+                                    User.currentUser["is_loggedin"] = true;
+                                    Tables.employees.updateChanges();
+
+                                    LogIn.Visibility = Visibility.Visible;
+                                    content.Visibility = Visibility.Visible;
+                                    content.Content = null;
+                                    content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Controller.LogWrite(User.currentUser["email"].ToString(),"User has been logged in to the application");
+                            if (User.currentUser != null)
+                            {
+                                LogIn.Visibility = Visibility.Visible;
+                                content.Visibility = Visibility.Visible;
+                                content.Content = null;
+                                content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                            }
                         }
                     }
                     else

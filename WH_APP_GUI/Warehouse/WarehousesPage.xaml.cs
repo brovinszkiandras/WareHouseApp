@@ -106,7 +106,7 @@ namespace WH_APP_GUI.Warehouse
                 {
                     if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
                     {
-                        if (User.currentUser["warehouse_id"] == Tables.warehouses.database.Rows[i]["id"])
+                        if (User.currentUser["warehouse_id"].ToString() == Tables.warehouses.database.Rows[i]["id"].ToString())
                         {
                             Button inspectButton = new Button();
                             inspectButton.Tag = Tables.warehouses.database.Rows[i];

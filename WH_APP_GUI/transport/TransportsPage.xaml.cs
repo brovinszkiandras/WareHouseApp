@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WH_APP_GUI.carsFolder;
 using WH_APP_GUI.transport;
+using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI.transport
 {
@@ -27,7 +28,7 @@ namespace WH_APP_GUI.transport
             IniTransports();
             Back.Visibility = Visibility.Collapsed;
 
-            if (User.DoesHavePermission("Modify Transport") || User.DoesHavePermission("Modify all Transport"))
+            if (! User.DoesHavePermission("Modify Transport") || ! User.DoesHavePermission("Modify all Transport"))
             {
                 Create.Visibility = Visibility.Collapsed;
             }
@@ -40,7 +41,7 @@ namespace WH_APP_GUI.transport
             IniTransports();
             Warehouse = warehouseFromPage;
 
-            if (User.DoesHavePermission("Modify Transport") || User.DoesHavePermission("Modify all Transport"))
+            if (!User.DoesHavePermission("Modify Transport") || !User.DoesHavePermission("Modify all Transport"))
             {
                 Create.Visibility = Visibility.Collapsed;
             }
@@ -144,7 +145,7 @@ namespace WH_APP_GUI.transport
                 buttons.Children.Add(delete);
             }
 
-            if (User.DoesHavePermission("Assign to transport") || User.DoesHavePermission("Inspect own Transport"))
+            if (User.DoesHavePermission("Inspect own Transport"))
             {
                 Button inspect = new Button();
                 inspect.Content = "Inspect";
@@ -215,9 +216,9 @@ namespace WH_APP_GUI.transport
         {
             Button button = e.Source as Button;
             DataRow transport = Tables.transports.database.Select($"id = '{button.Tag}'")[0];
-            UpdateTransport updateTransport = new UpdateTransport(transport);
 
-            Navigation.content2.Navigate(updateTransport);
+            Navigation.OpenPage(Navigation.GetTypeByName("UpdateTransport"), transport);
+            Navigation.ReturnParam = Warehouse;
         }
 
         private void Create_Click(object sender, RoutedEventArgs e)
@@ -235,6 +236,8 @@ namespace WH_APP_GUI.transport
             {
                 if (Warehouse != null)
                 {
+                    InspectWarehouse inspectWarehouse = new InspectWarehouse(Warehouse);
+                    Navigation.PreviousPage = inspectWarehouse;
                     Navigation.OpenPage(Navigation.PreviousPage.GetType(), Warehouse);
                 }
                 else

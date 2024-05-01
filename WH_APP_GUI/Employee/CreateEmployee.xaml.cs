@@ -97,6 +97,11 @@ namespace WH_APP_GUI.Employee
                 employee["password"] = HashedPassword;
                 employee["profile_picture"] = profile_picture.Tag != null ? profile_picture.Tag : "DefaultEmployeeProfile.png";
 
+                if (Tables.features.isFeatureInUse("Activity"))
+                {
+                    employee["activity"] = true;
+                }
+
                 Tables.employees.database.Rows.Add(employee);
                 Tables.employees.updateChanges();
 

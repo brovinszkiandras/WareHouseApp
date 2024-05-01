@@ -201,6 +201,28 @@ namespace WH_APP_GUI.transport
             Xceed.Wpf.Toolkit.MessageBox.Show($"You can only input a date");
         }
 
+        private bool CanBeAssignedToTransport(DataRow employee)
+        {
+            bool canBeAssigned = false;
+            foreach (DataRow permission in Tables.roles.getPermission(Tables.employees.getRole(employee)))
+            {
+                if (permission["name"].ToString() == "Assign to transport")
+                {
+                    canBeAssigned = true;
+                    break;
+                }
+            }
+
+            if (canBeAssigned && Tables.features.isFeatureInUse("Activity"))
+            {
+                if (! (bool)employee["activity"])
+                {
+                    canBeAssigned = false;
+                }
+            }
+
+            return canBeAssigned;
+        }
         private void WarehouseCBX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (WarehouseCBX.SelectedIndex != -1)
@@ -217,13 +239,16 @@ namespace WH_APP_GUI.transport
                 DocksCBX.SelectedIndex = -1;
                 EmployeesCBX.SelectedIndex = -1;
 
-                foreach (DataRow row in Tables.warehouses.getEmployees(warehouse_id_Dictionary[WarehouseCBX.SelectedItem.ToString()]))
+                foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse_id_Dictionary[WarehouseCBX.SelectedItem.ToString()]))
                 {
-                    ComboBoxItem item = new ComboBoxItem();
-                    item.Content = row["name"];
-                    item.Tag = row["id"];
+                    if (CanBeAssignedToTransport(employee))
+                    {
+                        ComboBoxItem item = new ComboBoxItem();
+                        item.Content = employee["name"];
+                        item.Tag = employee["id"];
 
-                    EmployeesCBX.Items.Add(item);
+                        EmployeesCBX.Items.Add(item);
+                    }
                 }
 
                 foreach (DataRow row in Tables.warehouses.getCars(warehouse_id_Dictionary[WarehouseCBX.SelectedItem.ToString()]))
