@@ -103,15 +103,15 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <ProgressBar Name="WarehouseTotalSpending" Value="35" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Background="#395250" Foreground="{x:Null}" BorderThickness="0"/>
-                                <ProgressBar Name="WarehouseTotalIncome" Value="70" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" BorderThickness="0" Background="#395250"/>
+                                <ProgressBar Name="WarehouseTotalSpending" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Background="#395250" Foreground="{x:Null}" BorderThickness="0"/>
+                                <ProgressBar Name="WarehouseTotalIncome" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" BorderThickness="0" Background="#395250"/>
                                 <Label Content="Warehouse total spending" Grid.Column="0" Grid.Row="0" Style="{StaticResource labelstyle}"/>
                                 <Label Content="Warehouse total income" Grid.Column="0" Grid.Row="1" Style="{StaticResource labelstyle}"/>
                                 <Label Name="WarehouseTotalSpendingLBL" Content="Warehouse total spending - Ft" Grid.Column="1" Grid.Row="0" Style="{StaticResource labelstyle}"/>
                                 <Label Name="WarehouseTotalIncomeLBL" Content="Warehouse total income - Ft" Grid.Column="1" Grid.Row="1" Style="{StaticResource labelstyle}"/>
 
-                                <ProgressBar Name="ProductsTotalSellingPrice" Value="50" Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Background="#395250" BorderThickness="0"/>
-                                <ProgressBar Name="ProductsTotalBuyingPrice" Value="20" Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Background="#395250" BorderThickness="0"/>
+                                <ProgressBar Name="ProductsTotalSellingPrice" Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Background="#395250" BorderThickness="0"/>
+                                <ProgressBar Name="ProductsTotalBuyingPrice" Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Background="#395250" BorderThickness="0"/>
                                 <Label Content="Products total selling price" Grid.Column="0" Grid.Row="2" Style="{StaticResource labelstyle}"/>
                                 <Label Content="products total buying price" Grid.Column="0" Grid.Row="3" Style="{StaticResource labelstyle}"/>
                                 <Label Name="ProductsTotalSellingPriceLBL" Content="Total selling price - Ft" Grid.Column="1" Grid.Row="2" Style="{StaticResource labelstyle}"/>
