@@ -61,7 +61,28 @@ namespace WH_APP_GUI.Order
         }
         private bool CanComplete(string username, string address)
         {
-            bool canComplete = true;
+            Dictionary<DataRow, int> ProductQty = new Dictionary<DataRow, int>();
+            foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
+            {
+                if (ProductQty.ContainsKey(Tables.orders.getProduct(order)))
+                {
+                    ProductQty[Tables.orders.getProduct(order)] += (int)order["qty"];
+                }
+                else
+                {
+                    ProductQty.Add(Tables.orders.getProduct(order), (int)order["qty"]);
+                }
+            }
+
+            foreach (var item in ProductQty)
+            {
+                int productsInWarehouse = WarehouseTable.database.Select($"product_id = {item.Key["id"]}").Sum(product => (int)product["qty"]);
+                if (productsInWarehouse < item.Value)
+                {
+                    return false;
+                }
+            }
+
             foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
             {
                 if (WarehouseTable.database.Select($"product_id = {order["product_id"]}").Length == 0)
@@ -73,11 +94,11 @@ namespace WH_APP_GUI.Order
                     int productsInTheWarehosue = WarehouseTable.database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
                     if (productsInTheWarehosue < (int)order["qty"])
                     {
-                        canComplete = false;
+                        return false;
                     }
                 }
             }
-            return canComplete;
+            return true;
         }
 
         private void SetPreviousPage()

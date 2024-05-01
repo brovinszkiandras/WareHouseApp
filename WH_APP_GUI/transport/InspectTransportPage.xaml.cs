@@ -391,7 +391,8 @@ namespace WH_APP_GUI.transport
                             double sellingPrice = product["selling_price"] != DBNull.Value ? (double)product["selling_price"] : 0;
                             int qty = order["qty"] != DBNull.Value ? (int)order["qty"] : 0;
                             warehouse["total_income"] = totalincome + (sellingPrice * qty);
-                            
+
+                            Controller.AddToRevnue_A_Day_Income(warehouse, totalincome + (sellingPrice * qty));                        
                             Tables.warehouses.updateChanges();
                         }
                     }

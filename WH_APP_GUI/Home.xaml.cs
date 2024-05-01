@@ -311,10 +311,13 @@ namespace WH_APP_GUI
             if (User.currentUser != null)
             {
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been logged out from the application.");
-                if (Tables.features.isFeatureInUse("Activity"))
+                if (User.currentUser.Table.TableName == "employee")
                 {
-                    User.currentUser["is_loggedin"] = false;
-                    Tables.employees.updateChanges();
+                    if (Tables.features.isFeatureInUse("Activity"))
+                    {
+                        User.currentUser["is_loggedin"] = false;
+                        Tables.employees.updateChanges();
+                    }
                 }
 
                 MainWindow mainWindow = new MainWindow();

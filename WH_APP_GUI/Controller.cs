@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlConnector;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -725,6 +726,78 @@ namespace WH_APP_GUI
             if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Log'"))
             {
                 SQL.SqlCommand($"INSERT INTO `log`(`email`, `log_message`) VALUES ('{email}', '{message}');");
+            }
+        }
+
+        public static void AddToRevnue_A_Day_Expenditure(DataRow warehouse, double value)
+        {
+            if (Tables.features.isFeatureInUse("Revenue"))
+            {
+                List<string[]> datas = SQL.SqlQuery("SELECT id, warehouse_id, date, total_expenditure FROM revenue_a_day");
+                bool Updated = false;
+                for (int i = 0; i < datas.Count; i++)
+                {
+                    DateTime parsedDate = DateTime.Parse(datas[i][2]);
+                    string date = parsedDate.ToString("yyyy-MM-dd");
+
+                    if (date == DateTime.Now.ToString("yyyy-MM-dd") && warehouse["id"].ToString() == datas[i][1])
+                    {
+                        double NewValue = double.Parse(datas[i][3]) + value;
+                        SQL.SqlCommand($"UPDATE `revenue_a_day` SET `total_expenditure` = '{NewValue}' WHERE id = {datas[i][0]}");
+                        Updated = true;
+                        break;
+                    }
+                }
+
+                if (! Updated)
+                {
+                    using (MySqlCommand command = new MySqlCommand("INSERT INTO `revenue_a_day`(`warehouse_id`, `date`, `total_expenditure`) VALUES (@warehouse_id, @date, @total_expenditure)", SQL.con))
+                    {
+                        command.Parameters.AddWithValue("@warehouse_id", 1);
+                        command.Parameters.AddWithValue("@date", DateTime.Now);
+                        command.Parameters.AddWithValue("@total_expenditure", value);
+
+                        SQL.con.Open();
+                        command.ExecuteNonQuery();
+                        SQL.con.Close();
+                    }
+                }
+            }
+        }        
+        
+        public static void AddToRevnue_A_Day_Income(DataRow warehouse, double value)
+        {
+            if (Tables.features.isFeatureInUse("Revenue"))
+            {
+                List<string[]> datas = SQL.SqlQuery("SELECT id, warehouse_id, date, total_income FROM revenue_a_day");
+                bool Updated = false;
+                for (int i = 0; i < datas.Count; i++)
+                {
+                    DateTime parsedDate = DateTime.Parse(datas[i][2]);
+                    string date = parsedDate.ToString("yyyy-MM-dd");
+
+                    if (date == DateTime.Now.ToString("yyyy-MM-dd") && warehouse["id"].ToString() == datas[i][1])
+                    {
+                        double NewValue = double.Parse(datas[i][3]) + value;
+                        SQL.SqlCommand($"UPDATE `revenue_a_day` SET `total_income` = '{NewValue}' WHERE id = {datas[i][0]}");
+                        Updated = true;
+                        break;
+                    }
+                }
+
+                if (!Updated)
+                {
+                    using (MySqlCommand command = new MySqlCommand("INSERT INTO `revenue_a_day`(`warehouse_id`, `date`, `total_income`) VALUES (@warehouse_id, @date, @total_income)", SQL.con))
+                    {
+                        command.Parameters.AddWithValue("@warehouse_id", 1);
+                        command.Parameters.AddWithValue("@date", DateTime.Now);
+                        command.Parameters.AddWithValue("@total_income", value);
+
+                        SQL.con.Open();
+                        command.ExecuteNonQuery();
+                        SQL.con.Close();
+                    }
+                }
             }
         }
     }

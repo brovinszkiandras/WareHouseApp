@@ -220,8 +220,8 @@ namespace WH_APP_GUI.Warehouse
                     }
                     else
                     {
-                        double total_expenditure = double.Parse(revenue_a_day[i][1]);
-                        double total_income = double.Parse(revenue_a_day[i][2]);
+                        double total_expenditure = revenue_a_day[i][1] != string.Empty ? double.Parse(revenue_a_day[i][1]) : 0;
+                        double total_income = revenue_a_day[i][2] != string.Empty ? double.Parse(revenue_a_day[i][2]) : 0;
                         double max = total_expenditure + total_income;
 
                         ProgressBar Spending = new ProgressBar();
