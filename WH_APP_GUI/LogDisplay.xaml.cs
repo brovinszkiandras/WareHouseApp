@@ -24,7 +24,11 @@ namespace WH_APP_GUI
             IniDatasInLog();
             IniEmails();
 
-            if ((int)User.currentUser["role_id"] != 1)
+            if (User.DoesHavePermission("Clear Log"))
+            {
+                ClearLog.Visibility = Visibility.Visible;
+            }
+            else
             {
                 ClearLog.Visibility = Visibility.Collapsed;
             }

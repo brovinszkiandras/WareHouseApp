@@ -190,9 +190,11 @@ namespace WH_APP_GUI.transport
                 Tables.transports.database.Rows.Add(transport);
                 Tables.transports.updateChanges();
                 Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully created a new transport");
-                TransportsPage transports = new TransportsPage();
 
-                Navigation.content2.Navigate( transports );
+                //TransportsPage transports = new TransportsPage();
+                //Navigation.content2.Navigate( transports );
+
+                Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
             }
         }
 
@@ -206,7 +208,7 @@ namespace WH_APP_GUI.transport
             bool canBeAssigned = false;
             foreach (DataRow permission in Tables.roles.getPermission(Tables.employees.getRole(employee)))
             {
-                if (permission["name"].ToString() == "Assign to transport")
+                if (permission["name"].ToString() == "Can be assigned to transport")
                 {
                     canBeAssigned = true;
                     break;
@@ -246,7 +248,6 @@ namespace WH_APP_GUI.transport
                         ComboBoxItem item = new ComboBoxItem();
                         item.Content = employee["name"];
                         item.Tag = employee["id"];
-
                         EmployeesCBX.Items.Add(item);
                     }
                 }

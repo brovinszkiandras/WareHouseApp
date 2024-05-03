@@ -126,9 +126,18 @@ namespace WH_APP_GUI
             type.Content = "Type: " + forklift["type"];
             type.Style = (Style)this.Resources["labelstyle"];
 
-            Label status = new Label();
-            status.Content = "Status: " + forklift["status"];
-            status.Style = (Style)this.Resources["labelstyle"];
+            ComboBox statusCBX = new ComboBox();
+            statusCBX.Items.Add("Free");
+            statusCBX.Items.Add("On duty");
+            statusCBX.Items.Add("Under Maintenance");
+            statusCBX.Items.Add("Faulty");
+            statusCBX.IsEnabled = false;
+            statusCBX.Tag = forklift;
+            if (forklift["status"] != DBNull.Value)
+            {
+                statusCBX.SelectedItem = forklift["status"].ToString();
+            }
+            statusCBX.SelectionChanged += StatusCBX_SelectionChanged;
 
             Label warehouseName = new Label();
             warehouseName.Style = (Style)this.Resources["labelstyle"];
@@ -147,7 +156,7 @@ namespace WH_APP_GUI
             operating_hours.Style = (Style)this.Resources["labelstyle"];
 
             leftStackPanel.Children.Add(type);
-            leftStackPanel.Children.Add(status);
+            leftStackPanel.Children.Add(statusCBX);
             leftStackPanel.Children.Add(warehouseName);
             leftStackPanel.Children.Add(operating_hours);
 
@@ -156,7 +165,7 @@ namespace WH_APP_GUI
             Grid.SetColumn(rightStackPanel, 2);
             mainGrid.Children.Add(rightStackPanel);
 
-            if (User.DoesHavePermission("Modify all Forklift") || User.DoesHavePermission("Modify all Forklift"))
+            if (User.DoesHavePermission("Modify all Forklift"))
             {
                 Button deleteButton = new Button();
                 deleteButton.Content = "Delete";
@@ -170,13 +179,61 @@ namespace WH_APP_GUI
                 editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
                 editButton.Click += editForklift_Click;
 
+                statusCBX.IsEnabled = true;
+
                 rightStackPanel.Children.Add(deleteButton);
                 rightStackPanel.Children.Add(editButton);
+            }
+            else if (User.DoesHavePermission("Modify Forklift"))
+            {
+                if (User.currentUser.Table.TableName == "employees" && WarehouseFromPage != null)
+                {
+                    if ((int)User.currentUser["warehouse_id"] == (int)WarehouseFromPage["id"])
+                    {
+                        Button deleteButton = new Button();
+                        deleteButton.Content = "Delete";
+                        deleteButton.Tag = forklift;
+                        deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                        deleteButton.Click += deleteForklift_Click;
+
+                        Button editButton = new Button();
+                        editButton.Content = "Edit";
+                        editButton.Tag = forklift;
+                        editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                        editButton.Click += editForklift_Click;
+
+                        statusCBX.IsEnabled = true;
+
+                        rightStackPanel.Children.Add(deleteButton);
+                        rightStackPanel.Children.Add(editButton);
+                    }
+                }
+            }
+            else if (User.DoesHavePermission("Change status of Forklift"))
+            {
+                if (User.currentUser.Table.TableName == "employees" && WarehouseFromPage != null)
+                {
+                    if ((int)User.currentUser["warehouse_id"] == (int)WarehouseFromPage["id"])
+                    {
+                        statusCBX.IsEnabled = true;
+                    }
+                }
             }
 
             border.Child = mainGrid;
             panel.Children.Add(border);
         }
+        public void StatusCBX_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            DataRow forklift = (sender as ComboBox).Tag as DataRow;
+            if (forklift != null && (sender as ComboBox).SelectedIndex != -1)
+            {
+                forklift["status"] = (sender as ComboBox).SelectedItem.ToString();
+                Tables.forklifts.updateChanges();
+                MessageBox.Show("Forklift has been updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
         public void DisplayForkliftsInWarehouse(Panel panel, DataRow warehouse)
         {
             DisplayForkliftsStackPanel.Children.Clear();

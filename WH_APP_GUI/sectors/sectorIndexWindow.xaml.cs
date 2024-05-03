@@ -19,12 +19,6 @@ namespace WH_APP_GUI.sectors
 {
     public partial class sectorIndexWindow : Page
     {
-        public sectorIndexWindow()
-        {
-            InitializeComponent();
-            DisplaySectors();
-        }
-
         private DataRow Warehouse = null;
         public sectorIndexWindow(DataRow warehouse)
         {
@@ -32,6 +26,30 @@ namespace WH_APP_GUI.sectors
             Warehouse = warehouse;
             Navigation.ReturnParam = warehouse;
             DisplaySectors();
+
+
+            if (User.DoesHavePermission("Modify all Warehouses"))
+            {
+                Create.Visibility = Visibility.Visible;
+            }
+            else if (User.DoesHavePermission("Modify Warehouses"))
+            {
+                if (User.currentUser.Table.TableName == "employees")
+                {
+                    if (User.currentUser["warehouse"].ToString() == Warehouse["id"].ToString())
+                    {
+                        Create.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        Create.Visibility = Visibility.Collapsed;
+                    }
+                }
+            }
+            else
+            {
+                Create.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void DisplayOneSector(DataRow sector, int lastRow)
@@ -102,7 +120,7 @@ namespace WH_APP_GUI.sectors
 
             sectorGrid.Children.Add(inspect);
 
-            if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
+            if (User.DoesHavePermission("Modify all Warehouses"))
             {
                 Button delete = new Button();
                 delete.Content = "Delete";
@@ -115,9 +133,24 @@ namespace WH_APP_GUI.sectors
 
                 sectorGrid.Children.Add(delete);
             }
-            else
+            else if (User.DoesHavePermission("Modify Warehouses"))
             {
-                Create.Visibility = Visibility.Collapsed;
+                if (User.currentUser.Table.TableName == "employees")
+                {
+                    if (User.currentUser["warehouse"].ToString() == Warehouse["id"].ToString())
+                    {
+                        Button delete = new Button();
+                        delete.Content = "Delete";
+                        delete.Style = (Style)this.Resources["GoldenButtonStyle"];
+                        delete.Margin = new Thickness(5);
+                        delete.Tag = sector["id"];
+                        delete.Click += Delete_Click;
+                        Grid.SetRow(delete, lastRow);
+                        Grid.SetColumn(delete, 7);
+
+                        sectorGrid.Children.Add(delete);
+                    }
+                }
             }
         }
 
@@ -165,7 +198,10 @@ namespace WH_APP_GUI.sectors
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             CreateSectorPage createSectorPage = new CreateSectorPage();
-
+            if (Warehouse != null)
+            {
+                Navigation.ReturnParam = Warehouse;
+            }
             Navigation.content2.Navigate(createSectorPage);
             Navigation.ReturnParam = Warehouse;
         }

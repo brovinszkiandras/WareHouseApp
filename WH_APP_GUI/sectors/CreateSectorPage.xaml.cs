@@ -65,8 +65,13 @@ namespace WH_APP_GUI.sectors
                 MessageBox.Show(Tables.sector.database.Columns["id"].AutoIncrement.ToString());
                 Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully created a new sector");
 
-                sectorIndexWindow sectorIndexWindow = new sectorIndexWindow();
-                Navigation.content2.Navigate(sectorIndexWindow);
+                if (Navigation.PreviousPage != null)
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
+
+                //sectorIndexWindow sectorIndexWindow = new sectorIndexWindow();
+                //Navigation.content2.Navigate(sectorIndexWindow);
             }
         }
         private void CreateSectorPaage_SizeChanged(object sender, SizeChangedEventArgs e)

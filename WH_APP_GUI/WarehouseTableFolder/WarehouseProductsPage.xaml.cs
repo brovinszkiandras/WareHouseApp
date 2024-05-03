@@ -27,7 +27,11 @@ namespace WH_APP_GUI.warehouseTableFolder
 
             this.warehouseTable = WarehouseTable;
 
-            if (! User.DoesHavePermission("Handle Products"))
+            if (User.DoesHavePermission("Handle Products"))
+            {
+                Create.Visibility = Visibility.Visible;
+            }
+            else
             {
                 Create.Visibility = Visibility.Collapsed;
             }
@@ -41,13 +45,11 @@ namespace WH_APP_GUI.warehouseTableFolder
             productGrid.Children.Clear();
             int lastRow = 0;
 
-
             foreach (DataRow product in warehouseTable.database.Rows)
             {
                 RowDefinition rowDefinition = new RowDefinition();
                 rowDefinition.Height = GridLength.Auto;
                 productGrid.RowDefinitions.Add(rowDefinition);
-
 
                 TextBlock name = new TextBlock();
                 name.Text = warehouseTable.getProduct(product)["name"].ToString();
@@ -164,7 +166,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                     delete.Content = "Delete";
                     delete.Style = (Style)this.Resources["GoldenButtonStyle"];
                     delete.Tag = product["id"];
-                    //delete.Click += Delete_Click;
+                    delete.Click += Delete_Click;
                     Grid.SetRow(delete, lastRow);
                     Grid.SetColumn(delete, productGrid.ColumnDefinitions.Count - 1);
 

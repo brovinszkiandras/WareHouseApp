@@ -325,17 +325,20 @@ namespace WH_APP_GUI.Order
                     }
                     else if (IsOrederFinishedWithoutTransportOrDock(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()) && ! IsOrderInTransport(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
                     {
-                        Button addToTransport = new Button();
-                        addToTransport.Background = Brushes.Green;
-                        addToTransport.Foreground = Brushes.Black;
-                        addToTransport.Margin = new Thickness(5);
-                        addToTransport.BorderBrush = Brushes.Black;
-                        addToTransport.BorderThickness = new Thickness(1);
-                        addToTransport.HorizontalContentAlignment = HorizontalAlignment.Center;
-                        addToTransport.Content = $"Add to transport";
-                        addToTransport.Tag = Tables.orders.getOrdersOfAUser(username, address);
-                        addToTransport.Click += AddToTransport;
-                        mainStackPanel.Children.Add(addToTransport);
+                        if (User.DoesHavePermission("Assign order"))
+                        {
+                            Button addToTransport = new Button();
+                            addToTransport.Background = Brushes.Green;
+                            addToTransport.Foreground = Brushes.Black;
+                            addToTransport.Margin = new Thickness(5);
+                            addToTransport.BorderBrush = Brushes.Black;
+                            addToTransport.BorderThickness = new Thickness(1);
+                            addToTransport.HorizontalContentAlignment = HorizontalAlignment.Center;
+                            addToTransport.Content = $"Add to transport";
+                            addToTransport.Tag = Tables.orders.getOrdersOfAUser(username, address);
+                            addToTransport.Click += AddToTransport;
+                            mainStackPanel.Children.Add(addToTransport);
+                        }
                     }
                 }
                 else if (Tables.features.isFeatureInUse("Dock") && Tables.features.isFeatureInUse("Fleet"))
@@ -356,18 +359,21 @@ namespace WH_APP_GUI.Order
                     }
                     else if (!IsOrederFinishedWithoutTransportOrDock(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()) && !IsOrderInDock(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
                     {
-                        Button addToDock = new Button();
-                        addToDock.Background = Brushes.Green;
-                        addToDock.Foreground = Brushes.Black;
-                        addToDock.Margin = new Thickness(5);
-                        addToDock.BorderBrush = Brushes.Black;
-                        addToDock.BorderThickness = new Thickness(1);
-                        addToDock.MaxWidth = 350;
-                        addToDock.HorizontalContentAlignment = HorizontalAlignment.Center;
-                        addToDock.Content = $"Add to dock";
-                        addToDock.Tag = Tables.orders.getOrdersOfAUser(username, address);
-                        addToDock.Click += AddToDock;
-                        mainStackPanel.Children.Add(addToDock);
+                        if (User.DoesHavePermission("Assign order"))
+                        {
+                            Button addToDock = new Button();
+                            addToDock.Background = Brushes.Green;
+                            addToDock.Foreground = Brushes.Black;
+                            addToDock.Margin = new Thickness(5);
+                            addToDock.BorderBrush = Brushes.Black;
+                            addToDock.BorderThickness = new Thickness(1);
+                            addToDock.MaxWidth = 350;
+                            addToDock.HorizontalContentAlignment = HorizontalAlignment.Center;
+                            addToDock.Content = $"Add to dock";
+                            addToDock.Tag = Tables.orders.getOrdersOfAUser(username, address);
+                            addToDock.Click += AddToDock;
+                            mainStackPanel.Children.Add(addToDock);
+                        }
                     }
                 }
             }

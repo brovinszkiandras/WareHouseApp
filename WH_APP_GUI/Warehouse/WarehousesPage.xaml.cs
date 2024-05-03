@@ -102,9 +102,21 @@ namespace WH_APP_GUI.Warehouse
                 Grid.SetColumn(innerGrid, 2);
                 grid.Children.Add(innerGrid);
 
-                if (User.DoesHavePermission("Inspect all Warehouses") || User.DoesHavePermission("Inspect Warehouse"))
+                if (User.DoesHavePermission("Inspect all Warehouses"))
                 {
-                    if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                    Button inspectButton = new Button();
+                    inspectButton.Tag = Tables.warehouses.database.Rows[i];
+                    inspectButton.Content = "Inspect Warehouse";
+                    inspectButton.Click += inspect_warehouse_Click;
+                    inspectButton.Margin = new Thickness(10);
+                    inspectButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    Grid.SetRow(inspectButton, 0);
+                    innerGrid.Children.Add(inspectButton);
+                }
+
+                if (User.DoesHavePermission("Inspect Warehouse"))
+                {
+                    if (User.currentUser.Table.TableName == "employees")
                     {
                         if (User.currentUser["warehouse_id"].ToString() == Tables.warehouses.database.Rows[i]["id"].ToString())
                         {
@@ -131,12 +143,23 @@ namespace WH_APP_GUI.Warehouse
                     }
                 }
 
-
-                if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouses"))
+                if (User.DoesHavePermission("Modify all Warehouses"))
                 {
-                    if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                    Button deleteButton = new Button();
+                    deleteButton.Content = "Delete Warehouse";
+                    deleteButton.Tag = Tables.warehouses.database.Rows[i];
+                    deleteButton.Click += delete_warehouse_Click;
+                    deleteButton.Margin = new Thickness(10);
+                    deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    Grid.SetRow(deleteButton, 1);
+                    innerGrid.Children.Add(deleteButton);
+                }
+
+                if (User.DoesHavePermission("Modify Warehouse"))
+                {
+                    if (User.currentUser.Table.TableName == "employees")
                     {
-                        if (User.currentUser["warehouse_id"] == Tables.warehouses.database.Rows[i]["id"])
+                        if ((int)User.currentUser["warehouse_id"] == (int)Tables.warehouses.database.Rows[i]["id"])
                         {
                             Button deleteButton = new Button();
                             deleteButton.Content = "Delete Warehouse";

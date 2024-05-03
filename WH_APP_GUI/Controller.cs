@@ -75,14 +75,7 @@ namespace WH_APP_GUI
         private static void CreateAndFillRolePermission()
         {
             SQL.SqlCommand($"CREATE TABLE role_permission (role_id INT, permission_id INT, FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE, FOREIGN KEY (permission_id) REFERENCES permission(id) ON DELETE CASCADE);");
-            string[] role_permission = File.ReadAllLines(@"..\..\SQL\RolePermission.sql");
-            string command = string.Empty;
-            for (int i = 0; i < role_permission.Length; i++)
-            {
-                command += "\n" + role_permission[i];
-            }
-            //Console.WriteLine(command);
-            SQL.SqlCommand(command);
+            SQL.SqlCommand(File.ReadAllText(@"..\..\SQL\RolePermission.sql"));
         }
 
         #region Create Required Tables In Migartions
@@ -283,7 +276,7 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.employees.actual_name} ADD activity BOOLEAN DEFAULT FALSE NOT NULL, ADD is_loggedin BOOLEAN DEFAULT FALSE NOT NULL;");
+                    SQL.SqlCommand($"ALTER TABLE {Tables.employees.actual_name} ADD activity BOOLEAN DEFAULT TRUE NOT NULL, ADD is_loggedin BOOLEAN DEFAULT FALSE NOT NULL;");
 
                     Tables.features.getFeature("Activity")["in_use"] = true;
                     Tables.employees.Refresh();
@@ -376,8 +369,6 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    
-
                     SQL.SqlCommand($"ALTER TABLE {Tables.cars.actual_name} ADD consumption DOUBLE DEFAULT 0, ADD gas_tank_size DOUBLE DEFAULT 0;");
                     Tables.features.getFeature("Fuel")["in_use"] = true;
                     Tables.features.updateChanges();

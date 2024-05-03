@@ -21,28 +21,16 @@ namespace WH_APP_GUI.Dock
 {
     public partial class DockPage : Page
     {
-        public DockPage()
-        {
-            InitializeComponent();
-            IniWarehouses();
-            InitializeAllDocks(DockDisplaySTACK);
-
-            Back.Visibility = Visibility.Collapsed;
-            DocksByWarehouses.Visibility = Visibility.Visible;
-            AllDocks.Visibility = Visibility.Visible;
-
-            if (!User.DoesHavePermission("Modify all Dock"))
-            {
-                AddNewDock.Visibility = Visibility.Collapsed;
-            }
-        }
         private DataRow WarehouseFromPage = null;
         public DockPage(DataRow warehouseFromPage)
         {
             InitializeComponent();
-            IniWarehouses();
 
-            if (!User.DoesHavePermission("Modify all Dock") || !User.DoesHavePermission("Modify Dock"))
+            if (User.DoesHavePermission("Modify Dock"))
+            {
+                AddNewDock.Visibility = Visibility.Visible;
+            }
+            else
             {
                 AddNewDock.Visibility = Visibility.Collapsed;
             }
@@ -50,20 +38,7 @@ namespace WH_APP_GUI.Dock
             WarehouseFromPage = warehouseFromPage;
             InitializeAllDocks(DockDisplaySTACK);
 
-            DocksByWarehouses.Visibility = Visibility.Collapsed;
             Back.Visibility = Visibility.Visible;
-            AllDocks.Visibility = Visibility.Collapsed;
-        }
-        private Dictionary<string, DataRow> Warehouses = new Dictionary<string, DataRow>();
-        private void IniWarehouses()
-        {
-            Warehouses.Clear();
-            DocksByWarehouses.Items.Clear();
-            foreach (DataRow warehouse in Tables.warehouses.database.Rows)
-            {
-                Warehouses.Add(warehouse["name"].ToString(), warehouse);
-                DocksByWarehouses.Items.Add(warehouse["name"].ToString());
-            }
         }
         public void InitializeAllDocks(Panel panel)
         {
@@ -97,7 +72,6 @@ namespace WH_APP_GUI.Dock
             mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
             mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
             mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
-
 
             Image image = new Image();
             image.Width = 100;
@@ -158,8 +132,10 @@ namespace WH_APP_GUI.Dock
             isDockFree.IsEnabled = false;
             rightStackPanel.Children.Add(isDockFree);
 
-            if (User.DoesHavePermission("Modify all Dock") || User.DoesHavePermission("Modify Dock"))
+            if (User.DoesHavePermission("Modify Dock"))
             {
+                isDockFree.IsEnabled = true;
+
                 Button deleteButton = new Button();
                 deleteButton.Content = "Delete";
                 deleteButton.Click += deleteDock_Click;
@@ -175,6 +151,10 @@ namespace WH_APP_GUI.Dock
                 isDockFree.IsEnabled = true;
                 rightStackPanel.Children.Add(deleteButton);
                 rightStackPanel.Children.Add(editButton);
+            }
+            else
+            {
+                isDockFree.IsEnabled = false;
             }
 
 
@@ -253,7 +233,6 @@ namespace WH_APP_GUI.Dock
                             ordersGrid.Children.Add(address);
                             ordersGrid.Children.Add(order_date);
                         }
-
                         orderExpander.Content = ordersGrid;
                         ordersStackapnel.Children.Add(orderExpander);
                     }
@@ -272,7 +251,6 @@ namespace WH_APP_GUI.Dock
             {
                 dock.Delete();
                 Tables.docks.updateChanges();
-                DocksByWarehouses.SelectedIndex = -1;
                 DockDisplaySTACK.Children.Clear();
                 InitializeAllDocks(DockDisplaySTACK);
 
@@ -331,23 +309,6 @@ namespace WH_APP_GUI.Dock
                     Navigation.OpenPage(Navigation.PreviousPage.GetType());
                 }
             }
-        }
-
-        private void DockByWarehouses_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (DocksByWarehouses.SelectedIndex != -1)
-            {
-                DockDisplaySTACK.Children.Clear();
-                WarehouseFromPage = Warehouses[DocksByWarehouses.SelectedItem.ToString()];
-                InitializeAllDocks(DockDisplaySTACK);
-                WarehouseFromPage = null;
-            }
-        }
-
-        private void AllDocks_Click(object sender, RoutedEventArgs e)
-        {
-            DockDisplaySTACK.Children.Clear();
-            InitializeAllDocks(DockDisplaySTACK);
         }
 
         private void DockPage_SizeChanged(object sender, SizeChangedEventArgs e)

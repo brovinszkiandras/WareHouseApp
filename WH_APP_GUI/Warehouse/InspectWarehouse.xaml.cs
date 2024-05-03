@@ -55,11 +55,15 @@ namespace WH_APP_GUI.Warehouse
             }
 
 
-            if (User.DoesHavePermission("Inspect Employees") || User.DoesHavePermission("Inspect all Employees"))
+            if (User.DoesHavePermission("Inspect all Employees"))
             {
-                if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                EmployeesInspectToWarehouse.Visibility = Visibility.Visible;
+            }
+            else if (User.DoesHavePermission("Inspect Employees"))
+            {
+                if (User.currentUser.Table.TableName == "employees")
                 {
-                    if (User.currentUser["warehouse_id"] == warehouse["id"])
+                    if ((int)User.currentUser["warehouse_id"] == (int)Warehouse["id"])
                     {
                         EmployeesInspectToWarehouse.Visibility = Visibility.Visible;
                     }
@@ -68,17 +72,21 @@ namespace WH_APP_GUI.Warehouse
                         EmployeesInspectToWarehouse.Visibility = Visibility.Collapsed;
                     }
                 }
-                else
-                {
-                    EmployeesInspectToWarehouse.Visibility = Visibility.Visible;
-                }
+            }
+            else
+            {
+                EmployeesInspectToWarehouse.Visibility = Visibility.Collapsed;
             }
 
-            if (User.DoesHavePermission("Inspect Orders") || User.DoesHavePermission("Inspect all Orders"))
+            if (User.DoesHavePermission("Inspect all Orders"))
             {
-                if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                OrdersInspectToWarehouse.Visibility = Visibility.Visible;
+            }
+            else if (User.DoesHavePermission("Inspect Orders"))
+            {
+                if (User.currentUser.Table.TableName == "employees")
                 {
-                    if (User.currentUser["warehouse_id"] == warehouse["id"])
+                    if (User.currentUser["warehouse"].ToString() == Warehouse["id"].ToString())
                     {
                         OrdersInspectToWarehouse.Visibility = Visibility.Visible;
                     }
@@ -87,20 +95,25 @@ namespace WH_APP_GUI.Warehouse
                         OrdersInspectToWarehouse.Visibility = Visibility.Collapsed;
                     }
                 }
-                else
-                {
-                    OrdersInspectToWarehouse.Visibility = Visibility.Visible;
-                }
             }
+            else
+            {
+                OrdersInspectToWarehouse.Visibility = Visibility.Collapsed;
+            }
+           
 
             if (Tables.features.isFeatureInUse("Fleet"))
             {
-                if (User.DoesHavePermission("Inspect Transport") || User.DoesHavePermission("Inspect all Transport") || User.DoesHavePermission("Inspect own Transport"))
+                if (User.DoesHavePermission("Inspect Transport") || User.DoesHavePermission("Inspect all Transport") || User.DoesHavePermission("Handle own Transport"))
                 {
-                    if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                    if (User.currentUser.Table.TableName == "employees")
                     {
-                        if (User.currentUser["warehouse_id"] == warehouse["id"])
+                        if ((int)User.currentUser["warehouse_id"] == (int)warehouse["id"])
                         {
+                            if (User.DoesHavePermission("Handle own Transport"))
+                            {
+                                TransportsInspectToWarehouse.Content = "Own Transports";
+                            }
                             TransportsInspectToWarehouse.Visibility = Visibility.Visible;
                         }
                         else
@@ -119,11 +132,26 @@ namespace WH_APP_GUI.Warehouse
                 TransportsInspectToWarehouse.Visibility = Visibility.Collapsed;
             }
 
+
             if (Tables.features.isFeatureInUse("Fleet"))
             {
-                if (!User.DoesHavePermission("Inspect Car") || !User.DoesHavePermission("Inspect all Car"))
+                if (User.DoesHavePermission("Inspect Car") || User.DoesHavePermission("Inspect all Car"))
                 {
-                    CarsInspectToWarehouse.Visibility = Visibility.Collapsed;
+                    if (User.currentUser.Table.TableName == "employees")
+                    {
+                        if ((int)User.currentUser["warehouse_id"] == (int)warehouse["id"])
+                        {
+                            CarsInspectToWarehouse.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            CarsInspectToWarehouse.Visibility = Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        CarsInspectToWarehouse.Visibility = Visibility.Visible;
+                    }
                 }
             }
             else
@@ -133,7 +161,25 @@ namespace WH_APP_GUI.Warehouse
 
             if (Tables.features.isFeatureInUse("Dock"))
             {
-                if (!User.DoesHavePermission("Inspect Dock"))
+                if (User.DoesHavePermission("Inspect Dock"))
+                {
+                    if (User.currentUser.Table.TableName == "employees")
+                    {
+                        if ((int)User.currentUser["warehouse_id"] == (int)Warehouse["id"])
+                        {
+                            DocksInspectToWarehouse.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            DocksInspectToWarehouse.Visibility= Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        DocksInspectToWarehouse.Visibility= Visibility.Visible;
+                    }
+                }
+                else
                 {
                     DocksInspectToWarehouse.Visibility = Visibility.Collapsed;
                 }
@@ -156,7 +202,10 @@ namespace WH_APP_GUI.Warehouse
             }
 
             Ini_City();
-            Ini_Revnue_A_Day();
+            if (Tables.features.isFeatureInUse("Revenue"))
+            {
+                Ini_Revenue_A_Day();
+            }
         }
         private void Ini_City()
         {
@@ -177,7 +226,7 @@ namespace WH_APP_GUI.Warehouse
 
             terkep.Children.Add(polyline);
         }
-        private void Ini_Revnue_A_Day()
+        private void Ini_Revenue_A_Day()
         {
             List<string[]> revenue_a_day = SQL.SqlQuery($"SELECT `date`, `total_expenditure`, `total_income` FROM `revenue_a_day` WHERE `warehouse_id` = {Warehouse["id"]} GROUP BY `date`;");
             if (revenue_a_day.Count() > 0)
@@ -340,6 +389,7 @@ namespace WH_APP_GUI.Warehouse
         private void TransportsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
             Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"), Warehouse);
+            Navigation.ReturnParam = Warehouse;
         }
     }
 }
