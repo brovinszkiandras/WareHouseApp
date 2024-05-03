@@ -157,7 +157,7 @@ namespace WH_APP_GUI.transport
             {
                 if ((sender as ComboBox).SelectedItem.ToString() == "On Way Back")
                 {
-                    if (! CanTransportFinished(transport))
+                    if (!CanTransportFinished(transport))
                     {
                         MessageBox.Show("The transport can not be finished while still have active orders in it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         (sender as ComboBox).SelectedItem = "On route";
@@ -185,6 +185,21 @@ namespace WH_APP_GUI.transport
                     else
                     {
                         Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
+                    }
+                }
+                else if ((sender as ComboBox).SelectedItem.ToString() == "On route")
+                {
+                    if (Tables.features.isFeatureInUse("Fuel"))
+                    {
+                        RouteDetails routeDetails = new RouteDetails(transport);
+                        routeDetails.ShowDialog();
+                    }
+                    else
+                    {
+                        Transport["status"] = (sender as ComboBox).SelectedItem.ToString();
+                        Tables.transports.updateChanges();
+                        transportDisplay.Children.Clear();
+                        DisplayOneTransport(Transport);
                     }
                 }
                 else

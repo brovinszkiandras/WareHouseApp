@@ -340,5 +340,20 @@ namespace WH_APP_GUI
                 SQL.SqlCommand("INSERT INTO `forklift`(`warehouse_id`, `type`, `status`, `operating_hours`) VALUES (3, 'LiftBoss 800', 'Faulty', 1400);");
             }
         }
+
+        public static void FakeEveryting()
+        {
+            FakeAdmins();
+            FakeCeos();
+            FakeWarehouses();
+            FakeEmployees();
+            FakeProducts();
+            FakeProductsToWarehouses();
+            FakeOrders();
+            FakeCars();
+            FakeRevenue();
+            FakeDocks();
+            FakeForklifts();
+        }
     }
 }

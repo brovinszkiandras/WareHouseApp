@@ -86,7 +86,7 @@ namespace WH_APP_GUI.Warehouse
             {
                 if (User.currentUser.Table.TableName == "employees")
                 {
-                    if (User.currentUser["warehouse"].ToString() == Warehouse["id"].ToString())
+                    if (User.currentUser["warehouse_id"].ToString() == Warehouse["id"].ToString())
                     {
                         OrdersInspectToWarehouse.Visibility = Visibility.Visible;
                     }
@@ -241,23 +241,39 @@ namespace WH_APP_GUI.Warehouse
                 double AllSellingPrice = SellingPrice != "" ? double.Parse(SellingPrice) : 0;
                 double AllBuyingPrice = BuyingPrice != "" ? double.Parse(BuyingPrice) : 0;
 
-                WarehouseTotalSpending.Maximum = WarehouseMaxValue;
-                WarehouseTotalSpendingLBL.Content = Warehouse["total_spending"] + " - Ft";
-                bool ValidateWarehouseTotalSpending = Warehouse["total_spending"].ToString() != "" ? true : false;
-                WarehouseTotalSpending.Value = ValidateWarehouseTotalSpending ? double.Parse(Warehouse["total_spending"].ToString()) : 0;
+                if (WarehouseMaxValue != 0)
+                {
+                    WarehouseTotalSpending.Maximum = WarehouseMaxValue;
+                    WarehouseTotalSpendingLBL.Content = Warehouse["total_spending"] != DBNull.Value ? Warehouse["total_spending"] + " - Ft" : 0 + " - Ft";
+                    bool ValidateWarehouseTotalSpending = Warehouse["total_spending"].ToString() != "" ? true : false;
+                    WarehouseTotalSpending.Value = ValidateWarehouseTotalSpending ? double.Parse(Warehouse["total_spending"].ToString()) : 0;
 
-                WarehouseTotalIncome.Maximum = WarehouseMaxValue;
-                WarehouseTotalIncomeLBL.Content = Warehouse["total_income"] + " - Ft";
-                bool ValidateWarehouseTotalIncome = Warehouse["total_income"].ToString() != "" ? true : false;
-                WarehouseTotalIncome.Value = ValidateWarehouseTotalIncome ? double.Parse(Warehouse["total_income"].ToString()) : 0;
+                    WarehouseTotalIncome.Maximum = WarehouseMaxValue;
+                    WarehouseTotalIncomeLBL.Content = Warehouse["total_income"] + " - Ft";
+                    bool ValidateWarehouseTotalIncome = Warehouse["total_income"].ToString() != "" ? true : false;
+                    WarehouseTotalIncome.Value = ValidateWarehouseTotalIncome ? double.Parse(Warehouse["total_income"].ToString()) : 0;
+                }
+                else
+                {
+                    WarehouseTotalSpendingLBL.Content = Warehouse["total_spending"] != DBNull.Value ? Warehouse["total_spending"] + " - Ft" : 0 + " - Ft";
+                    WarehouseTotalIncomeLBL.Content = Warehouse["total_income"] != DBNull.Value ? Warehouse["total_income"] + " - Ft" : 0 + " - Ft";
+                }
 
-                ProductsTotalSellingPrice.Maximum = WarehouseMaxValue;
-                ProductsTotalSellingPrice.Value = AllSellingPrice;
-                ProductsTotalSellingPriceLBL.Content = AllSellingPrice + " - Ft";
+                if (WarehouseMaxValue != 0)
+                {
+                    ProductsTotalSellingPrice.Maximum = WarehouseMaxValue;
+                    ProductsTotalSellingPrice.Value = AllSellingPrice;
+                    ProductsTotalSellingPriceLBL.Content = AllSellingPrice + " - Ft";
 
-                ProductsTotalBuyingPrice.Maximum = WarehouseMaxValue;
-                ProductsTotalBuyingPrice.Value = AllBuyingPrice;
-                ProductsTotalBuyingPriceLBL.Content = AllBuyingPrice + " - Ft";
+                    ProductsTotalBuyingPrice.Maximum = WarehouseMaxValue;
+                    ProductsTotalBuyingPrice.Value = AllBuyingPrice;
+                    ProductsTotalBuyingPriceLBL.Content = AllBuyingPrice + " - Ft";
+                }
+                else
+                {
+                    ProductsTotalSellingPriceLBL.Content = "0 - Ft";
+                    ProductsTotalBuyingPriceLBL.Content = "0 - Ft";
+                }
 
                 int index = 0;
                 int Dayindex = 0;
@@ -390,6 +406,11 @@ namespace WH_APP_GUI.Warehouse
         {
             Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"), Warehouse);
             Navigation.ReturnParam = Warehouse;
+        }
+
+        private void RevenueDayPicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MessageBox.Show(RevenueDayPicker.SelectedDate.ToString());
         }
     }
 }

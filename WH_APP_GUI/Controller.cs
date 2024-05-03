@@ -733,7 +733,7 @@ namespace WH_APP_GUI
 
                     if (date == DateTime.Now.ToString("yyyy-MM-dd") && warehouse["id"].ToString() == datas[i][1])
                     {
-                        double NewValue = double.Parse(datas[i][3]) + value;
+                        double NewValue = datas[i][3] != string.Empty ? double.Parse(datas[i][3]) + value : value;
                         SQL.SqlCommand($"UPDATE `revenue_a_day` SET `total_expenditure` = '{NewValue}' WHERE id = {datas[i][0]}");
                         Updated = true;
                         break;
@@ -744,7 +744,7 @@ namespace WH_APP_GUI
                 {
                     using (MySqlCommand command = new MySqlCommand("INSERT INTO `revenue_a_day`(`warehouse_id`, `date`, `total_expenditure`) VALUES (@warehouse_id, @date, @total_expenditure)", SQL.con))
                     {
-                        command.Parameters.AddWithValue("@warehouse_id", 1);
+                        command.Parameters.AddWithValue("@warehouse_id", (int)warehouse["id"]);
                         command.Parameters.AddWithValue("@date", DateTime.Now);
                         command.Parameters.AddWithValue("@total_expenditure", value);
 
@@ -769,7 +769,7 @@ namespace WH_APP_GUI
 
                     if (date == DateTime.Now.ToString("yyyy-MM-dd") && warehouse["id"].ToString() == datas[i][1])
                     {
-                        double NewValue = double.Parse(datas[i][3]) + value;
+                        double NewValue = datas[i][3] != string.Empty ? double.Parse(datas[i][3]) + value : value;
                         SQL.SqlCommand($"UPDATE `revenue_a_day` SET `total_income` = '{NewValue}' WHERE id = {datas[i][0]}");
                         Updated = true;
                         break;
@@ -780,7 +780,7 @@ namespace WH_APP_GUI
                 {
                     using (MySqlCommand command = new MySqlCommand("INSERT INTO `revenue_a_day`(`warehouse_id`, `date`, `total_income`) VALUES (@warehouse_id, @date, @total_income)", SQL.con))
                     {
-                        command.Parameters.AddWithValue("@warehouse_id", 1);
+                        command.Parameters.AddWithValue("@warehouse_id", (int)warehouse["id"]);
                         command.Parameters.AddWithValue("@date", DateTime.Now);
                         command.Parameters.AddWithValue("@total_income", value);
 
