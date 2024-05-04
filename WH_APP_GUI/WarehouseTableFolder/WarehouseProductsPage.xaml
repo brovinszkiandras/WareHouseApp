@@ -47,6 +47,7 @@
         <Style TargetType="TextBlock" x:Key="textblockstyle">
             <Setter Property="Foreground" Value="#FFCEA2"/>
             <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
         </Style>
     </Page.Resources>
 

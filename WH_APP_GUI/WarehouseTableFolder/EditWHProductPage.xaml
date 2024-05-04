@@ -26,7 +26,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Background" Value="#FF5b00"></Setter>
+            <Setter Property="Background" Value="#FFCEA2"></Setter>
             <Setter Property="CaretBrush" Value="White"></Setter>
             <Setter Property="Foreground" Value="White"></Setter>
             <Setter Property="BorderBrush" Value="Black"></Setter>
@@ -41,14 +41,14 @@
                     <Setter Property="Foreground" Value="Black"></Setter>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="True">
-                    <Setter Property="Background" Value="#FF5b00"></Setter>
+                    <Setter Property="Background" Value="#FFCEA2"></Setter>
                     <Setter Property="Foreground" Value="White"></Setter>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style TargetType="Label" x:Key="mylabelStyle">
-            <Setter Property="Background" Value="#1F1F1F"></Setter>
+            <Setter Property="Background" Value="#425C5A"></Setter>
             <Setter Property="Foreground" Value="White"></Setter>
             <Setter Property="FontWeight" Value="UltraBlack"></Setter>
             <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
@@ -60,16 +60,42 @@
 
         </Style>
 
-        <Style x:Key="comboboxItemStyle" TargetType="ComboBoxItem">
-            <Setter Property="Background" Value="#FF5b00"></Setter>
-            <Setter Property="Foreground" Value="White"></Setter>
-            <Setter Property="BorderBrush" Value="Gold"></Setter>
-            <Setter Property="BorderThickness" Value="1"></Setter>
+
+
+        <Style TargetType="Button" x:Key="GreenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}"
+          CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+    Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
 
     </Page.Resources>
-    <Grid Background="#1F1F1F">
+    <Grid Background="#425C5A">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"></ColumnDefinition>
             <ColumnDefinition Width="3.5*"></ColumnDefinition>
@@ -100,7 +126,7 @@
 
                 <StackPanel>
                     <Label Content="Product name: " Style="{StaticResource mylabelStyle}"></Label>
-                    <ComboBox Background="#FF5b00"
+                    <ComboBox Background="#FFCEA2"
               Foreground="White"
               BorderBrush="Black"
               BorderThickness="0,0,0,10"
@@ -108,7 +134,7 @@
 
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <ComboBoxItem Content="{Binding Path=[name]}" Style="{StaticResource comboboxItemStyle}"></ComboBoxItem>
+                                <ComboBoxItem Content="{Binding Path=[name]}"></ComboBoxItem>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -124,7 +150,7 @@
 
                 <StackPanel Grid.Row="2">
                     <Label Content="Shelf: " Style="{StaticResource mylabelStyle}"></Label>
-                    <ComboBox Background="#FF5b00"
+                    <ComboBox Background="#FFCEA2"
                       Foreground="White"
                       BorderBrush="Black"
                       BorderThickness="0,0,0,10"
@@ -133,7 +159,7 @@
 
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <ComboBoxItem Content="{Binding Path=[name]}" Style="{StaticResource comboboxItemStyle}"></ComboBoxItem>
+                                <ComboBoxItem Content="{Binding Path=[name]}"></ComboBoxItem>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -163,7 +189,7 @@
 
                 <StackPanel Grid.Row="7">
                     <Label  Content="Shelf level:" Style="{StaticResource mylabelStyle}"></Label>
-                    <ComboBox IsEnabled="False" Panel.ZIndex="2" Background="#FF5b00"
+                    <ComboBox IsEnabled="False" Panel.ZIndex="2" Background="#FFCEA2"
                 Foreground="White"
                 BorderBrush="Black"
                  BorderThickness="0,0,0,10"
@@ -171,10 +197,8 @@
                     </ComboBox>
                 </StackPanel>
 
-                <Button x:Name="Save" Click="Save_Click" Foreground="White" Background="Crimson" Panel.ZIndex="1" Content="Save" FontSize="17" Grid.Row="8"></Button>
+                <Button x:Name="Save" Click="Save_Click" Style="{StaticResource GreenButtonStyle}" Panel.ZIndex="1" Content="Save" FontSize="17" Grid.Row="8"></Button>
             </Grid>
         </ScrollViewer>
-
-
     </Grid>
 </Page>

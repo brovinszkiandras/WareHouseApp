@@ -27,7 +27,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
             this.warehouseTable = WarehouseTable;
 
-            if (!User.DoesHavePermission("Handle Products"))
+            if (! User.DoesHavePermission("Handle Products"))
             {
                 Create.Visibility = Visibility.Collapsed;
             }
@@ -36,16 +36,22 @@ namespace WH_APP_GUI.warehouseTableFolder
         }
         public void Displayproducts()
         {
-            addStorageFeautoreElementsToDisplay();
+            if (Tables.features.isFeatureInUse("Storage") == true)
+            {
+                MessageBox.Show("Lefutott");
+                addStorageFeautoreElementsToDisplay();
+            }
 
             productGrid.Children.Clear();
             int lastRow = 0;
+
 
             foreach (DataRow product in warehouseTable.database.Rows)
             {
                 RowDefinition rowDefinition = new RowDefinition();
                 rowDefinition.Height = GridLength.Auto;
                 productGrid.RowDefinitions.Add(rowDefinition);
+
 
                 TextBlock name = new TextBlock();
                 name.Text = warehouseTable.getProduct(product)["name"].ToString();
@@ -65,17 +71,12 @@ namespace WH_APP_GUI.warehouseTableFolder
                 Grid.SetRow(qty, lastRow);
                 Grid.SetColumn(qty, 1);
 
+<<<<<<< HEAD
+=======
                 productGrid.Children.Add(qty);
 
                 TextBlock shelf = new TextBlock();
-                if (product["shelf_id"] != DBNull.Value)
-                {
-                    shelf.Text = warehouseTable.getShelf(product)["name"].ToString();
-                }
-                else
-                {
-                    shelf.Text = "";
-                }
+                shelf.Text = warehouseTable.getShelf(product)["name"].ToString();
                 shelf.Style = (Style)this.Resources["textblockstyle"];
                 shelf.TextWrapping = TextWrapping.Wrap;
                 shelf.HorizontalAlignment = HorizontalAlignment.Center;
@@ -122,14 +123,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                 #endregion
 
                 TextBlock on_shelf_level = new TextBlock();
-                if (product["on_shelf_level"] != DBNull.Value)
-                {
-                    on_shelf_level.Text = product["on_shelf_level"].ToString();
-                }
-                else
-                {
-                    on_shelf_level.Text = "";
-                }
+                on_shelf_level.Text = product["on_shelf_level"].ToString();
                 on_shelf_level.Style = (Style)this.Resources["textblockstyle"];
                 on_shelf_level.TextWrapping = TextWrapping.Wrap;
                 on_shelf_level.HorizontalAlignment = HorizontalAlignment.Center;
@@ -138,12 +132,107 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 productGrid.Children.Add(on_shelf_level);
 
+>>>>>>> 3f687feda40f40fa0a830090576740ee9a0d4890
                 CheckBox is_in_box = new CheckBox();
                 is_in_box.IsChecked = (bool)product["is_in_box"];
                 is_in_box.HorizontalAlignment = HorizontalAlignment.Center;
                 is_in_box.IsEnabled = false;
                 Grid.SetRow(is_in_box, lastRow);
-                Grid.SetColumn(is_in_box, 4);
+                Grid.SetColumn(is_in_box, 2);
+
+                productGrid.Children.Add(qty);
+                if (product["shelf_id"] != DBNull.Value)
+                {
+                    #region shelf
+                    TextBlock shelf = new TextBlock();
+                    shelf.Text = warehouseTable.getShelf(product)["name"].ToString();
+                    shelf.FontSize = 15;
+                    shelf.Foreground = Brushes.White;
+                    shelf.TextWrapping = TextWrapping.Wrap;
+                    shelf.HorizontalAlignment = HorizontalAlignment.Center;
+                    Grid.SetRow(shelf, lastRow);
+                    Grid.SetColumn(shelf, 3);
+
+                    productGrid.Children.Add(shelf);
+                    #endregion
+
+
+                    #region shelf_level
+                    TextBlock on_shelf_level = new TextBlock();
+                    on_shelf_level.Text = product["on_shelf_level"].ToString();
+                    on_shelf_level.FontSize = 15;
+                    on_shelf_level.Foreground = Brushes.White;
+                    on_shelf_level.TextWrapping = TextWrapping.Wrap;
+                    on_shelf_level.HorizontalAlignment = HorizontalAlignment.Center;
+                    Grid.SetRow(on_shelf_level, lastRow);
+                    Grid.SetColumn(on_shelf_level, 4);
+
+                    productGrid.Children.Add(on_shelf_level);
+
+                    #region StorageElements
+                    if (Tables.features.isFeatureInUse("Storage"))
+                    {
+                        TextBlock width = new TextBlock();
+                        width.Text = product["width"].ToString();
+                        width.FontSize = 15;
+                        width.Foreground = Brushes.White;
+                        width.TextWrapping = TextWrapping.Wrap;
+                        width.HorizontalAlignment = HorizontalAlignment.Center;
+                        Grid.SetRow(width, lastRow);
+                        Grid.SetColumn(width, 5);
+
+                        productGrid.Children.Add(width);
+
+
+                        TextBlock length = new TextBlock();
+                        length.Text = product["length"].ToString();
+                        length.FontSize = 15;
+                        length.Foreground = Brushes.White;
+                        length.TextWrapping = TextWrapping.Wrap;
+                        length.HorizontalAlignment = HorizontalAlignment.Center;
+                        Grid.SetRow(length, lastRow);
+                        Grid.SetColumn(length, 6);
+
+                        productGrid.Children.Add(length);
+
+                        TextBlock height = new TextBlock();
+                        height.Text = product["height"].ToString();
+                        height.FontSize = 15;
+                        height.Foreground = Brushes.White;
+                        height.TextWrapping = TextWrapping.Wrap;
+                        height.HorizontalAlignment = HorizontalAlignment.Center;
+                        Grid.SetRow(height, lastRow);
+                        Grid.SetColumn(height, 7);
+
+                        productGrid.Children.Add(height);
+                    }
+                    #endregion
+
+                    #endregion
+                }
+                else
+                {
+                    MessageBox.Show("alma");
+                    Label notPlacedLabel = new Label();
+                    notPlacedLabel.Content = "Not placed yet";
+                    notPlacedLabel.FontSize = 20;
+                    notPlacedLabel.HorizontalAlignment = HorizontalAlignment.Center;
+                    notPlacedLabel.Foreground = Brushes.White;
+                    Grid.SetRow(notPlacedLabel, lastRow);
+                    Grid.SetColumn(notPlacedLabel, 3);
+                    if (Tables.features.isFeatureInUse("Storage") == true)
+                    {
+                        Grid.SetColumnSpan(notPlacedLabel, 5);
+                    }
+                    else
+                    {
+                        Grid.SetColumnSpan(notPlacedLabel, 2);
+                    }
+                    productGrid.Children.Add(notPlacedLabel);
+                }
+
+
+               
 
                 productGrid.Children.Add(is_in_box);
 
@@ -151,7 +240,9 @@ namespace WH_APP_GUI.warehouseTableFolder
                 {
                     Button add = new Button();
                     add.Content = "Quantity";
-                    add.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    add.FontSize = 15;
+                    add.Foreground = Brushes.White;
+                    add.Background = Brushes.Green;
                     add.Tag = product["id"];
                     add.Click += Add_Click;
                     Grid.SetRow(add, lastRow);
@@ -174,7 +265,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                     delete.Content = "Delete";
                     delete.Style = (Style)this.Resources["GoldenButtonStyle"];
                     delete.Tag = product["id"];
-                    delete.Click += Delete_Click;
+                    //delete.Click += Delete_Click;
                     Grid.SetRow(delete, lastRow);
                     Grid.SetColumn(delete, productGrid.ColumnDefinitions.Count - 1);
 

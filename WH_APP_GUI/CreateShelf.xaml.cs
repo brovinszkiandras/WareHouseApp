@@ -21,6 +21,8 @@ namespace WH_APP_GUI
         {
             InitializeComponent();
             Visual.orientation = Orientation.Horizontal;
+            name.ValueDataType = typeof(string);
+            width.ValueDataType = typeof(double);
             if (Visual.orientation == Orientation.Horizontal)
             {
                 maxWidth.Content = "max " + Visual.sizeHorizontally.ToString();
@@ -55,12 +57,12 @@ namespace WH_APP_GUI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
-            if (Visual.checkIfWidthIsCorrectFormat(shelf_width.Text) == true)
+            shelfBuilder.newShelf = Tables.shelf.database.NewRow();
+            if (Visual.checkIfWidthIsCorrectFormat(width.Text) == true && Validation.ValidateTextbox(name, shelfBuilder.newShelf) == false && Validation.ValidateTextbox(width, shelfBuilder.newShelf) == false)
             {
-                shelfBuilder.newShelf = Tables.shelf.database.NewRow();
-                shelfBuilder.newShelf["name"] = shelf_Name.Text;
-                shelfBuilder.newShelf["width"] = double.Parse(shelf_width.Text);
+                
+                shelfBuilder.newShelf["name"] = name.Text;
+                shelfBuilder.newShelf["width"] = double.Parse(width.Text);
                 shelfBuilder.newShelf["orientation"] = Visual.orientation.ToString();
                 shelfBuilder.isAShelfBeingCreated = true;
 

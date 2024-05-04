@@ -56,6 +56,58 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+<<<<<<< HEAD
+            <Grid Background="#425C5A" Name="labelsGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Product Name"
+       Foreground="White"
+       FontSize="15"
+       VerticalAlignment="Center"
+       HorizontalContentAlignment="Center"></Label>
+                <Label Content="Quantity"
+       Foreground="White"
+       Grid.Column="1" VerticalAlignment="Center"
+       FontSize="15"
+       HorizontalContentAlignment="Center"></Label>
+
+
+                <Label Content="In a box"
+                Foreground="White"
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                FontSize="13"
+                HorizontalContentAlignment="Center"></Label>
+
+                <Label Content="Shelf"
+        Foreground="White"
+        Grid.Column="3"
+        VerticalAlignment="Center"
+        FontSize="15"
+        HorizontalContentAlignment="Center"></Label>
+
+                <Label Content="Level of shelf"
+                Foreground="White"
+                Grid.Column="4"
+                VerticalAlignment="Center"
+                FontSize="13"
+                HorizontalContentAlignment="Center"></Label>
+
+
+
+                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}" Grid.Column="9"/>
+                <Button Content="Create New" Name="Create" Click="Create_Click" Style="{StaticResource GreenButtonStyle}" Grid.Column="10"/>
+            </Grid>
+=======
 
             <Border CornerRadius="10, 10, 0, 0" Background="#395250">
                 <Grid Name="labelsGrid">
@@ -76,48 +128,11 @@
                     <Label Content="Level" VerticalAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="3" Style="{StaticResource labelstyle}"/>
                     <Label Content="In a box" VerticalAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="4" Style="{StaticResource labelstyle}"/>
 
-<<<<<<< HEAD
                     <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}" Grid.Column="9"/>
                     <Button Content="Add New" Name="Create" Click="Create_Click" Style="{StaticResource GoldenButtonStyle}" Grid.Column="10"/>
                 </Grid>
             </Border>
-=======
-                <Label Content="Product Name"
-       Foreground="White"
-       FontSize="15"
-       VerticalAlignment="Center"
-       HorizontalContentAlignment="Center"></Label>
-                <Label Content="Quantity"
-       Foreground="White"
-       Grid.Column="1" VerticalAlignment="Center"
-       FontSize="15"
-       HorizontalContentAlignment="Center"></Label>
-                <Label Content="Shelf"
-        Foreground="White"
-        Grid.Column="2"
-        VerticalAlignment="Center"
-        FontSize="15"
-        HorizontalContentAlignment="Center"></Label>
-
-                <Label Content="Level of shelf"
-                Foreground="White"
-                Grid.Column="3"
-                VerticalAlignment="Center"
-                FontSize="13"
-                HorizontalContentAlignment="Center"></Label>
-
-                <Label Content="In a box"
-                Foreground="White"
-                Grid.Column="4"
-                VerticalAlignment="Center"
-                FontSize="13"
-                HorizontalContentAlignment="Center"></Label>
-
-
-                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}" Grid.Column="9"/>
-                <Button Content="Create New" Name="Create" Click="Create_Click" Style="{StaticResource GoldenButtonStyle}" Grid.Column="10"/>
-            </Grid>
->>>>>>> 7a81a5b4e8efcedce8c154c8c39c3906a525029b
+>>>>>>> 3f687feda40f40fa0a830090576740ee9a0d4890
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
                 <Grid Background="#425C5A" x:Name="productGrid">

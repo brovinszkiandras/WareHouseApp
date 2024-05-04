@@ -27,7 +27,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
             this.warehouseTable = WarehouseTable;
 
-            if (!User.DoesHavePermission("Handle Products"))
+            if (! User.DoesHavePermission("Handle Products"))
             {
                 Create.Visibility = Visibility.Collapsed;
             }
@@ -41,11 +41,13 @@ namespace WH_APP_GUI.warehouseTableFolder
             productGrid.Children.Clear();
             int lastRow = 0;
 
+
             foreach (DataRow product in warehouseTable.database.Rows)
             {
                 RowDefinition rowDefinition = new RowDefinition();
                 rowDefinition.Height = GridLength.Auto;
                 productGrid.RowDefinitions.Add(rowDefinition);
+
 
                 TextBlock name = new TextBlock();
                 name.Text = warehouseTable.getProduct(product)["name"].ToString();
@@ -68,14 +70,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                 productGrid.Children.Add(qty);
 
                 TextBlock shelf = new TextBlock();
-                if (product["shelf_id"] != DBNull.Value)
-                {
-                    shelf.Text = warehouseTable.getShelf(product)["name"].ToString();
-                }
-                else
-                {
-                    shelf.Text = "";
-                }
+                shelf.Text = warehouseTable.getShelf(product)["name"].ToString();
                 shelf.Style = (Style)this.Resources["textblockstyle"];
                 shelf.TextWrapping = TextWrapping.Wrap;
                 shelf.HorizontalAlignment = HorizontalAlignment.Center;
@@ -122,14 +117,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                 #endregion
 
                 TextBlock on_shelf_level = new TextBlock();
-                if (product["on_shelf_level"] != DBNull.Value)
-                {
-                    on_shelf_level.Text = product["on_shelf_level"].ToString();
-                }
-                else
-                {
-                    on_shelf_level.Text = "";
-                }
+                on_shelf_level.Text = product["on_shelf_level"].ToString();
                 on_shelf_level.Style = (Style)this.Resources["textblockstyle"];
                 on_shelf_level.TextWrapping = TextWrapping.Wrap;
                 on_shelf_level.HorizontalAlignment = HorizontalAlignment.Center;
@@ -151,7 +139,9 @@ namespace WH_APP_GUI.warehouseTableFolder
                 {
                     Button add = new Button();
                     add.Content = "Quantity";
-                    add.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    add.FontSize = 15;
+                    add.Foreground = Brushes.White;
+                    add.Background = Brushes.Green;
                     add.Tag = product["id"];
                     add.Click += Add_Click;
                     Grid.SetRow(add, lastRow);
@@ -174,7 +164,7 @@ namespace WH_APP_GUI.warehouseTableFolder
                     delete.Content = "Delete";
                     delete.Style = (Style)this.Resources["GoldenButtonStyle"];
                     delete.Tag = product["id"];
-                    delete.Click += Delete_Click;
+                    //delete.Click += Delete_Click;
                     Grid.SetRow(delete, lastRow);
                     Grid.SetColumn(delete, productGrid.ColumnDefinitions.Count - 1);
 

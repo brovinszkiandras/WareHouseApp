@@ -4,20 +4,128 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WH_APP_GUI"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
         mc:Ignorable="d"
-        Title="CreateShelf" Height="400" Width="400">
-    <Grid>
-        <StackPanel Width="200">
-            <Label Content="Shelf Name:"></Label>
-            <TextBox x:Name="shelf_Name"></TextBox>
-            <Label HorizontalAlignment="Left" Content="Width"></Label>
-            <StackPanel Orientation="Horizontal">
-                <TextBox HorizontalAlignment="Left" Name="shelf_width" Width="130"></TextBox>
-                <Label Name="maxWidth" Width="70"></Label>
-            </StackPanel>
-            <Label Content="Orientation"></Label>
-            <Button x:Name="change_orientation" Click="change_orientation_Click" Content="Horizontal"></Button>
+        Title="CreateShelf" Height="300" Width="400">
+
+    <Window.Resources>
+        <Style x:Key="MyTextBoxStyle" x:Name="MyTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate x:Name="mytextbox" TargetType="{x:Type TextBox}">
+                        <Border x:Name="Border" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="Border" Value="black"></Setter>
+                                <!--<Setter Property="Background" TargetName="Border" Value="#FF5F1F"></Setter>-->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="Green"></Setter>
+            <Setter Property="CaretBrush" Value="White"></Setter>
+            <Setter Property="Foreground" Value="#FFCEA2"></Setter>
+            <Setter Property="BorderBrush" Value="Black"></Setter>
+            <Setter Property="BorderThickness" Value="0,0,0,8"></Setter>
+            <Setter Property="Width" Value="auto"></Setter>
+            <Setter Property="Height" Value="auto"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="White"></Setter>
+                    <Setter Property="Foreground" Value="Black"></Setter>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Background" Value="Green"></Setter>
+                    <Setter Property="Foreground" Value="White"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Label" x:Key="mylabelStyle">
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="Width" Value="auto"></Setter>
+            <Setter Property="Height" Value="auto"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="GreenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+             BorderBrush="{TemplateBinding BorderBrush}"
+             BorderThickness="{TemplateBinding BorderThickness}"
+             CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+       VerticalAlignment="Center"
+       Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#425C5A">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="1">
+            <Label Style="{StaticResource mylabelStyle}" Content="Shelf Name:"></Label>
+            <xctk:ValueRangeTextBox SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" x:Name="name"></xctk:ValueRangeTextBox>
         </StackPanel>
-        <Button Click="Button_Click" VerticalAlignment="Center" Height="30" Content="To shelf creator" Width="200"></Button>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Label Style="{StaticResource mylabelStyle}" HorizontalAlignment="Left" Content="Width"></Label>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <xctk:ValueRangeTextBox SelectionBrush="Black" BorderBrush="Black" Margin="5" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" Name="width"></xctk:ValueRangeTextBox>
+                <Label Grid.Column="1" Foreground="White" Name="maxWidth"></Label>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <Label Style="{StaticResource mylabelStyle}" Content="Orientation"></Label>
+            <Button x:Name="change_orientation" Style="{StaticResource GreenButtonStyle}" Margin="0,0,0,10" Click="change_orientation_Click" Content="Horizontal"></Button>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="1">
+            <Button Click="Button_Click" Style="{StaticResource GreenButtonStyle}" VerticalAlignment="Center" Content="To shelf creator"></Button>
+        </StackPanel>
     </Grid>
 </Window>

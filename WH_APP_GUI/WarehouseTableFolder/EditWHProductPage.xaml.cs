@@ -89,11 +89,18 @@ namespace WH_APP_GUI.warehouseTableFolder
                     shelfs.Add(shelf);
                 }
             }
-
             shelf_id.ItemsSource = shelfs;
-            shelf_id.SelectedItem = warehouseTable.getShelf(warehouseProduct);
+            if (warehouseProduct["shelf_id"] != DBNull.Value)
+            {
+                
+                shelf_id.SelectedItem = warehouseTable.getShelf(warehouseProduct);
+            }
 
-            on_shelf_level.SelectedItem = (int)warehouseProduct["on_shelf_level"];
+            if (warehouseProduct["on_shelf_level"] != DBNull.Value)
+            {
+                on_shelf_level.SelectedItem = (int)warehouseProduct["on_shelf_level"];
+            }
+           
 
             if (Tables.features.isFeatureInUse("Storage") == false)
             {
@@ -259,13 +266,20 @@ namespace WH_APP_GUI.warehouseTableFolder
 
             if (thereIsAnError == false)
             {
-                if (Tables.features.isFeatureInUse("Storage") && (bool)warehouseProduct["is_in_box"] == true)
+                if(shelf_id.SelectedIndex != -1 && on_shelf_level.SelectedIndex != -1)
                 {
-                    CheckifProductsFitInbox();
+                    if (Tables.features.isFeatureInUse("Storage") && (bool)warehouseProduct["is_in_box"] == true)
+                    {
+                        CheckifProductsFitInbox();
+                    }
+                    else
+                    {
+                        updateDatabase();
+                    }
                 }
                 else
                 {
-                    updateDatabase();
+                    MessageBox.Show("You must choose a shelf level");
                 }
 
             }

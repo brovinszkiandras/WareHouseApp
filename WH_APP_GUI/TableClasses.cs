@@ -17,9 +17,7 @@ namespace WH_APP_GUI
 {
     public class table
     {
-        public string name;
         public string actual_name;
-        public string nice_name;
         public DataTable database = new DataTable();
         public MySqlDataAdapter adapter;
 
@@ -41,7 +39,8 @@ namespace WH_APP_GUI
 
             if (database.Rows.Count > 0)
             {
-                database.Columns["id"].AutoIncrementSeed = (int)database.Rows[database.Rows.Count - 1]["id"] + 1;
+                database.Columns["id"].AutoIncrementSeed = 
+                    (int)database.Rows[database.Rows.Count - 1]["id"] + 1;
 
             }
             else
@@ -52,9 +51,6 @@ namespace WH_APP_GUI
         }
         #endregion
 
-        #region getname
-    
-        #endregion
 
         #region queris
         private void fill()
@@ -81,11 +77,13 @@ namespace WH_APP_GUI
             if (database.Rows.Count > 0)
             {
                 int lastID = (int)database.Rows[database.Rows.Count - 1]["id"];
-                adapter = new MySqlDataAdapter($"SELECT * FROM {actual_name} WHERE id > {lastID}", SQL.con);
+                adapter = new MySqlDataAdapter($"SELECT * FROM {actual_name} WHERE" +
+                    $" id > {lastID}", SQL.con);
             }
             else
             {
-                adapter = new MySqlDataAdapter($"SELECT * FROM {actual_name}", SQL.con);
+                adapter = new MySqlDataAdapter($"SELECT * FROM {actual_name}",
+                    SQL.con);
             }
 
             SQL.con.Open();
@@ -95,9 +93,9 @@ namespace WH_APP_GUI
             SQL.con.Close();
         }
 
-        public DataRow findById(int id)
+        private DataRow findById(int id)
         {
-            DataRow[] row = this.database.Select($"id = {id}"); //return this.database.Select($"id = {id")[0];
+            DataRow[] row = this.database.Select($"id = {id}");
             return row[0];
         }
 
@@ -114,12 +112,6 @@ namespace WH_APP_GUI
             }
         }
 
-        public void RefreshEverything()
-        {
-            database = new DataTable();
-
-            adapter.Fill(database);
-        }
         #endregion
 
         #region datelog
@@ -137,7 +129,8 @@ namespace WH_APP_GUI
                         {
                            
                             DataRow originalRow = findById((int)row["id"]);
-                            originalRow["updated_at"] = SQL.convertDateToCorrectFormat(DateTime.Now);
+                            originalRow["updated_at"] = 
+                                SQL.convertDateToCorrectFormat(DateTime.Now);
                            
                         }
                     }
@@ -153,20 +146,25 @@ namespace WH_APP_GUI
         public staff(string actualname) : base(actualname)
         {
             if (Tables.features.isFeatureInUse("Date log") == true)
-            {
-                database.Columns["profile_picture"].DefaultValue = "DefaultStaffProfilePicture.png";
-                database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
-                database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+            {   
+                database.Columns["created_at"].DefaultValue = 
+                    SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["updated_at"].DefaultValue = 
+                    SQL.convertDateToCorrectFormat(DateTime.Now);
             }
+
+            database.Columns["profile_picture"].DefaultValue = "DefaultStaffProfilePicture.png";
         }
 
         public DataRow getRole(DataRow person)
         {
-            if (Tables.staff.database.Select($"email = '{person["email"]}'").Length != 0)
+            if (Tables.staff.database.Select($"email = '{person["email"]}'")
+                .Length != 0)
             {
                 return Relations.parentRelation("staffRole", person);
             }
-            else if (Tables.employees.database.Select($"email = '{person["email"]}'").Length != 0)
+            else if (Tables.employees.database.Select($"email = '{person["email"]}'")
+                .Length != 0)
             {
                 return Relations.parentRelation("employeeRole", person);
             }
@@ -186,15 +184,15 @@ namespace WH_APP_GUI
 
         }
 
-        public DataRow[] getWarehouses(DataRow city)
-        {
-            return Relations.childRelation("warehouseCity", city);
-        }
+        //public DataRow[] getWarehouses(DataRow city)
+        //{
+        //    return Relations.childRelation("warehouseCity", city);
+        //}
 
-        public DataRow[] getOrders(DataRow city)
-        {
-            return Relations.childRelation("orderCity", city);
-        }
+        //public DataRow[] getOrders(DataRow city)
+        //{
+        //    return Relations.childRelation("orderCity", city);
+        //}
     }
     #endregion
 
@@ -211,8 +209,10 @@ namespace WH_APP_GUI
 
             if (Tables.features.isFeatureInUse("Date log") == true)
             {
-                database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
-                database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["created_at"].DefaultValue 
+                    = SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["updated_at"].DefaultValue 
+                    = SQL.convertDateToCorrectFormat(DateTime.Now);
             }
         }
         
@@ -221,10 +221,10 @@ namespace WH_APP_GUI
             return Relations.childRelation("employeeWarehouse", warehouse);
         }
 
-        public DataRow[] getOrders(DataRow warehouse)
-        {
-            return Relations.childRelation("orderWarehouse", warehouse);
-        }
+        //public DataRow[] getOrders(DataRow warehouse)
+        //{
+        //    return Relations.childRelation("orderWarehouse", warehouse);
+        //}
        
         public DataRow getCity(DataRow warehouse)
         {
@@ -266,6 +266,7 @@ namespace WH_APP_GUI
             database.Columns["name"].Unique = true;
             database.Columns["name"].AllowDBNull = false;
             database.Columns["warehouse_id"].AllowDBNull=false;
+            database.Columns["free"].DefaultValue = true;
         }
 
         public DataRow[] getTransports(DataRow dock)
@@ -338,11 +339,20 @@ namespace WH_APP_GUI
             database.Columns["password"].AllowDBNull = false;
             database.Columns["role_id"].AllowDBNull = false;
             database.Columns["warehouse_id"].AllowDBNull = true;
+            
 
             if (Tables.features.isFeatureInUse("Date log") == true)
             {
-                database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
-                database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["created_at"].DefaultValue =
+                    SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["updated_at"].DefaultValue =
+                    SQL.convertDateToCorrectFormat(DateTime.Now);
+            }
+
+            if (Tables.features.isFeatureInUse("Activity") == true)
+            {
+                database.Columns["activity"].DefaultValue = true;
+                database.Columns["is_loggedin"].DefaultValue = false;
             }
         }
         public DataRow getWarehouse(DataRow employee)
@@ -350,10 +360,10 @@ namespace WH_APP_GUI
             return Relations.parentRelation("employeeWarehouse", employee);
         }
 
-        public DataRow[] getTransports(DataRow employee)
-        {
-            return Relations.childRelation("transportEmployee", employee);
-        }
+        //public DataRow[] getTransports(DataRow employee)
+        //{
+        //    return Relations.childRelation("transportEmployee", employee);
+        //}
     }
     #endregion
 
@@ -366,8 +376,9 @@ namespace WH_APP_GUI
             database.Columns["buying_price"].AllowDBNull = false;
             database.Columns["selling_price"].AllowDBNull = false;
             database.Columns["description"].AllowDBNull = true;
+            database.Columns["image"].DefaultValue = "DefaultProductImage.png";
 
-            if(Tables.features.isFeatureInUse("Storage") == true)
+            if (Tables.features.isFeatureInUse("Storage") == true)
             {
                 database.Columns["width"].AllowDBNull = false;
                 database.Columns["heigth"].AllowDBNull = false;
@@ -377,15 +388,17 @@ namespace WH_APP_GUI
 
             if(Tables.features.isFeatureInUse("Date log") == true)
             {
-                database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
-                database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["created_at"].DefaultValue =
+                    SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["updated_at"].DefaultValue =
+                    SQL.convertDateToCorrectFormat(DateTime.Now);
             }
         }
 
-        public DataRow[] getOrders(DataRow product)
-        {
-            return Relations.childRelation("orderProduct", product);
-        }
+        //public DataRow[] getOrders(DataRow product)
+        //{
+        //    return Relations.childRelation("orderProduct", product);
+        //}
     }
     #endregion
 
@@ -400,8 +413,10 @@ namespace WH_APP_GUI
 
             if (Tables.features.isFeatureInUse("Date log") == true)
             {
-                database.Columns["created_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
-                database.Columns["updated_at"].DefaultValue = SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["created_at"].DefaultValue = 
+                    SQL.convertDateToCorrectFormat(DateTime.Now);
+                database.Columns["updated_at"].DefaultValue = 
+                    SQL.convertDateToCorrectFormat(DateTime.Now);
             }
         }
 
@@ -410,14 +425,19 @@ namespace WH_APP_GUI
             return Relations.childRelation("staffRole", role);
         }
 
-        public DataRow[] getEmployees(DataRow role)
-        {
-            return Relations.childRelation("employeeRole", role);
-        }
+        //public DataRow[] getEmployees(DataRow role)
+        //{
+        //    return Relations.childRelation("employeeRole", role);
+        //}
 
         public DataRow[] getPermission(DataRow role)
         {
-            return Relations.connectionTableRelation(role, "role_permission", "roles", "role_id", "permission_id", Tables.permissions.database);
+            return Relations.connectionTableRelation(role, 
+                "role_permission", 
+                "roles", 
+                "role_id", 
+                "permission_id", 
+                Tables.permissions.database);
         }
     }
     #endregion
@@ -430,10 +450,10 @@ namespace WH_APP_GUI
 
         }
 
-        public DataRow[] getRoles(DataRow permission)
-        {
-            return Relations.connectionTableRelation(permission, "role_permission", "permission", "permission_id", "role_id", Tables.roles.database);
-        }
+        //public DataRow[] getRoles(DataRow permission)
+        //{
+        //    return Relations.connectionTableRelation(permission, "role_permission", "permission", "permission_id", "role_id", Tables.roles.database);
+        //}
     }
     #endregion
 
@@ -451,10 +471,10 @@ namespace WH_APP_GUI
             database.Columns["last_exam"].AllowDBNull = true; 
         }
 
-        public DataRow[] getTransports(DataRow car)
-        {
-            return Relations.childRelation("transportCar", car);
-        }
+        //public DataRow[] getTransports(DataRow car)
+        //{
+        //    return Relations.childRelation("transportCar", car);
+        //}
 
         public DataRow getWarehouse(DataRow car)
         {
@@ -527,8 +547,7 @@ namespace WH_APP_GUI
 
             database.Columns["product_id"].AllowDBNull = false;
             database.Columns["qty"].AllowDBNull = false;
-            //database.Columns["shelf_id"].AllowDBNull=false;
-            database.Columns["on_shelf_level"].AllowDBNull = false;
+           
 
             if (Tables.features.isFeatureInUse("Storage"))
             {
@@ -594,7 +613,8 @@ namespace WH_APP_GUI
         public DataRow[] getWarehouseProducts(DataRow shelf)
         {
            
-            warehouse warehouseTable = Tables.getWarehosue(getWarehouse(shelf)["name"].ToString());
+            warehouse warehouseTable = Tables.getWarehosue(
+                getWarehouse(shelf)["name"].ToString());
 
             return warehouseTable.database.Select($"shelf_id = '{shelf["id"]}'");
         }
@@ -616,6 +636,7 @@ namespace WH_APP_GUI
         {
             database.Columns["type"].AllowDBNull = false;
             database.Columns["status"].AllowDBNull = false;
+            database.Columns["operating_hours"].DefaultValue = 0;
         }
 
         public DataRow getWarehouse(DataRow forklift)
