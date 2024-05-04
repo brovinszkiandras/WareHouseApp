@@ -39,6 +39,9 @@
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.4.0\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.61.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.61\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.2.4.10\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -250,6 +253,7 @@
     <Compile Include="Employee\PasswordChangeForEmployee.xaml.cs">
       <DependentUpon>PasswordChangeForEmployee.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Faker.cs" />
     <Compile Include="Forklift\CreateFrokliftPage.xaml.cs">
       <DependentUpon>CreateFrokliftPage.xaml</DependentUpon>
     </Compile>
@@ -335,6 +339,9 @@
     </Compile>
     <Compile Include="transport\InspectTransportPage.xaml.cs">
       <DependentUpon>InspectTransportPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="transport\SetGasPrices.xaml.cs">
+      <DependentUpon>SetGasPrices.xaml</DependentUpon>
     </Compile>
     <Compile Include="transport\TransportsPage.xaml.cs">
       <DependentUpon>TransportsPage.xaml</DependentUpon>
@@ -520,6 +527,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="transport\InspectTransportPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="transport\SetGasPrices.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

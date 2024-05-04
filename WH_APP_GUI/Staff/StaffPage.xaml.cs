@@ -28,9 +28,13 @@ namespace WH_APP_GUI.Staff
             Ini_role_id();
             Back.Visibility = Visibility.Collapsed;
 
-            if (!User.DoesHavePermission("Modify Staff"))
+            if (User.DoesHavePermission("Modify Staff"))
             {
-                AddNewStaff.Visibility = Visibility.Collapsed;
+                AddNewStaff.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AddNewStaff.Visibility= Visibility.Collapsed;
             }
         }
         private DataRow WarehouseFromPage;
@@ -43,7 +47,11 @@ namespace WH_APP_GUI.Staff
             Back.Visibility = Visibility.Collapsed;
             WarehouseFromPage = warehouseFromPage;
 
-            if (!User.DoesHavePermission("Modify Staff"))
+            if (User.DoesHavePermission("Modify Staff"))
+            {
+                AddNewStaff.Visibility = Visibility.Visible;
+            }
+            else
             {
                 AddNewStaff.Visibility = Visibility.Collapsed;
             }
@@ -58,6 +66,15 @@ namespace WH_APP_GUI.Staff
             Back.Visibility = Visibility.Visible;
 
             PreviousPageType = previousPage.GetType();
+
+            if (User.DoesHavePermission("Modify Staff"))
+            {
+                AddNewStaff.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AddNewStaff.Visibility = Visibility.Collapsed;
+            }
         }
 
         private Dictionary<string, DataRow> role_id_Dictionary = new Dictionary<string, DataRow>();
@@ -81,7 +98,7 @@ namespace WH_APP_GUI.Staff
             StaffsDisplay.Visibility = Visibility.Visible;
             panel.Visibility = Visibility.Visible;
             Label staffLabel = new Label();
-            staffLabel.Content = "Staffs:";
+            staffLabel.Content = "Staff:";
             staffLabel.Style = (Style)this.Resources["labelstyle"];
             panel.Children.Add(staffLabel);
 

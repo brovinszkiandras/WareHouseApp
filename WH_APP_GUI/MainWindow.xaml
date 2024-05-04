@@ -104,15 +104,7 @@
 
         <Border x:Name="DatabaseSet" Visibility="Collapsed" CornerRadius="20" Background="#FF2D3250" Margin="20">
             <StackPanel VerticalAlignment="Center" Margin="50">
-
                 <Label Content="Database setting" Foreground="White" HorizontalAlignment="Center"/>
-
-                <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
-                    <StackPanel>
-                        <Label Content="Name:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                        <TextBox x:Name="DatabaseNameFU" Text="wh_app_database" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
-                    </StackPanel>
-                </Border>
 
                 <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                     <StackPanel>
@@ -139,6 +131,13 @@
                     <StackPanel>
                         <Label Content="Password:" VerticalContentAlignment="Bottom" Foreground="Black"/>
                         <TextBox x:Name="passwrdFU" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
+                    <StackPanel>
+                        <Label Content="Name:" VerticalContentAlignment="Bottom" Foreground="Black"/>
+                        <TextBox x:Name="DatabaseNameFU" Text="test" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                     </StackPanel>
                 </Border>
 

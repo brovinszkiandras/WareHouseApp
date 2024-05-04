@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlConnector;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -74,14 +75,7 @@ namespace WH_APP_GUI
         private static void CreateAndFillRolePermission()
         {
             SQL.SqlCommand($"CREATE TABLE role_permission (role_id INT, permission_id INT, FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE, FOREIGN KEY (permission_id) REFERENCES permission(id) ON DELETE CASCADE);");
-            string[] role_permission = File.ReadAllLines(@"..\..\SQL\RolePermission.sql");
-            string command = string.Empty;
-            for (int i = 0; i < role_permission.Length; i++)
-            {
-                command += "\n" + role_permission[i];
-            }
-            //Console.WriteLine(command);
-            SQL.SqlCommand(command);
+            SQL.SqlCommand(File.ReadAllText(@"..\..\SQL\RolePermission.sql"));
         }
 
         #region Create Required Tables In Migartions
@@ -282,7 +276,7 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.employees.actual_name} ADD activity BOOLEAN DEFAULT FALSE NOT NULL, ADD is_loggedin BOOLEAN DEFAULT FALSE NOT NULL;");
+                    SQL.SqlCommand($"ALTER TABLE {Tables.employees.actual_name} ADD activity BOOLEAN DEFAULT TRUE NOT NULL, ADD is_loggedin BOOLEAN DEFAULT FALSE NOT NULL;");
 
                     Tables.features.getFeature("Activity")["in_use"] = true;
                     Tables.employees.Refresh();
@@ -303,7 +297,6 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.employees.actual_name} ADD payment DOUBLE;");
                     SQL.SqlCommand($"ALTER TABLE {Tables.warehouses.actual_name} ADD total_value DOUBLE, ADD total_spending DOUBLE, ADD total_income DOUBLE;");
 
                     SQL.SqlCommand($"CREATE TABLE revenue_a_day (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, date DATE, total_expenditure DOUBLE, total_income DOUBLE, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
@@ -376,8 +369,6 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    
-
                     SQL.SqlCommand($"ALTER TABLE {Tables.cars.actual_name} ADD consumption DOUBLE DEFAULT 0, ADD gas_tank_size DOUBLE DEFAULT 0;");
                     Tables.features.getFeature("Fuel")["in_use"] = true;
                     Tables.features.updateChanges();
@@ -568,7 +559,6 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE `{Tables.employees.actual_name}` DROP `payment`;");
                     SQL.SqlCommand($"ALTER TABLE `{Tables.warehouses.actual_name}` DROP `total_value`, DROP `total_spending`,DROP `total_income`;");
 
                     SQL.SqlCommand($"ALTER TABLE `revenue_a_day` DROP CONSTRAINT `revenue_a_day_ibfk_1`;");
@@ -580,7 +570,6 @@ namespace WH_APP_GUI
                     Tables.warehouses.database.Columns.Remove("total_value");
                     Tables.warehouses.database.Columns.Remove("total_spending");
                     Tables.warehouses.database.Columns.Remove("total_income");
-                    Tables.employees.database.Columns.Remove("payment");
                 }
                 catch (Exception ex)
                 {
@@ -703,7 +692,6 @@ namespace WH_APP_GUI
         }
         #endregion
 
-
         public static void CreateWarehouse(string WarehouseName)
         {
             try
@@ -729,6 +717,78 @@ namespace WH_APP_GUI
             if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Log'"))
             {
                 SQL.SqlCommand($"INSERT INTO `log`(`email`, `log_message`) VALUES ('{email}', '{message}');");
+            }
+        }
+
+        public static void AddToRevnue_A_Day_Expenditure(DataRow warehouse, double value)
+        {
+            if (Tables.features.isFeatureInUse("Revenue"))
+            {
+                List<string[]> datas = SQL.SqlQuery("SELECT id, warehouse_id, date, total_expenditure FROM revenue_a_day");
+                bool Updated = false;
+                for (int i = 0; i < datas.Count; i++)
+                {
+                    DateTime parsedDate = DateTime.Parse(datas[i][2]);
+                    string date = parsedDate.ToString("yyyy-MM-dd");
+
+                    if (date == DateTime.Now.ToString("yyyy-MM-dd") && warehouse["id"].ToString() == datas[i][1])
+                    {
+                        double NewValue = datas[i][3] != string.Empty ? double.Parse(datas[i][3]) + value : value;
+                        SQL.SqlCommand($"UPDATE `revenue_a_day` SET `total_expenditure` = '{NewValue}' WHERE id = {datas[i][0]}");
+                        Updated = true;
+                        break;
+                    }
+                }
+
+                if (! Updated)
+                {
+                    using (MySqlCommand command = new MySqlCommand("INSERT INTO `revenue_a_day`(`warehouse_id`, `date`, `total_expenditure`) VALUES (@warehouse_id, @date, @total_expenditure)", SQL.con))
+                    {
+                        command.Parameters.AddWithValue("@warehouse_id", (int)warehouse["id"]);
+                        command.Parameters.AddWithValue("@date", DateTime.Now);
+                        command.Parameters.AddWithValue("@total_expenditure", value);
+
+                        SQL.con.Open();
+                        command.ExecuteNonQuery();
+                        SQL.con.Close();
+                    }
+                }
+            }
+        }        
+        
+        public static void AddToRevnue_A_Day_Income(DataRow warehouse, double value)
+        {
+            if (Tables.features.isFeatureInUse("Revenue"))
+            {
+                List<string[]> datas = SQL.SqlQuery("SELECT id, warehouse_id, date, total_income FROM revenue_a_day");
+                bool Updated = false;
+                for (int i = 0; i < datas.Count; i++)
+                {
+                    DateTime parsedDate = DateTime.Parse(datas[i][2]);
+                    string date = parsedDate.ToString("yyyy-MM-dd");
+
+                    if (date == DateTime.Now.ToString("yyyy-MM-dd") && warehouse["id"].ToString() == datas[i][1])
+                    {
+                        double NewValue = datas[i][3] != string.Empty ? double.Parse(datas[i][3]) + value : value;
+                        SQL.SqlCommand($"UPDATE `revenue_a_day` SET `total_income` = '{NewValue}' WHERE id = {datas[i][0]}");
+                        Updated = true;
+                        break;
+                    }
+                }
+
+                if (!Updated)
+                {
+                    using (MySqlCommand command = new MySqlCommand("INSERT INTO `revenue_a_day`(`warehouse_id`, `date`, `total_income`) VALUES (@warehouse_id, @date, @total_income)", SQL.con))
+                    {
+                        command.Parameters.AddWithValue("@warehouse_id", (int)warehouse["id"]);
+                        command.Parameters.AddWithValue("@date", DateTime.Now);
+                        command.Parameters.AddWithValue("@total_income", value);
+
+                        SQL.con.Open();
+                        command.ExecuteNonQuery();
+                        SQL.con.Close();
+                    }
+                }
             }
         }
     }

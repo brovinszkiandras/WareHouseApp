@@ -23,7 +23,11 @@ namespace WH_APP_GUI.Product
             InitializeComponent();
             DisplayAllProducts(ProductsDiaplayStackPanel);
 
-            if (!User.DoesHavePermission("Add Products"))
+            if (User.DoesHavePermission("Add Products") || User.DoesHavePermission("Change Products"))
+            {
+                AddProducts.Visibility = Visibility.Visible;
+            }
+            else
             {
                 AddProducts.Visibility = Visibility.Collapsed;
             }
@@ -34,7 +38,11 @@ namespace WH_APP_GUI.Product
             InitializeComponent();
             DisplayAllProducts(ProductsDiaplayStackPanel);
 
-            if (!User.DoesHavePermission("Add Products"))
+            if (User.DoesHavePermission("Add Products") || User.DoesHavePermission("Change Products"))
+            {
+                AddProducts.Visibility = Visibility.Visible;
+            }
+            else
             {
                 AddProducts.Visibility = Visibility.Collapsed;
             }

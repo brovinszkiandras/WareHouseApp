@@ -41,13 +41,11 @@ namespace WH_APP_GUI.warehouseTableFolder
             productGrid.Children.Clear();
             int lastRow = 0;
 
-
             foreach (DataRow product in warehouseTable.database.Rows)
             {
                 RowDefinition rowDefinition = new RowDefinition();
                 rowDefinition.Height = GridLength.Auto;
                 productGrid.RowDefinitions.Add(rowDefinition);
-
 
                 TextBlock name = new TextBlock();
                 name.Text = warehouseTable.getProduct(product)["name"].ToString();

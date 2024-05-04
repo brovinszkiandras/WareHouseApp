@@ -44,9 +44,27 @@ namespace WH_APP_GUI
         {
             InitializeComponent();
 
-            if (User.DoesHavePermission("Modify all employees") || User.DoesHavePermission("Modify employees"))
+            if (User.DoesHavePermission("Modify all employees"))
             {
                 AddNewEmployee.Visibility = Visibility.Visible;
+            }
+            else if (User.DoesHavePermission("Modify employees"))
+            {
+                if (User.currentUser.Table.TableName == "employees")
+                {
+                    if (User.currentUser["warehouse"].ToString() == warehouse["id"].ToString())
+                    {
+                        AddNewEmployee.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        AddNewEmployee.Visibility = Visibility.Collapsed;
+                    }
+                }
+            }
+            else
+            {
+                AddNewEmployee.Visibility = Visibility.Collapsed;
             }
 
             DisplayEmployeesStackpanel.Children.Clear();
@@ -200,34 +218,62 @@ namespace WH_APP_GUI
             Grid.SetColumn(rightStackPanel, 2);
             mainStackPanel.Children.Add(rightStackPanel);
 
-            if (User.currentUser != employee)
+            if (User.DoesHavePermission("Modify employees"))
             {
-                if (User.DoesHavePermission("Modify employees") || User.DoesHavePermission("Modify all employees"))
+                Button deleteButton = new Button();
+                deleteButton.Content = "Delete";
+                deleteButton.Tag = employee;
+                deleteButton.Click += deleteEmployee_Click;
+                deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                rightStackPanel.Children.Add(deleteButton);
+
+                Button resetPasswordButton = new Button();
+                resetPasswordButton.Content = "Reset Password";
+                resetPasswordButton.Click += resetPassword_Click;
+                resetPasswordButton.Tag = employee;
+                resetPasswordButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                rightStackPanel.Children.Add(resetPasswordButton);
+
+                Button editButton = new Button();
+                editButton.Content = "Edit";
+                editButton.Click += EditEmployee_Click;
+                editButton.Tag = employee;
+                editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+
+                rightStackPanel.Children.Add(editButton);
+            }
+            else if (User.DoesHavePermission("Modify all employees"))
+            {
+                if (User.currentUser.Table.TableName == "employees" && WarehouseFromPage != null)
                 {
-                    Button deleteButton = new Button();
-                    deleteButton.Content = "Delete";
-                    deleteButton.Tag = employee;
-                    deleteButton.Click += deleteEmployee_Click;
-                    deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
-                    rightStackPanel.Children.Add(deleteButton);
+                    if (User.currentUser["warehouse"].ToString() == WarehouseFromPage["id"].ToString())
+                    {
+                        Button deleteButton = new Button();
+                        deleteButton.Content = "Delete";
+                        deleteButton.Tag = employee;
+                        deleteButton.Click += deleteEmployee_Click;
+                        deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                        rightStackPanel.Children.Add(deleteButton);
 
-                    Button resetPasswordButton = new Button();
-                    resetPasswordButton.Content = "Reset Password";
-                    resetPasswordButton.Click += resetPassword_Click;
-                    resetPasswordButton.Tag = employee;
-                    resetPasswordButton.Style = (Style)this.Resources["GoldenButtonStyle"];
-                    rightStackPanel.Children.Add(resetPasswordButton);
+                        Button resetPasswordButton = new Button();
+                        resetPasswordButton.Content = "Reset Password";
+                        resetPasswordButton.Click += resetPassword_Click;
+                        resetPasswordButton.Tag = employee;
+                        resetPasswordButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                        rightStackPanel.Children.Add(resetPasswordButton);
 
-                    Button editButton = new Button();
-                    editButton.Content = "Edit";
-                    editButton.Click += EditEmployee_Click;
-                    editButton.Tag = employee;
-                    editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                        Button editButton = new Button();
+                        editButton.Content = "Edit";
+                        editButton.Click += EditEmployee_Click;
+                        editButton.Tag = employee;
+                        editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
 
-                    rightStackPanel.Children.Add(editButton);
+                        rightStackPanel.Children.Add(editButton);
+                    }
                 }
             }
-            else
+
+            if (User.currentUser == employee)
             {
                 Button modifyPassword = new Button();
                 modifyPassword.Content = "Change Password";

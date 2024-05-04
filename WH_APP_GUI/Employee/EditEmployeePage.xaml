@@ -56,14 +56,11 @@
                 <Label Content="Email: " Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
                 <Label Content="Role: " Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
                 <Label Content="Warehouse: " Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
-                <Label Content="Payment: " Name="paymentLBL" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
 
                 <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="0" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
                 <xctk:ValueRangeTextBox Name="email" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="1" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
                 <ComboBox Name="role_id" Margin="5" Grid.Column="1" Grid.Row="2" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
                 <ComboBox Name="warehouse_id" Margin="5" Grid.Column="1" Grid.Row="3" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
-                <xctk:ValueRangeTextBox Name="payment" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="4" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
-
             </Grid>
 
             <StackPanel Grid.Column="8" Grid.Row="2" Margin="30">

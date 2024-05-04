@@ -277,26 +277,6 @@ namespace WH_APP_GUI
                 throw;
             }
         }
-
-        static public void DeleteTable(string tableName)
-        {
-            try
-            {
-                con.Open();
-                string deleteTableQuery = $"USE {database}; DROP TABLE {tableName};";
-                using (MySqlCommand command = new MySqlCommand(deleteTableQuery, con))
-                {
-                    command.ExecuteNonQuery();
-                }
-                con.Close();
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show(ex, "Error");
-                Debug.WriteError(ex);
-                throw;
-            }
-        }
         #endregion
 
 

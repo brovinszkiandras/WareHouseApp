@@ -28,7 +28,11 @@ namespace WH_APP_GUI.transport
             IniTransports();
             Back.Visibility = Visibility.Collapsed;
 
-            if (! User.DoesHavePermission("Modify Transport") || ! User.DoesHavePermission("Modify all Transport"))
+            if (User.DoesHavePermission("Modify Transport") || User.DoesHavePermission("Modify all Transport"))
+            {
+                Create.Visibility = Visibility.Visible;
+            }
+            else
             {
                 Create.Visibility = Visibility.Collapsed;
             }
@@ -38,10 +42,14 @@ namespace WH_APP_GUI.transport
         public TransportsPage(DataRow warehouseFromPage)
         {
             InitializeComponent();
-            IniTransports();
             Warehouse = warehouseFromPage;
+            IniTransports();
 
-            if (!User.DoesHavePermission("Modify Transport") || !User.DoesHavePermission("Modify all Transport"))
+            if (User.DoesHavePermission("Modify Transport") || User.DoesHavePermission("Modify all Transport"))
+            {
+                Create.Visibility = Visibility.Visible;
+            }
+            else
             {
                 Create.Visibility = Visibility.Collapsed;
             }
@@ -49,7 +57,7 @@ namespace WH_APP_GUI.transport
 
         private void IniTransports()
         {
-            if (User.DoesHavePermission("Inspect own Transport"))
+            if (User.DoesHavePermission("Handle own Transport"))
             {
                 if (Tables.employees.database.Select($"email = '{User.currentUser["email"]}'").Length != 0)
                 {
@@ -144,8 +152,27 @@ namespace WH_APP_GUI.transport
                 delete.Click += Delete_Click;
                 buttons.Children.Add(delete);
             }
+            else if (User.DoesHavePermission("Handle own Transport"))
+            {
+                if ((int)transport["employee_id"] == (int)User.currentUser["id"])
+                {
+                    Button update = new Button();
+                    update.Content = "Update";
+                    update.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    update.Tag = transport["id"];
+                    update.Click += Edit_Click;
+                    buttons.Children.Add(update);
 
-            if (User.DoesHavePermission("Inspect own Transport"))
+                    Button delete = new Button();
+                    delete.Content = "Delete";
+                    delete.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    delete.Tag = transport["id"];
+                    delete.Click += Delete_Click;
+                    buttons.Children.Add(delete);
+                }
+            }
+
+            if (User.DoesHavePermission("Inspect Transport") || User.DoesHavePermission("Inspect all Transport"))
             {
                 Button inspect = new Button();
                 inspect.Content = "Inspect";
@@ -153,6 +180,18 @@ namespace WH_APP_GUI.transport
                 inspect.Click += InspectTransport;
                 inspect.Style = (Style)this.Resources["GoldenButtonStyle"];
                 buttons.Children.Add(inspect);
+            }
+            else if (User.DoesHavePermission("Handle own Transport"))
+            {
+                if ((int)transport["employee_id"] == (int)User.currentUser["id"])
+                {
+                    Button inspect = new Button();
+                    inspect.Content = "Inspect";
+                    inspect.Tag = transport;
+                    inspect.Click += InspectTransport;
+                    inspect.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    buttons.Children.Add(inspect);
+                }
             }
 
             mainStackPanel.Children.Add(buttons);
@@ -190,7 +229,6 @@ namespace WH_APP_GUI.transport
                     lastRow++;
                 }
             }
-
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)

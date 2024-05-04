@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -20,11 +21,26 @@ namespace WH_APP_GUI.transport
     public partial class InspectTransportPage : Page
     {
         private DataRow Transport = null;
+        private Map terkep = new Map();
+
         public InspectTransportPage(DataRow transport)
         {
             InitializeComponent();
             Transport = transport;
             DisplayOneTransport(transport);
+            Ini_Map();
+        }
+        private void Ini_Map()
+        {
+            terkep.IsEnabled = false;
+            MapDisplay.Children.Add(terkep);
+            terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
+
+            double lat = double.Parse(Tables.warehouses.getCity(Tables.transports.getWarehouse(Transport))["latitude"].ToString());
+            double lon = double.Parse(Tables.warehouses.getCity(Tables.transports.getWarehouse(Transport))["longitude"].ToString());
+
+            terkep.Center = new Location(lat, lon);
+            terkep.ZoomLevel = 10;
         }
 
         private void DisplayOneTransport(DataRow transport)
@@ -157,7 +173,7 @@ namespace WH_APP_GUI.transport
             {
                 if ((sender as ComboBox).SelectedItem.ToString() == "On Way Back")
                 {
-                    if (! CanTransportFinished(transport))
+                    if (!CanTransportFinished(transport))
                     {
                         MessageBox.Show("The transport can not be finished while still have active orders in it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         (sender as ComboBox).SelectedItem = "On route";
@@ -173,18 +189,26 @@ namespace WH_APP_GUI.transport
                 }
                 else if ((sender as ComboBox).SelectedItem.ToString() == "Finished")
                 {
-                    transport.Delete();
-                    Tables.transports.updateChanges();
-                    Tables.transports.Refresh();
-                    MessageBox.Show("The transport has been completed", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    if (Navigation.PreviousPage != null)
+                    if (Tables.features.isFeatureInUse("Fuel"))
                     {
-                        Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                        SetGasPrices routeDetails = new SetGasPrices();
+                        routeDetails.ShowDialog();
                     }
                     else
                     {
-                        Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
+                        transport.Delete();
+                        Tables.transports.updateChanges();
+                        Tables.transports.Refresh();
+                        MessageBox.Show("The transport has been completed", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        if (Navigation.PreviousPage != null)
+                        {
+                            Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                        }
+                        else
+                        {
+                            Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
+                        }
                     }
                 }
                 else
@@ -370,8 +394,33 @@ namespace WH_APP_GUI.transport
                 mainStackPanel.Children.Add(inWarehouse);
             }
 
+            Button viewOnMap = new Button();
+            viewOnMap.Content = "View On Map";
+            viewOnMap.Margin = new Thickness(5);
+            viewOnMap.Tag = dataOfOrder;
+            viewOnMap.Click += ViewOnMapClick;
+            mainStackPanel.Children.Add(viewOnMap);
+
+            Expander orderExpander = new Expander();
+            orderExpander.Header = "Order";
+            orderExpander.Margin = new Thickness(5);
+
             border.Child = mainStackPanel;
-            panel.Children.Add(border);
+            orderExpander.Content = border;
+            panel.Children.Add(orderExpander);
+        }
+
+        private void ViewOnMapClick(object sender, RoutedEventArgs e)
+        {
+            DataRow order = (sender as Button).Tag as DataRow;
+            if (order != null)
+            {
+                double lat = double.Parse(Tables.orders.getCity(order)["latitude"].ToString());
+                double lon = double.Parse(Tables.orders.getCity(order)["longitude"].ToString());
+
+                terkep.Center = new Location(lat, lon);
+                terkep.ZoomLevel = 10;
+            }
         }
 
         private void OrderStatusChange(object sender, RoutedEventArgs e)
@@ -391,7 +440,8 @@ namespace WH_APP_GUI.transport
                             double sellingPrice = product["selling_price"] != DBNull.Value ? (double)product["selling_price"] : 0;
                             int qty = order["qty"] != DBNull.Value ? (int)order["qty"] : 0;
                             warehouse["total_income"] = totalincome + (sellingPrice * qty);
-                            
+
+                            Controller.AddToRevnue_A_Day_Income(warehouse, totalincome + (sellingPrice * qty));                        
                             Tables.warehouses.updateChanges();
                         }
                     }

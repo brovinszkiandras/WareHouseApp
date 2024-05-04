@@ -24,6 +24,13 @@ namespace WH_APP_GUI
             {
                 ThisTerminal.TerminalBox.Items.Add(text.ToString());
             }
+            else
+            {
+                Terminal terminal = new Terminal();
+                terminal.Show();
+                ThisTerminal = terminal;
+                ThisTerminal.TerminalBox.Items.Add(text.ToString());
+            }
         }
     }
 }

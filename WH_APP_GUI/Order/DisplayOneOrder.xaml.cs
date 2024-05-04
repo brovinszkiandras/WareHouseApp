@@ -323,20 +323,22 @@ namespace WH_APP_GUI.Order
                         inTransport.Content = $"This order will be transported at {transport["start_date"]}, by {Tables.transports.getEmployee(transport)["name"]}";
                         mainStackPanel.Children.Add(inTransport);
                     }
-                    else if (!IsOrederFinished(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
+                    else if (IsOrederFinishedWithoutTransportOrDock(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()) && ! IsOrderInTransport(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
                     {
-                        Button addToTransport = new Button();
-                        addToTransport.Background = Brushes.Green;
-                        addToTransport.Foreground = Brushes.Black;
-                        addToTransport.Margin = new Thickness(5);
-                        addToTransport.BorderBrush = Brushes.Black;
-                        addToTransport.BorderThickness = new Thickness(1);
-                        addToTransport.HorizontalContentAlignment = HorizontalAlignment.Center;
-                        addToTransport.Content = $"Add to transport";
-                        addToTransport.Tag = Tables.orders.getOrdersOfAUser(username, address);
-                        addToTransport.Click += AddToTransport;
-
-                        mainStackPanel.Children.Add(addToTransport);
+                        if (User.DoesHavePermission("Assign order"))
+                        {
+                            Button addToTransport = new Button();
+                            addToTransport.Background = Brushes.Green;
+                            addToTransport.Foreground = Brushes.Black;
+                            addToTransport.Margin = new Thickness(5);
+                            addToTransport.BorderBrush = Brushes.Black;
+                            addToTransport.BorderThickness = new Thickness(1);
+                            addToTransport.HorizontalContentAlignment = HorizontalAlignment.Center;
+                            addToTransport.Content = $"Add to transport";
+                            addToTransport.Tag = Tables.orders.getOrdersOfAUser(username, address);
+                            addToTransport.Click += AddToTransport;
+                            mainStackPanel.Children.Add(addToTransport);
+                        }
                     }
                 }
                 else if (Tables.features.isFeatureInUse("Dock") && Tables.features.isFeatureInUse("Fleet"))
@@ -355,24 +357,23 @@ namespace WH_APP_GUI.Order
                         inDock.Content = $"{dock["name"]} dock already contains this order.";
                         mainStackPanel.Children.Add(inDock);
                     }
-                    else if (!IsOrederFinished(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
+                    else if (!IsOrederFinishedWithoutTransportOrDock(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()) && !IsOrderInDock(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
                     {
-                        Button addToDock = new Button();
-                        addToDock.Background = Brushes.Green;
-                        addToDock.Foreground = Brushes.Black;
-                        addToDock.Margin = new Thickness(5);
-                        addToDock.BorderBrush = Brushes.Black;
-                        addToDock.BorderThickness = new Thickness(1);
-                        addToDock.MaxWidth = 350;
-                        addToDock.HorizontalContentAlignment = HorizontalAlignment.Center;
-                        addToDock.Content = $"Add to dock";
-                        addToDock.Tag = Tables.orders.getOrdersOfAUser(username, address);
-                        addToDock.Click += AddToDock;
-                        if (IsOrederFinished(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
+                        if (User.DoesHavePermission("Assign order"))
                         {
-                            addToDock.IsEnabled = false;
+                            Button addToDock = new Button();
+                            addToDock.Background = Brushes.Green;
+                            addToDock.Foreground = Brushes.Black;
+                            addToDock.Margin = new Thickness(5);
+                            addToDock.BorderBrush = Brushes.Black;
+                            addToDock.BorderThickness = new Thickness(1);
+                            addToDock.MaxWidth = 350;
+                            addToDock.HorizontalContentAlignment = HorizontalAlignment.Center;
+                            addToDock.Content = $"Add to dock";
+                            addToDock.Tag = Tables.orders.getOrdersOfAUser(username, address);
+                            addToDock.Click += AddToDock;
+                            mainStackPanel.Children.Add(addToDock);
                         }
-                        mainStackPanel.Children.Add(addToDock);
                     }
                 }
             }
@@ -434,26 +435,35 @@ namespace WH_APP_GUI.Order
             return true;
         }
 
-        private bool IsOrederFinished(string username, string address)
+        private bool IsOrederFinishedWithoutTransportOrDock(string username, string address)
         {
+            bool returnValue = false;
             foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
             {
                 if (Tables.features.isFeatureInUse("Fleet"))
                 {
                     if (order["transport_id"] == DBNull.Value && order["status"].ToString() == "Finished")
                     {
-                        return false;
+                        returnValue = true;
+                    }
+                    else
+                    {
+                        returnValue = false;
                     }
                 }
                 else if (Tables.features.isFeatureInUse("Dock") && !Tables.features.isFeatureInUse("Fleet"))
                 {
                     if (order["dock_id"] == DBNull.Value && order["status"].ToString() == "Finished")
                     {
-                        return false;
+                        returnValue = true;
+                    }
+                    else
+                    {
+                        returnValue = false;
                     }
                 }
             }
-            return true;
+            return returnValue;
         }
 
         private void DoneClick(object sender, RoutedEventArgs e)
@@ -463,10 +473,10 @@ namespace WH_APP_GUI.Order
             {
                 if (Warehouse != null)
                 {
-                    DataRow productInWarehouse = null;
+                    DataRow[] productInWarehouse = null;
                     try
                     {
-                        productInWarehouse = WarehouseTable.database.Select($"product_id = {order["product_id"]}")[0];
+                        productInWarehouse = WarehouseTable.database.Select($"product_id = {order["product_id"]}");
                     }
                     catch (Exception)
                     {
@@ -476,14 +486,29 @@ namespace WH_APP_GUI.Order
 
                     if (productInWarehouse != null)
                     {
-                        if (int.Parse(productInWarehouse["qty"].ToString()) >= int.Parse(order["qty"].ToString()))
+                        if (productInWarehouse.Sum(product => (int)product["qty"]) >= int.Parse(order["qty"].ToString()))
                         {
-                            productInWarehouse["qty"] = int.Parse(productInWarehouse["qty"].ToString()) - int.Parse(order["qty"].ToString());
-                            if ((int)productInWarehouse["qty"] == 0)
+                            foreach (DataRow product in productInWarehouse)
                             {
-                                productInWarehouse.Delete();
+                                if ((int)product["qty"] == (int)order["qty"])
+                                {
+                                    product.Delete();
+                                    order["status"] = "Finished";
+                                    break;
+                                }
+                                else if ((int)product["qty"] > (int)order["qty"])
+                                {
+                                    product["qty"] = (int)product["qty"] - (int)order["qty"];
+                                    order["status"] = "Finished";
+                                    break;
+                                }
+                                else if ((int)product["qty"] < (int)order["qty"])
+                                {
+                                    order["qty"] = (int)order["qty"] - (int)product["qty"];
+                                    product.Delete();
+                                }
                             }
-                            order["status"] = "Finished";
+
                             WarehouseTable.updateChanges();
                             Tables.orders.updateChanges();
 
@@ -493,7 +518,11 @@ namespace WH_APP_GUI.Order
                         {
                             if (MessageBox.Show("The warehouse does not contain all the products related to this order. Would you like to continue the transaction?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                             {
-                                productInWarehouse["qty"] = 0;
+                                foreach (DataRow product in productInWarehouse)
+                                {
+                                    product["qty"] = 0;
+                                }
+
                                 order["status"] = "Finished";
                                 WarehouseTable.updateChanges();
                                 Tables.orders.updateChanges();
@@ -517,13 +546,15 @@ namespace WH_APP_GUI.Order
                         {
                             if (!Tables.features.isFeatureInUse("Dock") && !Tables.features.isFeatureInUse("Fleet"))
                             {
+                                double valueOfOrder = 0;
                                 foreach (DataRow orderGroupBy in Tables.orders.getOrdersOfAUser(order["user_name"], order["address"]))
                                 {
-
-
+                                    DataRow product = Tables.orders.getProduct(orderGroupBy);
+                                    valueOfOrder += (double)product["selling_price"] * (int)orderGroupBy["qty"];
                                     orderGroupBy.Delete();
                                     Tables.orders.updateChanges();
                                 }
+                                Controller.AddToRevnue_A_Day_Income(Warehouse, valueOfOrder);
                             }
                             MessageBox.Show("This order has been successfully completed!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
@@ -534,7 +565,28 @@ namespace WH_APP_GUI.Order
 
         private bool CanComplete(string username, string address)
         {
-            bool canComplete = true;
+            Dictionary<DataRow, int> ProductQty = new Dictionary<DataRow, int>();
+            foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
+            {
+                if (ProductQty.ContainsKey(Tables.orders.getProduct(order)))
+                {
+                    ProductQty[Tables.orders.getProduct(order)] += (int)order["qty"];
+                }
+                else
+                {
+                    ProductQty.Add(Tables.orders.getProduct(order), (int)order["qty"]);
+                }
+            }
+
+            foreach (var item in ProductQty)
+            {
+                int productsInWarehouse = WarehouseTable.database.Select($"product_id = {item.Key["id"]}").Sum(product => (int)product["qty"]);
+                if (productsInWarehouse < item.Value)
+                {
+                    return false;
+                }
+            }
+
             foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
             {
                 if (WarehouseTable.database.Select($"product_id = {order["product_id"]}").Length == 0)
@@ -546,11 +598,11 @@ namespace WH_APP_GUI.Order
                     int productsInTheWarehosue = WarehouseTable.database.Select($"product_id = {order["product_id"]}").Sum(row => (int)row["qty"]);
                     if (productsInTheWarehosue < (int)order["qty"])
                     {
-                        canComplete = false;
+                        return false;
                     }
                 }
             }
-            return canComplete;
+            return true;
         }
 
         private void TakeClick(object sender, RoutedEventArgs e)

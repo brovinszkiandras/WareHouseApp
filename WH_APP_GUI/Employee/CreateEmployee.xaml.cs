@@ -146,8 +146,6 @@ namespace WH_APP_GUI.Employee
                         Directory.CreateDirectory(targetDirectory);
                     }
 
-
-                    
                     string fileName = Path.GetFileName(selectedFilePath);
                     string pngFilename =  Path.ChangeExtension(fileName, "png");
                     

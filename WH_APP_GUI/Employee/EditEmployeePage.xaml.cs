@@ -72,19 +72,6 @@ namespace WH_APP_GUI.Employee
             {
                 activity.Visibility = Visibility.Collapsed;
             }
-
-            if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Revenue';"))
-            {
-                payment.Visibility = Visibility.Visible;
-                payment.ValueDataType = typeof(double);
-                payment.Text = employee["payment"].ToString();
-                paymentLBL.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                payment.Visibility = Visibility.Collapsed;
-                paymentLBL.Visibility = Visibility.Collapsed;
-            }
         }
 
         private Dictionary<string, DataRow> Warehouses = new Dictionary<string, DataRow>();
@@ -166,14 +153,6 @@ namespace WH_APP_GUI.Employee
                     employee["email"] = email.Text;
                     employee["role_id"] = Roles[role_id.SelectedItem.ToString()]["id"];
                     employee["warehouse_id"] = Warehouses[warehouse_id.SelectedItem.ToString()]["id"];
-
-                    if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Revenue';"))
-                    {
-                        if (!Validation.ValidateTextbox(payment, employee))
-                        {
-                            employee["payment"] = payment.Text != string.Empty ? payment.Text : "0";
-                        }
-                    }
 
                     Tables.employees.updateChanges();
                     Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {employee["name"]} employee.");

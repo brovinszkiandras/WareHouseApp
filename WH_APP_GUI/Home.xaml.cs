@@ -98,7 +98,7 @@ namespace WH_APP_GUI
                     btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                     Menu.Children.Add(btn);
                 }
-                else if (User.DoesHavePermission("Inspect own Transport"))
+                else if (User.DoesHavePermission("Handle own Transport"))
                 {
                     Button btn = new Button();
                     btn.Content = "Own Transports";
@@ -134,15 +134,6 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Log";
                 btn.Click += InspectLog_Click;
-                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
-                Menu.Children.Add(btn);
-            }
-
-            if (User.DoesHavePermission("Modify all Dock") && Tables.features.isFeatureInUse("Dock") == true)
-            {
-                Button btn = new Button();
-                btn.Content = "Dock";
-                btn.Click += InspectDock_Click;
                 btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
@@ -255,12 +246,6 @@ namespace WH_APP_GUI
             Navigation.OpenPage(Navigation.GetTypeByName("LogDisplay"));
         }
 
-        private void InspectDock_Click(object sender, RoutedEventArgs e)
-        {
-            Navigation.ReturnParam = null;
-            Navigation.OpenPage(Navigation.GetTypeByName("DockPage"));
-        }
-
         private void Database_Click(object sender, RoutedEventArgs e)
         {
             Navigation.ReturnParam = null;
@@ -311,10 +296,13 @@ namespace WH_APP_GUI
             if (User.currentUser != null)
             {
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been logged out from the application.");
-                if (Tables.features.isFeatureInUse("Activity"))
+                if (User.currentUser.Table.TableName == "employees")
                 {
-                    User.currentUser["is_loggedin"] = false;
-                    Tables.employees.updateChanges();
+                    if (Tables.features.isFeatureInUse("Activity"))
+                    {
+                        User.currentUser["is_loggedin"] = false;
+                        Tables.employees.updateChanges();
+                    }
                 }
 
                 MainWindow mainWindow = new MainWindow();

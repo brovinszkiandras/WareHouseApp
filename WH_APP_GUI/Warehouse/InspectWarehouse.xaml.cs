@@ -55,11 +55,15 @@ namespace WH_APP_GUI.Warehouse
             }
 
 
-            if (User.DoesHavePermission("Inspect Employees") || User.DoesHavePermission("Inspect all Employees"))
+            if (User.DoesHavePermission("Inspect all Employees"))
             {
-                if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                EmployeesInspectToWarehouse.Visibility = Visibility.Visible;
+            }
+            else if (User.DoesHavePermission("Inspect Employees"))
+            {
+                if (User.currentUser.Table.TableName == "employees")
                 {
-                    if (User.currentUser["warehouse_id"] == warehouse["id"])
+                    if ((int)User.currentUser["warehouse_id"] == (int)Warehouse["id"])
                     {
                         EmployeesInspectToWarehouse.Visibility = Visibility.Visible;
                     }
@@ -68,17 +72,21 @@ namespace WH_APP_GUI.Warehouse
                         EmployeesInspectToWarehouse.Visibility = Visibility.Collapsed;
                     }
                 }
-                else
-                {
-                    EmployeesInspectToWarehouse.Visibility = Visibility.Visible;
-                }
+            }
+            else
+            {
+                EmployeesInspectToWarehouse.Visibility = Visibility.Collapsed;
             }
 
-            if (User.DoesHavePermission("Inspect Orders") || User.DoesHavePermission("Inspect all Orders"))
+            if (User.DoesHavePermission("Inspect all Orders"))
             {
-                if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                OrdersInspectToWarehouse.Visibility = Visibility.Visible;
+            }
+            else if (User.DoesHavePermission("Inspect Orders"))
+            {
+                if (User.currentUser.Table.TableName == "employees")
                 {
-                    if (User.currentUser["warehouse_id"] == warehouse["id"])
+                    if (User.currentUser["warehouse_id"].ToString() == Warehouse["id"].ToString())
                     {
                         OrdersInspectToWarehouse.Visibility = Visibility.Visible;
                     }
@@ -87,20 +95,25 @@ namespace WH_APP_GUI.Warehouse
                         OrdersInspectToWarehouse.Visibility = Visibility.Collapsed;
                     }
                 }
-                else
-                {
-                    OrdersInspectToWarehouse.Visibility = Visibility.Visible;
-                }
             }
+            else
+            {
+                OrdersInspectToWarehouse.Visibility = Visibility.Collapsed;
+            }
+           
 
             if (Tables.features.isFeatureInUse("Fleet"))
             {
-                if (User.DoesHavePermission("Inspect Transport") || User.DoesHavePermission("Inspect all Transport") || User.DoesHavePermission("Inspect own Transport"))
+                if (User.DoesHavePermission("Inspect Transport") || User.DoesHavePermission("Inspect all Transport") || User.DoesHavePermission("Handle own Transport"))
                 {
-                    if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                    if (User.currentUser.Table.TableName == "employees")
                     {
-                        if (User.currentUser["warehouse_id"] == warehouse["id"])
+                        if ((int)User.currentUser["warehouse_id"] == (int)warehouse["id"])
                         {
+                            if (User.DoesHavePermission("Handle own Transport"))
+                            {
+                                TransportsInspectToWarehouse.Content = "Own Transports";
+                            }
                             TransportsInspectToWarehouse.Visibility = Visibility.Visible;
                         }
                         else
@@ -119,11 +132,26 @@ namespace WH_APP_GUI.Warehouse
                 TransportsInspectToWarehouse.Visibility = Visibility.Collapsed;
             }
 
+
             if (Tables.features.isFeatureInUse("Fleet"))
             {
-                if (!User.DoesHavePermission("Inspect Car") || !User.DoesHavePermission("Inspect all Car"))
+                if (User.DoesHavePermission("Inspect Car") || User.DoesHavePermission("Inspect all Car"))
                 {
-                    CarsInspectToWarehouse.Visibility = Visibility.Collapsed;
+                    if (User.currentUser.Table.TableName == "employees")
+                    {
+                        if ((int)User.currentUser["warehouse_id"] == (int)warehouse["id"])
+                        {
+                            CarsInspectToWarehouse.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            CarsInspectToWarehouse.Visibility = Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        CarsInspectToWarehouse.Visibility = Visibility.Visible;
+                    }
                 }
             }
             else
@@ -133,7 +161,25 @@ namespace WH_APP_GUI.Warehouse
 
             if (Tables.features.isFeatureInUse("Dock"))
             {
-                if (!User.DoesHavePermission("Inspect Dock"))
+                if (User.DoesHavePermission("Inspect Dock"))
+                {
+                    if (User.currentUser.Table.TableName == "employees")
+                    {
+                        if ((int)User.currentUser["warehouse_id"] == (int)Warehouse["id"])
+                        {
+                            DocksInspectToWarehouse.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            DocksInspectToWarehouse.Visibility= Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        DocksInspectToWarehouse.Visibility= Visibility.Visible;
+                    }
+                }
+                else
                 {
                     DocksInspectToWarehouse.Visibility = Visibility.Collapsed;
                 }
@@ -156,7 +202,10 @@ namespace WH_APP_GUI.Warehouse
             }
 
             Ini_City();
-            Ini_Revnue_A_Day();
+            if (Tables.features.isFeatureInUse("Revenue"))
+            {
+                Ini_Revenue_A_Day();
+            }
         }
         private void Ini_City()
         {
@@ -164,20 +213,13 @@ namespace WH_APP_GUI.Warehouse
             MapDisplay.Children.Add(terkep);
             terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
 
-            MapPolyline polyline = new MapPolyline();
-            polyline.Stroke = new SolidColorBrush(Colors.Black);
-            polyline.StrokeThickness = 5;
-            polyline.Opacity = 0.7;
-
             double lat = double.Parse(Tables.warehouses.getCity(Warehouse)["latitude"].ToString());
             double lon = double.Parse(Tables.warehouses.getCity(Warehouse)["longitude"].ToString());
 
             terkep.Center = new Location(lat, lon);
             terkep.ZoomLevel = 10;
-
-            terkep.Children.Add(polyline);
         }
-        private void Ini_Revnue_A_Day()
+        private void Ini_Revenue_A_Day()
         {
             List<string[]> revenue_a_day = SQL.SqlQuery($"SELECT `date`, `total_expenditure`, `total_income` FROM `revenue_a_day` WHERE `warehouse_id` = {Warehouse["id"]} GROUP BY `date`;");
             if (revenue_a_day.Count() > 0)
@@ -192,23 +234,39 @@ namespace WH_APP_GUI.Warehouse
                 double AllSellingPrice = SellingPrice != "" ? double.Parse(SellingPrice) : 0;
                 double AllBuyingPrice = BuyingPrice != "" ? double.Parse(BuyingPrice) : 0;
 
-                WarehouseTotalSpending.Maximum = WarehouseMaxValue;
-                WarehouseTotalSpendingLBL.Content = Warehouse["total_spending"] + " - Ft";
-                bool ValidateWarehouseTotalSpending = Warehouse["total_spending"].ToString() != "" ? true : false;
-                WarehouseTotalSpending.Value = ValidateWarehouseTotalSpending ? double.Parse(Warehouse["total_spending"].ToString()) : 0;
+                if (WarehouseMaxValue != 0)
+                {
+                    WarehouseTotalSpending.Maximum = WarehouseMaxValue;
+                    WarehouseTotalSpendingLBL.Content = Warehouse["total_spending"] != DBNull.Value ? Warehouse["total_spending"] + " - Ft" : 0 + " - Ft";
+                    bool ValidateWarehouseTotalSpending = Warehouse["total_spending"].ToString() != "" ? true : false;
+                    WarehouseTotalSpending.Value = ValidateWarehouseTotalSpending ? double.Parse(Warehouse["total_spending"].ToString()) : 0;
 
-                WarehouseTotalIncome.Maximum = WarehouseMaxValue;
-                WarehouseTotalIncomeLBL.Content = Warehouse["total_income"] + " - Ft";
-                bool ValidateWarehouseTotalIncome = Warehouse["total_income"].ToString() != "" ? true : false;
-                WarehouseTotalIncome.Value = ValidateWarehouseTotalIncome ? double.Parse(Warehouse["total_income"].ToString()) : 0;
+                    WarehouseTotalIncome.Maximum = WarehouseMaxValue;
+                    WarehouseTotalIncomeLBL.Content = Warehouse["total_income"] + " - Ft";
+                    bool ValidateWarehouseTotalIncome = Warehouse["total_income"].ToString() != "" ? true : false;
+                    WarehouseTotalIncome.Value = ValidateWarehouseTotalIncome ? double.Parse(Warehouse["total_income"].ToString()) : 0;
+                }
+                else
+                {
+                    WarehouseTotalSpendingLBL.Content = Warehouse["total_spending"] != DBNull.Value ? Warehouse["total_spending"] + " - Ft" : 0 + " - Ft";
+                    WarehouseTotalIncomeLBL.Content = Warehouse["total_income"] != DBNull.Value ? Warehouse["total_income"] + " - Ft" : 0 + " - Ft";
+                }
 
-                ProductsTotalSellingPrice.Maximum = WarehouseMaxValue;
-                ProductsTotalSellingPrice.Value = AllSellingPrice;
-                ProductsTotalSellingPriceLBL.Content = AllSellingPrice + " - Ft";
+                if (WarehouseMaxValue != 0)
+                {
+                    ProductsTotalSellingPrice.Maximum = WarehouseMaxValue;
+                    ProductsTotalSellingPrice.Value = AllSellingPrice;
+                    ProductsTotalSellingPriceLBL.Content = AllSellingPrice + " - Ft";
 
-                ProductsTotalBuyingPrice.Maximum = WarehouseMaxValue;
-                ProductsTotalBuyingPrice.Value = AllBuyingPrice;
-                ProductsTotalBuyingPriceLBL.Content = AllBuyingPrice + " - Ft";
+                    ProductsTotalBuyingPrice.Maximum = WarehouseMaxValue;
+                    ProductsTotalBuyingPrice.Value = AllBuyingPrice;
+                    ProductsTotalBuyingPriceLBL.Content = AllBuyingPrice + " - Ft";
+                }
+                else
+                {
+                    ProductsTotalSellingPriceLBL.Content = "0 - Ft";
+                    ProductsTotalBuyingPriceLBL.Content = "0 - Ft";
+                }
 
                 int index = 0;
                 int Dayindex = 0;
@@ -220,8 +278,8 @@ namespace WH_APP_GUI.Warehouse
                     }
                     else
                     {
-                        double total_expenditure = double.Parse(revenue_a_day[i][1]);
-                        double total_income = double.Parse(revenue_a_day[i][2]);
+                        double total_expenditure = revenue_a_day[i][1] != string.Empty ? double.Parse(revenue_a_day[i][1]) : 0;
+                        double total_income = revenue_a_day[i][2] != string.Empty ? double.Parse(revenue_a_day[i][2]) : 0;
                         double max = total_expenditure + total_income;
 
                         ProgressBar Spending = new ProgressBar();
@@ -340,6 +398,12 @@ namespace WH_APP_GUI.Warehouse
         private void TransportsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
             Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"), Warehouse);
+            Navigation.ReturnParam = Warehouse;
+        }
+
+        private void RevenueDayPicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MessageBox.Show(RevenueDayPicker.SelectedDate.ToString());
         }
     }
 }

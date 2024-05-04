@@ -30,7 +30,11 @@ namespace WH_APP_GUI.carsFolder
             Back.Visibility = Visibility.Collapsed;
             DisplayCars();
 
-            if (!User.DoesHavePermission("Modify all Car"))
+            if (User.DoesHavePermission("Modify all Car"))
+            {
+                Create.Visibility = Visibility.Visible;
+            }
+            else
             {
                 Create.Visibility = Visibility.Collapsed;
             }
@@ -42,7 +46,11 @@ namespace WH_APP_GUI.carsFolder
             Warehouse = warehouse;
             DisplayCars();
 
-            if (!User.DoesHavePermission("Modify all Car") || !User.DoesHavePermission("Modify Car"))
+            if (User.DoesHavePermission("Modify all Car") || User.DoesHavePermission("Modify Car"))
+            {
+                Create.Visibility = Visibility.Visible;
+            }
+            else
             {
                 Create.Visibility = Visibility.Collapsed;
             }
@@ -193,7 +201,7 @@ namespace WH_APP_GUI.carsFolder
             datas.Content = grids;
             mainStackPanel.Children.Add(datas);
 
-            if (User.DoesHavePermission("Modify Car") || User.DoesHavePermission("Modify all Car"))
+            if (User.DoesHavePermission("Modify Car"))
             {
                 Button edit = new Button();
                 edit.Content = "Edit";
@@ -216,9 +224,28 @@ namespace WH_APP_GUI.carsFolder
 
                 mainStackPanel.Children.Add(delete);
             }
-            else
+            else if (User.DoesHavePermission("Modify all Car"))
             {
-                Create.Visibility = Visibility.Collapsed;
+                Button edit = new Button();
+                edit.Content = "Edit";
+                edit.Style = (Style)this.Resources["GoldenButtonStyle"];
+                edit.Click += Edit_Click;
+                edit.Tag = car["id"];
+
+                Grid.SetRow(edit, lastRow);
+                Grid.SetColumn(edit, 4);
+
+                mainStackPanel.Children.Add(edit);
+
+                Button delete = new Button();
+                delete.Content = "Delete";
+                delete.Style = (Style)this.Resources["GoldenButtonStyle"];
+                delete.Tag = car["id"];
+                delete.Click += Delete_Click;
+                Grid.SetRow(delete, lastRow);
+                Grid.SetColumn(delete, 5);
+
+                mainStackPanel.Children.Add(delete);
             }
 
             border.Child = mainStackPanel;

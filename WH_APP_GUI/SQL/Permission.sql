@@ -1,88 +1,83 @@
-INSERT INTO permission (name, description) VALUES ('Inspect Warehouse', 'Some description for the Warehouse Inspect permission');
+INSERT INTO permission (name, description) VALUES ('Inspect Warehouse', 'Gurantees access rights to a user to inspect the warehouse they been assigned to.');
 
-INSERT INTO permission (name, description) VALUES ('Inspect all Warehouses', 'Some description for the Inspect all Warehouses permission');
+INSERT INTO permission (name, description) VALUES ('Inspect all Warehouses', 'Gurantees access rights to a user to inspect all of the warehouses.');
 
-INSERT INTO permission (name, description) VALUES ('Modify Warehouse', 'Some description for the Modify Warehouse permission');
+INSERT INTO permission (name, description) VALUES ('Modify Warehouse', 'Gurantees access rights to a user to modify the warehouse they been assigned to.');
 
-INSERT INTO permission (name, description) VALUES ('Modify all Warehouses', 'Some description for the Modify all Warehouses permission');
+INSERT INTO permission (name, description) VALUES ('Modify all Warehouses', 'Gurantees access rights to a user to modify all of the warehouses.');
 
-INSERT INTO permission (name, description) VALUES ('Handle Products', 'Some description for the Handle products permission');
-
-
-INSERT INTO permission (name, description) VALUES ('Inspect Employees', 'Some description for the Inspect employees permission');
-
-INSERT INTO permission (name, description) VALUES ('Inspect all Employees', 'Some description for the Inspect all employees permission');
-
-INSERT INTO permission (name, description) VALUES ('Modify employees', 'Some description for the Modify employees permission');
-
-INSERT INTO permission (name, description) VALUES ('Modify all employees', 'Some description for the Modify all employees permission');
+INSERT INTO permission (name, description) VALUES ('Handle Products', 'Gurantees access rights to a user to inspect, delete, modify the products in a warehouse and add products to the warehouse.');
 
 
-INSERT INTO permission (name, description) VALUES ('Inspect Orders', 'Some description for the Inspect orders permission');
+INSERT INTO permission (name, description) VALUES ('Inspect Employees', 'Provides permission to a user to inspect the employees in the warehouse they were assigned to.');
 
-INSERT INTO permission (name, description) VALUES ('Inspect all Orders', 'Some description for the Inspect all orders permission');
+INSERT INTO permission (name, description) VALUES ('Inspect all Employees', 'Provides permission to a user to inspect all of the employees.');
 
-INSERT INTO permission (name, description) VALUES ('Assign to transport', 'Some description for the Assign orders to transport permission');
+INSERT INTO permission (name, description) VALUES ('Modify employees', 'Provides permission to a user to modify all the employees in the warehouse they were assigned to.');
 
-
-INSERT INTO permission (name, description) VALUES ('Inspect Products', 'Some description for the Inspect products permission');
-
-INSERT INTO permission (name, description) VALUES ('Change Products', 'Some description for the Change products permission');
-
-INSERT INTO permission (name, description) VALUES ('Add Products', 'Some description for the add products permission');
+INSERT INTO permission (name, description) VALUES ('Modify all employees', 'Provides permission to a user to modify all of the employees.');
 
 
-INSERT INTO permission (name, description) VALUES ('Inspect Dock', 'Some description for the inspect dock permission');
+INSERT INTO permission (name, description) VALUES ('Inspect Orders', 'Gives the right to inspect the orders in the warehouse they were assigned to and those orders which are not in warehouse yet.');
 
-INSERT INTO permission (name, description) VALUES ('Modify Dock', 'Some description for the modify dock permission');
+INSERT INTO permission (name, description) VALUES ('Inspect all Orders', 'Gives the right to inspect all of the orders.');
 
-INSERT INTO permission (name, description) VALUES ('Modify all Dock', 'Some description for the modify all dock permission');
-
-INSERT INTO permission (name, description) VALUES ('Assign Dock for transport', 'Some description for the assign dock for dock permission');
+INSERT INTO permission (name, description) VALUES ('Assign order', 'Gives the right to assign orders to a transport or a dock depends on wich feature is in use.');
 
 
-INSERT INTO permission (name, description) VALUES ('Inspect Staff', 'Some description for the inspect staff permission');
+INSERT INTO permission (name, description) VALUES ('Inspect Products', 'Grants autorization to inspect all of the products.');
 
-INSERT INTO permission (name, description) VALUES ('Modify Staff', 'Some description for the modify staff permission');
+INSERT INTO permission (name, description) VALUES ('Change Products', 'Grants autorization to delete and modify and create products.');
 
-
-INSERT INTO permission (name, description) VALUES ('Inspect Transport', 'Some description for the inspect transport permission');
-
-INSERT INTO permission (name, description) VALUES ('Inspect all Transport', 'Some description for the inspect all transport permission');
-
-INSERT INTO permission (name, description) VALUES ('Modify Transport', 'Some description for the modify transport permission');
-
-INSERT INTO permission (name, description) VALUES ('Modify all Transport', 'Some description for the modify transport permission');
-
-INSERT INTO permission (name, description) VALUES ('Inspect own Transport', 'Some description for the inspect own transport permission');
+INSERT INTO permission (name, description) VALUES ('Add Products', 'Grants autorization to create product');
 
 
-INSERT INTO permission (name, description) VALUES ('Inspect Car', 'Some description for the inspect car permission');
+INSERT INTO permission (name, description) VALUES ('Inspect Dock', 'Permits a user to inspect the docks in the warehouse they were assigned to.');
 
-INSERT INTO permission (name, description) VALUES ('Inspect all Car', 'Some description for the inspect all car permission');
-
-INSERT INTO permission (name, description) VALUES ('Modify Car', 'Some description for the modify car permission');
-
-INSERT INTO permission (name, description) VALUES ('Modify all Car', 'Some description for the Modify all car permission');
+INSERT INTO permission (name, description) VALUES ('Modify Dock', 'Permits a user to modify the docks in the warehouse they were assigned to.');
 
 
-INSERT INTO permission (name, description) VALUES ('Inspect Log', 'Some description for the inspect Log permission');
+INSERT INTO permission (name, description) VALUES ('Inspect Staff', 'Allows a user to inspect all of the staff.');
+
+INSERT INTO permission (name, description) VALUES ('Modify Staff', 'Allow a user to modify all of the staff');
 
 
-INSERT INTO permission (name, description) VALUES ('Inspect Forklift', 'Some description for the inspect forklift permission');
+INSERT INTO permission (name, description) VALUES ('Inspect Transport', 'Let the user inspect the transports in the warehouse they were assigned to.');
 
-INSERT INTO permission (name, description) VALUES ('Inspect all Forklift', 'Some description for the inspect all forklift permission');
+INSERT INTO permission (name, description) VALUES ('Inspect all Transport', 'Let the user inspect all of the transports.');
 
-INSERT INTO permission (name, description) VALUES ('Modify Forklift', 'Some description for the Modify forklift permission');
+INSERT INTO permission (name, description) VALUES ('Modify Transport', 'Let the user modify the transports in the warehouse they were assigned to.');
 
-INSERT INTO permission (name, description) VALUES ('Modify all Forklift', 'Some description for the modify all forklift permission');
+INSERT INTO permission (name, description) VALUES ('Modify all Transport', 'Let the user modify all of the transports.');
 
-INSERT INTO permission (name, description) VALUES ('Change status of Forklift', 'Some description for the change status of forklift permission');
+INSERT INTO permission (name, description) VALUES ('Handle own Transport', 'Let the user inspect and modify they own tranpsorts.');
 
-
-INSERT INTO permission (name, description) VALUES ('Access to Database', 'Some description for the access to database permission');
-
+INSERT INTO permission (name, description) VALUES ('Can be assigned to transport', 'Let the user to be appended to a transport');
 
 
+INSERT INTO permission (name, description) VALUES ('Inspect Car', 'Let the user inspect the cars in the warehouse they were assigned to.');
+
+INSERT INTO permission (name, description) VALUES ('Inspect all Car', 'Let the user inspect all of the cars.');
+
+INSERT INTO permission (name, description) VALUES ('Modify Car', 'Let the user modify the cars in the warehouse they were assigned to.');
+
+INSERT INTO permission (name, description) VALUES ('Modify all Car', 'Let the user modify all of the cars.');
 
 
+INSERT INTO permission (name, description) VALUES ('Inspect Log', 'Allows the user to inspect the log messages.');
+
+INSERT INTO permission (name, description) VALUES ('Clear Log', 'Allows the user to clear the log messages.');
+
+
+INSERT INTO permission (name, description) VALUES ('Inspect Forklift', 'Gurantees access rights to a user to inspect the forklifts in the warehouse they were assigned to.');
+
+INSERT INTO permission (name, description) VALUES ('Inspect all Forklift', 'Gurantees access rights to a user to inspect all of the forklifts.');
+
+INSERT INTO permission (name, description) VALUES ('Modify Forklift', 'Gurantees access rights to a user to modify the forklifts in the warehouse they were assigned to.');
+
+INSERT INTO permission (name, description) VALUES ('Modify all Forklift', 'Gurantees access rights to a user to modify all of the forklifts.');
+
+INSERT INTO permission (name, description) VALUES ('Change status of Forklift', 'Gurantees access rights to a user to change the status of a forklift in the warehouse they were assigned to..');
+
+
+INSERT INTO permission (name, description) VALUES ('Access to Database', 'Empowers the user to change the setting of the database including fetures and the roles of users.');

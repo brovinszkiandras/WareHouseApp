@@ -56,7 +56,37 @@ namespace WH_APP_GUI.warehouseTableFolder
         {
             warehouseTable.database.Rows.Add(warehouseProduct);
             warehouseTable.updateChanges();
-            Xceed.Wpf.Toolkit.MessageBox.Show($"A new product has been added to the warehouse");
+            Xceed.Wpf.Toolkit.MessageBox.Show($"A new product has been added to the warehouse", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            if (Tables.features.isFeatureInUse("Revenue"))
+            {
+                DataRow Warehouse = Tables.warehouses.database.Select($"name = '{warehouseTable.database.TableName}'")[0];
+                if (Warehouse != null)
+                {
+                    double buyingPrice = 0;
+                    double sellingPrice = 0;
+
+                    if (warehouseTable.getProduct(warehouseProduct)["buying_price"] != DBNull.Value && warehouseProduct["qty"] != DBNull.Value)
+                    {
+                        buyingPrice = Convert.ToDouble(warehouseTable.getProduct(warehouseProduct)["buying_price"]) * Convert.ToDouble(warehouseProduct["qty"]);
+                    }
+
+                    if (warehouseTable.getProduct(warehouseProduct)["selling_price"] != DBNull.Value && warehouseProduct["qty"] != DBNull.Value)
+                    {
+                        sellingPrice = Convert.ToDouble(warehouseTable.getProduct(warehouseProduct)["selling_price"]) * Convert.ToDouble(warehouseProduct["qty"]);
+                    }
+
+                    double warehouseTotalValue = Warehouse["total_value"] != DBNull.Value ? (double)Warehouse["total_value"] : 0;
+                    double warehouseTotalSpending = Warehouse["total_spending"] != DBNull.Value ? (double)Warehouse["total_spending"] : 0;
+
+                    Warehouse["total_value"] = warehouseTotalValue + sellingPrice;
+                    Warehouse["total_spending"] = warehouseTotalSpending + buyingPrice;
+
+                    Tables.warehouses.updateChanges();
+                    Controller.AddToRevnue_A_Day_Expenditure(Warehouse, buyingPrice);
+                }
+            }
+            
             WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
             Navigation.content2.Navigate(page);
         }
@@ -154,7 +184,6 @@ namespace WH_APP_GUI.warehouseTableFolder
                     }
                 }
             }
-
         }
 
         private void is_in_a_box_Unchecked(object sender, RoutedEventArgs e)
@@ -199,8 +228,6 @@ namespace WH_APP_GUI.warehouseTableFolder
                 }
 
                 warehouseProduct["product_id"] = product["id"];
-
-
             }
         }
 
@@ -215,7 +242,6 @@ namespace WH_APP_GUI.warehouseTableFolder
         {
             bool thereIsAnError = false;
 
-
             foreach (var gridElement in productGrid.Children)
             {
                 if (gridElement.GetType() == typeof(StackPanel))
@@ -225,11 +251,9 @@ namespace WH_APP_GUI.warehouseTableFolder
                     {
                         if (element.GetType() == typeof(ValueRangeTextBox))
                         {
-
                             ValueRangeTextBox VTextBox = (ValueRangeTextBox)element;
 
                             thereIsAnError = Validation.ValidateTextbox(VTextBox, warehouseProduct);
-
                         }
                         else if (element.GetType() == typeof(ComboBox))
                         {
@@ -237,7 +261,6 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                             thereIsAnError = Validation.ValidateCombobox(comboBox, warehouseProduct);
                         }
-
                     }
                 }
                 if (thereIsAnError == true)
@@ -256,7 +279,6 @@ namespace WH_APP_GUI.warehouseTableFolder
                 {
                     updateDatabase();
                 }
-
             }
         }
 

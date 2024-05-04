@@ -24,7 +24,11 @@ namespace WH_APP_GUI
             IniDatasInLog();
             IniEmails();
 
-            if ((int)User.currentUser["role_id"] != 1)
+            if (User.DoesHavePermission("Clear Log"))
+            {
+                ClearLog.Visibility = Visibility.Visible;
+            }
+            else
             {
                 ClearLog.Visibility = Visibility.Collapsed;
             }
@@ -47,7 +51,7 @@ namespace WH_APP_GUI
         {
             Logs.Visibility = Visibility.Visible;
             Logs.Items.Clear();
-            List<string[]> Datas = SQL.SqlQuery("SELECT * FROM log");
+            List<string[]> Datas = SQL.SqlQuery("SELECT * FROM log ORDER BY updated_at DESC");
             for (int i = 0; i < Datas.Count; i++)
             {
                 Logs.Items.Add($"[{Datas[i][3]}]: {Datas[i][2]}");
