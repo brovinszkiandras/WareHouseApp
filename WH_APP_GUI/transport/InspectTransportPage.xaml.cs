@@ -194,9 +194,14 @@ namespace WH_APP_GUI.transport
                         SetGasPrices routeDetails = new SetGasPrices(transport);
                         routeDetails.ShowDialog();
 
-                        //transport.Delete();
-                        //Tables.transports.updateChanges();
-                        //Tables.transports.Refresh();
+                        if (Navigation.PreviousPage != null)
+                        {
+                            Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                        }
+                        else
+                        {
+                            Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
+                        }
                     }
                     else
                     {

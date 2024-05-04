@@ -201,13 +201,29 @@ namespace WH_APP_GUI.transport
             double gasPrice = (double)(sender as Button).Tag;
             if (gasPrice != 0)
             {
-                
+                GasPrice = gasPrice;
             }
         }
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
+            if (GasPrice != 0)
+            {
+                Controller.AddToRevnue_A_Day_Expenditure(Tables.transports.getWarehouse(Transport), AllKm * GasPrice);
+                DataRow Warehouse = Tables.transports.getWarehouse(Transport);
+                Warehouse["total_spending"] = Warehouse["total_spending"] != DBNull.Value ? (double)Warehouse["total_spending"] + AllKm * GasPrice : AllKm * GasPrice;
 
+                Transport.Delete();
+                Tables.warehouses.updateChanges();
+                Tables.transports.updateChanges();
+                Tables.transports.Refresh();
+
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("There is no any gas price selected!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
