@@ -63,7 +63,7 @@
 
       
 
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -107,7 +107,7 @@
             <RowDefinition Height="8*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}" Grid.Column="2"/>
+        <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}" Grid.Column="2"/>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1">
             <Grid x:Name="productGrid">
@@ -198,7 +198,7 @@
                     </ComboBox>
                 </StackPanel>
 
-                <Button x:Name="Save" Click="Save_Click" Style="{StaticResource GreenButtonStyle}" Panel.ZIndex="1" Content="Save"  Grid.Row="8"></Button>
+                <Button x:Name="Save" Click="Save_Click" Style="{StaticResource GoldenButtonStyle}" Panel.ZIndex="1" Content="Save"  Grid.Row="8"></Button>
             </Grid>
         </ScrollViewer>
 

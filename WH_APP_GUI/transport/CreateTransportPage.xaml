@@ -7,40 +7,68 @@
         xmlns:local="clr-namespace:WH_APP_GUI.transport"
         mc:Ignorable="d"
         Title="CreateTransportPage"
-        d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="10*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+        d:DesignHeight="450" d:DesignWidth="800"
+        SizeChanged="CreateTransportPage_SizeChanged">
+    
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Page.Resources>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        
-        <UniformGrid Columns="2" Rows="7" Grid.Row="1" Grid.Column="1">
-            <Label FontSize="17" Content="Employee" Margin="5"></Label>
-            <ComboBox SelectionChanged="EmployeesCBX_SelectionChanged" Name="EmployeesCBX" Margin="5"/>
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.4*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
 
-            <Label FontSize="17" Content="Warehouse" Margin="5"></Label>
-            <ComboBox SelectionChanged="WarehouseCBX_SelectionChanged" Name="WarehouseCBX" Margin="5"/>
+            <Grid x:Name="DatasgGRID" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <Label FontSize="17" Content="Car" Margin="5"></Label>
-            <ComboBox SelectionChanged="CarsCBX_SelectionChanged" Name="CarsCBX" Margin="5"/>
+                <Label Content="Warehouse" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Employee" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Car" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Start date" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="End date" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Dock" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
 
-            <Label Content="Start date" FontSize="17" Margin="5"></Label>
-            <xctk:DateTimePicker TimeFormat="Custom" TimeFormatString="yyyy-MM-dd HH:mm:ss" Format="Custom" Margin="5" FormatString="yyyy-MM-dd HH:mm:ss" InputValidationError="start_date_InputValidationError" FontSize="17" Value="{Binding Path=[start_date]}" Name="start_date" />
+                <ComboBox Grid.Column="1" Grid.Row="0" SelectionChanged="WarehouseCBX_SelectionChanged" Name="WarehouseCBX" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <ComboBox Grid.Column="1" Grid.Row="1" SelectionChanged="EmployeesCBX_SelectionChanged" Name="EmployeesCBX" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <ComboBox Grid.Column="1" Grid.Row="2" SelectionChanged="CarsCBX_SelectionChanged" Name="CarsCBX" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <xctk:DateTimePicker Grid.Column="1" Grid.Row="3" TimeFormat="Custom" TimeFormatString="yyyy-MM-dd HH:mm:ss" Format="Custom" FormatString="yyyy-MM-dd HH:mm:ss" InputValidationError="start_date_InputValidationError" Value="{Binding Path=[start_date]}" Name="start_date" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <xctk:DateTimePicker Grid.Column="1" Grid.Row="4" TimeFormat="Custom" TimeFormatString="yyyy-MM-dd HH:mm:ss" Format="Custom" FormatString="yyyy-MM-dd HH:mm:ss" InputValidationError="start_date_InputValidationError" Value="{Binding Path=[end_date]}" Name="end_date" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <ComboBox Grid.Column="1" Grid.Row="5" SelectionChanged="DocksCBX_SelectionChanged" Name="DocksCBX" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+            </Grid>
 
-            <Label Content="End date" FontSize="17" Margin="5"></Label>
-            <xctk:DateTimePicker TimeFormat="Custom" TimeFormatString="yyyy-MM-dd HH:mm:ss" Margin="5" Format="Custom" FormatString="yyyy-MM-dd HH:mm:ss" InputValidationError="start_date_InputValidationError" FontSize="17" Value="{Binding Path=[end_date]}" Name="end_date" />
 
-            <Label FontSize="17" Content="Dock" Margin="5"></Label>
-            <ComboBox SelectionChanged="DocksCBX_SelectionChanged" Name="DocksCBX" Margin="5"/>
 
-        </UniformGrid>
-        <Button Grid.Row="2" Grid.Column="1" Margin="5" Name="save" Click="save_Click" Content="Save"/>
-    </Grid>
+
+            <StackPanel Grid.Column="8" Grid.Row="2" Margin="30">
+                <Button Name="save" Content="Done" Margin="0, 5" Padding="20, 10" Click="save_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button x:Name="Back" Content="Back" Margin="0, 5" Padding="20, 10" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Page>

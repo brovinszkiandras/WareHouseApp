@@ -23,6 +23,11 @@ namespace WH_APP_GUI
             InitializeComponent();
             IniDatasInLog();
             IniEmails();
+
+            if ((int)User.currentUser["role_id"] != 1)
+            {
+                ClearLog.Visibility = Visibility.Collapsed;
+            }
         }
         private void IniEmails()
         {
@@ -75,6 +80,14 @@ namespace WH_APP_GUI
                 {
                     Logs.Items.Add($"[{Datas[i][3]}]: {Datas[i][2]}");
                 }
+            }
+        }
+
+        private void LogDisplay_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
             }
         }
     }

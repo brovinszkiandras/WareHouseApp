@@ -41,7 +41,7 @@
             </Style.Setters>
         </Style>
 
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -85,7 +85,7 @@
                 <RowDefinition Height="3*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button FontSize="17" Grid.Column="2" Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}" Margin="10"/>
+            <Button FontSize="17" Grid.Column="2" Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}" Margin="10"/>
 
             <!-- Sector name -->
             <Label FontSize="25" Content="{Binding Path=[name]}" Style="{StaticResource labelstyle}" VerticalContentAlignment="Center" Grid.Column="1"/>
@@ -116,13 +116,13 @@
             <!-- Toolpanel -->
             <StackPanel Visibility="Visible" Name="toolPanel" Grid.Row="1" Grid.Column="2">
                 <!-- Desinger view -->
-                <Button Height="50" Content="Designer view: OFF" Name="desinger_viewButton" Click="Designer_Click" Margin="10" MaxHeight="30" Style="{StaticResource GreenButtonStyle}"></Button>
+                <Button Height="50" Content="Designer view: OFF" Name="desinger_viewButton" Click="Designer_Click" Margin="10" MaxHeight="30" Style="{StaticResource GoldenButtonStyle}"></Button>
                 <!-- New shelf button -->
-                <Button Height="50" Visibility="Hidden" Content="New shelf" Name="New_shelf" Click="New_shelf_Click" MaxHeight="30" Margin="10" Style="{StaticResource GreenButtonStyle}"></Button>
+                <Button Height="50" Visibility="Hidden" Content="New shelf" Name="New_shelf" Click="New_shelf_Click" MaxHeight="30" Margin="10" Style="{StaticResource GoldenButtonStyle}"></Button>
                 <!-- Done building shelf -->
-                <Button Height="50" Content="Done" Visibility="Hidden" Name="Done" Click="Done_Click" Margin="10" MaxHeight="30" Style="{StaticResource GreenButtonStyle}"></Button>
+                <Button Height="50" Content="Done" Visibility="Hidden" Name="Done" Click="Done_Click" Margin="10" MaxHeight="30" Style="{StaticResource GoldenButtonStyle}"></Button>
                 <!-- Delete button -->
-                <Button Height="50" Content="Delete" Foreground="White" Visibility="Hidden" Name="Delete" MaxHeight="30" Background="Red" Margin="10" Click="Delete_Click" Style="{StaticResource GreenButtonStyle}"></Button>
+                <Button Height="50" Content="Delete" Foreground="White" Visibility="Hidden" Name="Delete" MaxHeight="30" Background="Red" Margin="10" Click="Delete_Click" Style="{StaticResource GoldenButtonStyle}"></Button>
             </StackPanel>
 
             <!-- Products info -->

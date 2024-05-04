@@ -22,12 +22,23 @@ namespace WH_APP_GUI.Product
         {
             InitializeComponent();
             DisplayAllProducts(ProductsDiaplayStackPanel);
+
+            if (!User.DoesHavePermission("Add Products"))
+            {
+                AddProducts.Visibility = Visibility.Collapsed;
+            }
         }
         private DataRow WarehouseFromPage;
         public ProductsPage(DataRow warehouseFromPage)
         {
             InitializeComponent();
             DisplayAllProducts(ProductsDiaplayStackPanel);
+
+            if (!User.DoesHavePermission("Add Products"))
+            {
+                AddProducts.Visibility = Visibility.Collapsed;
+            }
+
             WarehouseFromPage = warehouseFromPage;
         }
 
@@ -35,22 +46,32 @@ namespace WH_APP_GUI.Product
         {
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
+            border.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+            border.CornerRadius = new CornerRadius(15);
             border.BorderThickness = new Thickness(2);
-            border.Background = Brushes.White;
-            //border.MaxHeight = 150;
-            border.MaxWidth = 650;
             border.Margin = new Thickness(5);
 
-            StackPanel mainStackpanel = new StackPanel();
-            mainStackpanel.Orientation = Orientation.Horizontal;
+            StackPanel outerStack = new StackPanel();
+            if (Tables.features.isFeatureInUse("Date Log"))
+            {
+                Label dateLog = new Label();
+                dateLog.Content = $"Created at: {product["created_at"]} \tUpdated at: {product["updated_at"]}";
+                dateLog.Style = (Style)this.Resources["labelstyle"];
+                dateLog.HorizontalContentAlignment = HorizontalAlignment.Center;
+                outerStack.Children.Add(dateLog);
+            }
+
+            Grid mainStackPanel = new Grid();
+            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
 
             StackPanel imageStackpanel = new StackPanel();
-            imageStackpanel.Margin = new Thickness(5);
-            imageStackpanel.VerticalAlignment = VerticalAlignment.Center;
 
             Image productImage = new Image();
-            productImage.Height = 80;
-            productImage.Width = 80;
+            productImage.Margin = new Thickness(5);
+            productImage.Height = 100;
+            productImage.Width = 100;
             imageStackpanel.Children.Add(productImage);
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
@@ -71,18 +92,15 @@ namespace WH_APP_GUI.Product
 
             Label productName = new Label();
             productName.Content = $"{product["name"]}";
-            productName.BorderBrush = Brushes.Black;
-            productName.BorderThickness = new Thickness(0, 0, 0, 1);
-            productName.Width = 80;
-            productName.FontStyle = FontStyles.Italic;
-            productName.FontSize = 8;
+            productName.Style = (Style)this.Resources["labelstyle"];
             productName.HorizontalContentAlignment = HorizontalAlignment.Center;
             imageStackpanel.Children.Add(productName);
 
-            mainStackpanel.Children.Add(imageStackpanel);
+            Grid.SetColumn(imageStackpanel, 0);
+            mainStackPanel.Children.Add(imageStackpanel);
 
             Grid grid = new Grid();
-            grid.MinWidth = 400;
+
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
             grid.RowDefinitions.Add(new RowDefinition());
@@ -93,32 +111,28 @@ namespace WH_APP_GUI.Product
 
             Label nameLabel = new Label();
             nameLabel.Content = $"Product Name: {product["name"]}";
-            nameLabel.BorderBrush = Brushes.Black;
-            nameLabel.BorderThickness = new Thickness(0, 0, 1, 1);
+            nameLabel.Style = (Style)this.Resources["labelstyle"];
             Grid.SetColumn(nameLabel, 0);
             Grid.SetRow(nameLabel, 0);
 
             Label buyingPriceLabel = new Label();
             buyingPriceLabel.Content = $"Buying Price: {product["buying_price"]}";
-            buyingPriceLabel.BorderBrush = Brushes.Black;
-            buyingPriceLabel.BorderThickness = new Thickness(0, 0, 1, 1);
+            buyingPriceLabel.Style = (Style)this.Resources["labelstyle"];
             Grid.SetColumn(buyingPriceLabel, 0);
             Grid.SetRow(buyingPriceLabel, 1);
 
             Label sellingPriceLabel = new Label();
             sellingPriceLabel.Content = $"Selling Price: {product["selling_price"]}";
-            sellingPriceLabel.BorderBrush = Brushes.Black;
-            sellingPriceLabel.BorderThickness = new Thickness(0, 0, 1, 1);
+            sellingPriceLabel.Style = (Style)this.Resources["labelstyle"];
             Grid.SetColumn(sellingPriceLabel, 0);
             Grid.SetRow(sellingPriceLabel, 2);
 
             TextBlock descriptionLabel = new TextBlock();
             descriptionLabel.TextWrapping = TextWrapping.Wrap;
+            descriptionLabel.Style = (Style)this.Resources["textBlock"];
             descriptionLabel.Text = $"{product["description"]}";
 
             Border borderDescription = new Border();
-            borderDescription.BorderBrush = Brushes.Black;
-            borderDescription.BorderThickness = new Thickness(0,0,1,0);
             borderDescription.Child = descriptionLabel;
             Grid.SetColumn(borderDescription, 0);
             Grid.SetRow(borderDescription, 3);
@@ -128,35 +142,31 @@ namespace WH_APP_GUI.Product
             {
                 Label weightLabel = new Label();
                 weightLabel.Content = $"Weight: {product["weight"]}";
-                weightLabel.BorderBrush = Brushes.Black;
-                weightLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+                weightLabel.Style = (Style)this.Resources["labelstyle"];
                 Grid.SetColumn(weightLabel, 1);
                 Grid.SetRow(weightLabel, 0);
 
                 Label volumeLabel = new Label();
                 volumeLabel.Content = $"Volume: {product["volume"]}";
-                volumeLabel.BorderBrush = Brushes.Black;
-                volumeLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+                volumeLabel.Style = (Style)this.Resources["labelstyle"];
                 Grid.SetColumn(volumeLabel, 1);
                 Grid.SetRow(volumeLabel, 1);
 
                 Label widthLabel = new Label();
                 widthLabel.Content = $"Width: {product["width"]}";
-                widthLabel.BorderBrush = Brushes.Black;
-                widthLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+                widthLabel.Style = (Style)this.Resources["labelstyle"];
                 Grid.SetColumn(widthLabel, 1);
                 Grid.SetRow(widthLabel, 2);
 
                 Label heightLabel = new Label();
                 heightLabel.Content = $"Height: {product["heigth"]}";
-                heightLabel.BorderBrush = Brushes.Black;
-                heightLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+                heightLabel.Style = (Style)this.Resources["labelstyle"];
                 Grid.SetColumn(heightLabel, 1);
                 Grid.SetRow(heightLabel, 3);
 
                 Label lengthLabel = new Label();
                 lengthLabel.Content = $"Length: {product["length"]}";
-                lengthLabel.BorderBrush = Brushes.Black;
+                lengthLabel.Style = (Style)this.Resources["labelstyle"];
                 Grid.SetColumn(lengthLabel, 1);
                 Grid.SetRow(lengthLabel, 4);
 
@@ -170,32 +180,35 @@ namespace WH_APP_GUI.Product
                 grid.Children.Add(heightLabel);
                 grid.Children.Add(lengthLabel);
 
-                mainStackpanel.Children.Add(grid);
+                Grid.SetColumn(grid, 1);
+                mainStackPanel.Children.Add(grid);
             }
 
             StackPanel buttonsStackPanel = new StackPanel();
-            buttonsStackPanel.Width = 100;
-            buttonsStackPanel.HorizontalAlignment = HorizontalAlignment.Center;
-            buttonsStackPanel.VerticalAlignment = VerticalAlignment.Center;
+
+            if (User.DoesHavePermission("Change Products"))
+            {
+                Button deleteButton = new Button();
+                deleteButton.Content = "Delete";
+                deleteButton.Click += DeleteProduct_Click;
+                deleteButton.Tag = product;
+                deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                buttonsStackPanel.Children.Add(deleteButton);
+
+                Button editButton = new Button();
+                editButton.Content = "Edit";
+                editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                editButton.Click += EditProduct_Click;
+                editButton.Tag = product;
+                buttonsStackPanel.Children.Add(editButton);
+            }
 
 
-            Button deleteButton = new Button();
-            deleteButton.Content = "Delete";
-            deleteButton.Click += DeleteProduct_Click;
-            deleteButton.Tag = product;
-            deleteButton.Margin = new Thickness(5);
-            buttonsStackPanel.Children.Add(deleteButton);
+            Grid.SetColumn(buttonsStackPanel, 2);
+            mainStackPanel.Children.Add(buttonsStackPanel);
 
-            Button editButton = new Button();
-            editButton.Content = "Edit";
-            editButton.Margin = new Thickness(5);
-            editButton.Click += EditProduct_Click;
-            editButton.Tag = product;
-            buttonsStackPanel.Children.Add(editButton);
-
-            mainStackpanel.Children.Add(buttonsStackPanel);
-
-            border.Child = mainStackpanel;
+            outerStack.Children.Add(mainStackPanel);
+            border.Child = outerStack;
             panel.Children.Add(border);
         }
 
@@ -256,6 +269,14 @@ namespace WH_APP_GUI.Product
             else
             {
                 Navigation.OpenPage(Navigation.GetTypeByName("CreateProduct"));
+            }
+        }
+
+        private void ProductsPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
             }
         }
     }

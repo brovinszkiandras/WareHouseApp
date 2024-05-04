@@ -1,4 +1,5 @@
-﻿using MySqlConnector;
+﻿using ControlzEx.Standard;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -74,14 +75,18 @@ namespace WH_APP_GUI.carsFolder
             StackPanel stackPanel = new StackPanel();
             Grid.SetRow(stackPanel, 7);
             Label label = new Label();
-            label.FontSize = 17;
+            label.Style = (Style)this.Resources["labelstyle"];
             label.Content = "Storage (cm2)*";
             stackPanel.Children.Add(label);
 
             Binding storageBinding = new Binding("[storage]");
 
             ValueRangeTextBox storage = new ValueRangeTextBox();
-            storage.FontSize = 17;
+            storage.FontFamily = new FontFamily("Baskerville Old Face");
+            storage.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0xCE, 0xA2));
+            storage.Background = new SolidColorBrush(Color.FromRgb(0x39, 0x52, 0x50));
+            storage.BorderBrush = Brushes.Black;
+            storage.Margin = new Thickness(5);
             storage.ValueDataType = typeof(Decimal);
             storage.MaxLength = 13;
             storage.MaxLines = 13;
@@ -98,7 +103,7 @@ namespace WH_APP_GUI.carsFolder
             StackPanel stackPanel2 = new StackPanel();
             Grid.SetRow(stackPanel2, 8);
             Label label2 = new Label();
-            label2.FontSize = 17;
+            label2.Style = (Style)this.Resources["labelstyle"];
             label2.Content = "Carrying capacity (kgm)*";
             stackPanel2.Children.Add(label2);
 
@@ -106,7 +111,11 @@ namespace WH_APP_GUI.carsFolder
             Binding carrryingCapacityBinding = new Binding("[carrying_capacity]");
 
             ValueRangeTextBox carrying_capacity = new ValueRangeTextBox();
-            carrying_capacity.FontSize = 17;
+            carrying_capacity.FontFamily = new FontFamily("Baskerville Old Face");
+            carrying_capacity.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0xCE, 0xA2));
+            carrying_capacity.Background = new SolidColorBrush(Color.FromRgb(0x39, 0x52, 0x50));
+            carrying_capacity.BorderBrush = Brushes.Black;
+            carrying_capacity.Margin = new Thickness(5);
             carrying_capacity.ValueDataType = typeof(Decimal);
             carrying_capacity.MaxLength = 13;
             carrying_capacity.MaxLines = 13;
@@ -129,14 +138,18 @@ namespace WH_APP_GUI.carsFolder
             StackPanel stackPanel = new StackPanel();
             Grid.SetRow(stackPanel, 9);
             Label label = new Label();
-            label.FontSize = 17;
+            label.Style = (Style)this.Resources["labelstyle"];
             label.Content = "Consumption (liter/h)*";
             stackPanel.Children.Add(label);
 
             Binding consumptionBinding = new Binding("[consumption]");
 
             ValueRangeTextBox consumption = new ValueRangeTextBox();
-            consumption.FontSize = 17;
+            consumption.FontFamily = new FontFamily("Baskerville Old Face");
+            consumption.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0xCE, 0xA2));
+            consumption.Background = new SolidColorBrush(Color.FromRgb(0x39, 0x52, 0x50));
+            consumption.BorderBrush = Brushes.Black;
+            consumption.Margin = new Thickness(5);
             consumption.ValueDataType = typeof(Decimal);
             consumption.MaxLength = 13;
             consumption.MaxLines = 13;
@@ -154,7 +167,7 @@ namespace WH_APP_GUI.carsFolder
             StackPanel stackPanel2 = new StackPanel();
             Grid.SetRow(stackPanel2, 10);
             Label label2 = new Label();
-            label2.FontSize = 17;
+            label2.Style = (Style)this.Resources["labelstyle"];
             label2.Content = "Gas tank size (liter)*";
             stackPanel2.Children.Add(label2);
 
@@ -162,7 +175,11 @@ namespace WH_APP_GUI.carsFolder
             Binding gasTankSizeBinding = new Binding("[gas_tank_size]");
 
             ValueRangeTextBox gasTankSize = new ValueRangeTextBox();
-            gasTankSize.FontSize = 17;
+            gasTankSize.FontFamily = new FontFamily("Baskerville Old Face");
+            gasTankSize.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0xCE, 0xA2));
+            gasTankSize.Background = new SolidColorBrush(Color.FromRgb(0x39, 0x52, 0x50));
+            gasTankSize.BorderBrush = Brushes.Black;
+            gasTankSize.Margin = new Thickness(5);
             gasTankSize.ValueDataType = typeof(Decimal);
             gasTankSize.MaxLength = 13;
             gasTankSize.MaxLines = 13;
@@ -233,6 +250,14 @@ namespace WH_APP_GUI.carsFolder
             if (Navigation.PreviousPage != null)
             {
                 Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            }
+        }
+
+        private void CreateCarWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
             }
         }
     }

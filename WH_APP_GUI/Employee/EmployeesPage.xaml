@@ -11,7 +11,7 @@
         SizeChanged="EmployePage_SizeChanged">
 
     <Page.Resources>
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -50,15 +50,15 @@
     <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="Add new employee" Name="AddNewEmployee" Click="AddNewEmployee_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Content="All Employees" Name="AllEmployees" Click="AllEmployees_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Content="Add new employee" Name="AddNewEmployee" Click="AddNewEmployee_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Content="All Employees" Name="AllEmployees" Click="AllEmployees_Click" Style="{StaticResource GoldenButtonStyle}"/>
                 <ComboBox Name="EmployeeWarehouses" Visibility="Collapsed" SelectionChanged="EmployeeWarehouses_SelectionChanged" Margin="5" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
-                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
 
 

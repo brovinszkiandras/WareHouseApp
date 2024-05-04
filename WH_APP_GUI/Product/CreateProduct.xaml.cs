@@ -164,5 +164,12 @@ namespace WH_APP_GUI.Product
         {
             Navigation.OpenPage(Navigation.PreviousPage.GetType());
         }
+        private void CreateProductsPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+        }
     }
 }

@@ -27,22 +27,21 @@ namespace WH_APP_GUI.transport
             DisplayOneTransport(transport);
         }
 
-
         private void DisplayOneTransport(DataRow transport)
         {
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
+            border.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+            border.CornerRadius = new CornerRadius(15);
             border.BorderThickness = new Thickness(2);
-            border.Background = Brushes.White;
+            border.Margin = new Thickness(5);
 
             StackPanel mainStackPanel = new StackPanel();
 
             Label driver = new Label();
             driver.Content = $"{Tables.transports.getEmployee(transport)["name"]}";
             driver.HorizontalContentAlignment = HorizontalAlignment.Center;
-            driver.Margin = new Thickness(5);
-            driver.BorderBrush = Brushes.Black;
-            driver.BorderThickness = new Thickness(0, 0, 0, 1);
+            driver.Style = (Style)this.Resources["labelstyle"];
 
             mainStackPanel.Children.Add(driver);
 
@@ -52,15 +51,17 @@ namespace WH_APP_GUI.transport
 
             Label car = new Label();
             car.Content = $"Car: {Tables.transports.getCar(transport)["type"]}";
-            car.BorderBrush = Brushes.Black;
-            car.BorderThickness = new Thickness(1, 0, 0, 1);
-            car.Margin = new Thickness(0, 0, 5, 0);
+            car.Style = (Style)this.Resources["labelstyle"];
             datas.Children.Add(car);
 
             ComboBox status = new ComboBox();
             status.BorderBrush = Brushes.Black;
-            status.BorderThickness = new Thickness(1, 0, 0, 1);
-            status.Margin = new Thickness(0, 0, 5, 0);
+            status.VerticalContentAlignment = VerticalAlignment.Center;
+            status.FontFamily = new FontFamily("Baskerville Old Face");
+            status.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0xCE, 0xA2));
+            status.Background = new SolidColorBrush(Color.FromRgb(0x39, 0x52, 0x50));
+            status.BorderBrush = Brushes.Black;
+            status.Margin = new Thickness(5);
             status.Tag = transport;
 
             if (transport["status"].ToString() == "Docking")
@@ -68,6 +69,10 @@ namespace WH_APP_GUI.transport
                 status.Items.Add("Docking");
                 status.Items.Add("On route");
                 status.SelectedItem = "Docking";
+                if (Tables.transports.getOrders(transport).Length == 0)
+                {
+                    status.IsEnabled = false;
+                }
             }
             else if (transport["status"].ToString() == "On route")
             {
@@ -87,32 +92,25 @@ namespace WH_APP_GUI.transport
 
             Label start_date = new Label();
             start_date.Content = $"Start date: {transport["start_date"]}";
-            start_date.BorderBrush = Brushes.Black;
-            start_date.BorderThickness = new Thickness(1, 0, 0, 1);
-            start_date.Margin = new Thickness(0, 0, 5, 0);
+            start_date.Style = (Style)this.Resources["labelstyle"];
             datas.Children.Add(start_date);
 
             Label end_date = new Label();
+            string endDate = transport["end_date"] != DBNull.Value ? transport["end_date"].ToString() : "No end date yet.";
             end_date.Content = $"End date: {transport["end_date"]}";
-            end_date.BorderBrush = Brushes.Black;
-            end_date.BorderThickness = new Thickness(1, 0, 0, 1);
-            end_date.Margin = new Thickness(0, 0, 5, 0);
+            end_date.Style = (Style)this.Resources["labelstyle"];
             datas.Children.Add(end_date);
 
             Label warehouse = new Label();
             warehouse.Content = $"Warehouse: {Tables.transports.getWarehouse(transport)["name"]}";
-            warehouse.BorderBrush = Brushes.Black;
-            warehouse.BorderThickness = new Thickness(1, 0, 0, 1);
-            warehouse.Margin = new Thickness(0, 0, 5, 0);
+            warehouse.Style = (Style)this.Resources["labelstyle"];
             datas.Children.Add(warehouse);
 
             if (Tables.features.isFeatureInUse("Dock") == true)
             {
                 Label dock = new Label();
                 dock.Content = $"Dock: {Tables.transports.getDock(transport)["name"]}";
-                dock.BorderBrush = Brushes.Black;
-                dock.BorderThickness = new Thickness(1, 0, 0, 1);
-                dock.Margin = new Thickness(0, 0, 5, 0);
+                dock.Style = (Style)this.Resources["labelstyle"];
                 datas.Children.Add(dock);
 
                 mainStackPanel.Children.Add(datas);
@@ -205,9 +203,10 @@ namespace WH_APP_GUI.transport
 
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
+            border.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+            border.CornerRadius = new CornerRadius(15);
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
-            border.Background = Brushes.White;
 
             StackPanel mainStackPanel = new StackPanel();
 
@@ -229,8 +228,8 @@ namespace WH_APP_GUI.transport
                 }
 
                 Image image = new Image();
-                image.Width = 80;
-                image.Height = 80;
+                image.Width = 10;
+                image.Height = 100;
                 image.Margin = new Thickness(5);
 
                 string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
@@ -258,43 +257,37 @@ namespace WH_APP_GUI.transport
 
             Label userNameInfo = new Label();
             userNameInfo.Content = $"Username: {dataOfOrder["user_name"]}";
-            userNameInfo.BorderBrush = Brushes.Black;
-            userNameInfo.BorderThickness = new Thickness(0, 0, 1, 1);
+            userNameInfo.Style = (Style)this.Resources["labelstyle"];
             userNameInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
             userInfoGrid.Children.Add(userNameInfo);
 
             Label paymentMethodInfo = new Label();
             paymentMethodInfo.Content = $"Payment method: {dataOfOrder["payment_method"]}";
-            paymentMethodInfo.BorderBrush = Brushes.Black;
-            paymentMethodInfo.BorderThickness = new Thickness(1, 0, 0, 1);
+            paymentMethodInfo.Style = (Style)this.Resources["labelstyle"];
             paymentMethodInfo.HorizontalContentAlignment = HorizontalAlignment.Left;
             userInfoGrid.Children.Add(paymentMethodInfo);
 
             Label addressInfo = new Label();
             addressInfo.Content = $"Address: {dataOfOrder["address"]} - ({Tables.orders.getCity(dataOfOrder)["city_name"]})";
-            addressInfo.BorderBrush = Brushes.Black;
-            addressInfo.BorderThickness = new Thickness(0, 0, 1, 1);
+            addressInfo.Style = (Style)this.Resources["labelstyle"];
             addressInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
             userInfoGrid.Children.Add(addressInfo);
 
             Label productCountInfo = new Label();
             productCountInfo.Content = $"Products Count: {qtyOfAllProd}";
-            productCountInfo.BorderBrush = Brushes.Black;
-            productCountInfo.BorderThickness = new Thickness(1, 0, 0, 1);
+            productCountInfo.Style = (Style)this.Resources["labelstyle"];
             productCountInfo.HorizontalContentAlignment = HorizontalAlignment.Left;
             userInfoGrid.Children.Add(productCountInfo);
 
             Label orderInfo = new Label();
             orderInfo.Content = $"Order date: {dataOfOrder["order_date"]}";
-            orderInfo.BorderBrush = Brushes.Black;
-            orderInfo.BorderThickness = new Thickness(0, 0, 1, 1);
+            orderInfo.Style = (Style)this.Resources["labelstyle"];
             orderInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
             userInfoGrid.Children.Add(orderInfo);
 
             Label maxValueCount = new Label();
             maxValueCount.Content = $"Max value: {maxPrice} - Ft";
-            maxValueCount.BorderBrush = Brushes.Black;
-            maxValueCount.BorderThickness = new Thickness(1, 0, 0, 1);
+            maxValueCount.Style = (Style)this.Resources["labelstyle"];
             maxValueCount.HorizontalContentAlignment = HorizontalAlignment.Left;
             userInfoGrid.Children.Add(maxValueCount);
 
@@ -310,10 +303,16 @@ namespace WH_APP_GUI.transport
             if (dataOfOrder["status"].ToString() == "Finished" || dataOfOrder["status"].ToString() == "Sent Back" || dataOfOrder["status"].ToString() == "Delivered") 
             {
                 ComboBox statusCBX = new ComboBox();
+                statusCBX.BorderBrush = Brushes.Black;
+                statusCBX.VerticalContentAlignment = VerticalAlignment.Center;
+                statusCBX.FontFamily = new FontFamily("Baskerville Old Face");
+                statusCBX.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0xCE, 0xA2));
+                statusCBX.Background = new SolidColorBrush(Color.FromRgb(0x39, 0x52, 0x50));
+                statusCBX.BorderBrush = Brushes.Black;
                 statusCBX.Margin = new Thickness(5);
+
                 statusCBX.HorizontalAlignment = HorizontalAlignment.Center;
                 statusCBX.Tag = Tables.orders.getOrdersOfAUser(dataOfOrder["user_name"], dataOfOrder["address"]);
-                statusCBX.MinWidth = 150;
                 statusCBX.Items.Add("Delivered");
                 statusCBX.Items.Add("Sent Back");
                 if (statusCBX.Items.Contains(dataOfOrder["status"].ToString()))
@@ -336,6 +335,7 @@ namespace WH_APP_GUI.transport
                 Label statusLBL = new Label();
                 statusLBL.Content = $"Status: {dataOfOrder["status"]}";
                 statusLBL.HorizontalAlignment = HorizontalAlignment.Center;
+                statusLBL.Style = (Style)this.Resources["labelstyle"];
                 status.Child = statusLBL;
             }
 
@@ -351,6 +351,7 @@ namespace WH_APP_GUI.transport
                 Label sumVolumeInfo = new Label();
                 sumVolumeInfo.Content = $"Sum volume: {sumVolume}(m^2)";
                 sumVolumeInfo.HorizontalAlignment = HorizontalAlignment.Center;
+                sumVolumeInfo.Style = (Style)this.Resources["labelstyle"];
 
                 borderForSum.Child = sumVolumeInfo;
                 mainStackPanel.Children.Add(borderForSum);
@@ -410,10 +411,22 @@ namespace WH_APP_GUI.transport
                             {
                                 DataRow productInWarehouse = WarehouseTable.database.Select($"product_id = {product["id"]}")[0];
                                 productInWarehouse["qty"] = (int)productInWarehouse["qty"] + qty;
+                                WarehouseTable.updateChanges();
                             }
                             else
                             {
-                                //Big problem
+                                DataRow productInWarehouse = WarehouseTable.database.NewRow();
+                                productInWarehouse["product_id"] = product["id"];
+                                productInWarehouse["qty"] = order["qty"];
+                                productInWarehouse["shelf_id"] = DBNull.Value;
+                                productInWarehouse["width"] = 0;
+                                productInWarehouse["height"] = 0;
+                                productInWarehouse["length"] = 0;
+                                productInWarehouse["on_shelf_level"] = DBNull.Value;
+                                productInWarehouse["is_in_box"] = false;
+
+                                WarehouseTable.database.Rows.Add(productInWarehouse);
+                                WarehouseTable.updateChanges();
                             }
                         }
                     }
@@ -435,6 +448,14 @@ namespace WH_APP_GUI.transport
             else
             {
                 Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
+            }
+        }
+
+        private void InspectTransportPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
             }
         }
     }

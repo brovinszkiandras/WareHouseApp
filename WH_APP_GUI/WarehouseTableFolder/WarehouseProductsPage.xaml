@@ -7,8 +7,9 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="WarehouseProductsPage">
+
     <Page.Resources>
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -38,85 +39,64 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="textblockstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        </Style>
     </Page.Resources>
-    <Grid Background="White">
-        <Grid Background="LightYellow">
+
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
+        <Grid Name="alapgrid" Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.5*"></RowDefinition>
-                <RowDefinition Height="7*"></RowDefinition>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Background="#425C5A" Name="labelsGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
 
-                <Label Content="Product Name"
-       Foreground="White"
-       FontSize="15"
-       VerticalAlignment="Center"
-       HorizontalContentAlignment="Center"></Label>
-                <Label Content="Quantity"
-       Foreground="White"
-       Grid.Column="1" VerticalAlignment="Center"
-       FontSize="15"
-       HorizontalContentAlignment="Center"></Label>
+            <Border CornerRadius="10, 10, 0, 0" Background="#395250">
+                <Grid Name="labelsGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
+                    <Label Content="Product" VerticalAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                    <Label Content="Quantity" VerticalAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="1" Style="{StaticResource labelstyle}"/>
+                    <Label Content="Shelf" VerticalAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="2" Style="{StaticResource labelstyle}"/>
+                    <Label Content="Level" VerticalAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="3" Style="{StaticResource labelstyle}"/>
+                    <Label Content="In a box" VerticalAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="4" Style="{StaticResource labelstyle}"/>
 
-                <Label Content="In a box"
-                Foreground="White"
-                Grid.Column="2"
-                VerticalAlignment="Center"
-                FontSize="13"
-                HorizontalContentAlignment="Center"></Label>
-
-                <Label Content="Shelf"
-        Foreground="White"
-        Grid.Column="3"
-        VerticalAlignment="Center"
-        FontSize="15"
-        HorizontalContentAlignment="Center"></Label>
-
-                <Label Content="Level of shelf"
-                Foreground="White"
-                Grid.Column="4"
-                VerticalAlignment="Center"
-                FontSize="13"
-                HorizontalContentAlignment="Center"></Label>
-
-
-
-                <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}" Grid.Column="9"/>
-                <Button Content="Create New" Name="Create" Click="Create_Click" Style="{StaticResource GreenButtonStyle}" Grid.Column="10"/>
-            </Grid>
+                    <Button Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}" Grid.Column="9"/>
+                    <Button Content="Add New" Name="Create" Click="Create_Click" Style="{StaticResource GoldenButtonStyle}" Grid.Column="10"/>
+                </Grid>
+            </Border>
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
                 <Grid Background="#425C5A" x:Name="productGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-
-
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-
-                    </Grid.RowDefinitions>
                 </Grid>
             </ScrollViewer>
-
         </Grid>
-    </Grid>
+    </Border>
 </Page>

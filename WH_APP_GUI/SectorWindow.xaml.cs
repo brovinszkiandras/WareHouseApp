@@ -237,7 +237,7 @@ namespace WH_APP_GUI
         private void New_shelf_Click(object sender, RoutedEventArgs e)
         {
             //Megváltoztatom a gomb onclik funkcióját
-            changeClickEventToBoxClick();
+           
 
             //Megynitom a shelf creator windowt
             CreateShelf createShelf = new CreateShelf();
@@ -251,6 +251,7 @@ namespace WH_APP_GUI
         {
             if(shelfBuilder.isAShelfBeingCreated == true)
             {
+                changeClickEventToBoxClick();
                 showShelfInfo(shelfBuilder.newShelf);
                 New_shelf.Visibility = Visibility.Collapsed;
                 Delete.Visibility = Visibility.Visible;

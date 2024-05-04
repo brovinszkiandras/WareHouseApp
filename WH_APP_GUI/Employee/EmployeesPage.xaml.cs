@@ -31,6 +31,11 @@ namespace WH_APP_GUI
             Ini_warehouse_id();
             Ini_role_id();
 
+            if (User.DoesHavePermission("Modify all employees"))
+            {
+                AddNewEmployee.Visibility = Visibility.Visible;
+            }
+
             DisplayEmployeesStackpanel.Children.Clear();
             InitializeAllEmployees(DisplayEmployeesStackpanel);
         }
@@ -38,6 +43,11 @@ namespace WH_APP_GUI
         public EmployeesPage(DataRow warehouse)
         {
             InitializeComponent();
+
+            if (User.DoesHavePermission("Modify all employees") || User.DoesHavePermission("Modify employees"))
+            {
+                AddNewEmployee.Visibility = Visibility.Visible;
+            }
 
             DisplayEmployeesStackpanel.Children.Clear();
             AllEmployees.Visibility = Visibility.Collapsed;
@@ -91,6 +101,16 @@ namespace WH_APP_GUI
             border.CornerRadius = new CornerRadius(15);
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
+
+            StackPanel outerStack = new StackPanel();
+            if (Tables.features.isFeatureInUse("Date Log"))
+            {
+                Label dateLog = new Label();
+                dateLog.Content = $"Created at: {employee["created_at"]} \tUpdated at: {employee["updated_at"]}";
+                dateLog.HorizontalContentAlignment = HorizontalAlignment.Center;
+                dateLog.Style = (Style)this.Resources["labelstyle"];
+                outerStack.Children.Add(dateLog);
+            }
 
             Grid mainStackPanel = new Grid();
             mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
@@ -155,10 +175,10 @@ namespace WH_APP_GUI
             }
             else
             {
-                warehouseLBL.Content = "This emplyee does not belongs to a warehouse";
+                warehouseLBL.Content = "Not in warehouse.";
             }
 
-            Label roleLabel = new Label(); 
+            Label roleLabel = new Label();
             roleLabel.Style = (Style)this.Resources["labelstyle"];
 
             if (employee["role_id"] != DBNull.Value)
@@ -182,40 +202,43 @@ namespace WH_APP_GUI
 
             if (User.currentUser != employee)
             {
-                Button deleteButton = new Button();
-                deleteButton.Content = "Delete";
-                deleteButton.Tag = employee;
-                deleteButton.Click += deleteEmployee_Click;
-                deleteButton.Style = (Style)this.Resources["GreenButtonStyle"];
-                rightStackPanel.Children.Add(deleteButton);
+                if (User.DoesHavePermission("Modify employees") || User.DoesHavePermission("Modify all employees"))
+                {
+                    Button deleteButton = new Button();
+                    deleteButton.Content = "Delete";
+                    deleteButton.Tag = employee;
+                    deleteButton.Click += deleteEmployee_Click;
+                    deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    rightStackPanel.Children.Add(deleteButton);
 
-                Button resetPasswordButton = new Button();
-                resetPasswordButton.Content = "Reset Password";
-                resetPasswordButton.Click += resetPassword_Click;
-                resetPasswordButton.Tag = employee;
-                resetPasswordButton.Margin = new Thickness(5);
-                resetPasswordButton.Style = (Style)this.Resources["GreenButtonStyle"];
-                rightStackPanel.Children.Add(resetPasswordButton);
+                    Button resetPasswordButton = new Button();
+                    resetPasswordButton.Content = "Reset Password";
+                    resetPasswordButton.Click += resetPassword_Click;
+                    resetPasswordButton.Tag = employee;
+                    resetPasswordButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    rightStackPanel.Children.Add(resetPasswordButton);
+
+                    Button editButton = new Button();
+                    editButton.Content = "Edit";
+                    editButton.Click += EditEmployee_Click;
+                    editButton.Tag = employee;
+                    editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+
+                    rightStackPanel.Children.Add(editButton);
+                }
             }
             else
             {
                 Button modifyPassword = new Button();
-                modifyPassword.Content = "Reset Password";
+                modifyPassword.Content = "Change Password";
                 modifyPassword.Click += ModifyPassword;
                 modifyPassword.Tag = employee;
-                modifyPassword.Style = (Style)this.Resources["GreenButtonStyle"];
+                modifyPassword.Style = (Style)this.Resources["GoldenButtonStyle"];
                 rightStackPanel.Children.Add(modifyPassword);
             }
 
-            Button editButton = new Button();
-            editButton.Content = "Edit";
-            editButton.Click += EditEmployee_Click;
-            editButton.Tag = employee;
-            editButton.Style = (Style)this.Resources["GreenButtonStyle"];
-
-            rightStackPanel.Children.Add(editButton);
-
-            border.Child = mainStackPanel;
+            outerStack.Children.Add(mainStackPanel);
+            border.Child = outerStack;
             panel.Children.Add(border);
         }
 
@@ -248,7 +271,7 @@ namespace WH_APP_GUI
                 }
                 else
                 {
-                    if(Navigation.GetTypeByName("EditEmployeePage") != null)
+                    if (Navigation.GetTypeByName("EditEmployeePage") != null)
                     {
                         Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);
                     }
@@ -259,7 +282,7 @@ namespace WH_APP_GUI
         {
             if (WarehouseFromPage != null)
             {
-                Navigation.OpenPage(Navigation.GetTypeByName("CreateEmployee"));   
+                Navigation.OpenPage(Navigation.GetTypeByName("CreateEmployee"));
                 Navigation.ReturnParam = WarehouseFromPage;
             }
             else

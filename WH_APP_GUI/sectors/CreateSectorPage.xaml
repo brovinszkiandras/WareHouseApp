@@ -11,7 +11,7 @@
       SizeChanged="CreateSectorPaage_SizeChanged">
 
     <Page.Resources>
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -84,8 +84,8 @@
                 <Label Content="Width: " Style="{StaticResource labelstyle}"/>
                 <xctk:ValueRangeTextBox Name="width" Text="{Binding Path=[width]}" Background="#395250" BorderBrush="Black" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
 
-                <Button FontSize="17" Content="Save" Name="save" Click="Button_Click" Style="{StaticResource GreenButtonStyle}"/>
-                <Button FontSize="17" Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button FontSize="17" Content="Save" Name="save" Click="Button_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button FontSize="17" Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Border>

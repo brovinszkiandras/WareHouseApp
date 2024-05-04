@@ -6,33 +6,74 @@
         xmlns:local="clr-namespace:WH_APP_GUI.carsFolder"
         mc:Ignorable="d"
         Title="CarsPage"
-        d:DesignHeight="450" d:DesignWidth="800">
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0">
+        d:DesignHeight="450" d:DesignWidth="800"
+      SizeChanged="CarsPage_SizeChanged">
+
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                         BorderBrush="{TemplateBinding BorderBrush}"
+                         BorderThickness="{TemplateBinding BorderThickness}"
+                         CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+    </Page.Resources>
+
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
-            <Grid Grid.Row="1" Grid.Column="1">
+
+                <Grid Grid.Row="1" Grid.Column="1">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="7*"></RowDefinition>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid>
+            <Border CornerRadius="10, 10, 0, 0" Background="#395250">
+                <Grid Margin="5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border BorderBrush="Black" Grid.Column="0" Grid.ColumnSpan="6" BorderThickness="0,0,0,1"/>
-                    <Label Content="Plate number" Foreground="White" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left"/>
-                    <Label Content="Type" Foreground="White" Grid.Column="1" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
-                    <Label Content="Ready" Foreground="White" Grid.Column="2" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
-                    <Button Grid.Column="5" Background="{x:Null}" Foreground="White" Name="Create" Content="Create new" Click="Create_Click" Margin="5"/>
-                    <Button Grid.Column="4" Background="{x:Null}" Foreground="White" Name="Back" Content="Back" Click="Back_Click" Margin="5"/>
+                    <Label Content="Plate number" VerticalAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                    <Label Content="Type" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                    <Label Content="Ready" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                    <Button Grid.Column="5" Name="Create" Content="Create new" Click="Create_Click" Style="{StaticResource GoldenButtonStyle}" Margin="2"/>
+                    <Button Grid.Column="4" Name="Back" Content="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}" Margin="2"/>
                 </Grid>
-
+            </Border>
+            
                 <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
                     <StackPanel Name="CarsDisplay">
                         

@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Xml.Linq;
+using WH_APP_GUI.Warehouse;
 
 namespace WH_APP_GUI.Forklift
 {
@@ -34,6 +35,11 @@ namespace WH_APP_GUI.Forklift
             operating_hours.Text = forklift["operating_hours"].ToString();
 
             Done.Tag = forklift;
+
+            if (! User.DoesHavePermission("Change status of Forklift"))
+            {
+                status.IsEnabled = false;
+            }
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -97,6 +103,15 @@ namespace WH_APP_GUI.Forklift
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Navigation.OpenPage(Navigation.PreviousPage.GetType());
+        }
+
+        private void EditForkliftPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+            ForkliftImage.Width = ForkliftImage.Height;
         }
     }
 }

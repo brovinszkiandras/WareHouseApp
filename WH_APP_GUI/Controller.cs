@@ -89,10 +89,7 @@ namespace WH_APP_GUI
         {
             try
             {
-                
-
-                CreateAndFillCityTable();
-               
+                CreateAndFillCityTable();        
 
                 SQL.SqlCommand($"ALTER TABLE warehouses ADD city_id INT, ADD CONSTRAINT fk_city_id FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE;");
                 SQL.SqlCommand($"ALTER TABLE orders ADD city_id INT, ADD CONSTRAINT fk_city_id_orders FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE;");
@@ -160,7 +157,6 @@ namespace WH_APP_GUI
                 try
                 {
                     Dictionary<string, Action> Tables_Refresh = new Dictionary<string, Action>();
-                    MessageBox.Show(Tables.staff.ToString());
                     Tables_Refresh.Add(Tables.staff.actual_name, Tables.staff.Refresh);
                     Tables_Refresh.Add(Tables.warehouses.actual_name, Tables.warehouses.Refresh);
                     Tables_Refresh.Add(Tables.employees.actual_name, Tables.employees.Refresh);

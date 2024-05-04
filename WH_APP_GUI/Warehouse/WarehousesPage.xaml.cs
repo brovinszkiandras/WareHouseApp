@@ -29,6 +29,11 @@ namespace WH_APP_GUI.Warehouse
         {
             InitializeComponent();
             DisplayWarehousesOnPanel(DisplayWarehousesStackpanel);
+
+            if (!User.DoesHavePermission("Modify all Warehouses"))
+            {
+                AddNewWarehouse.Visibility = Visibility.Collapsed;
+            }
         }
         public void DisplayWarehousesOnPanel(Panel panel)
         {
@@ -36,7 +41,6 @@ namespace WH_APP_GUI.Warehouse
             panel.Visibility = Visibility.Visible;
             for (int i = 0; i < Tables.warehouses.database.Rows.Count; i++)
             {
-
                 Border border = new Border();
                 border.BorderBrush = Brushes.Black;
                 border.CornerRadius = new CornerRadius(30);
@@ -46,14 +50,26 @@ namespace WH_APP_GUI.Warehouse
 
                 Grid grid = new Grid();
 
+                StackPanel outerStack = new StackPanel();
+                if (Tables.features.isFeatureInUse("Date Log"))
+                {
+                    Label dateLog = new Label();
+                    dateLog.Content = $"Created at: {Tables.warehouses.database.Rows[i]["created_at"]} \tUpdated at: {Tables.warehouses.database.Rows[i]["updated_at"]}";
+                    dateLog.FontFamily = new FontFamily("Baskerville Old Face");
+                    dateLog.HorizontalContentAlignment = HorizontalAlignment.Center;
+                    outerStack.Children.Add(dateLog);
+                }
+
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0.5, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(4, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                 // Grid.SetColumnSpan(border, 3);
-                border.Child = grid;
+                outerStack.Children.Add(grid);
+                border.Child = outerStack;
 
                 Image image = new Image();
-                image.HorizontalAlignment = HorizontalAlignment.Left;;
+                image.HorizontalAlignment = HorizontalAlignment.Left;
+                image.Margin = new Thickness(5);
 
                 string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
                 if (Directory.Exists(targetDirectory))
@@ -76,7 +92,7 @@ namespace WH_APP_GUI.Warehouse
                 Label label = new Label();
                 label.HorizontalAlignment = HorizontalAlignment.Center;
                 label.Content = Tables.warehouses.database.Rows[i]["name"];
-                label.FontFamily = new FontFamily("Baskerville Old Face");
+                label.Style = (Style)this.Resources["labelstyle"];
                 Grid.SetColumn(label, 1);
                 grid.Children.Add(label);
 
@@ -86,23 +102,64 @@ namespace WH_APP_GUI.Warehouse
                 Grid.SetColumn(innerGrid, 2);
                 grid.Children.Add(innerGrid);
 
-                Button inspectButton = new Button();
-                inspectButton.Tag = Tables.warehouses.database.Rows[i];
-                inspectButton.Content = "Inspect Warehouse";
-                inspectButton.Click += inspect_warehouse_Click;
-                inspectButton.Margin = new Thickness(10);
-                inspectButton.Style = (Style)this.Resources["GreenButtonStyle"];
-                Grid.SetRow(inspectButton, 0);
-                innerGrid.Children.Add(inspectButton);
+                if (User.DoesHavePermission("Inspect all Warehouses") || User.DoesHavePermission("Inspect Warehouse"))
+                {
+                    if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                    {
+                        if (User.currentUser["warehouse_id"].ToString() == Tables.warehouses.database.Rows[i]["id"].ToString())
+                        {
+                            Button inspectButton = new Button();
+                            inspectButton.Tag = Tables.warehouses.database.Rows[i];
+                            inspectButton.Content = "Inspect Warehouse";
+                            inspectButton.Click += inspect_warehouse_Click;
+                            inspectButton.Margin = new Thickness(10);
+                            inspectButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                            Grid.SetRow(inspectButton, 0);
+                            innerGrid.Children.Add(inspectButton);
+                        }
+                    }
+                    else
+                    {
+                        Button inspectButton = new Button();
+                        inspectButton.Tag = Tables.warehouses.database.Rows[i];
+                        inspectButton.Content = "Inspect Warehouse";
+                        inspectButton.Click += inspect_warehouse_Click;
+                        inspectButton.Margin = new Thickness(10);
+                        inspectButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                        Grid.SetRow(inspectButton, 0);
+                        innerGrid.Children.Add(inspectButton);
+                    }
+                }
 
-                Button deleteButton = new Button();
-                deleteButton.Content = "Delete Warehouse";
-                deleteButton.Tag = Tables.warehouses.database.Rows[i];
-                deleteButton.Click += delete_warehouse_Click;
-                deleteButton.Margin = new Thickness(10);
-                deleteButton.Style = (Style)this.Resources["GreenButtonStyle"];
-                Grid.SetRow(deleteButton, 1);
-                innerGrid.Children.Add(deleteButton);
+
+                if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouses"))
+                {
+                    if (Tables.staff.database.Select($"email = '{User.currentUser["email"]}'").Length == 0)
+                    {
+                        if (User.currentUser["warehouse_id"] == Tables.warehouses.database.Rows[i]["id"])
+                        {
+                            Button deleteButton = new Button();
+                            deleteButton.Content = "Delete Warehouse";
+                            deleteButton.Tag = Tables.warehouses.database.Rows[i];
+                            deleteButton.Click += delete_warehouse_Click;
+                            deleteButton.Margin = new Thickness(10);
+                            deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                            Grid.SetRow(deleteButton, 1);
+                            innerGrid.Children.Add(deleteButton);
+                        }
+                    }
+                    else
+                    {
+                        Button deleteButton = new Button();
+                        deleteButton.Content = "Delete Warehouse";
+                        deleteButton.Tag = Tables.warehouses.database.Rows[i];
+                        deleteButton.Click += delete_warehouse_Click;
+                        deleteButton.Margin = new Thickness(10);
+                        deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                        Grid.SetRow(deleteButton, 1);
+                        innerGrid.Children.Add(deleteButton);
+                    }
+                }
 
                 panel.Children.Add(border);
             }
@@ -115,7 +172,7 @@ namespace WH_APP_GUI.Warehouse
             WarehouseContent.Navigate(createWarehouse);
             WarehouseContent.Visibility = Visibility.Visible;
         }
-        
+
         private void Cancel()
         {
             DisplayWarehouses.Visibility = Visibility.Visible;
@@ -145,8 +202,8 @@ namespace WH_APP_GUI.Warehouse
             DataRow warehouse = btn.Tag as DataRow;
             if (warehouse != null)
             {
-                //try
-                //{
+                try
+                {
                     foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
                     {
                         employee["warehouse_id"] = DBNull.Value;
@@ -162,42 +219,35 @@ namespace WH_APP_GUI.Warehouse
                     }
                     Tables.docks.updateChanges();
 
-                MessageBox.Show(Tables.warehouseTables.Count.ToString());
-
-                for (int i = 0; i < Tables.warehouseTables.Count; i++)
-                {
-                    if (Tables.warehouseTables[i].database.TableName == warehouse["name"].ToString())
+                    for (int i = 0; i < Tables.warehouseTables.Count; i++)
                     {
-                        Tables.databases.Tables.Remove(Tables.warehouseTables[i].database);
-                        Tables.warehouseTables.Remove(Tables.warehouseTables[i]);
+                        if (Tables.warehouseTables[i].database.TableName == warehouse["name"].ToString())
+                        {
+                            Tables.databases.Tables.Remove(Tables.warehouseTables[i].database);
+                            Tables.warehouseTables.Remove(Tables.warehouseTables[i]);
+                        }
                     }
-                }
 
-                foreach (DataRow sector in Tables.warehouses.getSectors(warehouse))
-                {
-                    sector.Delete();
-                }
-                Tables.sector.updateChanges();
-
-
+                    foreach (DataRow sector in Tables.warehouses.getSectors(warehouse))
+                    {
+                        sector.Delete();
+                    }
+                    Tables.sector.updateChanges();
 
                     SQL.SqlCommand($"DROP TABLE `{warehouse["name"]}`");
                     warehouse.Delete();
                     Tables.warehouses.updateChanges();
 
-                   
-
-                    
-
                     DisplayWarehousesOnPanel(DisplayWarehousesStackpanel);
 
                     MessageBox.Show("Warehouse has been deleted", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
-                //}
-                //catch (Exception ex)
-                //{
-                //    Debug.WriteError(ex);
-                //    throw;
-                //}
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteError(ex);
+                    throw;
+                }
             }
         }
 

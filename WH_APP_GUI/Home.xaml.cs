@@ -16,7 +16,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WH_APP_GUI.carsFolder;
 using WH_APP_GUI.transport;
-using Xceed.Wpf.Toolkit;
 
 
 namespace WH_APP_GUI
@@ -28,6 +27,8 @@ namespace WH_APP_GUI
             InitializeComponent();
             Navigation.RemoveParent();
 
+            Loaded += HomeLoaded;
+
             Grid.SetColumn(Navigation.content2, 1);
             Grid.SetRow(Navigation.content2, 1);
 
@@ -35,26 +36,26 @@ namespace WH_APP_GUI
 
             UserNameDisplay.Content = User.currentUser["name"].ToString();
             UserEmailDisplay.Content = User.currentUser["email"].ToString();
+
+            Navigation.ReturnParam = null;
             Navigation.OpenPage(Navigation.GetTypeByName("WarehousesPage"));
+
             Navigation.content2.NavigationUIVisibility = NavigationUIVisibility.Hidden;
 
             #region Show Permission btns
 
-            if (User.DoesHavePermission("Inspect all Warehouses"))
-            {
-                Button btn = new Button();
-                btn.Content = "Warehouses";
-                btn.Click += InspectAllWarehouses_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
-                Menu.Children.Add(btn);
-            }
+            Button WarehouseBtn = new Button();
+            WarehouseBtn.Content = "Warehouses";
+            WarehouseBtn.Click += InspectAllWarehouses_Click;
+            WarehouseBtn.Style = (Style)this.Resources["GoldenButtonStyle"];
+            Menu.Children.Add(WarehouseBtn);
 
             if (User.DoesHavePermission("Inspect all Employees"))
             {
                 Button btn = new Button();
                 btn.Content = "Employees";
                 btn.Click += InspectAllEmployees_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -64,7 +65,7 @@ namespace WH_APP_GUI
                 
                 btn.Content = "Orders";
                 btn.Click += InspectAllOrders_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 btn.Tag = "Orders";
                 Menu.Children.Add(btn);
             }
@@ -74,7 +75,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Products";
                 btn.Click += InspectProducts_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -83,26 +84,40 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Staffs";
                 btn.Click += InspectAllStaff_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
-            if (User.DoesHavePermission("Inspect all Transport") && Tables.features.isFeatureInUse("Fleet") == true)
+            if (Tables.features.isFeatureInUse("Fleet"))
             {
-                Button btn = new Button();
-                btn.Content = "Transports";
-                btn.Click += InspectAllTransport_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
-                Menu.Children.Add(btn);
+                if (User.DoesHavePermission("Inspect all Transport"))
+                {
+                    Button btn = new Button();
+                    btn.Content = "Transports";
+                    btn.Click += InspectAllTransport_Click;
+                    btn.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    Menu.Children.Add(btn);
+                }
+                else if (User.DoesHavePermission("Inspect own Transport"))
+                {
+                    Button btn = new Button();
+                    btn.Content = "Own Transports";
+                    btn.Click += InspectAllTransport_Click;
+                    btn.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    Menu.Children.Add(btn);
+                }
             }
 
-            if (User.DoesHavePermission("Inspect all Car") && Tables.features.isFeatureInUse("Fleet") == true)
+            if (Tables.features.isFeatureInUse("Fleet"))
             {
-                Button btn = new Button();
-                btn.Content = "Cars";
-                btn.Click += InspectAllCars_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
-                Menu.Children.Add(btn);
+                if (User.DoesHavePermission("Inspect all Car") && Tables.features.isFeatureInUse("Fleet") == true)
+                {
+                    Button btn = new Button();
+                    btn.Content = "Cars";
+                    btn.Click += InspectAllCars_Click;
+                    btn.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    Menu.Children.Add(btn);
+                }
             }
 
             if (User.DoesHavePermission("Inspect all Forklift") && Tables.features.isFeatureInUse("Forklift") == true)
@@ -110,7 +125,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Forklifts";
                 btn.Click += InspectAllForkliftst_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -119,7 +134,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Log";
                 btn.Click += InspectLog_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -128,7 +143,7 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Dock";
                 btn.Click += InspectDock_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
@@ -137,11 +152,36 @@ namespace WH_APP_GUI
                 Button btn = new Button();
                 btn.Content = "Settings";
                 btn.Click += Database_Click;
-                btn.Style = (Style)this.Resources["GreenButtonStyle"];
+                btn.Style = (Style)this.Resources["GoldenButtonStyle"];
                 Menu.Children.Add(btn);
             }
 
             #endregion
+        }
+        private void HomeLoaded(object sender, RoutedEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            if (parentWindow != null)
+            {
+                parentWindow.Closed += UserLogOut;
+            }
+        }
+
+        private void UserLogOut(object sender, EventArgs e)
+        {
+            if (User.currentUser != null)
+            {
+                if (Tables.features.isFeatureInUse("Activity"))
+                {
+                    if (Tables.employees.database.Select($"email = '{User.currentUser["email"]}'").Length != 0)
+                    {
+                        Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been logged out from the application.");
+                        User.currentUser["is_loggedin"] = false;
+                        Tables.employees.updateChanges();
+                    }
+                }
+            }
         }
 
         private void menucolum_MouseEnter(object sender, MouseEventArgs e)
@@ -270,8 +310,19 @@ namespace WH_APP_GUI
         {
             if (User.currentUser != null)
             {
+                Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been logged out from the application.");
+                if (Tables.features.isFeatureInUse("Activity"))
+                {
+                    User.currentUser["is_loggedin"] = false;
+                    Tables.employees.updateChanges();
+                }
+
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+
+                User.MainWindow.Close();
                 User.currentUser = null;
-                Navigation.OpenPage(Navigation.GetTypeByName("MainWindow"));
+                User.MainWindow = mainWindow;
             }
         }
     }

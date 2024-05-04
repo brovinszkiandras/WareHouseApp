@@ -61,7 +61,7 @@
         </ControlTemplate>
     </Page.Resources>
 
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0" BorderBrush="#676F9D" Background="#676F9D">
+    <Border CornerRadius="30,0,0,0" Background="#676F9D">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -73,8 +73,7 @@
                 <StackPanel VerticalAlignment="Center">
                 <Button Margin="20, 5" Content="Register a new Employee" Name="RegisterEmployee" Click="RegisterEmployee_Click"  Style="{StaticResource ElegantButtonStyle}"/>
                 <Button Margin="20, 5" Content="Register a new Staff" Name="RegisterStaff" Click="RegisterStaff_Click"  Style="{StaticResource ElegantButtonStyle}"/>
-                <Button Margin="20, 5" Content="Import Employees" Name="ImportEmployees" Click="ImportEmployees_Click" Style="{StaticResource ElegantButtonStyle}"/>
-                <Button Margin="20, 5" Content="Manage Database" Name="ManageDatabase" Click="ManageDatabase_Click" Style="{StaticResource ElegantButtonStyle}"/>
+                    <Button Margin="20, 5" Content="Manage Database" Name="ManageDatabase" Click="ManageDatabase_Click" Style="{StaticResource ElegantButtonStyle}"/>
                 <Button Margin="20, 5" Content="Manage Roles" Name="manageRoles" Click="manageRoles_Click" Style="{StaticResource ElegantButtonStyle}"/>
                 <Button Margin="20, 5" Content="To the app" Name="ToTheApp" Visibility="Collapsed" Style="{StaticResource ElegantButtonStyle}" Click="ToTheApp_Click"/>
                 <ScrollViewer Margin="0, 40" x:Name="RolesScrollViewer" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
@@ -93,31 +92,6 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-
-
-                <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="RegisterEmployeDatas" Visibility="Collapsed" Grid.Row="1">
-
-                    <Label Content="The employee belongs to a warehouse?" VerticalContentAlignment="Bottom"/>
-                    <ComboBox Name="EmployeeStatus" BorderBrush="Black" SelectionChanged="EmployeeStatus_SelectionChanged" Margin="10"/>
-
-                    <Label Content="Employee Name:" VerticalContentAlignment="Bottom"/>
-                    <TextBox x:Name="EmployeeName" SelectionBrush="Black" BorderBrush="Black" Margin="10"/>
-
-                    <Label Content="Employee Email:" VerticalContentAlignment="Bottom"/>
-                    <TextBox x:Name="EmployeeEmail" BorderBrush="Black" SelectionBrush="Black" Margin="10"/>
-
-                    <Label Content="Employee Role:" VerticalContentAlignment="Bottom"/>
-                    <ComboBox Name="EmployeeRole" BorderBrush="Black" Margin="10">
-                        <ComboBox.Background>
-                            <LinearGradientBrush EndPoint="0,1">
-                                <GradientStop Color="#FFF0F0F0"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </ComboBox.Background>
-                    </ComboBox>
-
-                    <Button x:Name="RegisterEmployeeWithDatas" Content="Register Employee" Background="White" BorderBrush="Black" Click="RegisterEmployeeWithDatas_Click" Margin="30"/>
-                </StackPanel>
 
                 <StackPanel Grid.ColumnSpan="2" x:Name="ManagedatabaseGrid" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1">
 
@@ -139,35 +113,7 @@
                     <Button Content="Confirm" x:Name="ConfirmDBdatas" Click="ConfirmDBdatas_Click" Background="White" BorderBrush="Black" Margin="30"/>
                 </StackPanel>
 
-                <StackPanel Grid.ColumnSpan="2" x:Name="ManageRoleGrid" Visibility="Collapsed">
-
-                    <Button Content="Add Role" Name="AddRole" Style="{StaticResource ElegantButtonStyle}" Click="AddRole_Click"/>
-                    <Button Content="Cancel" Name="CancelRoles" Style="{StaticResource ElegantButtonStyle}" Click="CancelRoles_Click"/>
-
-
-                    <StackPanel Grid.ColumnSpan="2" Visibility="Collapsed" x:Name="AddRoleGrid" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label Content="Role name:"/>
-                        <TextBox Name="NewRoleName" BorderBrush="Black" SelectionBrush="Black" Margin="10"/>
-
-                        <Label Content="Role description:"/>
-                        <TextBox Name="NewRoleDescription" BorderBrush="Black" SelectionBrush="Black" Margin="10"/>
-
-                        <Label Content="This role belongs to a warehouse?"/>
-                        <CheckBox x:Name="Is_Belongst_To_Warehouse" Content="Yes, belongs to a warehouse"/>
-
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Content="Add" Name="AddNewRoleBTN" Style="{StaticResource ElegantButtonStyle}" Click="AddNewRoleBTN_Click" Margin="10"/>
-                            <Button Content="Cancel" Name="CancelRoleCreation" Style="{StaticResource ElegantButtonStyle}" Click="CancelRoleCreation_Click" Margin="10"/>
-                        </StackPanel>
-
-                    </StackPanel>
-                </StackPanel>
-
-                <ScrollViewer x:Name="PermmissionsScrollViewer" HorizontalAlignment="Center" Visibility="Collapsed" Grid.Row="1" Grid.ColumnSpan="2" Margin="0, 10">
-                    <StackPanel Orientation="Vertical" Name="PermissonsStackpanel">
-                    </StackPanel>
-                </ScrollViewer>
-
+                <Frame Name="RolesContent" Grid.ColumnSpan="2" Grid.Row="1"/>
             </Grid>
 
             <Border HorizontalAlignment="Center" CornerRadius="20" Background="#FF2D3250" Grid.Column="2">
@@ -176,7 +122,7 @@
 
                     <StackPanel Name="FeaturesDisplayG" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
 
-                    <Button Content="Create Fetures" Name="IncludeFeture" Click="IncludeFeture_Click" Style="{StaticResource ElegantButtonStyle}"/>
+                    <Button Content="Modify Database" Name="ModifyDatabase" Click="ModifyDatabase_Click" Style="{StaticResource ElegantButtonStyle}"/>
                 </StackPanel>
             </Border>
             

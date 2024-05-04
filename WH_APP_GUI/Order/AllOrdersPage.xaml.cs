@@ -102,9 +102,10 @@ namespace WH_APP_GUI.Order
 
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
+            border.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+            border.CornerRadius = new CornerRadius(15);
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
-            border.Background = Brushes.White;
 
             StackPanel mainStackPanel = new StackPanel();
 
@@ -118,7 +119,7 @@ namespace WH_APP_GUI.Order
             foreach (DataRow order in Tables.orders.getOrdersOfAUser(username, address))
             {
                 qtyOfAllProd += int.Parse(order["qty"].ToString());
-                maxPrice += int.Parse(Tables.orders.getProduct(order)["selling_price"].ToString());
+                maxPrice += int.Parse(Tables.orders.getProduct(order)["selling_price"].ToString()) * (int)order["qty"];
                 if (Tables.features.isFeatureInUse("Storage"))
                 {
                     string sum = Tables.orders.getProduct(order)["volume"].ToString();
@@ -126,8 +127,8 @@ namespace WH_APP_GUI.Order
                 }
 
                 Image image = new Image();
-                image.Width = 80;
-                image.Height = 80;
+                image.Width = 100;
+                image.Height = 100;
                 image.Margin = new Thickness(5);
 
                 string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
@@ -155,43 +156,37 @@ namespace WH_APP_GUI.Order
 
             Label userNameInfo = new Label();
             userNameInfo.Content = $"Username: {dataOfOrder["user_name"]}";
-            userNameInfo.BorderBrush = Brushes.Black;
-            userNameInfo.BorderThickness = new Thickness(0, 0, 1, 1);
+            userNameInfo.Style = (Style)this.Resources["labelstyle"];
             userNameInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
             userInfoGrid.Children.Add(userNameInfo);
 
             Label paymentMethodInfo = new Label();
             paymentMethodInfo.Content = $"Payment method: {dataOfOrder["payment_method"]}";
-            paymentMethodInfo.BorderBrush = Brushes.Black;
-            paymentMethodInfo.BorderThickness = new Thickness(1, 0, 0, 1);
+            paymentMethodInfo.Style = (Style)this.Resources["labelstyle"];
             paymentMethodInfo.HorizontalContentAlignment = HorizontalAlignment.Left;
             userInfoGrid.Children.Add(paymentMethodInfo);
 
             Label addressInfo = new Label();
             addressInfo.Content = $"Address: {dataOfOrder["address"]} - ({Tables.orders.getCity(dataOfOrder)["city_name"]})";
-            addressInfo.BorderBrush = Brushes.Black;
-            addressInfo.BorderThickness = new Thickness(0, 0, 1, 1);
+            addressInfo.Style = (Style)this.Resources["labelstyle"];
             addressInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
             userInfoGrid.Children.Add(addressInfo);
 
             Label productCountInfo = new Label();
             productCountInfo.Content = $"Products Count: {qtyOfAllProd}";
-            productCountInfo.BorderBrush = Brushes.Black;
-            productCountInfo.BorderThickness = new Thickness(1, 0, 0, 1);
+            productCountInfo.Style = (Style)this.Resources["labelstyle"];
             productCountInfo.HorizontalContentAlignment = HorizontalAlignment.Left;
             userInfoGrid.Children.Add(productCountInfo);
 
             Label orderInfo = new Label();
             orderInfo.Content = $"Order date: {dataOfOrder["order_date"]}";
-            orderInfo.BorderBrush = Brushes.Black;
-            orderInfo.BorderThickness = new Thickness(0, 0, 1, 1);
+            orderInfo.Style = (Style)this.Resources["labelstyle"];
             orderInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
             userInfoGrid.Children.Add(orderInfo);
 
             Label maxValueCount = new Label();
             maxValueCount.Content = $"Max value: {maxPrice} - Ft";
-            maxValueCount.BorderBrush = Brushes.Black;
-            maxValueCount.BorderThickness = new Thickness(1, 0, 0, 1);
+            maxValueCount.Style = (Style)this.Resources["labelstyle"];
             maxValueCount.HorizontalContentAlignment = HorizontalAlignment.Left;
             userInfoGrid.Children.Add(maxValueCount);
 
@@ -205,6 +200,7 @@ namespace WH_APP_GUI.Order
 
             Label statusLBL = new Label();
             statusLBL.Content = $"Status: {dataOfOrder["status"]}";
+            statusLBL.Style = (Style)this.Resources["labelstyle"];
             statusLBL.HorizontalAlignment = HorizontalAlignment.Center;
 
             status.Child = statusLBL;
@@ -219,6 +215,7 @@ namespace WH_APP_GUI.Order
 
                 Label sumVolumeInfo = new Label();
                 sumVolumeInfo.Content = $"Sum volume: {sumVolume}(m^2)";
+                sumVolumeInfo.Style = (Style)this.Resources["labelstyle"];
                 sumVolumeInfo.HorizontalAlignment = HorizontalAlignment.Center;
 
                 borderForSum.Child = sumVolumeInfo;
@@ -228,9 +225,8 @@ namespace WH_APP_GUI.Order
             if (dataOfOrder["warehouse_id"] == DBNull.Value)
             {
                 Button button = new Button();
+                button.Style = (Style)this.Resources["GoldenButtonStyle"];
                 button.Content = "Take";
-                button.Margin = new Thickness(5);
-                button.MaxWidth = 150;
                 button.IsEnabled = false;
                 mainStackPanel.Children.Add(button);
 
@@ -247,11 +243,7 @@ namespace WH_APP_GUI.Order
             else
             {
                 Label inWarehouse = new Label();
-                inWarehouse.Background = Brushes.LightSteelBlue;
-                inWarehouse.Foreground = Brushes.Black;
-                inWarehouse.Margin = new Thickness(5);
-                inWarehouse.BorderBrush = Brushes.Black;
-                inWarehouse.BorderThickness = new Thickness(1);
+                inWarehouse.Style = (Style)this.Resources["labelstyle"];
                 inWarehouse.HorizontalContentAlignment = HorizontalAlignment.Center;
                 inWarehouse.Content = $"This order already in {Tables.orders.getWarehouse(dataOfOrder)["name"]}";
                 mainStackPanel.Children.Add(inWarehouse);
@@ -264,11 +256,7 @@ namespace WH_APP_GUI.Order
                     if (IsOrderInTransport(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
                     {
                         Label inTransport = new Label();
-                        inTransport.Background = Brushes.LightSteelBlue;
-                        inTransport.Foreground = Brushes.Black;
-                        inTransport.Margin = new Thickness(5);
-                        inTransport.BorderBrush = Brushes.Black;
-                        inTransport.BorderThickness = new Thickness(1);
+                        inTransport.Style = (Style)this.Resources["labelstyle"];
                         inTransport.HorizontalContentAlignment = HorizontalAlignment.Center;
                         DataRow transport = Tables.orders.getTransport(dataOfOrder);
                         inTransport.Content = $"This order will be transported at {transport["start_date"]}, by {Tables.transports.getEmployee(transport)["name"]}";
@@ -280,12 +268,7 @@ namespace WH_APP_GUI.Order
                     if (IsOrderInDock(dataOfOrder["user_name"].ToString(), dataOfOrder["address"].ToString()))
                     {
                         Label inDock = new Label();
-                        inDock.Background = Brushes.LightSteelBlue;
-                        inDock.Foreground = Brushes.Black;
-                        inDock.Margin = new Thickness(5);
-                        inDock.BorderBrush = Brushes.Black;
-                        inDock.BorderThickness = new Thickness(1);
-                        inDock.MaxWidth = 350;
+                        inDock.Style = (Style)this.Resources["labelstyle"];
                         inDock.HorizontalContentAlignment = HorizontalAlignment.Center;
                         DataRow dock = Tables.orders.getDock(dataOfOrder);
                         inDock.Content = $"{dock["name"]} dock already contains this order.";
@@ -296,8 +279,7 @@ namespace WH_APP_GUI.Order
 
             Button inspectOrder = new Button();
             inspectOrder.Content = "Inspect order";
-            inspectOrder.Margin = new Thickness(5);
-            inspectOrder.MaxWidth = 150;
+            inspectOrder.Style = (Style)this.Resources["GoldenButtonStyle"];
             inspectOrder.Tag = dataOfOrder;
             inspectOrder.Click += InspectOrder;
             mainStackPanel.Children.Add(inspectOrder);

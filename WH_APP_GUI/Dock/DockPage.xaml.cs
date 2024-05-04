@@ -30,12 +30,22 @@ namespace WH_APP_GUI.Dock
             Back.Visibility = Visibility.Collapsed;
             DocksByWarehouses.Visibility = Visibility.Visible;
             AllDocks.Visibility = Visibility.Visible;
+
+            if (!User.DoesHavePermission("Modify all Dock"))
+            {
+                AddNewDock.Visibility = Visibility.Collapsed;
+            }
         }
         private DataRow WarehouseFromPage = null;
         public DockPage(DataRow warehouseFromPage)
         {
             InitializeComponent();
             IniWarehouses();
+
+            if (!User.DoesHavePermission("Modify all Dock") || !User.DoesHavePermission("Modify Dock"))
+            {
+                AddNewDock.Visibility = Visibility.Collapsed;
+            }
 
             WarehouseFromPage = warehouseFromPage;
             InitializeAllDocks(DockDisplaySTACK);
@@ -77,17 +87,24 @@ namespace WH_APP_GUI.Dock
         private void DisplayOneDock(Panel panel, DataRow dock)
         {
             Border border = new Border();
-            border.BorderThickness = new Thickness(2);
             border.BorderBrush = Brushes.Black;
+            border.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+            border.CornerRadius = new CornerRadius(15);
+            border.BorderThickness = new Thickness(2);
+            border.Margin = new Thickness(5);
 
-            StackPanel mainStackPanel = new StackPanel();
-            mainStackPanel.Background = Brushes.White;
-            mainStackPanel.MinHeight = 100;
-            mainStackPanel.Orientation = Orientation.Horizontal;
+            Grid mainGrid = new Grid();
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+
 
             Image image = new Image();
-            image.Width = 80;
-            image.Height = 80;
+            image.Width = 100;
+            image.Height = 100;
+
+            Grid.SetColumn(image, 0);
+            mainGrid.Children.Add(image);
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -107,18 +124,16 @@ namespace WH_APP_GUI.Dock
             }
 
             StackPanel leftStackPanel = new StackPanel();
-            leftStackPanel.Orientation = Orientation.Vertical;
-            leftStackPanel.MinWidth = 250;
+            Grid.SetColumn(leftStackPanel, 1);
+            mainGrid.Children.Add(leftStackPanel);
 
             Label nameLabel = new Label();
             nameLabel.Content = dock["name"];
-            nameLabel.BorderBrush = Brushes.Black;
-            nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+            nameLabel.Style = (Style)this.Resources["labelstyle"];
             leftStackPanel.Children.Add(nameLabel);
 
             Label roleLabel = new Label();
-            roleLabel.BorderBrush = Brushes.Black;
-            roleLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+            roleLabel.Style = (Style)this.Resources["labelstyle"];
             leftStackPanel.Children.Add(roleLabel);
 
             if (dock["warehouse_id"] != DBNull.Value)
@@ -131,20 +146,8 @@ namespace WH_APP_GUI.Dock
             }
 
             StackPanel rightStackPanel = new StackPanel();
-            rightStackPanel.Orientation = Orientation.Vertical;
-            rightStackPanel.MinWidth = 100;
-
-            Button deleteButton = new Button();
-            deleteButton.Content = "Delete";
-            deleteButton.Click += deleteDock_Click;
-            deleteButton.Tag = dock;
-            deleteButton.Margin = new Thickness(5);
-
-            Button editButton = new Button();
-            editButton.Content = "Edit";
-            editButton.Click += EditDock_Click;
-            editButton.Tag = dock;
-            editButton.Margin = new Thickness(5);
+            Grid.SetColumn(rightStackPanel, 2);
+            mainGrid.Children.Add(rightStackPanel);
 
             Button isDockFree = new Button();
             isDockFree.Content = bool.Parse(dock["free"].ToString()) ? "Free" : "In use";
@@ -152,11 +155,33 @@ namespace WH_APP_GUI.Dock
             isDockFree.Click += isDockFree_Click;
             isDockFree.Tag = dock;
             isDockFree.Margin = new Thickness(5);
+            isDockFree.IsEnabled = false;
+            rightStackPanel.Children.Add(isDockFree);
+
+            if (User.DoesHavePermission("Modify all Dock") || User.DoesHavePermission("Modify Dock"))
+            {
+                Button deleteButton = new Button();
+                deleteButton.Content = "Delete";
+                deleteButton.Click += deleteDock_Click;
+                deleteButton.Tag = dock;
+                deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+
+                Button editButton = new Button();
+                editButton.Content = "Edit";
+                editButton.Click += EditDock_Click;
+                editButton.Tag = dock;
+                editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+
+                isDockFree.IsEnabled = true;
+                rightStackPanel.Children.Add(deleteButton);
+                rightStackPanel.Children.Add(editButton);
+            }
+
 
             if (Tables.features.isFeatureInUse("Fleet"))
             {
                 Label transport = new Label();
-                //transport.BorderBrush = Brushes.Black;
+                transport.Style = (Style)this.Resources["labelstyle"];
                 if (Tables.docks.getTransports(dock).Length != 0)
                 {
                     DataRow transportRow = Tables.docks.getTransports(dock)[0];
@@ -165,6 +190,7 @@ namespace WH_APP_GUI.Dock
                 else
                 {
                     transport.Content = "This dock does not have a transport";
+
                 }
                 leftStackPanel.Children.Add(transport);
             }
@@ -186,12 +212,15 @@ namespace WH_APP_GUI.Dock
 
                             Label name = new Label();
                             name.Content = $"Order by: {order["user_name"]}";
+                            name.Style = (Style)this.Resources["labelstyle"];
 
                             Label address = new Label();
                             address.Content = $"Address: {order["address"]}";
+                            address.Style = (Style)this.Resources["labelstyle"];
 
                             Label order_date = new Label();
                             order_date.Content = $"Date: {order["order_date"]}";
+                            order_date.Style = (Style)this.Resources["labelstyle"];
 
                             ordersGrid.Children.Add(name);
                             ordersGrid.Children.Add(address);
@@ -210,12 +239,15 @@ namespace WH_APP_GUI.Dock
 
                             Label name = new Label();
                             name.Content = $"Order by: {order["user_name"]}";
+                            name.Style = (Style)this.Resources["labelstyle"];
 
                             Label address = new Label();
                             address.Content = $"Address: {order["address"]}";
+                            address.Style = (Style)this.Resources["labelstyle"];
 
                             Label order_date = new Label();
                             order_date.Content = $"Date: {order["order_date"]}";
+                            order_date.Style = (Style)this.Resources["labelstyle"];
 
                             ordersGrid.Children.Add(name);
                             ordersGrid.Children.Add(address);
@@ -228,15 +260,7 @@ namespace WH_APP_GUI.Dock
                 }
             }
 
-            rightStackPanel.Children.Add(deleteButton);
-            rightStackPanel.Children.Add(editButton);
-            rightStackPanel.Children.Add(isDockFree);
-
-            mainStackPanel.Children.Add(image);
-            mainStackPanel.Children.Add(leftStackPanel);
-            mainStackPanel.Children.Add(rightStackPanel);
-
-            border.Child = mainStackPanel;
+            border.Child = mainGrid;
 
             panel.Children.Add(border);
         }
@@ -324,6 +348,14 @@ namespace WH_APP_GUI.Dock
         {
             DockDisplaySTACK.Children.Clear();
             InitializeAllDocks(DockDisplaySTACK);
+        }
+
+        private void DockPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+                foreach (var child in alapgrid.Children)
+                {
+                    FontSize = e.NewSize.Height * 0.03;
+                }
         }
     }
 }

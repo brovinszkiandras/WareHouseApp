@@ -232,6 +232,9 @@
     </Compile>
     <Compile Include="Console.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="CreateRoleWindow.xaml.cs">
+      <DependentUpon>CreateRoleWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dock\CreateDockPage.xaml.cs">
       <DependentUpon>CreateDockPage.xaml</DependentUpon>
     </Compile>
@@ -258,6 +261,9 @@
     </Compile>
     <Compile Include="LogDisplay.xaml.cs">
       <DependentUpon>LogDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ManageRolePage.xaml.cs">
+      <DependentUpon>ManageRolePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Order\AddOrdersToDock.xaml.cs">
       <DependentUpon>AddOrdersToDock.xaml</DependentUpon>
@@ -376,6 +382,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CreateRoleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dock\CreateDockPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -409,6 +419,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LogDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageRolePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

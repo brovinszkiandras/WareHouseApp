@@ -27,6 +27,11 @@ namespace WH_APP_GUI.Staff
             InitializeAllStaffs(DisplayStaffsStackpanel);
             Ini_role_id();
             Back.Visibility = Visibility.Collapsed;
+
+            if (!User.DoesHavePermission("Modify Staff"))
+            {
+                AddNewStaff.Visibility = Visibility.Collapsed;
+            }
         }
         private DataRow WarehouseFromPage;
         public StaffPage(DataRow warehouseFromPage)
@@ -37,6 +42,11 @@ namespace WH_APP_GUI.Staff
             Ini_role_id();
             Back.Visibility = Visibility.Collapsed;
             WarehouseFromPage = warehouseFromPage;
+
+            if (!User.DoesHavePermission("Modify Staff"))
+            {
+                AddNewStaff.Visibility = Visibility.Collapsed;
+            }
         }
         private static Type PreviousPageType;
         public StaffPage(Page previousPage)
@@ -72,8 +82,7 @@ namespace WH_APP_GUI.Staff
             panel.Visibility = Visibility.Visible;
             Label staffLabel = new Label();
             staffLabel.Content = "Staffs:";
-            staffLabel.BorderBrush = Brushes.Black;
-            staffLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+            staffLabel.Style = (Style)this.Resources["labelstyle"];
             panel.Children.Add(staffLabel);
 
             foreach (DataRow staff in Tables.staff.database.Rows)
@@ -85,21 +94,35 @@ namespace WH_APP_GUI.Staff
         private void DisplayOneStaff(Panel panel, DataRow staff)
         {
             Border border = new Border();
+            border.BorderBrush = Brushes.Black;
+            border.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+            border.CornerRadius = new CornerRadius(15);
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
-            border.BorderBrush = Brushes.Black;
-            border.Background = Brushes.White;
 
-            StackPanel mainStackPanel = new StackPanel();
-            mainStackPanel.MinHeight = 100;
-            mainStackPanel.Orientation = Orientation.Horizontal;
+            StackPanel outerStack = new StackPanel();
+            if (Tables.features.isFeatureInUse("Date Log"))
+            {
+                Label dateLog = new Label();
+                dateLog.Content = $"Created at - {staff["created_at"]} \tUpdated at - {staff["updated_at"]}";
+                dateLog.Style = (Style)this.Resources["labelstyle"];
+                dateLog.HorizontalContentAlignment = HorizontalAlignment.Center;
+                outerStack.Children.Add(dateLog);
+            }
+
+
+            Grid mainGrid = new Grid();
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
 
             Image image = new Image();
             image.Width = 100;
             image.Height = 100;
             image.Margin = new Thickness(5);
-            image.HorizontalAlignment = HorizontalAlignment.Left;
-            image.SetValue(Grid.RowSpanProperty, 3);
+
+            Grid.SetColumn(image, 0);
+            mainGrid.Children.Add(image);
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -130,20 +153,19 @@ namespace WH_APP_GUI.Staff
             }
 
             StackPanel leftStackPanel = new StackPanel();
-            leftStackPanel.Orientation = Orientation.Vertical;
-            leftStackPanel.Width = 350;
+            Grid.SetColumn(leftStackPanel, 1);
+            mainGrid.Children.Add(leftStackPanel);
 
             Label nameLabel = new Label();
             nameLabel.Content = "Name: " + staff["name"];
-            nameLabel.BorderBrush = Brushes.Black;
-            nameLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+            nameLabel.Style = (Style)this.Resources["labelstyle"];
 
             Label emailLabel = new Label();
             emailLabel.Content = "Email: " + staff["email"];
-            emailLabel.BorderBrush = Brushes.Black;
-            emailLabel.BorderThickness = new Thickness(0, 0, 0, 1);
+            emailLabel.Style = (Style)this.Resources["labelstyle"];
 
             Label roleLabel = new Label();
+            roleLabel.Style = (Style)this.Resources["labelstyle"];
             roleLabel.Content = "Role: " + Tables.staff.getRole(staff)["role"];
 
             if (staff["role_id"] != DBNull.Value)
@@ -152,7 +174,7 @@ namespace WH_APP_GUI.Staff
             }
             else
             {
-                roleLabel.Content = "This staff does not have a role";
+                roleLabel.Content = "Without role";
             }
 
             leftStackPanel.Children.Add(nameLabel);
@@ -161,24 +183,34 @@ namespace WH_APP_GUI.Staff
 
             StackPanel rightStackPanel = new StackPanel();
             rightStackPanel.Orientation = Orientation.Vertical;
-            rightStackPanel.Width = 130;
-            rightStackPanel.HorizontalAlignment = HorizontalAlignment.Center;
+            Grid.SetColumn(rightStackPanel, 2);
+            mainGrid.Children.Add(rightStackPanel);
 
             if (User.currentUser != staff)
             {
-                Button deleteButton = new Button();
-                deleteButton.Content = "Delete";
-                deleteButton.Click += deleteStaff_Click;
-                deleteButton.Tag = staff;
-                deleteButton.Margin = new Thickness(5);
-                rightStackPanel.Children.Add(deleteButton);
+                if (User.DoesHavePermission("Modify Staff"))
+                {
+                    Button deleteButton = new Button();
+                    deleteButton.Content = "Delete";
+                    deleteButton.Click += deleteStaff_Click;
+                    deleteButton.Tag = staff;
+                    deleteButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    rightStackPanel.Children.Add(deleteButton);
 
-                Button resetPasswordButton = new Button();
-                resetPasswordButton.Content = "Reset Password";
-                resetPasswordButton.Click += resetPassword_Click;
-                resetPasswordButton.Tag = staff;
-                resetPasswordButton.Margin = new Thickness(5);
-                rightStackPanel.Children.Add(resetPasswordButton);
+                    Button resetPasswordButton = new Button();
+                    resetPasswordButton.Content = "Reset Password";
+                    resetPasswordButton.Click += resetPassword_Click;
+                    resetPasswordButton.Tag = staff;
+                    resetPasswordButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    rightStackPanel.Children.Add(resetPasswordButton);
+
+                    Button editButton = new Button();
+                    editButton.Content = "Edit Staff";
+                    editButton.Click += editStaff_Click;
+                    editButton.Tag = staff;
+                    editButton.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    rightStackPanel.Children.Add(editButton);
+                }
             }
             else
             {
@@ -186,24 +218,12 @@ namespace WH_APP_GUI.Staff
                 changePassword.Content = "Change Password";
                 changePassword.Tag = staff;
                 changePassword.Click += ModifyPassword;
-                changePassword.Margin = new Thickness(5);
+                changePassword.Style = (Style)this.Resources["GoldenButtonStyle"];
                 rightStackPanel.Children.Add(changePassword);
             }
 
-
-            Button editButton = new Button();
-            editButton.Content = "Edit Staff";
-            editButton.Click += editStaff_Click;
-            editButton.Margin = new Thickness(5);
-            editButton.Tag = staff;
-
-            rightStackPanel.Children.Add(editButton);
-
-            mainStackPanel.Children.Add(image);
-            mainStackPanel.Children.Add(leftStackPanel);
-            mainStackPanel.Children.Add(rightStackPanel);
-            
-            border.Child = mainStackPanel;
+            outerStack.Children.Add(mainGrid);
+            border.Child = outerStack;
             panel.Children.Add(border);
         }
 
@@ -217,8 +237,7 @@ namespace WH_APP_GUI.Staff
 
                 Label stafflabel = new Label();
                 stafflabel.Content = role["role"] + ":";
-                stafflabel.BorderBrush = Brushes.Black;
-                stafflabel.BorderThickness = new Thickness(0, 0, 0, 1);
+                stafflabel.Style = (Style)this.Resources["labelstyle"];
                 panel.Children.Add(stafflabel);
 
                 foreach (DataRow staff in Tables.roles.getStaff(role))
@@ -320,6 +339,14 @@ namespace WH_APP_GUI.Staff
             {
                 Page previousPage = (Page)Activator.CreateInstance(PreviousPageType);
                 Navigation.content2.Navigate(previousPage);
+            }
+        }
+
+        private void Staff_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
             }
         }
     }

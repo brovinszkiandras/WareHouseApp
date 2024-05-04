@@ -11,7 +11,7 @@
         SizeChanged="CreateEmploye_SizeChanged">
 
     <Page.Resources>
-        <Style TargetType="Button" x:Key="GreenButtonStyle">
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
             <Setter Property="Foreground" Value="#425C5A"/>
@@ -36,7 +36,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Button Name="profile_picture" Click="profile_picture_Click" Grid.Column="2"  MaxHeight="200" MaxWidth="200"/>
+            <Button Name="profile_picture" Click="profile_picture_Click" Grid.Column="2" Height="200" Width="200"/>
 
             <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="20" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
@@ -58,12 +58,12 @@
                 <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="0" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
                 <xctk:ValueRangeTextBox Name="email" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="1" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
                 <ComboBox Name="role_id" Margin="5" Grid.Column="1" Grid.Row="2" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
-                <ComboBox Name="warehouse_id" Margin="5" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
+                <ComboBox Name="warehouse_id" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
             </Grid>
 
             <StackPanel Grid.Column="8" Grid.Row="2" Margin="30">
-                <Button Name="Done" Content="Done" Margin="0, 5" Click="Done_Click" Padding="30, 10" Style="{StaticResource GreenButtonStyle}"/>
-                <Button Name="Cancel" Content="Cancel" Margin="0, 5" Padding="30, 10" Click="Cancel_Click" Style="{StaticResource GreenButtonStyle}"/>
+                <Button Name="Done" Content="Done" Margin="0, 5" Click="Done_Click" Padding="20, 10" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Name="Cancel" Content="Cancel" Margin="0, 5" Padding="20, 10" Click="Cancel_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Border>

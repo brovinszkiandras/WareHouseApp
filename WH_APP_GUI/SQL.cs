@@ -29,9 +29,7 @@ namespace WH_APP_GUI
             {
                 returnList.Add(lis[i][0]);
             }
-            return returnList;
-
-            
+            return returnList;   
         }
         public static bool IsDatabasetxtExist()
         {
@@ -39,6 +37,14 @@ namespace WH_APP_GUI
         }
         public static void CreateDatabaseConnectionDatas(string DataSource, int Port, string Username, string password, string DatabaseName)
         {
+            StreamWriter databaseWrite = new StreamWriter("database.txt");
+            databaseWrite.WriteLine($"datasource {DataSource}");
+            databaseWrite.WriteLine($"port {Port}");
+            databaseWrite.WriteLine($"username {Username}");
+            databaseWrite.WriteLine($"password  {password}");
+            databaseWrite.WriteLine($"databasename {DatabaseName}");
+            databaseWrite.Close();
+
             try
             {
                 connectionstring = $"datasource={DataSource};port={Port};username={Username};password={password};database=;";
@@ -48,19 +54,9 @@ namespace WH_APP_GUI
 
                 connectionstring = $"datasource={DataSource};port={Port};username={Username};password={password};database={DatabaseName};";
                 con = new MySqlConnection(connectionstring);
-
-                StreamWriter databaseWrite = new StreamWriter("database.txt");
-                databaseWrite.WriteLine($"datasource {DataSource}");
-                databaseWrite.WriteLine($"port {Port}");
-                databaseWrite.WriteLine($"username {Username}");
-                databaseWrite.WriteLine($"password  {password}");
-                databaseWrite.WriteLine($"databasename {DatabaseName}");
-
-                databaseWrite.Close();
             }
             catch (Exception)
             {
-
                 MessageBox.Show("Couldnt connect to the specified database");
             }
             
@@ -68,81 +64,24 @@ namespace WH_APP_GUI
 
         public static void FillStaticDatabaseValues()
         {
-            datasource = File.ReadAllLines("database.txt")[0].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[0].Split(' ')[1] : string.Empty;
-            port = int.TryParse(File.ReadAllLines("database.txt")[1].Split(' ')[1], out int tmp) ? tmp : 0;
-            username = File.ReadAllLines("database.txt")[2].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[2].Split(' ')[1] : string.Empty;
-            password = File.ReadAllLines("database.txt")[3].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[3].Split(' ')[1] : string.Empty;
-            database = File.ReadAllLines("database.txt")[4].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[4].Split(' ')[1] : string.Empty;
-
-
-            connectionstring = $"datasource={datasource};port={port};username={username};password={password};database={database};";
-            con = new MySqlConnection(connectionstring);
-        }
-
-        #region Set methoods
-        private static void ModifyDatabaseTXT(string Data, object Value)
-        {
-            StreamReader readDatabaseData = new StreamReader("database.txt");
-            List<string> DatabaseData = new List<string>();
-            while (!readDatabaseData.EndOfStream)
+            try
             {
-                string oneDataLine = readDatabaseData.ReadLine();
-                DatabaseData.Add(oneDataLine);
-            }
-            readDatabaseData.Close();
+                datasource = File.ReadAllLines("database.txt")[0].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[0].Split(' ')[1] : string.Empty;
+                port = int.TryParse(File.ReadAllLines("database.txt")[1].Split(' ')[1], out int tmp) ? tmp : 0;
+                username = File.ReadAllLines("database.txt")[2].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[2].Split(' ')[1] : string.Empty;
+                password = File.ReadAllLines("database.txt")[3].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[3].Split(' ')[1] : string.Empty;
+                database = File.ReadAllLines("database.txt")[4].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[4].Split(' ')[1] : string.Empty;
 
-            StreamWriter writeDatasToDBtxt = new StreamWriter("database.txt");
-            for (int i = 0; i < DatabaseData.Count; i++)
+                connectionstring = $"datasource={datasource};port={port};username={username};password={password};database={database};";
+                con = new MySqlConnection(connectionstring);
+            }
+            catch (IndexOutOfRangeException)
             {
-                if (DatabaseData[i].Split(' ')[0] == Data)
-                {
-                    writeDatasToDBtxt.WriteLine($"{Data} {Value}");
-                }
-                else
-                {
-                    writeDatasToDBtxt.WriteLine(DatabaseData[i]);
-                }
+                File.Delete("database.txt");
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
             }
-            writeDatasToDBtxt.Close();
         }
-
-        public static void SetDatasource(string NewDatasource)
-        {
-            datasource = NewDatasource;
-            connectionstring = $"datasource={NewDatasource};port={port};username={username};password={password};database={database};";
-            ModifyDatabaseTXT("datasource", NewDatasource);
-            con = new MySqlConnection(connectionstring);
-        }
-        public static void SetPort(int NewPort)
-        {
-            port = NewPort;
-            connectionstring = $"datasource={datasource};port={NewPort};username={username};password={password};database={database};";
-            ModifyDatabaseTXT("port", NewPort);
-            con = new MySqlConnection(connectionstring);
-        }
-        public static void SetUsername(string NewUsername)
-        {
-            username = NewUsername;
-            connectionstring = $"datasource={datasource};port={port};username={NewUsername};password={password};database={database};";
-            ModifyDatabaseTXT("username", NewUsername);
-        }
-        public static void SetPassword(string NewPassword)
-        {
-            password = NewPassword;
-            connectionstring = $"datasource={datasource};port={port};username={username};password={NewPassword};database={database};";
-            ModifyDatabaseTXT("password", NewPassword);
-            con = new MySqlConnection(connectionstring);
-        }
-        public static void SetDatabaseName(string databaseName)
-        {
-            database = databaseName;
-            connectionstring = $"datasource={datasource};port={port};username={username};password={password};database={databaseName};";
-            ModifyDatabaseTXT("database", databaseName);
-            con = new MySqlConnection(connectionstring);
-        }
-
-
-        #endregion
         #region Sql commands
         static public void SqlCommand(string command)
         {
@@ -360,57 +299,6 @@ namespace WH_APP_GUI
         }
         #endregion
 
-        static public bool ContainsAllIllegalRegex(string input)
-        {
-            string[] illegalPatterns = {
-                @"\s",                                   
-                @"[\W&&[^_]]",                            
-                @"\b(select|insert|update|delete|table)\b", 
-                @"[!@#$%^&*()+=\[\]{};':"",.<>?/\\|~`]",  
-                "[áéűó]"                                  
-            };
-
-            foreach (var pattern in illegalPatterns)
-            {
-                if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase))
-                {
-                    return true;
-                }
-            }
-           
-            return false;
-        }
-
-        static public bool ContainsIllegalRegexWithExceptions(string input, char[] exceptions)
-        {
-            char[] problematicCharacters = {
-                '\'', '\"', ';', '(', ')', ' ',
-                '[', ']', '{', '}', '=', '<', '>', ',',
-                '+', '-', '*', '/', '%', '&', '|', '^', '~', '!',
-                '\\', '\n', '\r', '\t'
-            };
-
-            for (int i = 0; i < input.Length; i++)
-            {
-                if (problematicCharacters.Contains(input[i]) && !exceptions.Contains(input[i]))
-                {
-                    return true;
-                }
-            }
-
-            string[] problematicWords = {
-                "insert", "delete", "update", "select", "drop", "create"
-            };
-
-            for (int i = 0; i < problematicWords.Length; i++)
-            {
-                if (input.Contains(problematicWords[i]))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
 
         public static List<string> GetElementOfListArray(List<string[]> ListWithArray)
         {
@@ -418,17 +306,6 @@ namespace WH_APP_GUI
             for (int i = 0; i < ListWithArray.Count; i++)
             {
                 returnList.Add(ListWithArray[i][0]);
-            }
-
-            return returnList;
-        }
-
-        public static List<string> GetElementOfListArray(List<string[]> ListWithArray, int index)
-        {
-            List<string> returnList = new List<string>();
-            for (int i = 0; i < ListWithArray.Count; i++)
-            {
-                returnList.Add(ListWithArray[i][index]);
             }
 
             return returnList;

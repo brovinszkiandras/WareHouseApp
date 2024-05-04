@@ -27,15 +27,16 @@ namespace WH_APP_GUI.warehouseTableFolder
 
             this.warehouseTable = WarehouseTable;
 
+            if (!User.DoesHavePermission("Handle Products"))
+            {
+                Create.Visibility = Visibility.Collapsed;
+            }
+
             Displayproducts();
         }
         public void Displayproducts()
         {
-            if (Tables.features.isFeatureInUse("Storage") == true)
-            {
-                MessageBox.Show("Lefutott");
-                addStorageFeautoreElementsToDisplay();
-            }
+            addStorageFeautoreElementsToDisplay();
 
             productGrid.Children.Clear();
             int lastRow = 0;
@@ -50,9 +51,8 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 TextBlock name = new TextBlock();
                 name.Text = warehouseTable.getProduct(product)["name"].ToString();
-                name.FontSize = 15;
+                name.Style = (Style)this.Resources["textblockstyle"];
                 name.TextWrapping = TextWrapping.Wrap;
-                name.Foreground = Brushes.White;
                 name.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(name, lastRow);
                 Grid.SetColumn(name, 0);
@@ -61,136 +61,109 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                 TextBlock qty = new TextBlock();
                 qty.Text = product["qty"].ToString();
-                qty.FontSize = 15;
-                qty.Foreground = Brushes.White;
+                qty.Style = (Style)this.Resources["textblockstyle"];
                 qty.TextWrapping = TextWrapping.Wrap;
                 qty.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(qty, lastRow);
                 Grid.SetColumn(qty, 1);
+
+                productGrid.Children.Add(qty);
+
+                TextBlock shelf = new TextBlock();
+                if (product["shelf_id"] != DBNull.Value)
+                {
+                    shelf.Text = warehouseTable.getShelf(product)["name"].ToString();
+                }
+                else
+                {
+                    shelf.Text = "";
+                }
+                shelf.Style = (Style)this.Resources["textblockstyle"];
+                shelf.TextWrapping = TextWrapping.Wrap;
+                shelf.HorizontalAlignment = HorizontalAlignment.Center;
+                Grid.SetRow(shelf, lastRow);
+                Grid.SetColumn(shelf, 2);
+
+                productGrid.Children.Add(shelf);
+
+                TextBlock width = new TextBlock();
+
+                #region StorageElements
+                if (Tables.features.isFeatureInUse("Storage"))
+                {
+                    width.Text = product["width"].ToString();
+                    width.Style = (Style)this.Resources["textblockstyle"];
+                    width.TextWrapping = TextWrapping.Wrap;
+                    width.HorizontalAlignment = HorizontalAlignment.Center;
+                    Grid.SetRow(width, lastRow);
+                    Grid.SetColumn(width, 5);
+
+                    productGrid.Children.Add(width);
+
+
+                    TextBlock length = new TextBlock();
+                    length.Text = product["length"].ToString();
+                    length.Style = (Style)this.Resources["textblockstyle"];
+                    length.TextWrapping = TextWrapping.Wrap;
+                    length.HorizontalAlignment = HorizontalAlignment.Center;
+                    Grid.SetRow(length, lastRow);
+                    Grid.SetColumn(length, 6);
+
+                    productGrid.Children.Add(length);
+
+                    TextBlock height = new TextBlock();
+                    height.Text = product["height"].ToString();
+                    height.Style = (Style)this.Resources["textblockstyle"];
+                    height.TextWrapping = TextWrapping.Wrap;
+                    height.HorizontalAlignment = HorizontalAlignment.Center;
+                    Grid.SetRow(height, lastRow);
+                    Grid.SetColumn(height, 7);
+
+                    productGrid.Children.Add(height);
+                }
+                #endregion
+
+                TextBlock on_shelf_level = new TextBlock();
+                if (product["on_shelf_level"] != DBNull.Value)
+                {
+                    on_shelf_level.Text = product["on_shelf_level"].ToString();
+                }
+                else
+                {
+                    on_shelf_level.Text = "";
+                }
+                on_shelf_level.Style = (Style)this.Resources["textblockstyle"];
+                on_shelf_level.TextWrapping = TextWrapping.Wrap;
+                on_shelf_level.HorizontalAlignment = HorizontalAlignment.Center;
+                Grid.SetRow(on_shelf_level, lastRow);
+                Grid.SetColumn(on_shelf_level, 3);
+
+                productGrid.Children.Add(on_shelf_level);
 
                 CheckBox is_in_box = new CheckBox();
                 is_in_box.IsChecked = (bool)product["is_in_box"];
                 is_in_box.HorizontalAlignment = HorizontalAlignment.Center;
                 is_in_box.IsEnabled = false;
                 Grid.SetRow(is_in_box, lastRow);
-                Grid.SetColumn(is_in_box, 2);
-
-                productGrid.Children.Add(qty);
-                if (product["shelf_id"] != DBNull.Value)
-                {
-                    #region shelf
-                    TextBlock shelf = new TextBlock();
-                    shelf.Text = warehouseTable.getShelf(product)["name"].ToString();
-                    shelf.FontSize = 15;
-                    shelf.Foreground = Brushes.White;
-                    shelf.TextWrapping = TextWrapping.Wrap;
-                    shelf.HorizontalAlignment = HorizontalAlignment.Center;
-                    Grid.SetRow(shelf, lastRow);
-                    Grid.SetColumn(shelf, 3);
-
-                    productGrid.Children.Add(shelf);
-                    #endregion
-
-
-                    #region shelf_level
-                    TextBlock on_shelf_level = new TextBlock();
-                    on_shelf_level.Text = product["on_shelf_level"].ToString();
-                    on_shelf_level.FontSize = 15;
-                    on_shelf_level.Foreground = Brushes.White;
-                    on_shelf_level.TextWrapping = TextWrapping.Wrap;
-                    on_shelf_level.HorizontalAlignment = HorizontalAlignment.Center;
-                    Grid.SetRow(on_shelf_level, lastRow);
-                    Grid.SetColumn(on_shelf_level, 4);
-
-                    productGrid.Children.Add(on_shelf_level);
-
-                    #region StorageElements
-                    if (Tables.features.isFeatureInUse("Storage"))
-                    {
-                        TextBlock width = new TextBlock();
-                        width.Text = product["width"].ToString();
-                        width.FontSize = 15;
-                        width.Foreground = Brushes.White;
-                        width.TextWrapping = TextWrapping.Wrap;
-                        width.HorizontalAlignment = HorizontalAlignment.Center;
-                        Grid.SetRow(width, lastRow);
-                        Grid.SetColumn(width, 5);
-
-                        productGrid.Children.Add(width);
-
-
-                        TextBlock length = new TextBlock();
-                        length.Text = product["length"].ToString();
-                        length.FontSize = 15;
-                        length.Foreground = Brushes.White;
-                        length.TextWrapping = TextWrapping.Wrap;
-                        length.HorizontalAlignment = HorizontalAlignment.Center;
-                        Grid.SetRow(length, lastRow);
-                        Grid.SetColumn(length, 6);
-
-                        productGrid.Children.Add(length);
-
-                        TextBlock height = new TextBlock();
-                        height.Text = product["height"].ToString();
-                        height.FontSize = 15;
-                        height.Foreground = Brushes.White;
-                        height.TextWrapping = TextWrapping.Wrap;
-                        height.HorizontalAlignment = HorizontalAlignment.Center;
-                        Grid.SetRow(height, lastRow);
-                        Grid.SetColumn(height, 7);
-
-                        productGrid.Children.Add(height);
-                    }
-                    #endregion
-
-                    #endregion
-                }
-                else
-                {
-                    MessageBox.Show("alma");
-                    Label notPlacedLabel = new Label();
-                    notPlacedLabel.Content = "Not placed yet";
-                    notPlacedLabel.FontSize = 20;
-                    notPlacedLabel.HorizontalAlignment = HorizontalAlignment.Center;
-                    notPlacedLabel.Foreground = Brushes.White;
-                    Grid.SetRow(notPlacedLabel, lastRow);
-                    Grid.SetColumn(notPlacedLabel, 3);
-                    if (Tables.features.isFeatureInUse("Storage") == true)
-                    {
-                        Grid.SetColumnSpan(notPlacedLabel, 5);
-                    }
-                    else
-                    {
-                        Grid.SetColumnSpan(notPlacedLabel, 2);
-                    }
-                    productGrid.Children.Add(notPlacedLabel);
-                }
-
-
-               
+                Grid.SetColumn(is_in_box, 4);
 
                 productGrid.Children.Add(is_in_box);
 
-                Button add = new Button();
-                add.Content = "Quantity";
-                add.FontSize = 15;
-                add.Foreground = Brushes.White;
-                add.Background = Brushes.Green;
-                add.Tag = product["id"];
-                add.Click += Add_Click;
-                Grid.SetRow(add, lastRow);
-                Grid.SetColumn(add, productGrid.ColumnDefinitions.Count - 3);
-
-                productGrid.Children.Add(add);
-
-
-                if (User.DoesHavePermission("Modify Warehouse") || User.DoesHavePermission("Modify all Warehouse"))
+                if (User.DoesHavePermission("Handle Products"))
                 {
+                    Button add = new Button();
+                    add.Content = "Quantity";
+                    add.Style = (Style)this.Resources["GoldenButtonStyle"];
+                    add.Tag = product["id"];
+                    add.Click += Add_Click;
+                    Grid.SetRow(add, lastRow);
+                    Grid.SetColumn(add, productGrid.ColumnDefinitions.Count - 3);
+
+                    productGrid.Children.Add(add);
+
                     Button edit = new Button();
                     edit.Content = "Edit";
-                    edit.FontSize = 15;
-                    edit.Foreground = Brushes.White;
-                    edit.Background = Brushes.Green;
+                    edit.Style = (Style)this.Resources["GoldenButtonStyle"];
                     edit.Click += Edit_Click;
                     edit.Tag = product["id"];
 
@@ -201,19 +174,13 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                     Button delete = new Button();
                     delete.Content = "Delete";
-                    delete.FontSize = 15;
-                    delete.Foreground = Brushes.White;
-                    delete.Background = Brushes.Green;
+                    delete.Style = (Style)this.Resources["GoldenButtonStyle"];
                     delete.Tag = product["id"];
-                    //delete.Click += Delete_Click;
+                    delete.Click += Delete_Click;
                     Grid.SetRow(delete, lastRow);
                     Grid.SetColumn(delete, productGrid.ColumnDefinitions.Count - 1);
 
                     productGrid.Children.Add(delete);
-                }
-                else
-                {
-                    //Create.Visibility = Visibility.Collapsed;
                 }
 
                 lastRow++;
@@ -234,8 +201,7 @@ namespace WH_APP_GUI.warehouseTableFolder
             }
 
             Label widthLabel = new Label();
-            widthLabel.FontSize = 15;
-            widthLabel.Foreground = Brushes.White;
+            widthLabel.Style = (Style)this.Resources["labelstyle"];
             widthLabel.HorizontalAlignment = HorizontalAlignment.Center;
             widthLabel.VerticalAlignment = VerticalAlignment.Center;
             widthLabel.Content = "Width";
@@ -243,8 +209,7 @@ namespace WH_APP_GUI.warehouseTableFolder
             labelsGrid.Children.Add(widthLabel);
 
             Label heightLabel = new Label();
-            heightLabel.FontSize = 15;
-            heightLabel.Foreground = Brushes.White;
+            heightLabel.Style = (Style)this.Resources["labelstyle"];
             heightLabel.HorizontalAlignment = HorizontalAlignment.Center;
             heightLabel.VerticalAlignment = VerticalAlignment.Center;
             heightLabel.Content = "Height";
@@ -252,8 +217,7 @@ namespace WH_APP_GUI.warehouseTableFolder
             labelsGrid.Children.Add(heightLabel);
 
             Label lengthLabel = new Label();
-            lengthLabel.FontSize = 15;
-            lengthLabel.Foreground = Brushes.White;
+            lengthLabel.Style = (Style)this.Resources["labelstyle"];
             lengthLabel.HorizontalAlignment = HorizontalAlignment.Center;
             lengthLabel.VerticalAlignment = VerticalAlignment.Center;
             lengthLabel.Content = "Length";

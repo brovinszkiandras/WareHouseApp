@@ -6,24 +6,63 @@
       xmlns:local="clr-namespace:WH_APP_GUI.Dock"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="DockPage">
-    <Border BorderThickness="4,0,0,0" CornerRadius="30,0,0,0">
+      Title="DockPage"
+      SizeChanged="DockPage_SizeChanged">
+
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                     BorderBrush="{TemplateBinding BorderBrush}"
+                     BorderThickness="{TemplateBinding BorderThickness}"
+                     CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+    </Page.Resources>
+
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="Add new dock" Name="AddNewDock" Click="AddNewDock_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
-                <Button Content="All dock" Name="AllDocks" Click="AllDocks_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
-                <ComboBox Name="DocksByWarehouses" Visibility="Collapsed" BorderBrush="Black" SelectionChanged="DockByWarehouses_SelectionChanged" Margin="5"/>
-                <Button Content="Back" Name="Back" Click="Back_Click" Background="White" Foreground="Black" BorderThickness="1" BorderBrush="Black" Margin="5"/>
+                <Button Content="Add new dock" Name="AddNewDock" Click="AddNewDock_Click" Margin="5" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Content="All dock" Name="AllDocks" Click="AllDocks_Click" Margin="5" Style="{StaticResource GoldenButtonStyle}"/>
+                <ComboBox Name="DocksByWarehouses" Visibility="Collapsed" SelectionChanged="DockByWarehouses_SelectionChanged" Margin="5" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
+                <Button Content="Back" Name="Back" Click="Back_Click" Margin="5" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
 
 
             <Grid Name="DockDisplayGRID" Grid.Column="1" Visibility="Visible">
-                <ScrollViewer Name="DockDisplaySCROLL" Visibility="Visible" HorizontalAlignment="Center" Margin="20">
+                <ScrollViewer Name="DockDisplaySCROLL" Visibility="Visible" Margin="20">
                     <StackPanel Name="DockDisplaySTACK" Orientation="Vertical">
 
                     </StackPanel>

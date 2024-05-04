@@ -60,8 +60,31 @@ namespace WH_APP_GUI.transport
                 default:
                     break;
             }
-
         }
+
+        private bool CanBeAssignedToTransport(DataRow employee)
+        {
+            bool canBeAssigned = false;
+            foreach (DataRow permission in Tables.roles.getPermission(Tables.employees.getRole(employee)))
+            {
+                if (permission["name"].ToString() == "Assign to transport")
+                {
+                    canBeAssigned = true;
+                    break;
+                }
+            }
+
+            if (canBeAssigned && Tables.features.isFeatureInUse("Activity"))
+            {
+                if (!(bool)employee["activity"])
+                {
+                    canBeAssigned = false;
+                }
+            }
+
+            return canBeAssigned;
+        }
+
         private Dictionary<string, DataRow> employees = new Dictionary<string, DataRow>(); 
         private void IniEmployees()
         {
@@ -71,16 +94,22 @@ namespace WH_APP_GUI.transport
             {
                 foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse_id_Dictionary[WarehouseCBX.SelectedItem.ToString()]))
                 {
-                    EmployeesCBX.Items.Add(employee["name"].ToString());  
-                    employees.Add(employee["name"].ToString(), employee);
+                    if (CanBeAssignedToTransport(employee))
+                    {
+                        EmployeesCBX.Items.Add(employee["name"].ToString());  
+                        employees.Add(employee["name"].ToString(), employee);
+                    }
                 }
             }
             else
             {
                 foreach (DataRow employee in Tables.employees.database.Rows)
                 {
-                    EmployeesCBX.Items.Add(employee["name"].ToString());
-                    employees.Add(employee["name"].ToString(), employee);
+                    if (CanBeAssignedToTransport(employee))
+                    {
+                        EmployeesCBX.Items.Add(employee["name"].ToString());
+                        employees.Add(employee["name"].ToString(), employee);
+                    }
                 }
             }
         }
@@ -200,18 +229,29 @@ namespace WH_APP_GUI.transport
         private void save_Click(object sender, RoutedEventArgs e)
         {
             transport["start_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["start_date"]);
-            transport["end_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["end_date"]);
+            if (transport["end_date"] != DBNull.Value)
+            {
+                transport["end_date"] = SQL.convertDateToCorrectFormat((DateTime)transport["end_date"]);
+            }
 
             Tables.transports.updateChanges();
-            Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully updated transport number {transport["id"]}");
-            TransportsPage transportsPage = new TransportsPage();
-            Navigation.content2.Navigate( transportsPage );
+            Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully updated transport number {transport["id"]}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+           
+            
+            if (Navigation.PreviousPage != null)
+            {
+                Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            }
+            else
+            {
+                Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
+            }
         }
 
 
         private void start_date_InputValidationError(object sender, Xceed.Wpf.Toolkit.Core.Input.InputValidationErrorEventArgs e)
         {
-            Xceed.Wpf.Toolkit.MessageBox.Show($"You can only input a date");
+            Xceed.Wpf.Toolkit.MessageBox.Show($"You can only input a date", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void StatusCBX_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -252,6 +292,14 @@ namespace WH_APP_GUI.transport
             IniEmployees();
             IniCars();
             IniDocks();
+        }
+
+        private void UpdateTransportPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
         }
     }
 }

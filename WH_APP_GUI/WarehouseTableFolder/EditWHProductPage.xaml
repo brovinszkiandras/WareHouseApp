@@ -106,6 +106,7 @@
             <RowDefinition Height="8*"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <Button x:Name="Back" Content="Back" Grid.Column="2" Click="Back_Click"/>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1">
             <Grid x:Name="productGrid">
@@ -133,7 +134,7 @@
 
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <ComboBoxItem Content="{Binding Path=[name]}" Style="{StaticResource comboboxItemStyle}"></ComboBoxItem>
+                                <ComboBoxItem Content="{Binding Path=[name]}"></ComboBoxItem>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -158,7 +159,7 @@
 
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <ComboBoxItem Content="{Binding Path=[name]}" Style="{StaticResource comboboxItemStyle}"></ComboBoxItem>
+                                <ComboBoxItem Content="{Binding Path=[name]}"></ComboBoxItem>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
