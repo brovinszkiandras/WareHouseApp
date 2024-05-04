@@ -229,7 +229,6 @@ namespace WH_APP_GUI.transport
                     lastRow++;
                 }
             }
-
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)

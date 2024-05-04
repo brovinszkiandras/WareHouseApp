@@ -83,12 +83,15 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
                     <Button Grid.Column="8" Name="Back" Content="Back" Click="Back_Click" Margin="5" Style="{StaticResource GoldenButtonStyle}"/>
                 </Grid>
 
                 <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
-                    <StackPanel x:Name="transportDisplay">
+                    <StackPanel>
+                        <Border Margin="5" BorderBrush="Black" BorderThickness="1">
+                            <Grid Name="MapDisplay" MinHeight="200"/>
+                        </Border>
+                        <StackPanel x:Name="transportDisplay"/>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>

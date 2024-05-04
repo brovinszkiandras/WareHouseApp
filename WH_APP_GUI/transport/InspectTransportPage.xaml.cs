@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -20,11 +21,26 @@ namespace WH_APP_GUI.transport
     public partial class InspectTransportPage : Page
     {
         private DataRow Transport = null;
+        private Map terkep = new Map();
+
         public InspectTransportPage(DataRow transport)
         {
             InitializeComponent();
             Transport = transport;
             DisplayOneTransport(transport);
+            Ini_Map();
+        }
+        private void Ini_Map()
+        {
+            terkep.IsEnabled = false;
+            MapDisplay.Children.Add(terkep);
+            terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
+
+            double lat = double.Parse(Tables.warehouses.getCity(Tables.transports.getWarehouse(Transport))["latitude"].ToString());
+            double lon = double.Parse(Tables.warehouses.getCity(Tables.transports.getWarehouse(Transport))["longitude"].ToString());
+
+            terkep.Center = new Location(lat, lon);
+            terkep.ZoomLevel = 10;
         }
 
         private void DisplayOneTransport(DataRow transport)
@@ -173,33 +189,26 @@ namespace WH_APP_GUI.transport
                 }
                 else if ((sender as ComboBox).SelectedItem.ToString() == "Finished")
                 {
-                    transport.Delete();
-                    Tables.transports.updateChanges();
-                    Tables.transports.Refresh();
-                    MessageBox.Show("The transport has been completed", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    if (Navigation.PreviousPage != null)
-                    {
-                        Navigation.OpenPage(Navigation.PreviousPage.GetType());
-                    }
-                    else
-                    {
-                        Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
-                    }
-                }
-                else if ((sender as ComboBox).SelectedItem.ToString() == "On route")
-                {
                     if (Tables.features.isFeatureInUse("Fuel"))
                     {
-                        RouteDetails routeDetails = new RouteDetails(transport);
+                        SetGasPrices routeDetails = new SetGasPrices();
                         routeDetails.ShowDialog();
                     }
                     else
                     {
-                        Transport["status"] = (sender as ComboBox).SelectedItem.ToString();
+                        transport.Delete();
                         Tables.transports.updateChanges();
-                        transportDisplay.Children.Clear();
-                        DisplayOneTransport(Transport);
+                        Tables.transports.Refresh();
+                        MessageBox.Show("The transport has been completed", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        if (Navigation.PreviousPage != null)
+                        {
+                            Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                        }
+                        else
+                        {
+                            Navigation.OpenPage(Navigation.GetTypeByName("TransportsPage"));
+                        }
                     }
                 }
                 else
@@ -385,8 +394,33 @@ namespace WH_APP_GUI.transport
                 mainStackPanel.Children.Add(inWarehouse);
             }
 
+            Button viewOnMap = new Button();
+            viewOnMap.Content = "View On Map";
+            viewOnMap.Margin = new Thickness(5);
+            viewOnMap.Tag = dataOfOrder;
+            viewOnMap.Click += ViewOnMapClick;
+            mainStackPanel.Children.Add(viewOnMap);
+
+            Expander orderExpander = new Expander();
+            orderExpander.Header = "Order";
+            orderExpander.Margin = new Thickness(5);
+
             border.Child = mainStackPanel;
-            panel.Children.Add(border);
+            orderExpander.Content = border;
+            panel.Children.Add(orderExpander);
+        }
+
+        private void ViewOnMapClick(object sender, RoutedEventArgs e)
+        {
+            DataRow order = (sender as Button).Tag as DataRow;
+            if (order != null)
+            {
+                double lat = double.Parse(Tables.orders.getCity(order)["latitude"].ToString());
+                double lon = double.Parse(Tables.orders.getCity(order)["longitude"].ToString());
+
+                terkep.Center = new Location(lat, lon);
+                terkep.ZoomLevel = 10;
+            }
         }
 
         private void OrderStatusChange(object sender, RoutedEventArgs e)

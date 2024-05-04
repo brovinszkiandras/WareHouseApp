@@ -340,8 +340,8 @@
     <Compile Include="transport\InspectTransportPage.xaml.cs">
       <DependentUpon>InspectTransportPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="transport\RouteDetails.xaml.cs">
-      <DependentUpon>RouteDetails.xaml</DependentUpon>
+    <Compile Include="transport\SetGasPrices.xaml.cs">
+      <DependentUpon>SetGasPrices.xaml</DependentUpon>
     </Compile>
     <Compile Include="transport\TransportsPage.xaml.cs">
       <DependentUpon>TransportsPage.xaml</DependentUpon>
@@ -530,7 +530,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="transport\RouteDetails.xaml">
+    <Page Include="transport\SetGasPrices.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

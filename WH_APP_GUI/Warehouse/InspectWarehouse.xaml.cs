@@ -213,18 +213,11 @@ namespace WH_APP_GUI.Warehouse
             MapDisplay.Children.Add(terkep);
             terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
 
-            MapPolyline polyline = new MapPolyline();
-            polyline.Stroke = new SolidColorBrush(Colors.Black);
-            polyline.StrokeThickness = 5;
-            polyline.Opacity = 0.7;
-
             double lat = double.Parse(Tables.warehouses.getCity(Warehouse)["latitude"].ToString());
             double lon = double.Parse(Tables.warehouses.getCity(Warehouse)["longitude"].ToString());
 
             terkep.Center = new Location(lat, lon);
             terkep.ZoomLevel = 10;
-
-            terkep.Children.Add(polyline);
         }
         private void Ini_Revenue_A_Day()
         {
