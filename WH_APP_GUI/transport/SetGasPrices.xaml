@@ -11,13 +11,12 @@
             <StackPanel>
                 <Label Content="Gas Info:" BorderBrush="Black" BorderThickness="0,0,0,1" HorizontalContentAlignment="Center"/>
 
-                <TextBlock Text="Choose a gas price with which you refueled on the route or enter a new value:" Margin="5" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock Name="Details" Margin="5" TextWrapping="Wrap"/>
+                <TextBlock Text="Choose a gas price with which you refueled on the route or enter a new value:" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
                 <Border BorderBrush="Black" BorderThickness="1" Margin="5">
                     <StackPanel Name="GasPrices"/>
                 </Border>
-                
-                <Button x:Name="NewValue" Content="Enter a new value" Margin="5"/>
 
                 <Button Content="Done" Margin="5"/>
             </StackPanel>

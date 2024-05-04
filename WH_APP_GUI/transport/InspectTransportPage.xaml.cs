@@ -191,8 +191,12 @@ namespace WH_APP_GUI.transport
                 {
                     if (Tables.features.isFeatureInUse("Fuel"))
                     {
-                        SetGasPrices routeDetails = new SetGasPrices();
+                        SetGasPrices routeDetails = new SetGasPrices(transport);
                         routeDetails.ShowDialog();
+
+                        //transport.Delete();
+                        //Tables.transports.updateChanges();
+                        //Tables.transports.Refresh();
                     }
                     else
                     {
