@@ -25,6 +25,7 @@ namespace WH_APP_GUI
         public Home()
         {
             InitializeComponent();
+            //Faker.FakeEveryting();
             Navigation.RemoveParent();
 
             Loaded += HomeLoaded;

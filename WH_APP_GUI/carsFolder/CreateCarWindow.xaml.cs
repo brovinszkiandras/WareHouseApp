@@ -76,7 +76,7 @@ namespace WH_APP_GUI.carsFolder
             Grid.SetRow(stackPanel, 7);
             Label label = new Label();
             label.Style = (Style)this.Resources["labelstyle"];
-            label.Content = "Storage (cm2)*";
+            label.Content = "Storage (cm2)";
             stackPanel.Children.Add(label);
 
             Binding storageBinding = new Binding("[storage]");
@@ -104,7 +104,7 @@ namespace WH_APP_GUI.carsFolder
             Grid.SetRow(stackPanel2, 8);
             Label label2 = new Label();
             label2.Style = (Style)this.Resources["labelstyle"];
-            label2.Content = "Carrying capacity (kgm)*";
+            label2.Content = "Carrying capacity (kgm)";
             stackPanel2.Children.Add(label2);
 
 
@@ -139,7 +139,7 @@ namespace WH_APP_GUI.carsFolder
             Grid.SetRow(stackPanel, 9);
             Label label = new Label();
             label.Style = (Style)this.Resources["labelstyle"];
-            label.Content = "Consumption (liter/h)*";
+            label.Content = "Consumption (liter/h)";
             stackPanel.Children.Add(label);
 
             Binding consumptionBinding = new Binding("[consumption]");
@@ -168,7 +168,7 @@ namespace WH_APP_GUI.carsFolder
             Grid.SetRow(stackPanel2, 10);
             Label label2 = new Label();
             label2.Style = (Style)this.Resources["labelstyle"];
-            label2.Content = "Gas tank size (liter)*";
+            label2.Content = "Gas tank size (liter)";
             stackPanel2.Children.Add(label2);
 
 
