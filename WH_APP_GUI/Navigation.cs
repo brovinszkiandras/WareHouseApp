@@ -123,7 +123,6 @@ namespace WH_APP_GUI
                 ConstructorInfo constructor = Page.GetConstructor(constructorParameterTypes);
 
                 object[] constructorParameters = new object[] { constructorForPage };
-
                 Page ToPage = (Page)constructor.Invoke(constructorParameters); //Ha erre kapsz hibát az azért van mert konstruktort akarsz átadni ott ahol nem kéne
                 content2.Navigate(ToPage);
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been opened this page: {Page.Name}.");

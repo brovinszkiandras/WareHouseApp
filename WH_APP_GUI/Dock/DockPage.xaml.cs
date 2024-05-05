@@ -43,7 +43,7 @@ namespace WH_APP_GUI.Dock
         {
             DockDisplaySTACK.Children.Clear();
 
-            foreach (DataRow dock in Tables.docks.database.Rows)
+            foreach (DataRow dock in Tables.warehouses.getDocks(WarehouseFromPage))
             {
                 DisplayOneDock(dock);
             }
@@ -249,10 +249,10 @@ namespace WH_APP_GUI.Dock
         }
         private void DockPage_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-                foreach (var child in alapgrid.Children)
-                {
-                    FontSize = e.NewSize.Height * 0.03;
-                }
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
         }
         #endregion
         #region Modify methods
@@ -274,28 +274,15 @@ namespace WH_APP_GUI.Dock
             DataRow dock = (sender as Button).Tag as DataRow;
             if (dock != null)
             {
-                if (WarehouseFromPage != null)
-                {
-                    Navigation.OpenPage(Navigation.GetTypeByName("EditDockPage"), dock);
-                    Navigation.ReturnParam = WarehouseFromPage;
-                }
-                else
-                {
-                    Navigation.OpenPage(Navigation.GetTypeByName("EditDockPage"), dock);
-                }
+                Navigation.OpenPage(Navigation.GetTypeByName("EditDockPage"), dock);
+                Navigation.ReturnParam = WarehouseFromPage;
             }
         }
         private void AddNewDock_Click(object sender, RoutedEventArgs e)
         {
-            if (WarehouseFromPage != null)
-            {
-                Navigation.OpenPage(Navigation.GetTypeByName("CreateDockPage"));
-                Navigation.ReturnParam = WarehouseFromPage;
-            }
-            else
-            {
-                Navigation.OpenPage(Navigation.GetTypeByName("CreateDockPage"));
-            }
+            Navigation.SkipParam = true;
+            Navigation.OpenPage(Navigation.GetTypeByName("CreateDockPage"));
+            Navigation.ReturnParam = WarehouseFromPage;
         }
         private void isDockFree_Click(object sender, RoutedEventArgs e)
         {

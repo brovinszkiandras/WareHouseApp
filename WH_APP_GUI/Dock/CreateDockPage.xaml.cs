@@ -26,7 +26,7 @@ namespace WH_APP_GUI.Dock
 
             name.ValueDataType = typeof(string);
         }
-
+        #region Display
         private void IniPicture()
         {
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
@@ -44,19 +44,37 @@ namespace WH_APP_GUI.Dock
                 }
             }
         }
-
         private Dictionary<string, DataRow> Warehouses = new Dictionary<string, DataRow>();
         private void IniWarehouses()
         {
             Warehouses.Clear();
             warehouse_id.Items.Clear();
-            foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+            if (User.currentUser.Table.TableName == "employees")
             {
+                DataRow warehouse = Tables.employees.getWarehouse(User.currentUser);
                 Warehouses.Add(warehouse["name"].ToString(), warehouse);
                 warehouse_id.Items.Add(warehouse["name"].ToString());
+                warehouse_id.SelectedItem = warehouse["name"].ToString();
+            }
+            else
+            {
+                foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+                {
+                    Warehouses.Add(warehouse["name"].ToString(), warehouse);
+                    warehouse_id.Items.Add(warehouse["name"].ToString());
+                }
             }
         }
-
+        private void CreateDock_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+            image.Width = image.Height;
+        }
+        #endregion
+        #region Methods
         private void Done_Click(object sender, RoutedEventArgs e)
         {
             DataRow dock = Tables.docks.database.NewRow();
@@ -75,7 +93,6 @@ namespace WH_APP_GUI.Dock
                 Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
-
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             if (Navigation.PreviousPage != null)
@@ -87,14 +104,6 @@ namespace WH_APP_GUI.Dock
                 Navigation.OpenPage(Navigation.GetTypeByName("DockPage"));
             }
         }
-
-        private void CreateDock_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (var child in alapgrid.Children)
-            {
-                FontSize = e.NewSize.Height * 0.03;
-            }
-            image.Width = image.Height;
-        }
+        #endregion
     }
 }
