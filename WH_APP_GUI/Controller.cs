@@ -326,7 +326,7 @@ namespace WH_APP_GUI
                     SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} ADD sum_volume DOUBLE;");
 
                     foreach (DataRow warehosue in Tables.warehouses.database.Rows)
-                    {
+                    { 
                         SQL.SqlCommand($"ALTER TABLE {warehosue["name"]}" +
                             $" ADD width DOUBLE DEFAULT 0," +
                             $"ADD height DOUBLE DEFAULT 0," +

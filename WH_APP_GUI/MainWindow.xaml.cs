@@ -137,7 +137,7 @@ namespace WH_APP_GUI
                     if (datasOfUser[0][4] != "" || datasOfUser[0][5] != "")
                     {
                         User.SetCurrentUser(Emali.Text, hpsw);
-                        User.MainWindow = this;
+                        Navigation.MainWindow = this;
                         if (Tables.features.isFeatureInUse("Activity"))
                         {
                             if (!(bool)User.currentUser["activity"])
@@ -184,7 +184,7 @@ namespace WH_APP_GUI
                     if (datasOfUser[0][4] != "")
                     {
                         User.SetCurrentUser(Emali.Text, hpsw);
-                        User.MainWindow = this;
+                        Navigation.MainWindow = this;
                         Controller.LogWrite(User.currentUser["email"].ToString(), "User has been logged in to the application");
                         if (User.currentUser != null)
                         {

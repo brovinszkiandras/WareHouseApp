@@ -290,7 +290,6 @@ namespace WH_APP_GUI
                 Menu.Visibility = Visibility.Visible;
             }
         }
-
         private void logout_Click(object sender, RoutedEventArgs e)
         {
             if (User.currentUser != null)
@@ -308,9 +307,9 @@ namespace WH_APP_GUI
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
 
-                User.MainWindow.Close();
+                Navigation.MainWindow.Close();
                 User.currentUser = null;
-                User.MainWindow = mainWindow;
+                Navigation.MainWindow = mainWindow;
             }
         }
     }

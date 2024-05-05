@@ -17,6 +17,7 @@ namespace WH_APP_GUI
         public static Page PreviousPage = null;
         public static object ReturnParam = null;
         public static bool SkipParam = false;
+        public static MainWindow MainWindow = null;
         public static void RemoveParent()
         {
             if (content2.Parent != null)
