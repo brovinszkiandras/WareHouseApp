@@ -261,8 +261,8 @@ namespace WH_APP_GUI.transport
                 }
 
                 Image image = new Image();
-                image.Width = 200;
-                image.Height = 200;
+                image.Width = 100;
+                image.Height = 100;
                 image.Margin = new Thickness(5);
 
                 string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");

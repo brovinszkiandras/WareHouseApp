@@ -42,19 +42,10 @@ namespace WH_APP_GUI.Dock
         public void InitializeAllDocks()
         {
             DockDisplaySTACK.Children.Clear();
-            if (WarehouseFromPage != null)
+
+            foreach (DataRow dock in Tables.docks.database.Rows)
             {
-                foreach (DataRow dock in Tables.warehouses.getDocks(WarehouseFromPage))
-                {
-                    DisplayOneDock(dock);
-                }
-            }
-            else
-            {
-                foreach (DataRow dock in Tables.docks.database.Rows)
-                {
-                    DisplayOneDock(dock);
-                }   
+                DisplayOneDock(dock);
             }
         }
         private void DisplayOneDock(DataRow dock)
