@@ -127,6 +127,13 @@ namespace WH_APP_GUI
             type.Style = (Style)this.Resources["labelstyle"];
 
             ComboBox statusCBX = new ComboBox();
+            statusCBX.VerticalContentAlignment = VerticalAlignment.Center;
+
+            statusCBX.FontFamily = new FontFamily("Baskerville Old Face");
+            statusCBX.Foreground = Brushes.Black;
+            statusCBX.Background = new SolidColorBrush(Color.FromRgb(0x39, 0x52, 0x50));
+            statusCBX.BorderBrush = Brushes.Black;
+            statusCBX.Margin = new Thickness(5);
             statusCBX.Items.Add("Free");
             statusCBX.Items.Add("On duty");
             statusCBX.Items.Add("Under Maintenance");
