@@ -36,30 +36,28 @@ namespace WH_APP_GUI.Dock
             }
 
             WarehouseFromPage = warehouseFromPage;
-            InitializeAllDocks(DockDisplaySTACK);
-
-            Back.Visibility = Visibility.Visible;
+            InitializeAllDocks();
         }
-        public void InitializeAllDocks(Panel panel)
+        #region Display
+        public void InitializeAllDocks()
         {
-            panel.Children.Clear();
+            DockDisplaySTACK.Children.Clear();
             if (WarehouseFromPage != null)
             {
                 foreach (DataRow dock in Tables.warehouses.getDocks(WarehouseFromPage))
                 {
-                    DisplayOneDock(DockDisplaySTACK, dock);
+                    DisplayOneDock(dock);
                 }
             }
             else
             {
                 foreach (DataRow dock in Tables.docks.database.Rows)
                 {
-                    DisplayOneDock(DockDisplaySTACK, dock);
+                    DisplayOneDock(dock);
                 }   
             }
         }
-
-        private void DisplayOneDock(Panel panel, DataRow dock)
+        private void DisplayOneDock(DataRow dock)
         {
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
@@ -241,9 +239,32 @@ namespace WH_APP_GUI.Dock
 
             border.Child = mainGrid;
 
-            panel.Children.Add(border);
+            DockDisplaySTACK.Children.Add(border);
         }
-
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (Navigation.PreviousPage != null)
+            {
+                if (WarehouseFromPage != null)
+                {
+                    Navigation.PreviousPage = new InspectWarehouse(WarehouseFromPage);
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), WarehouseFromPage);
+                }
+                else
+                {
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
+            }
+        }
+        private void DockPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+                foreach (var child in alapgrid.Children)
+                {
+                    FontSize = e.NewSize.Height * 0.03;
+                }
+        }
+        #endregion
+        #region Modify methods
         private void deleteDock_Click(object sender, RoutedEventArgs e)
         {
             DataRow dock = (sender as Button).Tag as DataRow;
@@ -252,7 +273,7 @@ namespace WH_APP_GUI.Dock
                 dock.Delete();
                 Tables.docks.updateChanges();
                 DockDisplaySTACK.Children.Clear();
-                InitializeAllDocks(DockDisplaySTACK);
+                InitializeAllDocks();
 
                 MessageBox.Show("Dock deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -292,31 +313,9 @@ namespace WH_APP_GUI.Dock
             {
                 dock["free"] = bool.Parse(dock["free"].ToString()) ? false : true;
                 Tables.docks.updateChanges();
-                InitializeAllDocks(DockDisplaySTACK);
+                InitializeAllDocks();
             }
         }
-        private void Back_Click(object sender, RoutedEventArgs e)
-        {
-            if (Navigation.PreviousPage != null)
-            {
-                if (WarehouseFromPage != null)
-                {
-                    Navigation.PreviousPage = new InspectWarehouse(WarehouseFromPage);
-                    Navigation.OpenPage(Navigation.PreviousPage.GetType(), WarehouseFromPage);
-                }
-                else
-                {
-                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
-                }
-            }
-        }
-
-        private void DockPage_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-                foreach (var child in alapgrid.Children)
-                {
-                    FontSize = e.NewSize.Height * 0.03;
-                }
-        }
+        #endregion
     }
 }
