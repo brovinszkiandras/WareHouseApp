@@ -185,13 +185,13 @@ namespace WH_APP_GUI.transport
 
             if (maskedTextBox.IsMaskCompleted == false)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show($"{maskedTextBox.Name} must be in a YYYY-MM-DD HH-mm-ss format and cant be empty");
+                Xceed.Wpf.Toolkit.MessageBox.Show($"{maskedTextBox.Name} must be in a YYYY-MM-DD HH-mm-ss format and cant be empty!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 maskedTextBox.Text = transport[maskedTextBox.Name].ToString();
             }
             else if (maskedTextBox.HasParsingError == true)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show($"{maskedTextBox.Name} must be a valid {maskedTextBox.ValueDataType.Name}");
+                Xceed.Wpf.Toolkit.MessageBox.Show($"{maskedTextBox.Name} must be a valid {maskedTextBox.ValueDataType.Name}!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 maskedTextBox.Text = transport[maskedTextBox.Name].ToString();
             }

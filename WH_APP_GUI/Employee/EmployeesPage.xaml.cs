@@ -311,7 +311,6 @@ namespace WH_APP_GUI
             {
                 if (WarehouseFromPage != null)
                 {
-                    MessageBox.Show("ez is lefutott");
                     Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);
                     Navigation.ReturnParam = WarehouseFromPage;
                 }
@@ -362,11 +361,6 @@ namespace WH_APP_GUI
 
                 employee["password"] = HashedPassword;
                 Tables.employees.updateChanges();
-
-                /*DEBUG*/
-                MessageBox.Show("Employees Page at Password reset: " + password);
-                MessageBox.Show("Employees Page at Password reste: " + HashedPassword);
-                /*DEBUG*/
 
                 MessageBox.Show("Password has been reseted for the employee!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }

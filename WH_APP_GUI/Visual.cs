@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
+using ControlzEx.Standard;
+using Microsoft.Maps.MapControl.WPF;
+using static Xceed.Wpf.Toolkit.Calculator;
+using System.Diagnostics.Metrics;
 
 namespace WH_APP_GUI
 {
@@ -140,11 +144,11 @@ namespace WH_APP_GUI
                         {
                             if (orientation == Orientation.Horizontal)
                             {
-                                MessageBox.Show($"A megadott értéknek nagyobbnak kell lennie nullánál is kissebnek {sizeVertically}-nál");
+                                MessageBox.Show($"The value entered must be greater than zero and less than {sizeVertically}. Please adjust your input accordingly.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                             else if (orientation == Orientation.Vertical)
                             {
-                                MessageBox.Show($"A megadott értéknek nagyobbnak kell lennie nullánál is kissebnek {sizeHorizontally}-nál");
+                                MessageBox.Show($"The value entered must be greater than zero and less than {sizeHorizontally}. Please adjust your input accordingly.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                         }
 
@@ -153,17 +157,16 @@ namespace WH_APP_GUI
                     }
                     else
                     {
-                        MessageBox.Show("A megadott érték nem szám");
+                        MessageBox.Show("Invalid entry. The value provided must be a numeric figure. Please correct your input.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("A szelesseg mezot nem lehet uresen hagyni");
+                    MessageBox.Show("Width field cannot be left blank. Please enter a value to ensure continued operation.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
             return isCorrect;

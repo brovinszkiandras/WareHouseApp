@@ -106,13 +106,13 @@ namespace WH_APP_GUI.transport
 
             if (maskedTextBox.IsMaskCompleted == false)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show($"{maskedTextBox.Name} must be in a YYYY-MM-DD HH-mm-ss format and cant be empty");
+                Xceed.Wpf.Toolkit.MessageBox.Show($"{maskedTextBox.Name} must be in a YYYY-MM-DD HH-mm-ss format and can't be empty!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 maskedTextBox.Text = transport[maskedTextBox.Name].ToString();
             }
             else if (maskedTextBox.HasParsingError == true)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show($"{maskedTextBox.Name} must be a valid {maskedTextBox.ValueDataType.Name}");
+                Xceed.Wpf.Toolkit.MessageBox.Show($"{maskedTextBox.Name} must be a valid {maskedTextBox.ValueDataType.Name}!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 maskedTextBox.Text = transport[maskedTextBox.Name].ToString();
             }
@@ -166,17 +166,17 @@ namespace WH_APP_GUI.transport
         {
             if (EmployeesCBX.SelectedIndex < 0)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show($"An employee mus be selected");
+                Xceed.Wpf.Toolkit.MessageBox.Show($"An employee need to be selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }
             else if (CarsCBX.SelectedIndex < 0)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show($"A car mus be selected");
+                Xceed.Wpf.Toolkit.MessageBox.Show($"A car need to be selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }
             else if (DocksCBX.SelectedIndex < 0 && Tables.features.isFeatureInUse("Dock") == true)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show($"A dock mus be selected");
+                Xceed.Wpf.Toolkit.MessageBox.Show($"A dock need to be selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -189,7 +189,7 @@ namespace WH_APP_GUI.transport
 
                 Tables.transports.database.Rows.Add(transport);
                 Tables.transports.updateChanges();
-                Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully created a new transport");
+                Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully created a new transport!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 //TransportsPage transports = new TransportsPage();
                 //Navigation.content2.Navigate( transports );
@@ -200,7 +200,7 @@ namespace WH_APP_GUI.transport
 
         private void start_date_InputValidationError(object sender, Xceed.Wpf.Toolkit.Core.Input.InputValidationErrorEventArgs e)
         {
-            Xceed.Wpf.Toolkit.MessageBox.Show($"You can only input a date");
+            Xceed.Wpf.Toolkit.MessageBox.Show($"You can only input a date!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private bool CanBeAssignedToTransport(DataRow employee)
@@ -273,7 +273,6 @@ namespace WH_APP_GUI.transport
                             ComboBoxItem item = new ComboBoxItem();
                             item.Content = row["name"];
                             item.Tag = row["id"];
-                            Xceed.Wpf.Toolkit.MessageBox.Show(item.Tag.ToString());
                             DocksCBX.Items.Add(item);
                         }
                     }

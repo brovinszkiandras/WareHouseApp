@@ -179,7 +179,7 @@ namespace WH_APP_GUI
             if (button.Tag != null)
             {
                 isTaken = true;
-                MessageBox.Show("This square is already part of the shelf");
+                MessageBox.Show("This square is already part of the shelf", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             return isTaken;
         }
@@ -195,14 +195,14 @@ namespace WH_APP_GUI
             //(startXindex) és nem egyezik a gomb befejező poziciójával (startXindex + polc hosszúsága)
             if (shelf["orientation"].ToString() == "Horizontal" && column != (int)shelf["startXindex"] && column != (int)shelf["startXindex"] + (double)shelf["length"] - 1)
             {
-                MessageBox.Show("You cant delete this button a");
+                MessageBox.Show("You can't delete this button!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return true;
             }
             //Ha a polc függőleges és a gomb Y poziciója nem egyezik a gomb kezdő poziciójával
             //(startYindex) és nem egyezik a gomb befejező poziciójával (startYindex + polc hosszúsága)
             else if (shelf["orientation"].ToString() == "Vertical" && row != (int)shelf["startYindex"] && row != (int)shelf["startYindex"] + (double)shelf["length"] - 1)
             {
-                MessageBox.Show("You cant delete this button b");
+                MessageBox.Show("You cant delete this button!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return true;
             }
             else { return false; }
@@ -260,12 +260,12 @@ namespace WH_APP_GUI
                 }
                 else
                 {
-                    MessageBox.Show("This button belongs to an another shelg");
+                    MessageBox.Show("This button belongs to an another shelf!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Cant delete this button");
+                MessageBox.Show("Can't delete this item!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             //Le ellenőrzi hogy a kocka a polc elején vagy végén van e (törölhető)
            

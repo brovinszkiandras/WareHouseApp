@@ -277,7 +277,7 @@ namespace WH_APP_GUI.carsFolder
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             Button button = e.Source as Button;
-            MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to delete this car?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Do you want to delete this car?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 DataRow car = Tables.cars.database.Select($"id = {button.Tag}")[0];

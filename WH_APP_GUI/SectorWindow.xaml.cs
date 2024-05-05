@@ -163,7 +163,7 @@ namespace WH_APP_GUI
                             //(vízszintesen nincs mellette) hiba üzenetet írok ki
                             else
                             {
-                                MessageBox.Show("Ezt a plocot csak vízszintesen egymás mellett lévő kockák alkothatják");
+                                MessageBox.Show("This shelf can only be formed by cubes located horizontally next to each other!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                         }
                         //Ha a polc vízszintes
@@ -198,7 +198,7 @@ namespace WH_APP_GUI
                             //(függőlegesen nincs mellette) hiba üzenetet írok ki
                             else
                             {
-                                MessageBox.Show("Ezt a plocot csak függőlegesen egymás mellett lévő kockák alkothatják");
+                                MessageBox.Show("This shelf can only be formed by cubes located vertically next to each other", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                         }
                         //Frissítem a megjelenítő ui elementeket
@@ -224,7 +224,7 @@ namespace WH_APP_GUI
                     //Ha nem akkor nem törlöm ki
                     else
                     {
-                        MessageBox.Show("This square doesnt belong to a shelf");
+                        MessageBox.Show("This square doesnt belong to a shelf", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             }
@@ -273,12 +273,12 @@ namespace WH_APP_GUI
                 if (shelfBuilder.newShelf.RowState == DataRowState.Detached)
                 {
                     Tables.shelf.database.Rows.Add(shelfBuilder.newShelf);
-                    MessageBox.Show("You have created a new shelf");
+                    MessageBox.Show("You have created a new shelf", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 //Ha már hozzá volt adva de meg az user megváltoztatta
                 else if (shelfBuilder.newShelf.RowState == DataRowState.Modified)
                 {
-                    MessageBox.Show($"You have updated shelf {shelfBuilder.newShelf["name"]}");
+                    MessageBox.Show($"You have updated shelf {shelfBuilder.newShelf["name"]}", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     foreach (Button children in boxGrid.Children)
                     {
@@ -326,7 +326,7 @@ namespace WH_APP_GUI
             }
             else
             {
-                MessageBox.Show("Please turn offf delete mode");
+                MessageBox.Show("Please turn offf delete mode", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             
         }
@@ -391,7 +391,7 @@ namespace WH_APP_GUI
             //nem kapcsolja ki és értesíti az usert
             else
             {
-                MessageBox.Show("Cannot turn off designer view while a shelf is being created or deleted");
+                MessageBox.Show("Can not turn off designer view while a shelf is being created or deleted", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         
@@ -620,7 +620,6 @@ namespace WH_APP_GUI
         //Kiválasztok egy polcot
         private void Select_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Selected");
             Button button = (Button)sender;
 
             //Kiválasztom azt a shelfet aminek a neve a gomb azonosítója
@@ -752,7 +751,7 @@ namespace WH_APP_GUI
             }
             else
             {
-                MessageBox.Show("Cant delete level while there are still products on it");
+                MessageBox.Show("Can't delete level while there are still products on it", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

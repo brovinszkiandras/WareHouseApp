@@ -31,7 +31,7 @@ namespace WH_APP_GUI
                         // Xceed.Wpf.Toolkit.MessageBox.Show(context[textBox.Name, DataRowVersion.Original].ToString());
 
                         textBox.Text = context[textBox.Name].ToString();
-                        MessageBox.Show($"{textBox.Name} cannot be emtpy", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show($"{textBox.Name} cannot be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         HasError = true;
 
                     }
@@ -44,7 +44,7 @@ namespace WH_APP_GUI
                 {
                     textBox.Text = context[textBox.Name].ToString();
 
-                    Xceed.Wpf.Toolkit.MessageBox.Show($"{textBox.Name} cannot contain ' and \" characters");
+                    MessageBox.Show($"{textBox.Name} cannot include the following characters: ' (single quote) and or \" (double quote). Please remove them to proceed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     HasError = true;
 
                 }
@@ -64,7 +64,7 @@ namespace WH_APP_GUI
                        
                         if ((int)matchingRows[0]["id"] != (int)context["id"])
                         {
-                            MessageBox.Show($"An element with this {textBox.Name} already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show($"An element with this {textBox.Name} already exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             HasError = true;
                         }
                     }
@@ -119,7 +119,7 @@ namespace WH_APP_GUI
             bool isMatch = Regex.IsMatch(input, pattern);
             if(isMatch == false)
             {
-                MessageBox.Show($"{input_name} must start with a letter and can only contain letters, numbers and underscores");
+                MessageBox.Show($"{input_name} must start with a letter and can only contain letters, numbers and underscores", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             return isMatch;
@@ -130,7 +130,7 @@ namespace WH_APP_GUI
             bool haserror = false;
             if(email.Length == 0)
             {
-                MessageBox.Show("Email cannot be empty");
+                MessageBox.Show("Email cannot be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 haserror = true;
             }
             else
@@ -139,12 +139,12 @@ namespace WH_APP_GUI
                 bool isMatch = Regex.IsMatch(email, pattern);
                 if (isMatch == false)
                 {
-                    MessageBox.Show("Please give a valid email");
+                    MessageBox.Show("Unauthorized Email Detected! Please enter a permitted email address to continue.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     haserror = true;
                 }
                 else if (Tables.staff.database.Select($"email = '{email}'").Length > 0 || Tables.employees.database.Select($"email = '{email}'").Length > 0)
                 {
-                    MessageBox.Show("This email has already been registered");
+                    MessageBox.Show("The email address entered is already associated with an existing account. Please use a different email or log in to your account.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     haserror = true;
                 }
             }

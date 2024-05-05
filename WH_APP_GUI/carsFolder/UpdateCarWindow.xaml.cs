@@ -223,7 +223,7 @@ namespace WH_APP_GUI
                 //car["last_exam"] = SQL.convertShordDateTocorrectFormat((DateTime)car["last_exam"]);
                 car["warehouse_id"] = warehouse_id_Dictionary[warehouse_id.SelectedItem.ToString()]["id"];
                 Tables.cars.updateChanges();
-                Xceed.Wpf.Toolkit.MessageBox.Show($"Car number {car["id"]} has been updated");
+                Xceed.Wpf.Toolkit.MessageBox.Show($"Car number {car["id"]} has been updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 CarsPage carsPage = new CarsPage();
                 Navigation.content2.Navigate(carsPage);
@@ -232,7 +232,7 @@ namespace WH_APP_GUI
 
         private void last_exam_InputValidationError(object sender, Xceed.Wpf.Toolkit.Core.Input.InputValidationErrorEventArgs e)
         {
-            Xceed.Wpf.Toolkit.MessageBox.Show($"You can only input a date");
+            Xceed.Wpf.Toolkit.MessageBox.Show($"You can only input a date!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)

@@ -62,8 +62,7 @@ namespace WH_APP_GUI.sectors
                 Tables.sector.database.Rows.Add(sector);
 
                 Tables.sector.updateChanges();
-                MessageBox.Show(Tables.sector.database.Columns["id"].AutoIncrement.ToString());
-                Xceed.Wpf.Toolkit.MessageBox.Show($"You have succesfully created a new sector");
+                MessageBox.Show($"You have succesfully created a new sector", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 if (Navigation.PreviousPage != null)
                 {

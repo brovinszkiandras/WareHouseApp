@@ -28,7 +28,7 @@ namespace WH_APP_GUI.warehouseTableFolder
 
             if (boxvolume < productsFullVolume)
             {
-                MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("The prouducts dont fit inside the box\n" +
+                MessageBoxResult result = MessageBox.Show("The prouducts dont fit inside the box\n" +
                     $"Full volume of products: {productsFullVolume} cm3\n" +
                     $"Volume of the box: {boxvolume} cm3\n" +
                     $"Are you sure you want to proceed?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -47,7 +47,7 @@ namespace WH_APP_GUI.warehouseTableFolder
         private void updateDatabase()
         {
             warehouseTable.updateChanges();
-            Xceed.Wpf.Toolkit.MessageBox.Show($"The products quantity has changed");
+            MessageBox.Show($"The products quantity has changed", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             WarehouseProductsPage page = new WarehouseProductsPage(warehouseTable);
             Navigation.content2.Navigate(page);
 

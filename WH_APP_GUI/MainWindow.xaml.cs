@@ -112,7 +112,7 @@ namespace WH_APP_GUI
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Couldnt connect to the specified database");
+                    MessageBox.Show("Couldnt connect to the specified database", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else

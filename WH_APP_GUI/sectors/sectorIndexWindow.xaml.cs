@@ -179,7 +179,7 @@ namespace WH_APP_GUI.sectors
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             Button button = e.Source as Button;
-            MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to delete this transport?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Do you want to delete this transport?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 MessageBox.Show(button.Tag.ToString());
@@ -192,8 +192,6 @@ namespace WH_APP_GUI.sectors
                     DisplaySectors();
                 }
             }
-
-
         }
         private void Create_Click(object sender, RoutedEventArgs e)
         {

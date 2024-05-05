@@ -31,10 +31,10 @@ namespace WH_APP_GUI.Product
             foreach (DataColumn column in Tables.products.database.Columns)
             {
                 Type columnType = column.DataType.GetType();
-                if (!Equals(product[column, DataRowVersion.Original], product[column, DataRowVersion.Current]))
-                {
-                    MessageBox.Show("Not equal: " + column.ColumnName);
-                }
+                //if (!Equals(product[column, DataRowVersion.Original], product[column, DataRowVersion.Current]))
+                //{
+                //    MessageBox.Show("Not equal: " + column.ColumnName);
+                //}
             }
 
             name.ValueDataType = typeof(string);

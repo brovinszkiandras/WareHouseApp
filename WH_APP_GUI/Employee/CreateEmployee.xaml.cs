@@ -85,11 +85,6 @@ namespace WH_APP_GUI.Employee
                 string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
                 string HashedPassword = Hash.HashPassword(password);
 
-                /*DEBUG*/
-                MessageBox.Show("Employees Edit Page at Password reset: " + password);
-                MessageBox.Show("Employees Edit Page at Password reste: " + HashedPassword);
-                /*DEBUG*/
-
                 employee["name"] = name.Text;
                 employee["email"] = email.Text;
                 employee["role_id"] = Roles[role_id.SelectedItem.ToString()]["id"];

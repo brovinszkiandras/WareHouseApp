@@ -204,7 +204,6 @@ namespace WH_APP_GUI.transport
                 GasPrice = gasPrice;
             }
         }
-
         private void Done_Click(object sender, RoutedEventArgs e)
         {
             if (GasPrice != 0)

@@ -117,11 +117,6 @@ namespace WH_APP_GUI.Employee
                 employee["password"] = HashedPassword;
                 Tables.employees.updateChanges();
 
-                /*DEBUG*/
-                MessageBox.Show("Employees Edit Page at Password reset: " + password);
-                MessageBox.Show("Employees Edit Page at Password reste: " + HashedPassword);
-                /*DEBUG*/
-
                 Tables.employees.updateChanges();
                 MessageBox.Show("Password has been reseted for the employee!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }

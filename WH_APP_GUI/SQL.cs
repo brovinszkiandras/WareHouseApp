@@ -57,7 +57,7 @@ namespace WH_APP_GUI
             }
             catch (Exception)
             {
-                MessageBox.Show("Couldnt connect to the specified database");
+                MessageBox.Show("Can't connect to the specified database", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             
         }
@@ -308,8 +308,6 @@ namespace WH_APP_GUI
             }
             else
             {
-                MessageBox.Show("Could not parse it");
-
                 return null;
             }
         }

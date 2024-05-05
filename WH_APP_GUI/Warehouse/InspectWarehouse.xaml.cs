@@ -267,52 +267,6 @@ namespace WH_APP_GUI.Warehouse
                     ProductsTotalSellingPriceLBL.Content = "0 - Ft";
                     ProductsTotalBuyingPriceLBL.Content = "0 - Ft";
                 }
-
-                int index = 0;
-                int Dayindex = 0;
-                for (int i = 0; i < 7; i++)
-                {
-                    if (i >= revenue_a_day.Count)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        double total_expenditure = revenue_a_day[i][1] != string.Empty ? double.Parse(revenue_a_day[i][1]) : 0;
-                        double total_income = revenue_a_day[i][2] != string.Empty ? double.Parse(revenue_a_day[i][2]) : 0;
-                        double max = total_expenditure + total_income;
-
-                        ProgressBar Spending = new ProgressBar();
-                        Spending.MinHeight = 150;
-                        Spending.Value = total_expenditure;
-                        Spending.Maximum = max;
-                        Spending.Foreground = Brushes.Red;
-                        Spending.Orientation = Orientation.Vertical;
-                        Grid.SetColumn(Spending, index);
-                        Grid.SetRow(Spending, 3);
-                        RevenueDisplay.Children.Add(Spending);
-                        index++;
-
-                        ProgressBar Income = new ProgressBar();
-                        Income.MinHeight = 150;
-                        Income.Value = total_income;
-                        Income.Maximum = max;
-                        Spending.Foreground = Brushes.Green;
-                        Income.Orientation = Orientation.Vertical;
-                        Grid.SetColumn(Income, index);
-                        Grid.SetRow(Income, 3);
-                        RevenueDisplay.Children.Add(Income);
-                        index += 2;
-
-                        Label day = new Label();
-                        day.Content = DateTime.Parse(revenue_a_day[i][0]).DayOfWeek.ToString();
-                        Grid.SetRow(day, 4);
-                        Grid.SetColumn(day, Dayindex);
-                        Dayindex += 3;
-                        Grid.SetColumnSpan(day, 3);
-                        RevenueDisplay.Children.Add(day);
-                    }
-                }
             }
             else
             {
@@ -380,16 +334,6 @@ namespace WH_APP_GUI.Warehouse
             }
         }
 
-        private void MapDisplay_MouseEnter(object sender, MouseEventArgs e)
-        {
-            mainScrollviewer.CanContentScroll = false;
-        }
-
-        private void MapDisplay_MouseLeave(object sender, MouseEventArgs e)
-        {
-            mainScrollviewer.CanContentScroll = true;
-        }
-
         private void CarsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
         {
             Navigation.OpenPage(Navigation.GetTypeByName("CarsPage"), Warehouse);
@@ -403,7 +347,30 @@ namespace WH_APP_GUI.Warehouse
 
         private void RevenueDayPicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageBox.Show(RevenueDayPicker.SelectedDate.ToString());
+            string formattedDate = RevenueDayPicker.SelectedDate.Value.ToString("yyyy-MM-dd");
+            if (formattedDate != string.Empty)
+            {
+                List<string[]> query = SQL.SqlQuery($"SELECT * FROM revenue_a_day WHERE date = '{formattedDate}' AND warehouse_id = {Warehouse["id"]}");
+                if (query.Count != 0)
+                {
+                    string[] datas = query[0];
+                    double total_expenditure = datas[3] != string.Empty ? double.Parse(datas[3]) : 0;
+                    double total_income = datas[4] != string.Empty ? double.Parse(datas[4]) : 0;
+                    double maxValue = total_expenditure + total_income;
+
+                    ExpenditureByDay.Maximum = maxValue;
+                    ExpenditureByDay.Value = total_expenditure;
+                    ExpenditureLBL.Content = $"Expenditure: {total_expenditure} - Ft";
+
+                    IncomeByDay.Maximum = maxValue;
+                    IncomeByDay.Value = total_income;
+                    IncomeLBL.Content = $"Income: {total_income} - Ft";
+                }
+                else
+                {
+                    MessageBox.Show("There is no any expenditure or income at this date!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
         }
     }
 }

@@ -118,11 +118,6 @@ namespace WH_APP_GUI.Staff
                     staff["password"] = HashedPassword;
                     Tables.employees.updateChanges();
 
-                    /*DEBUG*/
-                    MessageBox.Show("Create Staff Page: " + password);
-                    MessageBox.Show("Create Staff Page: " + HashedPassword);
-                    /*DEBUG*/
-
                     Tables.staff.database.Rows.Add(staff);
                     Tables.staff.updateChanges();
 

@@ -327,11 +327,6 @@ namespace WH_APP_GUI
 
                     foreach (DataRow warehosue in Tables.warehouses.database.Rows)
                     {
-                        MessageBox.Show(warehosue["name"].ToString());
-                        MessageBox.Show($"ALTER TABLE {warehosue["name"]}" +
-                            $" ADD width DOUBLE DEFAULT 0," +
-                            $"ADD height DOUBLE DEFAULT 0," +
-                            $"ADD length DOUBLE DEFAULT 0;");
                         SQL.SqlCommand($"ALTER TABLE {warehosue["name"]}" +
                             $" ADD width DOUBLE DEFAULT 0," +
                             $"ADD height DOUBLE DEFAULT 0," +
