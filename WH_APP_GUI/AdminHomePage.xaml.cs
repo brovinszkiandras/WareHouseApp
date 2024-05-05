@@ -372,47 +372,56 @@ namespace WH_APP_GUI
             #region Checkboxes
             DateLogFeature DateLogCBXexe = new DateLogFeature("Date Log");
             DateLogCBXexe.Content = "DateLog feature";
-            DateLogCBXexe.Foreground = Brushes.White;
+            DateLogCBXexe.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCEA2"));
+            DateLogCBXexe.FontFamily = new FontFamily("Baskerville Old Face");
             Display.Children.Add(DateLogCBXexe);
 
             FleetFeature FleetCBXexe = new FleetFeature("Fleet");
             FleetCBXexe.Content = "Fleet feature";
-            FleetCBXexe.Foreground = Brushes.White;
+            FleetCBXexe.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCEA2"));
+            FleetCBXexe.FontFamily = new FontFamily("Baskerville Old Face");
             Display.Children.Add(FleetCBXexe);
 
             LogFeature LogCBXexe = new LogFeature("Log");
             LogCBXexe.Content = "Log feature";
-            LogCBXexe.Foreground = Brushes.White;
+            LogCBXexe.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCEA2"));
+            LogCBXexe.FontFamily = new FontFamily("Baskerville Old Face");
             Display.Children.Add(LogCBXexe);
 
             ActivityFeature ActivityCBXexe = new ActivityFeature("Activity");
             ActivityCBXexe.Content = "Activity feature";
-            ActivityCBXexe.Foreground = Brushes.White;
+            ActivityCBXexe.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCEA2"));
+            ActivityCBXexe.FontFamily = new FontFamily("Baskerville Old Face");
             Display.Children.Add(ActivityCBXexe);
 
             RevenueFeature RevenueCBXexe = new RevenueFeature("Revenue");
             RevenueCBXexe.Content = "Revenue feature";
-            RevenueCBXexe.Foreground = Brushes.White;
+            RevenueCBXexe.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCEA2"));
+            RevenueCBXexe.FontFamily = new FontFamily("Baskerville Old Face");
             Display.Children.Add(RevenueCBXexe);
 
             StorageFeature StorageCBXexe = new StorageFeature("Storage");
             StorageCBXexe.Content = "Storage feature";
-            StorageCBXexe.Foreground = Brushes.White;
+            StorageCBXexe.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCEA2"));
+            StorageCBXexe.FontFamily = new FontFamily("Baskerville Old Face");
             Display.Children.Add(StorageCBXexe);
 
             FuelFeature FuelCBXexe = new FuelFeature("Fuel");
             FuelCBXexe.Content = "Fuel feature";
-            FuelCBXexe.Foreground = Brushes.White;
+            FuelCBXexe.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCEA2"));
+            FuelCBXexe.FontFamily = new FontFamily("Baskerville Old Face");
             Display.Children.Add(FuelCBXexe);
 
             DockFeature DockCBXexe = new DockFeature("Dock");
             DockCBXexe.Content = "Dock feature";
-            DockCBXexe.Foreground = Brushes.White;
+            DockCBXexe.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCEA2"));
+            DockCBXexe.FontFamily = new FontFamily("Baskerville Old Face");
             Display.Children.Add(DockCBXexe);
 
             ForkliftFeature ForkliftCBXexe = new ForkliftFeature("Forklift");
             ForkliftCBXexe.Content = "Forklift feature";
-            ForkliftCBXexe.Foreground = Brushes.White;
+            ForkliftCBXexe.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCEA2"));
+            ForkliftCBXexe.FontFamily = new FontFamily("Baskerville Old Face");
             Display.Children.Add(ForkliftCBXexe);
             #endregion
         }

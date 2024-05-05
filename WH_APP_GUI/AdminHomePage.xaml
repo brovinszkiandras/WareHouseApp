@@ -11,38 +11,40 @@
 
 
     <Page.Resources>
-        <Style TargetType="Button" x:Key="ElegantButtonStyle">
-            <Setter Property="BorderThickness" Value="5"/>
-            <Setter Property="Background" Value="#FFF9B17A"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Padding" Value="20, 5"/>
-            <Setter Property="Margin" Value="30, 10"/>
-            <Setter Property="BorderBrush">
-                <Setter.Value>
-                    <RadialGradientBrush>
-                        <GradientStop Color="#FFF9B17A" Offset="0"/>
-                        <GradientStop Color="#19F9B17A" Offset="1"/>
-                    </RadialGradientBrush>
-                </Setter.Value>
-            </Setter>
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                         BorderBrush="{TemplateBinding BorderBrush}"
-                         BorderThickness="{TemplateBinding BorderThickness}"
-                         CornerRadius="5">
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}"
+          CornerRadius="5">
                             <ContentPresenter HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Content="{TemplateBinding Content}"/>
+    VerticalAlignment="Center"
+    Content="{TemplateBinding Content}"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True"/>
-                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
         </Style>
 
         <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
@@ -61,7 +63,7 @@
         </ControlTemplate>
     </Page.Resources>
 
-    <Border CornerRadius="30,0,0,0" Background="#676F9D">
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -69,13 +71,13 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Border HorizontalAlignment="Center" CornerRadius="20" Background="#FF2D3250">
+            <Border HorizontalAlignment="Center" CornerRadius="20" Background="#395250">
                 <StackPanel VerticalAlignment="Center">
-                <Button Margin="20, 5" Content="Register a new Employee" Name="RegisterEmployee" Click="RegisterEmployee_Click"  Style="{StaticResource ElegantButtonStyle}"/>
-                <Button Margin="20, 5" Content="Register a new Staff" Name="RegisterStaff" Click="RegisterStaff_Click"  Style="{StaticResource ElegantButtonStyle}"/>
-                    <Button Margin="20, 5" Content="Manage Database" Name="ManageDatabase" Click="ManageDatabase_Click" Style="{StaticResource ElegantButtonStyle}"/>
-                <Button Margin="20, 5" Content="Manage Roles" Name="manageRoles" Click="manageRoles_Click" Style="{StaticResource ElegantButtonStyle}"/>
-                <Button Margin="20, 5" Content="To the app" Name="ToTheApp" Visibility="Collapsed" Style="{StaticResource ElegantButtonStyle}" Click="ToTheApp_Click"/>
+                    <Button Margin="20, 5" Content="Register a new Employee" Name="RegisterEmployee" Click="RegisterEmployee_Click"  Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Register a new Staff" Name="RegisterStaff" Click="RegisterStaff_Click"  Style="{StaticResource GoldenButtonStyle}"/>
+                    <Button Margin="20, 5" Content="Manage Database" Name="ManageDatabase" Click="ManageDatabase_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="Manage Roles" Name="manageRoles" Click="manageRoles_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Margin="20, 5" Content="To the app" Name="ToTheApp" Visibility="Collapsed" Style="{StaticResource GoldenButtonStyle}" Click="ToTheApp_Click"/>
                 <ScrollViewer Margin="0, 40" x:Name="RolesScrollViewer" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
                     <StackPanel Orientation="Vertical" Name="RolesStackpanel">
                     </StackPanel>
@@ -116,13 +118,13 @@
                 <Frame Name="RolesContent" Grid.ColumnSpan="2" Grid.Row="1"/>
             </Grid>
 
-            <Border HorizontalAlignment="Center" CornerRadius="20" Background="#FF2D3250" Grid.Column="2">
+            <Border HorizontalAlignment="Center" CornerRadius="20" Background="#395250" Grid.Column="2">
                 <StackPanel>
-                    <Button Content="Create required tables" Name="CreateRequiredTablesBTN" IsEnabled="True" Style="{StaticResource ElegantButtonStyle}" Click="CreateRequiredTablesBTN_Click"/>
+                    <Button Content="Create required tables" Name="CreateRequiredTablesBTN" IsEnabled="True" Style="{StaticResource GoldenButtonStyle}" Click="CreateRequiredTablesBTN_Click"/>
 
                     <StackPanel Name="FeaturesDisplayG" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
 
-                    <Button Content="Modify Database" Name="ModifyDatabase" Click="ModifyDatabase_Click" Style="{StaticResource ElegantButtonStyle}"/>
+                    <Button Content="Modify Database" Name="ModifyDatabase" Click="ModifyDatabase_Click" Style="{StaticResource GoldenButtonStyle}"/>
                 </StackPanel>
             </Border>
             
