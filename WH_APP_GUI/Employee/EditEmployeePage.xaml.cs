@@ -79,10 +79,22 @@ namespace WH_APP_GUI.Employee
         {
             Warehouses.Clear();
             warehouse_id.Items.Clear();
-            foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+
+
+            if (User.currentUser.Table.TableName != "employees")
             {
+                foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+                {
+                    Warehouses.Add(warehouse["name"].ToString(), warehouse);
+                    warehouse_id.Items.Add(warehouse["name"].ToString());
+                }
+            }
+            else
+            {
+                DataRow warehouse = Tables.employees.getWarehouse(User.currentUser);
                 Warehouses.Add(warehouse["name"].ToString(), warehouse);
                 warehouse_id.Items.Add(warehouse["name"].ToString());
+                warehouse_id.SelectedItem = warehouse["name"].ToString();
             }
         }
         private Dictionary<string, DataRow> Roles = new Dictionary<string, DataRow>();
