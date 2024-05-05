@@ -58,9 +58,9 @@
                 <Label Content="Plate number" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
                 <Label Content="Type" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
                 <Label Content="Warehouse:" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
-                <Label Content="Km*" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
-                <Label Content="last service*" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
-                <Label Content="last exam*" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Km" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="last service" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="last exam" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
 
                 <xctk:ValueRangeTextBox Grid.Column="1" Grid.Row="0" Name="plate_number" Text="{Binding Path=[plate_number]}" MaxLength="10" MaxLines="10" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
                 <xctk:ValueRangeTextBox Grid.Column="1" Grid.Row="1" Name="type" Text="{Binding Path=[type]}" MaxLength="255" MaxLines="255" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
