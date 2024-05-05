@@ -30,6 +30,7 @@ namespace WH_APP_GUI
             roleBTN.Tag = Role;
             roleBTN.Margin = new Thickness(5);
             roleBTN.Content = Role["role"];
+            roleBTN.Style = (Style)this.Resources["GoldenButtonStyle"];
             roleBTN.Click += RoleClick;
 
             Roles.Children.Add(roleBTN);
@@ -72,7 +73,6 @@ namespace WH_APP_GUI
         private void DisplayOnePermission(DataRow permission)
         {
             Border border = new Border();
-            border.Background = Brushes.White;
             border.BorderBrush = Brushes.Black;
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
@@ -87,10 +87,12 @@ namespace WH_APP_GUI
 
             Label label1 = new Label();
             label1.Content = permission["name"];
+            label1.Style = (Style)this.Resources["labelstyle"];
             stackPanel.Children.Add(label1);
 
             TextBlock description = new TextBlock();
             description.Text = permission["description"].ToString();
+            description.Style = (Style)this.Resources["Tlabelstyle"];
             description.TextWrapping = TextWrapping.Wrap;
             description.Margin = new Thickness(5);
             stackPanel.Children.Add(description);
@@ -142,6 +144,7 @@ namespace WH_APP_GUI
                 Button deleteRole = new Button();
                 deleteRole.Content = $"Delete \n{role["role"]}";
                 deleteRole.Click += DeleteRole_Click;
+                deleteRole.Style = (Style)this.Resources["GoldenButtonStyle"];
                 deleteRole.Margin = new Thickness(5);
                 Buttons.Children.Add(deleteRole);
 

@@ -8,10 +8,67 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ManageRolePage">
 
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}"
+          CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+    Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="Tlabelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+
+        <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+         BorderBrush="{TemplateBinding BorderBrush}"
+         BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{x:Static SystemColors.ControlLightBrush}"/>
+                    <Setter Property="Foreground" Value="{x:Static SystemColors.GrayTextBrush}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Page.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -21,13 +78,13 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="2" Grid.Column="1">
-            <Label Name="IsInWarehouse" Margin="5" BorderBrush="Black" BorderThickness="1,0,0,1" Visibility="Collapsed"/>
-            <TextBlock Name="Description" Margin="5" TextWrapping="Wrap"/>
+            <Label Name="IsInWarehouse" Margin="5" BorderBrush="Black" BorderThickness="1,0,0,1" Visibility="Collapsed" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+            <TextBlock Name="Description" Margin="5" TextWrapping="Wrap" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
         </StackPanel>
 
         <StackPanel Name="Buttons" Grid.Column="2" Grid.Row="1">
-            <Button Name="AddNewRole" Content="Add" Grid.Column="3" Margin="5" Click="AddNewRole_Click"/>
-            <Button Name="Back" Content="Back" Grid.Column="3" Margin="5" Click="Back_Click"/>
+            <Button Name="AddNewRole" Content="Add" Grid.Column="3" Click="AddNewRole_Click" Style="{StaticResource GoldenButtonStyle}"/>
+            <Button Name="Back" Content="Back" Grid.Column="3" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}"/>
         </StackPanel>
         
         <StackPanel Name="Roles" Grid.Row="1" Margin="5"/>
