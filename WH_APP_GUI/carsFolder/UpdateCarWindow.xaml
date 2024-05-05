@@ -21,26 +21,6 @@
             <Setter Property="Margin" Value="10"/>
             <Setter Property="FontFamily" Value="Baskerville Old Face"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                         BorderBrush="{TemplateBinding BorderBrush}"
-                         BorderThickness="{TemplateBinding BorderThickness}"
-                         CornerRadius="5">
-                            <ContentPresenter HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Content="{TemplateBinding Content}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="White"/>
-                                <Setter Property="BorderBrush" Value="Black"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
         <Style TargetType="Label" x:Key="labelstyle">
             <Setter Property="Foreground" Value="#FFCEA2"/>
@@ -51,20 +31,16 @@
     <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="8*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="0.4*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="8*"></RowDefinition>
-                <RowDefinition Height="0.5*"></RowDefinition>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Button Click="Back_Click" Grid.Row="0" Grid.Column="2" FontSize="17" Name="Back" Content="Back"></Button>
-
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center">
                 <Grid x:Name="carsGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -79,38 +55,45 @@
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <StackPanel>
-                        <Label FontSize="17" Content="Plate number"></Label>
-                        <xctk:ValueRangeTextBox Name="plate_number" Text="{Binding Path=[plate_number]}" MaxLength="10" MaxLines="10" FontSize="17"></xctk:ValueRangeTextBox>
+                    
+                    <StackPanel Margin="5">
+                        <Label Content="Plate number" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                        <xctk:ValueRangeTextBox Name="plate_number" Text="{Binding Path=[plate_number]}" MaxLength="10" MaxLines="10" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="1">
-                        <Label FontSize="17" Content="Type"></Label>
-                        <xctk:ValueRangeTextBox Name="type" Text="{Binding Path=[type]}" MaxLength="255" MaxLines="255" FontSize="17"></xctk:ValueRangeTextBox>
+
+                    <StackPanel Grid.Row="1" Margin="5">
+                        <Label Content="Type" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                        <xctk:ValueRangeTextBox Name="type" Text="{Binding Path=[type]}" MaxLength="255" MaxLines="255" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="2">
-                        <Label FontSize="17" Content="Warehouse:"></Label>
-                        <ComboBox Name="warehouse_id" FontSize="17"></ComboBox>
+
+                    <StackPanel Grid.Row="2" Margin="5">
+                        <Label Content="Warehouse:" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                        <ComboBox Name="warehouse_id" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
                     </StackPanel>
-                    <CheckBox Content="Ready" 
-              Grid.Row="3" 
-              FontSize="17"
-              VerticalContentAlignment="Center"
-              IsChecked="{Binding Path=[ready]}"></CheckBox>
-                    <StackPanel Grid.Row="4">
-                        <Label FontSize="17" Content="Km*"></Label>
-                        <xctk:ValueRangeTextBox Name="km" FontSize="17" Text="{Binding Path=[km]}" MaxLength="13" MaxLines="13"></xctk:ValueRangeTextBox>
+
+                    <CheckBox Content="Ready" Grid.Row="3" VerticalContentAlignment="Center" IsChecked="{Binding Path=[ready]}" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
+
+                    <StackPanel Grid.Row="4" Margin="5">
+                        <Label Content="Km" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                        <xctk:ValueRangeTextBox Name="km" Text="{Binding Path=[km]}" MaxLength="13" MaxLines="13" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="5">
-                        <Label FontSize="17" Content="last service*"></Label>
-                        <DatePicker SelectedDate="{Binding Path=[last_service]}" SelectedDateFormat="Short"></DatePicker>
+
+                    <StackPanel Grid.Row="5" Margin="5">
+                        <Label Content="last service" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                        <DatePicker SelectedDate="{Binding Path=[last_service]}" SelectedDateFormat="Short" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="6">
-                        <Label FontSize="17" Content="last exam*"></Label>
-                        <DatePicker SelectedDate="{Binding Path=[last_exam]}" SelectedDateFormat="Short"></DatePicker>
+
+                    <StackPanel Grid.Row="6" Margin="5">
+                        <Label Content="last exam" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                        <DatePicker SelectedDate="{Binding Path=[last_exam]}" SelectedDateFormat="Short" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
                     </StackPanel>
-                    <Button  Click="Button_Click" Grid.Row="11" FontSize="17" Content="Save"></Button>
                 </Grid>
             </ScrollViewer>
+
+            <StackPanel Grid.Column="8" Grid.Row="2" Margin="30">
+                <Button Name="save" Content="Save" Margin="0, 5" Padding="20, 10" Click="Button_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Name="Back" Content="Back" Margin="0, 5" Padding="20, 10" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}"/>
+            </StackPanel>
         </Grid>
     </Border>
 </Page>
