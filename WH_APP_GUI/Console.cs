@@ -10,6 +10,7 @@ namespace WH_APP_GUI
     internal class Console
     {
         private static Terminal ThisTerminal = null;
+
         public static void IniConsole()
         { 
             Terminal terminal = new Terminal();

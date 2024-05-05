@@ -13,7 +13,6 @@ namespace WH_APP_GUI
         public static DataRow currentUser;
         public static DataRow tempWarehouse;
         private static warehouse WHTable;
-        public static MainWindow MainWindow;
         public static void SetCurrentUser(string email, string password) //hased psw
         {
             Tables.staff.Refresh();
