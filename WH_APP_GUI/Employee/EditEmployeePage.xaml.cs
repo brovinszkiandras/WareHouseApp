@@ -21,11 +21,14 @@ namespace WH_APP_GUI.Employee
 {
     public partial class EditEmployeePage : Page
     {
+        private DataRow Employee = null;
         public EditEmployeePage(DataRow employee)
         {
             InitializeComponent();
             IniWarehouses();
             IniRoles();
+
+            Employee = employee;
 
             name.ValueDataType = typeof(string);
             email.ValueDataType = typeof(string);
