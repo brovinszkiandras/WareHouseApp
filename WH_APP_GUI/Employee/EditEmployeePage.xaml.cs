@@ -33,6 +33,9 @@ namespace WH_APP_GUI.Employee
             name.ValueDataType = typeof(string);
             email.ValueDataType = typeof(string);
 
+            activity.Content = (bool)Employee["activity"] ? "ACTIVE" : "INACTIVE";
+            activity.Background = (bool)Employee["activity"] ? Brushes.Green : Brushes.Red;
+
             name.Text = employee["name"].ToString();
             email.Text = employee["email"].ToString();
             if (employee["role_id"] != DBNull.Value)
@@ -139,6 +142,7 @@ namespace WH_APP_GUI.Employee
                 Tables.employees.updateChanges();
 
                 activity.Content = (bool)Employee["activity"] ? "ACTIVE" : "INACTIVE";
+                activity.Background = (bool)Employee["activity"] ? Brushes.Green : Brushes.Red;
                 Tables.employees.updateChanges();
 
                 MessageBox.Show("Activity changed!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

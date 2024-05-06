@@ -334,6 +334,7 @@ namespace WH_APP_GUI
             }
         }
         #endregion
+        #region Methods
         private void ModifyPassword(object sender, RoutedEventArgs e)
         {
             PasswordChangeForStaff passwordChangeForStaff = new PasswordChangeForStaff();
@@ -427,5 +428,6 @@ namespace WH_APP_GUI
                 }
             }
         }
+        #endregion
     }
 }

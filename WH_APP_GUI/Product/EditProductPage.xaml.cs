@@ -58,8 +58,7 @@ namespace WH_APP_GUI.Product
             if (SQL.BoolQuery("SElECT in_use FROM feature WHERE name = 'Storage'"))
             {
                 weight.Visibility = Visibility.Visible;
-                weight.ValueDataType = typeof(double);
-               
+                weight.ValueDataType = typeof(double);             
             }
             else
             {
@@ -111,6 +110,7 @@ namespace WH_APP_GUI.Product
 
                     image.Tag = fileName;
                     image.Background = new ImageBrush(bitmap);
+                    product["image"] = fileName;
                 }
                 catch (Exception ex)
                 {

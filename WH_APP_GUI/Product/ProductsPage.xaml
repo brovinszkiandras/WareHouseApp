@@ -11,6 +11,10 @@
         SizeChanged="ProductsPage_SizeChanged">
 
     <Page.Resources>
+        <Style TargetType="TextBlock" x:Key="Tlabelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
         <Style TargetType="Button" x:Key="GoldenButtonStyle">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#FFCEA2"/>
