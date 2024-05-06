@@ -22,6 +22,7 @@ namespace WH_APP_GUI
 {
     public partial class EmployeesPage : Page
     {
+        private DataRow WarehouseFromPage;
         public EmployeesPage()
         {
             InitializeComponent();
@@ -29,7 +30,6 @@ namespace WH_APP_GUI
             Back.Visibility = Visibility.Collapsed;
 
             Ini_warehouse_id();
-            Ini_role_id();
 
             if (User.DoesHavePermission("Modify all employees"))
             {
@@ -37,9 +37,8 @@ namespace WH_APP_GUI
             }
 
             DisplayEmployeesStackpanel.Children.Clear();
-            InitializeAllEmployees(DisplayEmployeesStackpanel);
+            InitializeAllEmployees();
         }
-        private DataRow WarehouseFromPage;
         public EmployeesPage(DataRow warehouse)
         {
             InitializeComponent();
@@ -52,7 +51,7 @@ namespace WH_APP_GUI
             {
                 if (User.currentUser.Table.TableName == "employees")
                 {
-                    if (User.currentUser["warehouse"].ToString() == warehouse["id"].ToString())
+                    if ((int)User.currentUser["warehouse"] == (int)warehouse["id"])
                     {
                         AddNewEmployee.Visibility = Visibility.Visible;
                     }
@@ -72,9 +71,9 @@ namespace WH_APP_GUI
             AddNewEmployee.Visibility = Visibility.Visible;
 
             WarehouseFromPage = warehouse;
-            InitializeEmployeesInWarehouse(DisplayEmployeesStackpanel, warehouse);
+            InitializeEmployeesInWarehouse(warehouse);
         }
-
+        #region Display
         private Dictionary<string, DataRow> warehouse_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_warehouse_id()
         {
@@ -88,28 +87,14 @@ namespace WH_APP_GUI
                 warehouse_id_Dictionary.Add(warehouse["name"].ToString(), warehouse);
             }
         }
-        private Dictionary<string, DataRow> role_id_Dictionary = new Dictionary<string, DataRow>();
-        private void Ini_role_id()
-        {
-            role_id_Dictionary.Clear();
-
-            foreach (DataRow role in Tables.roles.database.Rows)
-            {
-                if ((bool)role["in_warehouse"])
-                {
-                    role_id_Dictionary.Add(role["role"].ToString(), role);
-                }
-            }
-        }
-        public void InitializeAllEmployees(Panel panel)
+        public void InitializeAllEmployees()
         {
             foreach (DataRow employee in Tables.employees.database.Rows)
             {
-                DisplayOneEmployee(panel, employee);
+                DisplayOneEmployee(employee);
             }
         }
-
-        private void DisplayOneEmployee(Panel panel, DataRow employee)
+        private void DisplayOneEmployee(DataRow employee)
         {
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
@@ -187,7 +172,6 @@ namespace WH_APP_GUI
 
                     BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
 
-                    image.Stretch = Stretch.Fill;
                     image.Source = bitmap;
                 }
                 else
@@ -197,8 +181,6 @@ namespace WH_APP_GUI
                     string targetFilePath = Path.Combine(targetDirectory, fileName);
 
                     BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
-
-                    image.Stretch = Stretch.Fill;
                     image.Source = bitmap;
                 }
             }
@@ -318,24 +300,31 @@ namespace WH_APP_GUI
 
             outerStack.Children.Add(mainGrid);
             border.Child = outerStack;
-            panel.Children.Add(border);
+            DisplayEmployeesStackpanel.Children.Add(border);
         }
-
-        private void ModifyPassword(object sender, RoutedEventArgs e)
-        {
-            PasswordChangeForStaff passwordChangeForStaff = new PasswordChangeForStaff();
-            passwordChangeForStaff.ShowDialog();
-        }
-
-        public void InitializeEmployeesInWarehouse(Panel panel, DataRow warehouse)
+        public void InitializeEmployeesInWarehouse(DataRow warehouse)
         {
             DisplayEmployeesStackpanel.Children.Clear();
-            panel.Visibility = Visibility.Visible;
+            DisplayEmployeesStackpanel.Visibility = Visibility.Visible;
 
-            foreach (DataRow emplyee in Tables.warehouses.getEmployees(warehouse))
+            foreach (DataRow employee in Tables.warehouses.getEmployees(warehouse))
             {
-                DisplayOneEmployee(DisplayEmployeesStackpanel, emplyee);
+                DisplayOneEmployee(employee);
             }
+        }
+        private void EmployePage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+        }
+        #endregion
+        #region Methods
+        private void ModifyPassword(object sender, RoutedEventArgs e)
+        {
+            PasswordChangeForEmployee passwordChangeForEmployee = new PasswordChangeForEmployee();
+            passwordChangeForEmployee.ShowDialog();
         }
         private void EditEmployee_Click(object sender, RoutedEventArgs e)
         {
@@ -368,7 +357,6 @@ namespace WH_APP_GUI
                 Navigation.OpenPage(Navigation.GetTypeByName("CreateEmployee"));
             }
         }
-
         private void deleteEmployee_Click(object sender, RoutedEventArgs e)
         {
             DataRow employee = (sender as Button).Tag as DataRow;
@@ -378,18 +366,17 @@ namespace WH_APP_GUI
                 Tables.employees.updateChanges();
                 EmployeeWarehouses.SelectedIndex = -1;
                 DisplayEmployeesStackpanel.Children.Clear();
-                InitializeAllEmployees(DisplayEmployeesStackpanel);
+                InitializeAllEmployees();
 
                 MessageBox.Show("Employee deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
         private void resetPassword_Click(object sender, RoutedEventArgs e)
         {
             DataRow employee = (sender as Button).Tag as DataRow;
             if (employee != null)
             {
-                string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
+                string password = Hash.GenerateRandomPassword();
                 string HashedPassword = Hash.HashPassword(password);
 
                 employee["password"] = HashedPassword;
@@ -398,21 +385,19 @@ namespace WH_APP_GUI
                 MessageBox.Show("Password has been reseted for the employee!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
         private void EmployeeWarehouses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (EmployeeWarehouses.SelectedIndex != -1)
             {
                 DisplayEmployeesStackpanel.Children.Clear();
-                InitializeEmployeesInWarehouse(DisplayEmployeesStackpanel, warehouse_id_Dictionary[EmployeeWarehouses.SelectedItem.ToString()]);
+                InitializeEmployeesInWarehouse(warehouse_id_Dictionary[EmployeeWarehouses.SelectedItem.ToString()]);
             }
         }
-
         private void AllEmployees_Click(object sender, RoutedEventArgs e)
         {
             EmployeeWarehouses.SelectedIndex = -1;
             DisplayEmployeesStackpanel.Children.Clear();
-            InitializeAllEmployees(DisplayEmployeesStackpanel);
+            InitializeAllEmployees();
         }
         private void Back_Click(object sender, RoutedEventArgs e)
         {
@@ -429,13 +414,6 @@ namespace WH_APP_GUI
                 }
             }
         }
-
-        private void EmployePage_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (var child in alapgrid.Children)
-            {
-                FontSize = e.NewSize.Height * 0.03;
-            }
-        }
+        #endregion
     }
 }

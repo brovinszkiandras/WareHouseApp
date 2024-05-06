@@ -27,8 +27,6 @@ namespace WH_APP_GUI.Product
             name.ValueDataType = typeof(string);
             buying_price.ValueDataType = typeof(double);
             selling_price.ValueDataType = typeof(double);
-            
-            description.ValueDataType = typeof(string);
 
             if (Tables.features.isFeatureInUse("Storage") == true)
             {
@@ -49,8 +47,27 @@ namespace WH_APP_GUI.Product
                 lengthLabel.Visibility = Visibility.Collapsed;
                 WeightLBL.Visibility = Visibility.Collapsed;
             }
+            IniPicture();
         }
+        private void IniPicture()
+        {
+            string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
+            if (Directory.Exists(targetDirectory))
+            {
+                string imageFileName = "DefaultProductImage.png";
+                string imagePath = Path.Combine(targetDirectory, imageFileName);
+                if (File.Exists(imagePath))
+                {
+                    string fileName = Path.GetFileName(imagePath);
+                    string targetFilePath = Path.Combine(targetDirectory, fileName);
 
+                    BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
+                    ImageBrush brush = new ImageBrush(bitmap);
+
+                    image.Background = brush;
+                }
+            }
+        }
         private void image_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -92,52 +109,15 @@ namespace WH_APP_GUI.Product
         {
             DataRow product = Tables.products.database.NewRow();
 
-           
-
-            if (!Validation.ValidateTextbox(name, product) && !Validation.ValidateTextbox(buying_price, product) && !Validation.ValidateTextbox(selling_price, product) && !Validation.ValidateTextbox(description, product))
+            if (!Validation.ValidateTextbox(name, product) && !Validation.ValidateTextbox(buying_price, product) && !Validation.ValidateTextbox(selling_price, product))
             {
                 product["name"] = name.Text;
                 product["image"] = image.Tag != null ? image.Tag.ToString() : "DefaultProductImage.png";
                 product["buying_price"] = double.Parse(buying_price.Text);
                 product["selling_price"] = double.Parse(selling_price.Text);
+                product["description"] = description.Text;
                
                 product["description"] = description.Text.ToString();
-                //product["created_at"] = DateTime.Now;
-                //product["updated_at"] = DateTime.Now;
-                //File.WriteAllText("datetimeValue", product["created_at"].ToString());
-                //MessageBox.Show(product["created_at"].ToString());
-                //string dateTimeString = product["created_at"].ToString();
-                //string updatedString = product["updated_at"].ToString();
-
-                //// Adjust the format specifier to match the actual format of your datetime string
-                //if (DateTime.TryParseExact(dateTimeString, "yyyy. MM. dd. H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue))
-                //{
-                //    // Convert the datetime value to the desired format
-                //    string formattedDateTime = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
-
-                //    // Update the value in the DataRow with the formatted datetime string
-                //    MessageBox.Show("parsed it");
-                //    product["created_at"] = formattedDateTime;
-                //}
-                //else
-                //{
-                //    MessageBox.Show("Could not parse it");
-                //}
-
-                //if (DateTime.TryParseExact(updatedString, "yyyy. MM. dd. H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue2))
-                //{
-                //    // Convert the datetime value to the desired format
-                //    string formattedDateTime = dateTimeValue2.ToString("yyyy-MM-dd HH:mm:ss");
-
-                //    // Update the value in the DataRow with the formatted datetime string
-                //    MessageBox.Show("parsed it");
-                //    product["updated_at"] = formattedDateTime;
-                //}
-                //else
-                //{
-                //    MessageBox.Show("Could not parse it");
-                //}
-
 
                 if (SQL.BoolQuery("SElECT in_use FROM feature WHERE name = 'Storage'"))
                 {

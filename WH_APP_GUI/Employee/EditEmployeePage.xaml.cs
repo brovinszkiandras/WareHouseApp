@@ -33,6 +33,9 @@ namespace WH_APP_GUI.Employee
             name.ValueDataType = typeof(string);
             email.ValueDataType = typeof(string);
 
+            activity.Content = (bool)Employee["activity"] ? "ACTIVE" : "INACTIVE";
+            activity.Background = (bool)Employee["activity"] ? Brushes.Green : Brushes.Red;
+
             name.Text = employee["name"].ToString();
             email.Text = employee["email"].ToString();
             if (employee["role_id"] != DBNull.Value)
@@ -44,10 +47,6 @@ namespace WH_APP_GUI.Employee
             {
                 warehouse_id.SelectedItem = Tables.employees.getWarehouse(employee)["name"];
             }
-            PasswordReset.Tag = employee;
-            activity.Tag = employee;
-            Done.Tag = employee;
-            profile_picture.Tag = employee;
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -82,7 +81,6 @@ namespace WH_APP_GUI.Employee
         {
             Warehouses.Clear();
             warehouse_id.Items.Clear();
-
 
             if (User.currentUser.Table.TableName != "employees")
             {
@@ -123,13 +121,12 @@ namespace WH_APP_GUI.Employee
 
         private void PasswordReset_Click(object sender, RoutedEventArgs e)
         {
-            DataRow employee = (sender as Button).Tag as DataRow;
-            if (employee != null)
+            if (Employee != null)
             {
-                string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
+                string password = Hash.GenerateRandomPassword();
                 string HashedPassword = Hash.HashPassword(password);
 
-                employee["password"] = HashedPassword;
+                Employee["password"] = HashedPassword;
                 Tables.employees.updateChanges();
 
                 Tables.employees.updateChanges();
@@ -139,13 +136,13 @@ namespace WH_APP_GUI.Employee
 
         private void activity_Click(object sender, RoutedEventArgs e)
         {
-            DataRow employee = (sender as Button).Tag as DataRow;
-            if (employee != null)
+            if (Employee != null)
             {
-                employee["activity"] = (bool)employee["activity"] ? false : true;
+                Employee["activity"] = (bool)Employee["activity"] ? false : true;
                 Tables.employees.updateChanges();
 
-                activity.Content = (bool)employee["activity"] ? "ACTIVE" : "INACTIVE";
+                activity.Content = (bool)Employee["activity"] ? "ACTIVE" : "INACTIVE";
+                activity.Background = (bool)Employee["activity"] ? Brushes.Green : Brushes.Red;
                 Tables.employees.updateChanges();
 
                 MessageBox.Show("Activity changed!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -154,18 +151,17 @@ namespace WH_APP_GUI.Employee
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            DataRow employee = (sender as Button).Tag as DataRow;
-            if (employee != null)
+            if (Employee != null)
             {
-                if (!Validation.ValidateTextbox(name, employee) && !Validation.ValidateTextbox(email, employee))
+                if (!Validation.ValidateTextbox(name, Employee) && !Validation.ValidateTextbox(email, Employee))
                 {
-                    employee["name"] = name.Text;
-                    employee["email"] = email.Text;
-                    employee["role_id"] = Roles[role_id.SelectedItem.ToString()]["id"];
-                    employee["warehouse_id"] = Warehouses[warehouse_id.SelectedItem.ToString()]["id"];
+                    Employee["name"] = name.Text;
+                    Employee["email"] = email.Text;
+                    Employee["role_id"] = Roles[role_id.SelectedItem.ToString()]["id"];
+                    Employee["warehouse_id"] = Warehouses[warehouse_id.SelectedItem.ToString()]["id"];
 
                     Tables.employees.updateChanges();
-                    Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {employee["name"]} employee.");
+                    Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {Employee["name"]} employee.");
                     MessageBox.Show("The employee has been updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     Navigation.OpenPage(Navigation.PreviousPage.GetType());
@@ -175,8 +171,7 @@ namespace WH_APP_GUI.Employee
 
         private void profile_picture_Click(object sender, RoutedEventArgs e)
         {
-            DataRow employee = (sender as Button).Tag as DataRow;
-            if (employee != null)
+            if (Employee != null)
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Title = "Choose Image";
@@ -204,7 +199,7 @@ namespace WH_APP_GUI.Employee
                         profile_picture.Tag = fileName;
                         profile_picture.Background = new ImageBrush(bitmap);
 
-                        employee["profile_picture"] = fileName;
+                        Employee["profile_picture"] = fileName;
                         Tables.employees.updateChanges();
                     }
                     catch (Exception ex)

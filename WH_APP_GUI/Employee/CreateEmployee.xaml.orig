@@ -1,14 +1,14 @@
-﻿<Page x:Class="WH_APP_GUI.Employee.EditEmployeePage"
+﻿<Page x:Class="WH_APP_GUI.Employee.CreateEmployee"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WH_APP_GUI.Employee"
-        mc:Ignorable="d"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="EditEmployeePage"
+        mc:Ignorable="d"
+        Title="CreateEmployee"
         d:DesignHeight="450" d:DesignWidth="800"
-        SizeChanged="EditEmploye_SizeChanged">
+        SizeChanged="CreateEmploye_SizeChanged">
 
     <Page.Resources>
         <Style TargetType="Button" x:Key="GoldenButtonStyle">
@@ -20,7 +20,7 @@
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
     </Page.Resources>
-
+    
     <Border CornerRadius="30,0,0,0" Background="#425C5A">
         <Grid Name="alapgrid" Margin="10">
             <Grid.ColumnDefinitions>
@@ -28,7 +28,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -36,9 +36,13 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Button Name="profile_picture" Grid.Column="1" Height="200" Width="200" Grid.ColumnSpan="3" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Click="profile_picture_Click"/>
+<<<<<<< HEAD
+            <Button Name="profile_picture" Click="profile_picture_Click" Grid.Column="1" Height="200" Width="200" Grid.ColumnSpan="3" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+=======
+            <Button Name="profile_picture" Click="profile_picture_Click" Width="200" Height="200" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+>>>>>>> 19d97620f9e8dd8a9fd9d1ca14add4cb917108c6
 
-            <Grid x:Name="DatasgGRID"  Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center">
+            <Grid x:Name="DatasgGRID" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="20" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
@@ -48,26 +52,22 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Name: " Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
-                <Label Content="Email: " Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
-                <Label Content="Role: " Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
-                <Label Content="Warehouse: " Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Name:" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Email:" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Role:" Grid.Column="0" Grid.Row="2" Margin="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Warehouse:" Grid.Column="0" Grid.Row="3" Margin="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
 
                 <xctk:ValueRangeTextBox Name="name" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="0" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
                 <xctk:ValueRangeTextBox Name="email" SelectionBrush="Black" BorderBrush="Black" Margin="5" Grid.Column="1" Grid.Row="1" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
-                <ComboBox Name="role_id" Margin="5" Grid.Column="1" Grid.Row="2" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
-                <ComboBox Name="warehouse_id" Margin="5" Grid.Column="1" Grid.Row="3" Width="auto" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
+                <ComboBox Name="role_id" Margin="5" Grid.Column="1" Grid.Row="2" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black"/>
+                <ComboBox Name="warehouse_id" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
             </Grid>
 
             <StackPanel Grid.Column="8" Grid.Row="2" Margin="30">
-                <Button Name="activity" Content="Activity" Style="{StaticResource GoldenButtonStyle}" Margin="0, 5" Padding="10, 5" Click="activity_Click"/>
-                <Button Name="PasswordReset" Content="Reset Password" Style="{StaticResource GoldenButtonStyle}" Margin="0, 5" Padding="10, 5" Click="PasswordReset_Click"/>
-                <Button Name="Done" Content="Done" Style="{StaticResource GoldenButtonStyle}" Margin="0, 5" Click="Done_Click" Padding="10, 5"/>
-                <Button Name="Cancel" Content="Cancel" Style="{StaticResource GoldenButtonStyle}" Margin="0, 5" Padding="10, 5" Click="Cancel_Click"/>
+                <Button Name="Done" Content="Done" Margin="0, 5" Click="Done_Click" Padding="20, 10" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Name="Cancel" Content="Cancel" Margin="0, 5" Padding="20, 10" Click="Cancel_Click" Style="{StaticResource GoldenButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Border>

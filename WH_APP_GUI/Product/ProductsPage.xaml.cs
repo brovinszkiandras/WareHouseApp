@@ -80,6 +80,8 @@ namespace WH_APP_GUI.Product
             productImage.Margin = new Thickness(5);
             productImage.Height = 100;
             productImage.Width = 100;
+            productImage.Stretch = Stretch.Fill;
+
             imageStackpanel.Children.Add(productImage);
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
@@ -98,10 +100,11 @@ namespace WH_APP_GUI.Product
                 }
             }
 
-            Label productName = new Label();
-            productName.Content = $"{product["name"]}";
-            productName.Style = (Style)this.Resources["labelstyle"];
-            productName.HorizontalContentAlignment = HorizontalAlignment.Center;
+            TextBlock productName = new TextBlock();
+            productName.Text = $"{product["name"]}";
+            productName.Style = (Style)this.Resources["Tlabelstyle"];
+            productName.Width = productImage.Width;
+            productName.TextWrapping = TextWrapping.Wrap;
             imageStackpanel.Children.Add(productName);
 
             Grid.SetColumn(imageStackpanel, 0);
