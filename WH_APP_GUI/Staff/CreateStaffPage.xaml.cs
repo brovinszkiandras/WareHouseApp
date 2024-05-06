@@ -89,6 +89,8 @@ namespace WH_APP_GUI.Staff
                     BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
 
                     profile_picture.Tag = fileName;
+                    profile_picture.Height = 200;
+                    profile_picture.Width = 200;
                     profile_picture.Background = new ImageBrush(bitmap);
                 }
                 catch (Exception ex)

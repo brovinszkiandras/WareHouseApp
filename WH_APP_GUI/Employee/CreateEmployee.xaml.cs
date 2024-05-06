@@ -68,6 +68,8 @@ namespace WH_APP_GUI.Employee
                     ImageBrush brush = new ImageBrush(bitmap);
 
                     profile_picture.Background = brush;
+                    profile_picture.Width = 200;
+                    profile_picture.Height = 200;
                 }
             }
         }
@@ -178,8 +180,6 @@ namespace WH_APP_GUI.Employee
             {
                 FontSize = e.NewSize.Height * 0.03;
             }
-            profile_picture.Height = alapgrid.Height;
-            profile_picture.Width = alapgrid.Height;
         }
     }
 }

@@ -63,9 +63,10 @@ namespace WH_APP_GUI.Order
 
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
+            border.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+            border.CornerRadius = new CornerRadius(15);
             border.BorderThickness = new Thickness(2);
             border.Margin = new Thickness(5);
-            border.Background = Brushes.White;
 
             StackPanel mainStackPanel = new StackPanel();
 
@@ -117,6 +118,7 @@ namespace WH_APP_GUI.Order
             Label userNameInfo = new Label();
             userNameInfo.Content = $"Username: {dataOfOrder["user_name"]}";
             userNameInfo.BorderBrush = Brushes.Black;
+            userNameInfo.Style = (Style)this.Resources["labelstyle"];
             userNameInfo.BorderThickness = new Thickness(0, 0, 1, 1);
             userNameInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
             userInfoGrid.Children.Add(userNameInfo);
@@ -124,6 +126,7 @@ namespace WH_APP_GUI.Order
             Label paymentMethodInfo = new Label();
             paymentMethodInfo.Content = $"Payment method: {dataOfOrder["payment_method"]}";
             paymentMethodInfo.BorderBrush = Brushes.Black;
+            paymentMethodInfo.Style = (Style)this.Resources["labelstyle"];
             paymentMethodInfo.BorderThickness = new Thickness(1, 0, 0, 1);
             paymentMethodInfo.HorizontalContentAlignment = HorizontalAlignment.Left;
             userInfoGrid.Children.Add(paymentMethodInfo);
@@ -131,6 +134,7 @@ namespace WH_APP_GUI.Order
             Label addressInfo = new Label();
             addressInfo.Content = $"Address: {dataOfOrder["address"]} - ({Tables.orders.getCity(dataOfOrder)["city_name"]})";
             addressInfo.BorderBrush = Brushes.Black;
+            addressInfo.Style = (Style)this.Resources["labelstyle"];
             addressInfo.BorderThickness = new Thickness(0, 0, 1, 1);
             addressInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
             userInfoGrid.Children.Add(addressInfo);
@@ -138,6 +142,7 @@ namespace WH_APP_GUI.Order
             Label productCountInfo = new Label();
             productCountInfo.Content = $"Products Count: {qtyOfAllProd}";
             productCountInfo.BorderBrush = Brushes.Black;
+            productCountInfo.Style = (Style)this.Resources["labelstyle"];
             productCountInfo.BorderThickness = new Thickness(1, 0, 0, 1);
             productCountInfo.HorizontalContentAlignment = HorizontalAlignment.Left;
             userInfoGrid.Children.Add(productCountInfo);
@@ -145,6 +150,7 @@ namespace WH_APP_GUI.Order
             Label orderInfo = new Label();
             orderInfo.Content = $"Order date: {dataOfOrder["order_date"]}";
             orderInfo.BorderBrush = Brushes.Black;
+            orderInfo.Style = (Style)this.Resources["labelstyle"];
             orderInfo.BorderThickness = new Thickness(0, 0, 1, 1);
             orderInfo.HorizontalContentAlignment = HorizontalAlignment.Right;
             userInfoGrid.Children.Add(orderInfo);
@@ -152,6 +158,7 @@ namespace WH_APP_GUI.Order
             Label maxValueCount = new Label();
             maxValueCount.Content = $"Max value: {maxPrice} - Ft";
             maxValueCount.BorderBrush = Brushes.Black;
+            maxValueCount.Style = (Style)this.Resources["labelstyle"];
             maxValueCount.BorderThickness = new Thickness(1, 0, 0, 1);
             maxValueCount.HorizontalContentAlignment = HorizontalAlignment.Left;
             userInfoGrid.Children.Add(maxValueCount);
@@ -172,10 +179,13 @@ namespace WH_APP_GUI.Order
 
                     Label productLabel = new Label();
                     productLabel.Content = Tables.orders.getProduct(order)["name"] + ": ";
+                    productLabel.Style = (Style)this.Resources["labelstyle"];
                     Label priceLabel = new Label();
                     priceLabel.Content = $"Price: {Tables.orders.getProduct(order)["selling_price"]} - Ft";
+                    priceLabel.Style = (Style)this.Resources["labelstyle"];
                     Label qtyLabel = new Label();
                     qtyLabel.Content = $"Quantity: {order["qty"]}";
+                    qtyLabel.Style = (Style)this.Resources["labelstyle"];
 
                     Button statusOfOrder = new Button();
                     statusOfOrder.Margin = new Thickness(5);
@@ -228,10 +238,13 @@ namespace WH_APP_GUI.Order
 
                     Label productLabel = new Label();
                     productLabel.Content = Tables.orders.getProduct(order)["name"] + ": ";
+                    productLabel.Style = (Style)this.Resources["labelstyle"];
                     Label priceLabel = new Label();
                     priceLabel.Content = $"Price: {Tables.orders.getProduct(order)["selling_price"]} - Ft";
+                    priceLabel.Style = (Style)this.Resources["labelstyle"];
                     Label qtyLabel = new Label();
                     qtyLabel.Content = $"Quantity: {order["qty"]}";
+                    qtyLabel.Style = (Style)this.Resources["labelstyle"];
 
                     productGrid.Children.Add(productLabel);
                     productGrid.Children.Add(priceLabel);
@@ -254,6 +267,7 @@ namespace WH_APP_GUI.Order
 
             Label statusLBL = new Label();
             statusLBL.Content = $"Status: {dataOfOrder["status"]}";
+            statusLBL.Style = (Style)this.Resources["labelstyle"];
             statusLBL.HorizontalAlignment = HorizontalAlignment.Center;
 
             status.Child = statusLBL;
@@ -268,6 +282,7 @@ namespace WH_APP_GUI.Order
 
                 Label sumVolumeInfo = new Label();
                 sumVolumeInfo.Content = $"Sum volume: {sumVolume}(m^2)";
+                sumVolumeInfo.Style = (Style)this.Resources["labelstyle"];
                 sumVolumeInfo.HorizontalAlignment = HorizontalAlignment.Center;
 
                 borderForSum.Child = sumVolumeInfo;
@@ -298,6 +313,7 @@ namespace WH_APP_GUI.Order
                 Label inWarehouse = new Label();
                 inWarehouse.Background = Brushes.LightSteelBlue;
                 inWarehouse.Foreground = Brushes.Black;
+                inWarehouse.Style = (Style)this.Resources["labelstyle"];
                 inWarehouse.Margin = new Thickness(5);
                 inWarehouse.BorderBrush = Brushes.Black;
                 inWarehouse.BorderThickness = new Thickness(1);
@@ -315,6 +331,7 @@ namespace WH_APP_GUI.Order
                         Label inTransport = new Label();
                         inTransport.Background = Brushes.LightSteelBlue;
                         inTransport.Foreground = Brushes.Black;
+                        inTransport.Style = (Style)this.Resources["labelstyle"];
                         inTransport.Margin = new Thickness(5);
                         inTransport.BorderBrush = Brushes.Black;
                         inTransport.BorderThickness = new Thickness(1);
@@ -350,6 +367,7 @@ namespace WH_APP_GUI.Order
                         inDock.Foreground = Brushes.Black;
                         inDock.Margin = new Thickness(5);
                         inDock.BorderBrush = Brushes.Black;
+                        inDock.Style = (Style)this.Resources["labelstyle"];
                         inDock.BorderThickness = new Thickness(1);
                         inDock.MaxWidth = 350;
                         inDock.HorizontalContentAlignment = HorizontalAlignment.Center;
