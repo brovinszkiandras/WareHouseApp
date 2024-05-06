@@ -78,7 +78,7 @@
                 <Label Content="Width:" Name="widthLabel" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
                 <Label Content="Heigth:" Name="heigthLabel" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
                 <Label Content="Length:" Name="lengthLabel" Margin="5" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
-                <Label Content="Description:" Margin="5" Grid.Column="0" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Description:" Margin="5" Grid.Column="0" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}" VerticalAlignment="Top"/>
                 <Label Content="Weight:" Name="WeightLBL" Margin="5" Grid.Column="0" Grid.Row="7" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
 
                 <xctk:ValueRangeTextBox Name="name" Grid.Column="1" Grid.Row="0" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
@@ -87,7 +87,7 @@
                 <xctk:ValueRangeTextBox Name="width" Grid.Column="1" Grid.Row="3" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
                 <xctk:ValueRangeTextBox Name="heigth" Grid.Column="1" Grid.Row="4" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
                 <xctk:ValueRangeTextBox Name="length" Grid.Column="1" Grid.Row="5" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
-                <xctk:ValueRangeTextBox Name="description" Grid.Column="1" Grid.Row="6" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
+                <TextBox Name="description" TextWrapping="Wrap" MinHeight="70" Grid.Column="1" Grid.Row="6" Margin="5" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
                 <xctk:ValueRangeTextBox Name="weight" Grid.Column="1" Grid.Row="7" SelectionBrush="Black" BorderBrush="Black" Margin="5" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250"/>
             </Grid>
 

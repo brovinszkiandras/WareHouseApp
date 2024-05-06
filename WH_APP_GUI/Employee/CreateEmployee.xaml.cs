@@ -178,8 +178,6 @@ namespace WH_APP_GUI.Employee
             {
                 FontSize = e.NewSize.Height * 0.03;
             }
-            profile_picture.Height = alapgrid.Height;
-            profile_picture.Width = alapgrid.Height;
         }
     }
 }
