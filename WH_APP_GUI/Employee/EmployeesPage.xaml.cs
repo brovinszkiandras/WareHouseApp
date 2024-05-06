@@ -142,6 +142,7 @@ namespace WH_APP_GUI
             image.Margin = new Thickness(5);
             image.MaxHeight = 100;
             image.MaxWidth = 100;
+            image.Stretch = Stretch.Fill;
             imageStack.Children.Add(image);
 
             if (Tables.features.isFeatureInUse("Activity"))
