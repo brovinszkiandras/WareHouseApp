@@ -14,7 +14,7 @@ namespace WH_APP_GUI
     class Controller
     {
         private static List<string> ListOfDefaultTables = new List<string>() { "staff", "warehouses", "roles", "employees", "products", "orders", "permission" };
-        #region Migrations Feture
+        #region Feture
     
         public static void CreateFeature()
         {
@@ -124,9 +124,7 @@ namespace WH_APP_GUI
                 /*SECTOR*/
                 SQL.SqlCommand($"CREATE TABLE sector (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) UNIQUE, length DOUBLE, width DOUBLE, area DOUBLE, area_in_use DOUBLE DEFAULT 0, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES warehouses(id) ON DELETE CASCADE);");
                 /*SHELF*/
-                SQL.SqlCommand($"CREATE TABLE shelf (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), number_of_levels INT DEFAULT 1 NOT NULL, length DOUBLE, actual_length DOUBLE, width DOUBLE, sector_id INT, startXindex INT, startYindex INT, orientation VARCHAR(20), FOREIGN KEY (sector_id) REFERENCES sector(id) ON DELETE CASCADE);");
-                /*LEVEL OF SHELF*/
-                SQL.SqlCommand($"CREATE TABLE level_of_shelf (id INT PRIMARY KEY AUTO_INCREMENT, upper_space DOUBLE, weight_capacity DOUBLE, shelf_id INT, FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE CASCADE);");
+                SQL.SqlCommand($"CREATE TABLE shelf (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) UNIQUE, number_of_levels INT DEFAULT 1 NOT NULL, length DOUBLE, actual_length DOUBLE, width DOUBLE, sector_id INT, startXindex INT, startYindex INT, orientation VARCHAR(20), FOREIGN KEY (sector_id) REFERENCES sector(id) ON DELETE CASCADE);");
 
                 Tables.addRequriedTablesToTables();
             }
@@ -143,7 +141,6 @@ namespace WH_APP_GUI
         {
             return bool.Parse(SQL.FindOneDataFromQuery($"SELECT in_use FROM feature WHERE name = '{FeatureName}'"));
         }
-        //DateLog: Nincs másik feature-hez kötve
         public static void DateLog()
         {
             if (!FeatureInUse("Date Log"))
@@ -174,7 +171,6 @@ namespace WH_APP_GUI
             }
         }
 
-        //Fleet: Nincs másik feature-hez kötve, Létrehoz egy transport_id-t az ORDERS táblába
         public static void Fleet()
         {
             if (!FeatureInUse("Fleet"))
@@ -204,10 +200,7 @@ namespace WH_APP_GUI
                         FOREIGN KEY (employee_id) REFERENCES {Tables.employees.actual_name}(id) ON DELETE CASCADE,
                         FOREIGN KEY (car_id) REFERENCES CARS(id) ON DELETE CASCADE,
                         FOREIGN KEY (warehouse_id) REFERENCES warehouses(id) ON DELETE CASCADE
-                    )");
-
-
-                    
+                    )");      
 
                     if (Tables.features.isFeatureInUse("Dock"))
                     {
@@ -254,9 +247,7 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                   
                     SQL.SqlCommand($"CREATE TABLE LOG (id INT PRIMARY KEY AUTO_INCREMENT, email VARCHAR(255), log_message TEXT, updated_at TIMESTAMP DEFAULT NOW());");
-
 
                     Tables.features.getFeature("Log")["in_use"] = true;
                     Tables.features.updateChanges();
@@ -388,7 +379,7 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"CREATE TABLE DOCK (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), free BOOLEAN DEFAULT TRUE, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
+                    SQL.SqlCommand($"CREATE TABLE DOCK (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) UNIQUE, free BOOLEAN DEFAULT TRUE, warehouse_id INT, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
 
                     if (Tables.features.isFeatureInUse("Fleet"))
                     {

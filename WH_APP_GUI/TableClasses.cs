@@ -109,6 +109,15 @@ namespace WH_APP_GUI
                 }
 
                 adapter.Update(database);
+
+                try
+                {
+                    adapter.Update(database);
+                }
+                catch (DBConcurrencyException)
+                {
+                    Application.Current.Shutdown();
+                }
             }
         }
 

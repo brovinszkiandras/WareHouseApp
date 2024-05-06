@@ -50,7 +50,23 @@ namespace WH_APP_GUI
                 connectionstring = $"datasource={DataSource};port={Port};username={Username};password={password};database=;";
                 con = new MySqlConnection(connectionstring);
 
-                SQL.SqlCommandWithoutDatabase($"CREATE DATABASE IF NOT EXISTS {DatabaseName} DEFAULT CHARACTER SET utf8;");
+                string databaseIsExist = SQL.FindOneDataFromQueryWithoutDatabase($"SHOW DATABASES LIKE '{DatabaseName}';");
+                if (databaseIsExist != string.Empty)
+                {
+                    if (MessageBoxResult.Yes == MessageBox.Show("There is an already existing database with this name. Are you sure you want the app to connect to your database and delete any data there?", "Confirmaition", MessageBoxButton.YesNo, MessageBoxImage.Information))
+                    {
+                        SQL.SqlCommandWithoutDatabase($"DROP DATABASE {DatabaseName};");
+                        SQL.SqlCommandWithoutDatabase($"CREATE DATABASE {DatabaseName} DEFAULT CHARACTER SET utf8;");
+                    }
+                    else
+                    {
+                        SQL.SqlCommandWithoutDatabase($"CREATE DATABASE IF NOT EXISTS {DatabaseName} DEFAULT CHARACTER SET utf8;");
+                    }
+                }
+                else
+                {
+                    SQL.SqlCommandWithoutDatabase($"CREATE DATABASE IF NOT EXISTS {DatabaseName} DEFAULT CHARACTER SET utf8;");
+                }
 
                 connectionstring = $"datasource={DataSource};port={Port};username={Username};password={password};database={DatabaseName};";
                 con = new MySqlConnection(connectionstring);
@@ -59,7 +75,6 @@ namespace WH_APP_GUI
             {
                 MessageBox.Show("Can't connect to the specified database", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
         }
 
         public static void FillStaticDatabaseValues()

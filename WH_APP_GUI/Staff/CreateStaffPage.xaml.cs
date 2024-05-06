@@ -115,10 +115,20 @@ namespace WH_APP_GUI.Staff
                     staff["profile_picture"] = profile_picture.Tag != null ? profile_picture.Tag.ToString() : "DefaultStaffProfilePicture.png";
                     staff["role_id"] = role_id_Dictionary[role_id.SelectedItem.ToString()]["id"];
 
-                    string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
+                    string password = Hash.GenerateRandomPassword();
                     string HashedPassword = Hash.HashPassword(password);
                     staff["password"] = HashedPassword;
                     Tables.employees.updateChanges();
+
+                    string text = $"Subject: Welcome to the team! Your Login Credentials Inside\r\n\r\n" +
+                        $"Dear {staff["name"]},\r\n\r\nWe are thrilled to welcome you to our team." +
+                        $" We are excited to have you on board and look forward to working with you." +
+                        $"\r\n\r\nAs a new member of our team, you will need access to our company's applications. " +
+                        $"Below, you will find your login credentials:\r\n\r\n" +
+                        $"Username/Email: {staff["email"]}\r\nPassword: {password}\r\n";
+
+                    Email.send($"{staff["email"]}", "Welcome to the team", text);
+
 
                     Tables.staff.database.Rows.Add(staff);
                     Tables.staff.updateChanges();
