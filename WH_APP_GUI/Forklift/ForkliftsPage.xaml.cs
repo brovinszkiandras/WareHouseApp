@@ -54,10 +54,20 @@ namespace WH_APP_GUI
             warehouse_id_Dictionary.Clear();
             forkliftFilter.Items.Clear();
 
-            foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+            if (User.currentUser.Table.TableName == "employees")
             {
-                forkliftFilter.Items.Add(warehouse["name"].ToString());
+                DataRow warehouse = Tables.employees.getWarehouse(User.currentUser);
                 warehouse_id_Dictionary.Add(warehouse["name"].ToString(), warehouse);
+                forkliftFilter.Items.Add(warehouse["name"].ToString());
+                forkliftFilter.SelectedItem = warehouse["name"].ToString();
+            }
+            else
+            {
+                foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+                {
+                    warehouse_id_Dictionary.Add(warehouse["name"].ToString(), warehouse);
+                    forkliftFilter.Items.Add(warehouse["name"].ToString());
+                }
             }
         }
         public void DisplayAllForklifts(Panel panel)
@@ -130,7 +140,7 @@ namespace WH_APP_GUI
             statusCBX.VerticalContentAlignment = VerticalAlignment.Center;
 
             statusCBX.FontFamily = new FontFamily("Baskerville Old Face");
-            statusCBX.Foreground = Brushes.Black;
+            statusCBX.Foreground = Brushes.White;
             statusCBX.Background = new SolidColorBrush(Color.FromRgb(0x39, 0x52, 0x50));
             statusCBX.BorderBrush = Brushes.Black;
             statusCBX.Margin = new Thickness(5);

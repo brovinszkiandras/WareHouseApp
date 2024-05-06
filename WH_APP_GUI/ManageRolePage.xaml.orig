@@ -77,8 +77,13 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
+<<<<<<< HEAD
         <StackPanel Grid.Row="2" Grid.Column="1">
             <Label Name="IsInWarehouse" Margin="5" BorderBrush="Black" BorderThickness="2,2,2,0" Visibility="Collapsed" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" RenderTransformOrigin="1,0.5"/>
+=======
+        <StackPanel Margin="5">
+            <Label Name="IsInWarehouse" Margin="5" BorderBrush="Black" BorderThickness="1,0,0,1" Visibility="Collapsed" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+>>>>>>> 8bff39df637d3d642a93827895b7200065980cce
             <TextBlock Name="Description" Margin="5" TextWrapping="Wrap" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
         </StackPanel>
 

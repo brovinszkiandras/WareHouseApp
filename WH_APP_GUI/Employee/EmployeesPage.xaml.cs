@@ -108,8 +108,6 @@ namespace WH_APP_GUI
                 DisplayOneEmployee(panel, employee);
             }
         }
-        //double imagesW = 0;
-        //double imagesH = 0;
 
         private void DisplayOneEmployee(Panel panel, DataRow employee)
         {
@@ -130,18 +128,50 @@ namespace WH_APP_GUI
                 outerStack.Children.Add(dateLog);
             }
 
-            Grid mainStackPanel = new Grid();
-            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
-            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-            mainStackPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            Grid mainGrid = new Grid();
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+
+            StackPanel imageStack = new StackPanel(); 
+            imageStack.Orientation = Orientation.Vertical;
+            Grid.SetColumn(imageStack, 0);
+            mainGrid.Children.Add(imageStack);
 
             Image image = new Image();
             image.Margin = new Thickness(5);
             image.MaxHeight = 100;
             image.MaxWidth = 100;
+            imageStack.Children.Add(image);
 
-            Grid.SetColumn(image, 0);
-            mainStackPanel.Children.Add(image);
+            if (Tables.features.isFeatureInUse("Activity"))
+            {
+                Border onlineBorder = new Border();
+                onlineBorder.BorderBrush = Brushes.Black;
+                onlineBorder.Background = new SolidColorBrush(Color.FromArgb(255, 0x39, 0x52, 0x50));
+                onlineBorder.CornerRadius = new CornerRadius(15);
+                onlineBorder.BorderThickness = new Thickness(2);
+                onlineBorder.Margin = new Thickness(5);
+
+                Label online = new Label();
+                online.VerticalAlignment = VerticalAlignment.Bottom;
+                online.HorizontalContentAlignment = HorizontalAlignment.Center;
+                online.Foreground = Brushes.White;
+                online.Style = (Style)this.Resources["labelstyle"];
+                onlineBorder.Child = online;
+                imageStack.Children.Add(onlineBorder);
+
+                if ((bool)employee["is_loggedin"])
+                {
+                    online.Content = "Online";
+                    onlineBorder.Background = Brushes.Green;
+                }
+                else
+                {
+                    online.Content = "Offline";
+                    onlineBorder.Background = Brushes.Red;
+                }             
+            }  
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
             if (Directory.Exists(targetDirectory))
@@ -156,6 +186,7 @@ namespace WH_APP_GUI
 
                     BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
 
+                    image.Stretch = Stretch.Fill;
                     image.Source = bitmap;
                 }
                 else
@@ -166,6 +197,7 @@ namespace WH_APP_GUI
 
                     BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
 
+                    image.Stretch = Stretch.Fill;
                     image.Source = bitmap;
                 }
             }
@@ -174,7 +206,7 @@ namespace WH_APP_GUI
             leftStackPanel.Orientation = Orientation.Vertical;
 
             Grid.SetColumn(leftStackPanel, 1);
-            mainStackPanel.Children.Add(leftStackPanel);
+            mainGrid.Children.Add(leftStackPanel);
 
             Label nameLabel = new Label();
             nameLabel.Content = employee["name"];
@@ -216,7 +248,7 @@ namespace WH_APP_GUI
             StackPanel rightStackPanel = new StackPanel();
             rightStackPanel.Orientation = Orientation.Vertical;
             Grid.SetColumn(rightStackPanel, 2);
-            mainStackPanel.Children.Add(rightStackPanel);
+            mainGrid.Children.Add(rightStackPanel);
 
             if (User.DoesHavePermission("Modify employees"))
             {
@@ -283,7 +315,7 @@ namespace WH_APP_GUI
                 rightStackPanel.Children.Add(modifyPassword);
             }
 
-            outerStack.Children.Add(mainStackPanel);
+            outerStack.Children.Add(mainGrid);
             border.Child = outerStack;
             panel.Children.Add(border);
         }

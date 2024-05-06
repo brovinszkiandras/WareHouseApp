@@ -33,7 +33,7 @@ namespace WH_APP_GUI.Dock
             }
             this.dock = dock;
         }
-
+        #region Display
         private void IniPicture()
         {
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
@@ -51,23 +51,38 @@ namespace WH_APP_GUI.Dock
                 }
             }
         }
-
         private Dictionary<string, DataRow> Warehouses = new Dictionary<string, DataRow>();
         private void IniWarehouses()
         {
             Warehouses.Clear();
             warehouse_id.Items.Clear();
-            foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+
+            if (User.currentUser.Table.TableName != "employees")
             {
+                foreach (DataRow warehouse in Tables.warehouses.database.Rows)
+                {
+                    Warehouses.Add(warehouse["name"].ToString(), warehouse);
+                    warehouse_id.Items.Add(warehouse["name"].ToString());
+                }
+            }
+            else
+            {
+                DataRow warehouse = Tables.employees.getWarehouse(User.currentUser);
                 Warehouses.Add(warehouse["name"].ToString(), warehouse);
                 warehouse_id.Items.Add(warehouse["name"].ToString());
+                warehouse_id.SelectedItem = warehouse["name"].ToString();
             }
         }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
+        private void EditDockPage_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
+            image.Width = image.Height;
         }
+        #endregion
+        #region Methods
         private void IsInUseDock(bool is_in_use)
         {
             InUse.Content = is_in_use ? "Free" : "In use";
@@ -80,10 +95,13 @@ namespace WH_APP_GUI.Dock
             Tables.docks.updateChanges();
             IsInUseDock(IsInUse);
         }
-
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
+        }
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            if (! Validation.ValidateTextbox(name, dock) && ! Validation.ValidateCombobox(warehouse_id, dock))
+            if (!Validation.ValidateTextbox(name, dock) && !Validation.ValidateCombobox(warehouse_id, dock))
             {
                 dock["name"] = name.Text;
                 dock["warehouse_id"] = Warehouses[warehouse_id.SelectedItem.ToString()]["id"];
@@ -91,14 +109,6 @@ namespace WH_APP_GUI.Dock
                 Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
         }
-
-        private void EditDockPage_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (var child in alapgrid.Children)
-            {
-                FontSize = e.NewSize.Height * 0.03;
-            }
-            image.Width = image.Height;
-        }
+        #endregion
     }
 }
