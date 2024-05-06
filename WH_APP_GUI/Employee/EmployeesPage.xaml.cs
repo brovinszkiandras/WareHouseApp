@@ -22,6 +22,7 @@ namespace WH_APP_GUI
 {
     public partial class EmployeesPage : Page
     {
+        private DataRow WarehouseFromPage;
         public EmployeesPage()
         {
             InitializeComponent();
@@ -39,7 +40,6 @@ namespace WH_APP_GUI
             DisplayEmployeesStackpanel.Children.Clear();
             InitializeAllEmployees(DisplayEmployeesStackpanel);
         }
-        private DataRow WarehouseFromPage;
         public EmployeesPage(DataRow warehouse)
         {
             InitializeComponent();
@@ -74,7 +74,7 @@ namespace WH_APP_GUI
             WarehouseFromPage = warehouse;
             InitializeEmployeesInWarehouse(DisplayEmployeesStackpanel, warehouse);
         }
-
+        #region Display
         private Dictionary<string, DataRow> warehouse_id_Dictionary = new Dictionary<string, DataRow>();
         private void Ini_warehouse_id()
         {
@@ -108,7 +108,6 @@ namespace WH_APP_GUI
                 DisplayOneEmployee(panel, employee);
             }
         }
-
         private void DisplayOneEmployee(Panel panel, DataRow employee)
         {
             Border border = new Border();
@@ -142,6 +141,7 @@ namespace WH_APP_GUI
             image.Margin = new Thickness(5);
             image.MaxHeight = 100;
             image.MaxWidth = 100;
+            image.Stretch = Stretch.Fill;
             imageStack.Children.Add(image);
 
             if (Tables.features.isFeatureInUse("Activity"))
@@ -186,7 +186,6 @@ namespace WH_APP_GUI
 
                     BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
 
-                    image.Stretch = Stretch.Fill;
                     image.Source = bitmap;
                 }
                 else
@@ -196,8 +195,6 @@ namespace WH_APP_GUI
                     string targetFilePath = Path.Combine(targetDirectory, fileName);
 
                     BitmapImage bitmap = new BitmapImage(new Uri(targetFilePath));
-
-                    image.Stretch = Stretch.Fill;
                     image.Source = bitmap;
                 }
             }
@@ -319,13 +316,13 @@ namespace WH_APP_GUI
             border.Child = outerStack;
             panel.Children.Add(border);
         }
-
-        private void ModifyPassword(object sender, RoutedEventArgs e)
+        private void EmployePage_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            PasswordChangeForStaff passwordChangeForStaff = new PasswordChangeForStaff();
-            passwordChangeForStaff.ShowDialog();
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
         }
-
         public void InitializeEmployeesInWarehouse(Panel panel, DataRow warehouse)
         {
             DisplayEmployeesStackpanel.Children.Clear();
@@ -335,6 +332,12 @@ namespace WH_APP_GUI
             {
                 DisplayOneEmployee(DisplayEmployeesStackpanel, emplyee);
             }
+        }
+        #endregion
+        private void ModifyPassword(object sender, RoutedEventArgs e)
+        {
+            PasswordChangeForStaff passwordChangeForStaff = new PasswordChangeForStaff();
+            passwordChangeForStaff.ShowDialog();
         }
         private void EditEmployee_Click(object sender, RoutedEventArgs e)
         {
@@ -367,7 +370,6 @@ namespace WH_APP_GUI
                 Navigation.OpenPage(Navigation.GetTypeByName("CreateEmployee"));
             }
         }
-
         private void deleteEmployee_Click(object sender, RoutedEventArgs e)
         {
             DataRow employee = (sender as Button).Tag as DataRow;
@@ -382,7 +384,6 @@ namespace WH_APP_GUI
                 MessageBox.Show("Employee deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
         private void resetPassword_Click(object sender, RoutedEventArgs e)
         {
             DataRow employee = (sender as Button).Tag as DataRow;
@@ -397,7 +398,6 @@ namespace WH_APP_GUI
                 MessageBox.Show("Password has been reseted for the employee!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
         private void EmployeeWarehouses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (EmployeeWarehouses.SelectedIndex != -1)
@@ -406,7 +406,6 @@ namespace WH_APP_GUI
                 InitializeEmployeesInWarehouse(DisplayEmployeesStackpanel, warehouse_id_Dictionary[EmployeeWarehouses.SelectedItem.ToString()]);
             }
         }
-
         private void AllEmployees_Click(object sender, RoutedEventArgs e)
         {
             EmployeeWarehouses.SelectedIndex = -1;
@@ -426,14 +425,6 @@ namespace WH_APP_GUI
                 {
                     Navigation.OpenPage(Navigation.PreviousPage.GetType());
                 }
-            }
-        }
-
-        private void EmployePage_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (var child in alapgrid.Children)
-            {
-                FontSize = e.NewSize.Height * 0.03;
             }
         }
     }
