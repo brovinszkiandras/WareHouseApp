@@ -1,0 +1,38 @@
+extends ../../layouts/header.pug
+
+block content
+    .container.mt-5
+        .card.mb-3
+            .card-body
+                table.table
+                    tr
+                        th Name
+                        th Quantity
+                        th Price
+                        th Action
+                    - if (cart && cart.length !== 0)
+                        each item in cart
+                            tr
+                                td=item.productName
+                                td
+                                    input.form-control(type="number" id=item.id onblur=`changeQuantity('${item.id}')` value=item.quantity maxlength="11" min="0")
+                                td=item.price
+                                td
+                                    form.form-group(action=`/cart/delete${item.id}` method='POST')
+                                        button.btn.btn-danger Remove
+                        tr
+                            td
+                            td
+                            td Total price
+                            td=sumPrice
+                        tr
+                            td
+                            td
+                            td
+                            td
+                                form.form-group(action=`/payment` method='GET')
+                                    button.btn.btn-primary To payment
+                    - else
+                        tr
+                            td(colspan="4") No items in cart
+    script(src="/cart.js")

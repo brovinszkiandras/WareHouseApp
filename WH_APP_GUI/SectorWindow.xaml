@@ -148,7 +148,7 @@
 
                     </StackPanel>
                     <!-- Add level button -->
-                    <Button Content="Add Level" Click="add_level_Click" Background="YellowGreen" Foreground="White"></Button>
+                    <Button Name="add_level" Content="Add Level" Click="add_level_Click" Background="YellowGreen" Foreground="White"></Button>
                 </StackPanel>
 
             </ScrollViewer>

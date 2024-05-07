@@ -117,12 +117,12 @@ namespace WH_APP_GUI
                     if (shelfBuilder.newShelf["startXindex"] == DBNull.Value && shelfBuilder.newShelf["startYindex"] == DBNull.Value)
                     {
                         //Ha horizontális a polc kirajzolom a megnyomott gombot vízsintesen
-                        if (Visual.orientation == Orientation.Horizontal)
+                        if (shelfBuilder.newShelf["orientation"].ToString() == "Horizontal")
                         {
                             shelfBuilder.displaySquareAsHorizontalShelf(button, (double)shelfBuilder.newShelf["width"]);
                         }
                         //Ha vertikális a polc kirajzolom a megnyomott gombot vízsintesen
-                        if (Visual.orientation == Orientation.Vertical)
+                        if (shelfBuilder.newShelf["orientation"].ToString() == "Vertical")
                         {
                             shelfBuilder.displaySquareAsVerticalShelf(button, (double)shelfBuilder.newShelf["width"]);
                         }
@@ -135,7 +135,7 @@ namespace WH_APP_GUI
                     else
                     {
                         //Ha a polc vízszintes
-                        if (Visual.orientation == Orientation.Horizontal)
+                        if (shelfBuilder.newShelf["orientation"].ToString() == "Horizontal")
                         {
                             //Megnézem hogy a megnyomott gomb a készülő polc bal oldalán van e ha igen
                             if (shelfBuilder.checkIfTheresAshelfToTheRight() == true)
@@ -167,7 +167,7 @@ namespace WH_APP_GUI
                             }
                         }
                         //Ha a polc vízszintes
-                        else if (Visual.orientation == Orientation.Vertical)
+                        else if (shelfBuilder.newShelf["orientation"].ToString() == "Vertical")
                         {
                             //Megnézem hogy a megnyomott gomb a készülő polc fölött van e ha igen
                             if (shelfBuilder.checkIfTheresAshelfBelow() == true)
@@ -264,70 +264,77 @@ namespace WH_APP_GUI
         //Shelf készítés befejezése
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            if(shelfBuilder.isDeleteBeingUsed == false)
+            if(shelfBuilder.isAShelfBeingCreated == true)
             {
-                #region save data
-                //Át állítom a változót ami egy polc készítését jelzi
-                shelfBuilder.isAShelfBeingCreated = false;
-                //Hogyha a polc még nem volt hozzáadva a polcok táblához akkor hozzáadom
-                if (shelfBuilder.newShelf.RowState == DataRowState.Detached)
+                if (shelfBuilder.isDeleteBeingUsed == false)
                 {
-                    Tables.shelf.database.Rows.Add(shelfBuilder.newShelf);
-                    MessageBox.Show("You have created a new shelf", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                //Ha már hozzá volt adva de meg az user megváltoztatta
-                else if (shelfBuilder.newShelf.RowState == DataRowState.Modified)
-                {
-                    MessageBox.Show($"You have updated shelf {shelfBuilder.newShelf["name"]}", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    foreach (Button children in boxGrid.Children)
+                    #region save data
+                    //Át állítom a változót ami egy polc készítését jelzi
+                    shelfBuilder.isAShelfBeingCreated = false;
+                    //Hogyha a polc még nem volt hozzáadva a polcok táblához akkor hozzáadom
+                    if (shelfBuilder.newShelf.RowState == DataRowState.Detached)
                     {
-                        if (children.Tag != null)
+                        Tables.shelf.database.Rows.Add(shelfBuilder.newShelf);
+                        MessageBox.Show("You have created a new shelf", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    //Ha már hozzá volt adva de meg az user megváltoztatta
+                    else if (shelfBuilder.newShelf.RowState == DataRowState.Modified)
+                    {
+                        MessageBox.Show($"You have updated shelf {shelfBuilder.newShelf["name"]}", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        foreach (Button children in boxGrid.Children)
                         {
-                            if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
+                            if (children.Tag != null)
                             {
-                                children.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2)); ;
+                                if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
+                                {
+                                    children.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2)); ;
+                                }
                             }
                         }
+                        toolPanel.Visibility = Visibility.Collapsed;
+                        ProductsSRCW.Visibility = Visibility.Visible;
+
                     }
-                    toolPanel.Visibility = Visibility.Collapsed;
-                    ProductsSRCW.Visibility = Visibility.Visible;
-                    
-                }
-                else if(shelfBuilder.newShelf.RowState == DataRowState.Unchanged)
-                {
-                    foreach (Button children in boxGrid.Children)
+                    else if (shelfBuilder.newShelf.RowState == DataRowState.Unchanged)
                     {
-                        if (children.Tag != null)
+                        foreach (Button children in boxGrid.Children)
                         {
-                            if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
+                            if (children.Tag != null)
                             {
-                                children.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2));;
+                                if (children.Tag.ToString() == shelfBuilder.newShelf["name"].ToString())
+                                {
+                                    children.Background = new SolidColorBrush(Color.FromArgb(255, 0xFF, 0xCE, 0xA2)); ;
+                                }
                             }
                         }
+                        toolPanel.Visibility = Visibility.Collapsed;
+                        ProductsSRCW.Visibility = Visibility.Visible;
                     }
-                    toolPanel.Visibility = Visibility.Collapsed;
-                    ProductsSRCW.Visibility = Visibility.Visible;
+
+                    //Frissítem a kiválasztott sectort az adatbázisban
+                    Tables.sector.updateChanges();
+
+                    //Feltöltöm a polcot ad adatbázisba
+                    Tables.shelf.updateChanges();
+                    #endregion
+                    //Megváltoztatom a polcok click eventjét select clickre
+                    #region ui_elements
+                    Delete.Visibility = Visibility.Collapsed;
+                    changeClickEventToSelect();
+                    shelfInfoSPNL.Visibility = Visibility.Collapsed;
+                    if (CanAlter())
+                    {
+                        New_shelf.Visibility = Visibility.Visible;
+                    }
+                    #endregion
                 }
-
-                //Frissítem a kiválasztott sectort az adatbázisban
-                Tables.sector.updateChanges();
-
-                //Feltöltöm a polcot ad adatbázisba
-                Tables.shelf.updateChanges();
-                #endregion
-                //Megváltoztatom a polcok click eventjét select clickre
-                #region ui_elements
-                Delete.Visibility = Visibility.Collapsed;
-                changeClickEventToSelect();
-                shelfInfoSPNL.Visibility = Visibility.Collapsed;
-                New_shelf.Visibility = Visibility.Visible;
-                #endregion
+                else
+                {
+                    MessageBox.Show("Please turn offf delete mode", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            else
-            {
-                MessageBox.Show("Please turn offf delete mode", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            
             
         }
 
@@ -366,7 +373,7 @@ namespace WH_APP_GUI
                 desinger_viewButton.Content = "Designer view: ON";
                 shelfBuilder.isDesignerModeActive = true;
 
-                if(shelfBuilder.isAShelfBeingCreated == false)
+                if(shelfBuilder.isAShelfBeingCreated == false && CanAlter())
                 {
                     New_shelf.Visibility = Visibility.Visible;
                 }
@@ -422,12 +429,12 @@ namespace WH_APP_GUI
             if (shelf["orientation"].ToString() == "Horizontal")
             {
                 shelfBuilder.lastXindex = (int)shelf["startXindex"] + (int)(double)shelf["length"] - 1;
-                Visual.orientation = Orientation.Horizontal;
+                
             }
             else if (shelf["orientation"].ToString() == "Vertical")
             {
                 shelfBuilder.lastYindex = (int)shelf["startYindex"] + (int)(double)shelf["length"] - 1;
-                Visual.orientation = Orientation.Vertical;
+                
             }
 
             Delete.Visibility = Visibility.Visible;
@@ -578,6 +585,13 @@ namespace WH_APP_GUI
             shelfBuilder.isDesignerModeActive = false;
 
             Visual.initalizeGrid(boxGrid);
+
+            if(CanAlter() == false)
+            {
+                Edit.Visibility = Visibility.Collapsed;
+                New_shelf.Visibility = Visibility.Collapsed;
+                add_level.Visibility = Visibility.Collapsed;
+            }
         }
 
         //Frissítí az ui elementeket
@@ -657,7 +671,7 @@ namespace WH_APP_GUI
                     .Where(product => (int)product["on_shelf_level"] == i)
                     .ToArray();
 
-                if(i == (int)shelf["number_of_levels"])
+                if(i == (int)shelf["number_of_levels"] && CanAlter())
                 {
                     Button deleteLevel = new Button();
                     deleteLevel.Background = Brushes.Crimson;
@@ -742,7 +756,7 @@ namespace WH_APP_GUI
                     .Where(product => (int)product["on_shelf_level"] == lastLevelOfShelf)
                     .ToArray();
 
-            if(productsOfLevel.Length == 0)
+            if(productsOfLevel.Length == 0 && lastLevelOfShelf != 1)
             {
                 shelf["number_of_levels"] = (int)shelf["number_of_levels"] - 1;
                 Tables.shelf.updateChanges();
@@ -751,7 +765,7 @@ namespace WH_APP_GUI
             }
             else
             {
-                MessageBox.Show("Can't delete level while there are still products on it", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Can't delete level", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -770,7 +784,11 @@ namespace WH_APP_GUI
         {
             ProductsSRCW.Visibility = Visibility.Collapsed;
             toolPanel.Visibility = Visibility.Visible;
-            New_shelf.Visibility = Visibility.Visible;
+            if (CanAlter())
+            {
+                New_shelf.Visibility = Visibility.Visible;
+            }
+            
         }
         #endregion
 
@@ -783,6 +801,18 @@ namespace WH_APP_GUI
             else
             {
                 Navigation.OpenPage(Navigation.GetTypeByName("InspectWarehouse"));
+            }
+        }
+
+        private bool CanAlter()
+        {
+            if (User.DoesHavePermission("Modify all Warehouses") || (User.currentUser.Table.TableName == "Employee" && User.DoesHavePermission("Modify Warehouse") && User.currentUser["warehouse_id"].ToString() == Tables.sector.getWarehouse(Visual.sector)["id"].ToString()))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

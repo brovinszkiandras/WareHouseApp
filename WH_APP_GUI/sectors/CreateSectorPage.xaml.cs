@@ -23,7 +23,8 @@ namespace WH_APP_GUI.sectors
     public partial class CreateSectorPage : Page
     {
         DataRow sector;
-        public CreateSectorPage()
+        DataRow Warehouse;
+        public CreateSectorPage(DataRow Warehouse)
         {
             InitializeComponent();
             sector = Tables.sector.database.NewRow();
@@ -57,7 +58,7 @@ namespace WH_APP_GUI.sectors
             if(hasError == false) {
                
                 sector["area"] = (double)sector["length"] * (double)sector["width"];
-                sector["warehouse_id"] = User.Warehouse()["id"];
+                sector["warehouse_id"] = Warehouse["id"];
                 sector["area_in_use"] = 0.00;
                 Tables.sector.database.Rows.Add(sector);
 
