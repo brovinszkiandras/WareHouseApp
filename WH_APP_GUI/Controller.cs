@@ -366,9 +366,6 @@ namespace WH_APP_GUI
                     Debug.WriteError(ex);
                     throw;
                 }
-                //Tables.cars.Refresh();
-                //Tables.cars.database.Columns["consumption"].AllowDBNull = false;
-                //Tables.cars.database.Columns["gas_tank_size"].AllowDBNull = false;
             }
         }
 

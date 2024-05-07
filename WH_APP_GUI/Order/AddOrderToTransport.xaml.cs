@@ -30,21 +30,40 @@ namespace WH_APP_GUI.Order
         private Dictionary<string, DataRow> TransportsDataRow = new Dictionary<string, DataRow>();
         private void Ini_Transports()
         {
-            foreach (DataRow transport in Tables.transports.database.Rows)
+            if (User.currentUser.Table.TableName == "employees")
             {
-                if (int.Parse(transport["warehouse_id"].ToString()) == int.Parse(User.Warehouse()["id"].ToString()) && transport["status"].ToString() == "Docking")
+                DataRow warehouse = Tables.employees.getWarehouse(User.currentUser);
+                foreach (DataRow transport in Tables.warehouses.getTransports(warehouse))
                 {
-                    string format = $"{Tables.transports.getEmployee(transport)["name"]} - {Tables.transports.getCar(transport)["type"]}\n" +
-                        $"{transport["end_date"]}";
-                    if (! TransportsDataRow.ContainsKey(format))
+                    if (int.Parse(transport["warehouse_id"].ToString()) == int.Parse(User.Warehouse()["id"].ToString()) && transport["status"].ToString() == "Docking")
                     {
-                        Transports.Items.Add(format);
-                        TransportsDataRow.Add(format, transport);
+                        string format = $"{Tables.transports.getEmployee(transport)["name"]} - {Tables.transports.getCar(transport)["type"]}\n" +
+                            $"{transport["end_date"]}";
+                        if (! TransportsDataRow.ContainsKey(format))
+                        {
+                            Transports.Items.Add(format);
+                            TransportsDataRow.Add(format, transport);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (DataRow transport in Tables.transports.database.Rows)
+                {
+                    if (int.Parse(transport["warehouse_id"].ToString()) == int.Parse(User.Warehouse()["id"].ToString()) && transport["status"].ToString() == "Docking")
+                    {
+                        string format = $"{Tables.transports.getEmployee(transport)["name"]} - {Tables.transports.getCar(transport)["type"]}\n" +
+                            $"{transport["end_date"]}";
+                        if (!TransportsDataRow.ContainsKey(format))
+                        {
+                            Transports.Items.Add(format);
+                            TransportsDataRow.Add(format, transport);
+                        }
                     }
                 }
             }
         }
-
         private void Done_Click(object sender, RoutedEventArgs e)
         {
             if (Transports.SelectedIndex != -1)

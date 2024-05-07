@@ -22,14 +22,16 @@ namespace WH_APP_GUI.Order
         {
             InitializeComponent();
             this.orders = orders;
+            Ini_Docks();
         }
 
         private Dictionary<string, DataRow> DocksDataRow = new Dictionary<string, DataRow>();
         private void Ini_Docks()
         {
-            foreach (DataRow dock in Tables.docks.database.Rows)
+            if (User.currentUser.Table.TableName == "employees")
             {
-                if (int.Parse(dock["warehouse_id"].ToString()) == int.Parse(User.Warehouse()["id"].ToString()))
+                DataRow warehouse = Tables.employees.getWarehouse(User.currentUser);
+                foreach (DataRow dock in Tables.warehouses.getDocks(warehouse))
                 {
                     if (!DocksDataRow.ContainsKey(dock["name"].ToString()))
                     {
@@ -38,6 +40,18 @@ namespace WH_APP_GUI.Order
                     }
                 }
             }
+            else
+            {
+                foreach (DataRow dock in Tables.warehouses.database.Rows)
+                {
+                    if (!DocksDataRow.ContainsKey(dock["name"].ToString()))
+                    {
+                        Docks.Items.Add(dock["name"].ToString());
+                        DocksDataRow.Add(dock["name"].ToString(), dock);
+                    }
+                }
+            }
+            
         }
 
         private void Done_Click(object sender, RoutedEventArgs e)
