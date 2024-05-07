@@ -247,6 +247,9 @@
     <Compile Include="Dock\EditDockPage.xaml.cs">
       <DependentUpon>EditDockPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EditEmail.xaml.cs">
+      <DependentUpon>EditEmail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Employee\CreateEmployee.xaml.cs">
       <DependentUpon>CreateEmployee.xaml</DependentUpon>
     </Compile>
@@ -402,6 +405,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dock\EditDockPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditEmail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
