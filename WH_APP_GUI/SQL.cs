@@ -293,8 +293,6 @@ namespace WH_APP_GUI
             }
         }
         #endregion
-
-
         public static List<string> GetElementOfListArray(List<string[]> ListWithArray)
         {
             List<string> returnList = new List<string>();

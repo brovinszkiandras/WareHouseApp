@@ -149,6 +149,11 @@ namespace WH_APP_GUI.Product
             Grid.SetRow(borderDescription, 3);
             Grid.SetRowSpan(borderDescription, 2);
 
+            grid.Children.Add(nameLabel);
+            grid.Children.Add(buyingPriceLabel);
+            grid.Children.Add(sellingPriceLabel);
+            grid.Children.Add(borderDescription);
+
             if (Tables.features.isFeatureInUse("Storage"))
             {
                 Label weightLabel = new Label();
@@ -181,19 +186,15 @@ namespace WH_APP_GUI.Product
                 Grid.SetColumn(lengthLabel, 1);
                 Grid.SetRow(lengthLabel, 4);
 
-                grid.Children.Add(nameLabel);
-                grid.Children.Add(buyingPriceLabel);
-                grid.Children.Add(sellingPriceLabel);
-                grid.Children.Add(borderDescription);
                 grid.Children.Add(weightLabel);
                 grid.Children.Add(volumeLabel);
                 grid.Children.Add(widthLabel);
                 grid.Children.Add(heightLabel);
                 grid.Children.Add(lengthLabel);
 
-                Grid.SetColumn(grid, 1);
-                mainStackPanel.Children.Add(grid);
             }
+            Grid.SetColumn(grid, 1);
+            mainStackPanel.Children.Add(grid);
 
             StackPanel buttonsStackPanel = new StackPanel();
 
