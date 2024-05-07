@@ -98,7 +98,6 @@ namespace WH_APP_GUI.warehouseTableFolder
 
                     productGrid.Children.Add(width);
 
-
                     TextBlock length = new TextBlock();
                     length.Text = product["length"].ToString();
                     length.Style = (Style)this.Resources["textblockstyle"];
@@ -198,29 +197,32 @@ namespace WH_APP_GUI.warehouseTableFolder
                 productGrid.ColumnDefinitions.Add(valueColumn);
             }
 
-            Label widthLabel = new Label();
-            widthLabel.Style = (Style)this.Resources["labelstyle"];
-            widthLabel.HorizontalAlignment = HorizontalAlignment.Center;
-            widthLabel.VerticalAlignment = VerticalAlignment.Center;
-            widthLabel.Content = "Width";
-            Grid.SetColumn(widthLabel, 5);
-            labelsGrid.Children.Add(widthLabel);
+            if (Tables.features.isFeatureInUse("Storage"))
+            {
+                Label widthLabel = new Label();
+                widthLabel.Style = (Style)this.Resources["labelstyle"];
+                widthLabel.HorizontalAlignment = HorizontalAlignment.Center;
+                widthLabel.VerticalAlignment = VerticalAlignment.Center;
+                widthLabel.Content = "Width";
+                Grid.SetColumn(widthLabel, 5);
+                labelsGrid.Children.Add(widthLabel);
 
-            Label heightLabel = new Label();
-            heightLabel.Style = (Style)this.Resources["labelstyle"];
-            heightLabel.HorizontalAlignment = HorizontalAlignment.Center;
-            heightLabel.VerticalAlignment = VerticalAlignment.Center;
-            heightLabel.Content = "Height";
-            Grid.SetColumn(heightLabel, 6);
-            labelsGrid.Children.Add(heightLabel);
+                Label heightLabel = new Label();
+                heightLabel.Style = (Style)this.Resources["labelstyle"];
+                heightLabel.HorizontalAlignment = HorizontalAlignment.Center;
+                heightLabel.VerticalAlignment = VerticalAlignment.Center;
+                heightLabel.Content = "Height";
+                Grid.SetColumn(heightLabel, 6);
+                labelsGrid.Children.Add(heightLabel);
 
-            Label lengthLabel = new Label();
-            lengthLabel.Style = (Style)this.Resources["labelstyle"];
-            lengthLabel.HorizontalAlignment = HorizontalAlignment.Center;
-            lengthLabel.VerticalAlignment = VerticalAlignment.Center;
-            lengthLabel.Content = "Length";
-            Grid.SetColumn(lengthLabel, 7);
-            labelsGrid.Children.Add(lengthLabel);
+                Label lengthLabel = new Label();
+                lengthLabel.Style = (Style)this.Resources["labelstyle"];
+                lengthLabel.HorizontalAlignment = HorizontalAlignment.Center;
+                lengthLabel.VerticalAlignment = VerticalAlignment.Center;
+                lengthLabel.Content = "Length";
+                Grid.SetColumn(lengthLabel, 7);
+                labelsGrid.Children.Add(lengthLabel);
+            }
         }
         private void Delete_Click(object sender, RoutedEventArgs e)
         {

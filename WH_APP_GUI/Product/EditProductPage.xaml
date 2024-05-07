@@ -76,9 +76,9 @@
                 <Label Content="Name:" Margin="5" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
                 <Label Content="Buying Price:" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
                 <Label Content="Selling Price:" Margin="5" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
-                <Label Content="Width:" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
-                <Label Content="Heigth:" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
-                <Label Content="Length:" Margin="5" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Width:" Name="WidthLBL" Margin="5" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Heigth:" Name="HeigthLBL" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
+                <Label Content="Length:" Name="LengthLBL" Margin="5" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
                 <Label Content="Description:" Margin="5" Grid.Column="0" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
                 <Label Content="Weight:" Name="WeightLBL" Margin="5" Grid.Column="0" Grid.Row="7" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>
                 <Label Content="Volume:" Name="VolumeLBL" Margin="5" Grid.Column="0" Grid.Row="8" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Style="{StaticResource labelstyle}"/>

@@ -13,7 +13,6 @@ namespace WH_APP_GUI
 {
     class Controller
     {
-        private static List<string> ListOfDefaultTables = new List<string>() { "staff", "warehouses", "roles", "employees", "products", "orders", "permission" };
         #region Feture
     
         public static void CreateFeature()

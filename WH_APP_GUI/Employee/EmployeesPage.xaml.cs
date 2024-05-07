@@ -26,7 +26,6 @@ namespace WH_APP_GUI
         public EmployeesPage()
         {
             InitializeComponent();
-            Console.WriteLine("No warehouse");
 
             Back.Visibility = Visibility.Collapsed;
 
@@ -43,7 +42,6 @@ namespace WH_APP_GUI
         public EmployeesPage(DataRow warehouse)
         {
             InitializeComponent();
-            Console.WriteLine("Yes warehouse");
 
             if (User.DoesHavePermission("Modify all employees"))
             {

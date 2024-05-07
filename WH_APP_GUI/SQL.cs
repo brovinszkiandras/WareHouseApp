@@ -144,18 +144,6 @@ namespace WH_APP_GUI
                 throw;
             }
         }
-        public static bool BoolQuery(string query)
-        {
-            string result = FindOneDataFromQuery(query);
-            if (bool.Parse(result))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
         public static string FindOneDataFromQuery(string query)
         {
             try
@@ -283,6 +271,18 @@ namespace WH_APP_GUI
             {
                 Debug.WriteError(ex);
                 throw;
+            }
+        }
+        public static bool BoolQuery(string query)
+        {
+            string result = FindOneDataFromQuery(query);
+            if (bool.Parse(result))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         #endregion

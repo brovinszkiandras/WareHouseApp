@@ -45,24 +45,33 @@ namespace WH_APP_GUI.Product
             length.ValueDataType = typeof(double);
             description.ValueDataType = typeof(string);
 
-            name.Text = product["name"].ToString();
-            buying_price.Text = product["buying_price"].ToString();
-            selling_price.Text = product["selling_price"].ToString();
-            width.Text = product["width"].ToString();
-            heigth.Text = product["heigth"].ToString();
-            length.Text = product["length"].ToString();
-            description.Text = product["description"].ToString();
-
-            Done.Tag = product;
-
-            if (SQL.BoolQuery("SElECT in_use FROM feature WHERE name = 'Storage'"))
+            if (Tables.features.isFeatureInUse("Storage"))
             {
-                weight.Visibility = Visibility.Visible;
-                weight.ValueDataType = typeof(double);             
+                width.Text = product["width"].ToString();
+                heigth.Text = product["heigth"].ToString();
+                length.Text = product["length"].ToString();
+                weight.Text = product["weight"].ToString();
+                volume.Text = product["volume"].ToString();
+
+                WidthLBL.Visibility = Visibility.Visible;
+                HeigthLBL.Visibility = Visibility.Visible;
+                LengthLBL.Visibility = Visibility.Visible;
+                WeightLBL.Visibility = Visibility.Visible;
+                VolumeLBL.Visibility = Visibility.Visible;
             }
             else
             {
+                WidthLBL.Visibility = Visibility.Collapsed;
+                HeigthLBL.Visibility = Visibility.Collapsed;
+                LengthLBL.Visibility = Visibility.Collapsed;
+                WeightLBL.Visibility = Visibility.Collapsed;
+                VolumeLBL.Visibility = Visibility.Collapsed;
+
+                width.Visibility = Visibility.Collapsed;
+                heigth.Visibility = Visibility.Collapsed;
+                length.Visibility = Visibility.Collapsed;
                 weight.Visibility = Visibility.Collapsed;
+                volume.Visibility = Visibility.Collapsed;
             }
 
             string targetDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Images");
@@ -142,7 +151,7 @@ namespace WH_APP_GUI.Product
                 Tables.products.updateChanges();
 
                 Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {product["name"]} product.");
-                MessageBox.Show($"You have succesfully created a new sector", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"You have succesfully updated the product", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 Navigation.OpenPage(Navigation.PreviousPage.GetType());
             }
