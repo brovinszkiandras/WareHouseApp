@@ -141,3 +141,11 @@ C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpfApp\WH_APP_GUI\bin\Debug\Ma
 C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpfApp\WH_APP_GUI\bin\Debug\Microsoft.Xaml.Behaviors.pdb
 C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpfApp\WH_APP_GUI\bin\Debug\Microsoft.Xaml.Behaviors.xml
 C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpfApp\WH_APP_GUI\bin\Debug\de\MahApps.Metro.resources.dll
+C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpf\WH_APP_GUI\obj\Debug\WH_APP_GUI.csproj.AssemblyReference.cache
+C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpf\WH_APP_GUI\obj\Debug\AdminHomePage.g.cs
+C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpf\WH_APP_GUI\obj\Debug\MainWindow.g.cs
+C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpf\WH_APP_GUI\obj\Debug\App.g.cs
+C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpf\WH_APP_GUI\obj\Debug\WH_APP_GUI_MarkupCompile.cache
+C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpf\WH_APP_GUI\obj\Debug\WH_APP_GUI_MarkupCompile.lref
+C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpf\WH_APP_GUI\obj\Debug\WH_APP_GUI.exe
+C:\Users\nandi\OneDrive\Desktop\prog\WareHouseApp-wpf\WH_APP_GUI\obj\Debug\WH_APP_GUI.pdb
