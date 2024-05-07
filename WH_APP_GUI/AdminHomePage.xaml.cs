@@ -589,5 +589,11 @@ namespace WH_APP_GUI
                 return false;
             }
         }
+
+        private void manageEmail_Click(object sender, RoutedEventArgs e)
+        {
+            EditEmail editEmail = new EditEmail();
+            editEmail.ShowDialog();
+        }
     }
 }

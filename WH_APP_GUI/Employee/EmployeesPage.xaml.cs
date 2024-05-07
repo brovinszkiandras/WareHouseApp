@@ -382,6 +382,15 @@ namespace WH_APP_GUI
                 employee["password"] = HashedPassword;
                 Tables.employees.updateChanges();
 
+                string text = $"Subject: Your Password Has Been Reset\r\n\r\n" +
+                     $"Dear {employee["name"]},\r\n\r\nYour password has been successfully reset." +
+                     $" Please find your updated login credentials below:\r\n\r\n" +
+                     $"Username/Email: {employee["email"]}\r\nNew Password: {password}\r\n" +
+                     $"Please keep this information secure and do not share it with anyone.\r\n" +
+                     $"If you have any questions or concerns, feel free to reach out to us.\r\n";
+
+                Email.send($"{employee["email"]}", "Password Reset Confirmation", text);
+
                 MessageBox.Show("Password has been reseted for the employee!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }

@@ -21,8 +21,6 @@ namespace WH_APP_GUI.Staff
         private DataRow staff;
         public EditStaffPage(DataRow Staff)
         {
-            //PreviousPageType = previousPage.GetType();
-
             this.staff = Staff;
             InitializeComponent();
 
@@ -150,13 +148,23 @@ namespace WH_APP_GUI.Staff
             DataRow staff = (sender as Button).Tag as DataRow;
             if (staff != null)
             {
-                string password = Hash.GenerateRandomPassword(); //TODO: Ez kell majd az emailbe
+                string password = Hash.GenerateRandomPassword();
                 string HashedPassword = Hash.HashPassword(password);
 
                 staff["password"] = HashedPassword;
                 Tables.staff.updateChanges();
 
-                MessageBox.Show("Password has been reseted for the employee!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                string text = $"Subject: Your Password Has Been Reset\r\n\r\n" +
+                 $"Dear {staff["name"]},\r\n\r\nYour password has been successfully reset." +
+                 $" Please find your updated login credentials below:\r\n\r\n" +
+                 $"Username/Email: {staff["email"]}\r\nNew Password: {password}\r\n" +
+                 $"Please keep this information secure and do not share it with anyone.\r\n" +
+                 $"If you have any questions or concerns, feel free to reach out to us.\r\n" +
+                 $"Best regards,\r\n[Your Company Name] Team";
+
+                Email.send($"{staff["email"]}", "Password Reset Confirmation", text);
+
+                MessageBox.Show("Password has been reseted for the staff!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         private void EditStaff_SizeChanged(object sender, SizeChangedEventArgs e)

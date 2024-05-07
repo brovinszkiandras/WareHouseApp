@@ -27,7 +27,6 @@ namespace WH_APP_GUI.sectors
             Navigation.ReturnParam = warehouse;
             DisplaySectors();
 
-
             if (User.DoesHavePermission("Modify all Warehouses"))
             {
                 Create.Visibility = Visibility.Visible;
@@ -36,7 +35,7 @@ namespace WH_APP_GUI.sectors
             {
                 if (User.currentUser.Table.TableName == "employees")
                 {
-                    if (User.currentUser["warehouse"].ToString() == Warehouse["id"].ToString())
+                    if ((int)User.currentUser["warehouse_id"] == (int)Warehouse["id"])
                     {
                         Create.Visibility = Visibility.Visible;
                     }
@@ -182,7 +181,6 @@ namespace WH_APP_GUI.sectors
             MessageBoxResult result = MessageBox.Show("Do you want to delete this transport?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                MessageBox.Show(button.Tag.ToString());
                 DataRow sector = Tables.sector.database.Select($"id = '{button.Tag}'")[0];
                 if (sector != null)
                 {

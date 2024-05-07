@@ -21,8 +21,6 @@ namespace WH_APP_GUI
         public DataTable database = new DataTable();
         public MySqlDataAdapter adapter;
 
-        
-
         public table(string actualname)
         {
             this.actual_name = actualname;
@@ -50,7 +48,6 @@ namespace WH_APP_GUI
             }
         }
         #endregion
-
 
         #region queris
         private void fill()
@@ -109,6 +106,15 @@ namespace WH_APP_GUI
                 }
 
                 adapter.Update(database);
+
+                try
+                {
+                    adapter.Update(database);
+                }
+                catch (DBConcurrencyException)
+                {
+                    Application.Current.Shutdown();
+                }
             }
         }
 
@@ -645,6 +651,4 @@ namespace WH_APP_GUI
         }
     }
     #endregion
-
-
 }

@@ -25,16 +25,13 @@ namespace WH_APP_GUI.Employee
         public EditEmployeePage(DataRow employee)
         {
             InitializeComponent();
+            Employee = employee;
+
             IniWarehouses();
             IniRoles();
 
-            Employee = employee;
-
             name.ValueDataType = typeof(string);
             email.ValueDataType = typeof(string);
-
-            activity.Content = (bool)Employee["activity"] ? "ACTIVE" : "INACTIVE";
-            activity.Background = (bool)Employee["activity"] ? Brushes.Green : Brushes.Red;
 
             name.Text = employee["name"].ToString();
             email.Text = employee["email"].ToString();
@@ -65,8 +62,11 @@ namespace WH_APP_GUI.Employee
                 }
             }
 
-            if (SQL.BoolQuery("SELECT in_use FROM feature WHERE name = 'Activity';"))
+            if (Tables.features.isFeatureInUse("Activity"))
             {
+                activity.Content = (bool)Employee["activity"] ? "ACTIVE" : "INACTIVE";
+                activity.Background = (bool)Employee["activity"] ? Brushes.Green : Brushes.Red;
+
                 activity.Visibility = Visibility.Visible;
                 activity.Content = SQL.BoolQuery($"SELECT activity FROM {Tables.employees.actual_name} WHERE email = '{employee["email"]}'") ? "ACTIVE" : "INACTIVE";
             }
@@ -75,7 +75,7 @@ namespace WH_APP_GUI.Employee
                 activity.Visibility = Visibility.Collapsed;
             }
         }
-
+        #region Display
         private Dictionary<string, DataRow> Warehouses = new Dictionary<string, DataRow>();
         private void IniWarehouses()
         {
@@ -113,12 +113,15 @@ namespace WH_APP_GUI.Employee
                 }
             }
         }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
+        private void EditEmploye_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Navigation.OpenPage(Navigation.PreviousPage.GetType());
+            foreach (var child in alapgrid.Children)
+            {
+                FontSize = e.NewSize.Height * 0.03;
+            }
         }
-
+        #endregion
+        #region Methods
         private void PasswordReset_Click(object sender, RoutedEventArgs e)
         {
             if (Employee != null)
@@ -129,11 +132,20 @@ namespace WH_APP_GUI.Employee
                 Employee["password"] = HashedPassword;
                 Tables.employees.updateChanges();
 
+                string text = $"Subject: Your Password Has Been Reset\r\n\r\n" +
+                     $"Dear {Employee["name"]},\r\n\r\nYour password has been successfully reset." +
+                     $" Please find your updated login credentials below:\r\n\r\n" +
+                     $"Username/Email: {Employee["email"]}\r\nNew Password: {password}\r\n" +
+                     $"Please keep this information secure and do not share it with anyone.\r\n" +
+                     $"If you have any questions or concerns, feel free to reach out to us.\r\n" +
+                     $"Best regards,\r\n[Your Company Name] Team";
+
+                Email.send($"{Employee["email"]}", "Password Reset Confirmation", text);
+
                 Tables.employees.updateChanges();
                 MessageBox.Show("Password has been reseted for the employee!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
         private void activity_Click(object sender, RoutedEventArgs e)
         {
             if (Employee != null)
@@ -148,27 +160,6 @@ namespace WH_APP_GUI.Employee
                 MessageBox.Show("Activity changed!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
-        private void Done_Click(object sender, RoutedEventArgs e)
-        {
-            if (Employee != null)
-            {
-                if (!Validation.ValidateTextbox(name, Employee) && !Validation.ValidateTextbox(email, Employee))
-                {
-                    Employee["name"] = name.Text;
-                    Employee["email"] = email.Text;
-                    Employee["role_id"] = Roles[role_id.SelectedItem.ToString()]["id"];
-                    Employee["warehouse_id"] = Warehouses[warehouse_id.SelectedItem.ToString()]["id"];
-
-                    Tables.employees.updateChanges();
-                    Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {Employee["name"]} employee.");
-                    MessageBox.Show("The employee has been updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
-                }
-            }
-        }
-
         private void profile_picture_Click(object sender, RoutedEventArgs e)
         {
             if (Employee != null)
@@ -211,12 +202,29 @@ namespace WH_APP_GUI.Employee
                 }
             }
         }
-        private void EditEmploye_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Done_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var child in alapgrid.Children)
+            if (Employee != null)
             {
-                FontSize = e.NewSize.Height * 0.03;
+                if (!Validation.ValidateTextbox(name, Employee) && !Validation.ValidateTextbox(email, Employee))
+                {
+                    Employee["name"] = name.Text;
+                    Employee["email"] = email.Text;
+                    Employee["role_id"] = Roles[role_id.SelectedItem.ToString()]["id"];
+                    Employee["warehouse_id"] = Warehouses[warehouse_id.SelectedItem.ToString()]["id"];
+
+                    Tables.employees.updateChanges();
+                    Controller.LogWrite(User.currentUser["email"].ToString(), $"{User.currentUser["name"]} has been modified {Employee["name"]} employee.");
+                    MessageBox.Show("The employee has been updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    Navigation.OpenPage(Navigation.PreviousPage.GetType());
+                }
             }
         }
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.OpenPage(Navigation.PreviousPage.GetType());
+        }
+        #endregion
     }
 }
