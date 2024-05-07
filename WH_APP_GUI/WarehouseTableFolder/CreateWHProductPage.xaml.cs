@@ -105,7 +105,10 @@ namespace WH_APP_GUI.warehouseTableFolder
             product_id.ItemsSource = Tables.products.database.DefaultView;
 
             List<DataRow> shelfs = new List<DataRow>();
-            foreach (DataRow sector in Tables.warehouses.getSectors(User.Warehouse()))
+
+            DataRow warehosue = Tables.warehouses.database.Select($"name = {warehouseTable.database.TableName}")[0];
+
+            foreach (DataRow sector in Tables.warehouses.getSectors(warehosue))
             {
                 foreach (DataRow shelf in Tables.sector.getShelfs(sector))
                 {

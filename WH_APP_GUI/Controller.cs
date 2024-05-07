@@ -288,9 +288,9 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.warehouses.actual_name} ADD total_value DOUBLE, ADD total_spending DOUBLE, ADD total_income DOUBLE;");
+                    SQL.SqlCommand($"ALTER TABLE {Tables.warehouses.actual_name} ADD total_value DOUBLE DEFAULT 0 NOT NULL, ADD total_spending DOUBLE DEFAULT 0 NOT NULL, ADD total_income DOUBLE DEFAULT 0 NOT NULL;");
 
-                    SQL.SqlCommand($"CREATE TABLE revenue_a_day (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, date DATE, total_expenditure DOUBLE, total_income DOUBLE, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
+                    SQL.SqlCommand($"CREATE TABLE revenue_a_day (id INT PRIMARY KEY AUTO_INCREMENT, warehouse_id INT, date DATE, total_expenditure DOUBLE DEFAULT 0 NOT NULL, total_income DOUBLE DEFAULT 0 NOT NULL, FOREIGN KEY (warehouse_id) REFERENCES {Tables.warehouses.actual_name}(id) ON DELETE CASCADE);");
                     Tables.employees.Refresh();
                     Tables.warehouses.Refresh();
 
@@ -312,7 +312,7 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} ADD weight DOUBLE, ADD volume DOUBLE, ADD width DOUBLE, ADD heigth DOUBLE, ADD length DOUBLE;");
+                    SQL.SqlCommand($"ALTER TABLE {Tables.products.actual_name} ADD weight DOUBLE DEFAULT 0 NOT NULL, ADD volume DOUBLE DEFAULT 0 NOT NULL, ADD width DOUBLE DEFAULT 0 NOT NULL, ADD heigth DOUBLE DEFAULT 0 NOT NULL, ADD length DOUBLE DEFAULT 0 NOT NULL;");
                     SQL.SqlCommand($"ALTER TABLE cars ADD storage DOUBLE DEFAULT 0, ADD carrying_capacity DOUBLE DEFAULT 0;");
                     SQL.SqlCommand($"ALTER TABLE {Tables.orders.actual_name} ADD sum_volume DOUBLE;");
 
@@ -355,7 +355,7 @@ namespace WH_APP_GUI
             {
                 try
                 {
-                    SQL.SqlCommand($"ALTER TABLE {Tables.cars.actual_name} ADD consumption DOUBLE DEFAULT 0, ADD gas_tank_size DOUBLE DEFAULT 0;");
+                    SQL.SqlCommand($"ALTER TABLE {Tables.cars.actual_name} ADD consumption DOUBLE DEFAULT 0 NOT NULL, ADD gas_tank_size DOUBLE DEFAULT 0 NOT NULL;");
                     Tables.features.getFeature("Fuel")["in_use"] = true;
                     Tables.features.updateChanges();
 

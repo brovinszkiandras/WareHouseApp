@@ -67,34 +67,5 @@ namespace WH_APP_GUI
             }
             return false;
         }
-
-        public static DataRow Warehouse()
-        {
-            if(currentUser.Table == Tables.employees.database)
-            {
-                return Tables.employees.getWarehouse(currentUser);
-            }
-            else
-            {
-                return tempWarehouse;
-            } 
-        }
-
-        public static warehouse warehouseTable()
-        {
-            if(WHTable == null)
-            {
-                WHTable = new warehouse(Warehouse()["name"].ToString());
-            }
-
-            if (WHTable != null)
-            {
-                return WHTable;
-            }
-            else
-            {
-                return null;
-            }
-        }
     }
 }
