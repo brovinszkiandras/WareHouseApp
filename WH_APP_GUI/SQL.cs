@@ -76,7 +76,6 @@ namespace WH_APP_GUI
                 MessageBox.Show("Can't connect to the specified database", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         public static void FillStaticDatabaseValues()
         {
             try
@@ -98,7 +97,7 @@ namespace WH_APP_GUI
             }
         }
         #region Sql commands
-        static public void SqlCommand(string command)
+        public static void SqlCommand(string command)
         {
             try
             {
@@ -124,8 +123,7 @@ namespace WH_APP_GUI
                 throw;
             }
         }
-
-        static public void SqlCommandWithoutDatabase(string command)
+        public static void SqlCommandWithoutDatabase(string command)
         {
             try
             {   
@@ -146,7 +144,6 @@ namespace WH_APP_GUI
                 throw;
             }
         }
-        //TODO ez kell majd dokumnetációba
         public static bool BoolQuery(string query)
         {
             string result = FindOneDataFromQuery(query);
@@ -159,7 +156,6 @@ namespace WH_APP_GUI
                 return false;
             }
         }
-
         public static string FindOneDataFromQuery(string query)
         {
             try
@@ -193,7 +189,6 @@ namespace WH_APP_GUI
                 throw;
             }
         }
-
         public static string FindOneDataFromQueryWithoutDatabase(string query)
         {
             try
@@ -223,8 +218,7 @@ namespace WH_APP_GUI
                 throw;
             }
         }
-
-        static public List<string[]> SqlQuery(string query)
+        public static List<string[]> SqlQuery(string query)
         {
             try
             {
@@ -260,8 +254,7 @@ namespace WH_APP_GUI
                 throw;
             }
         }
-
-        static public List<string[]> SqlQueryWithoutDatabase(string query)
+        public static List<string[]> SqlQueryWithoutDatabase(string query)
         {
             try
             {
@@ -300,23 +293,17 @@ namespace WH_APP_GUI
             {
                 returnList.Add(ListWithArray[i][0]);
             }
-
             return returnList;
         }
-
         public static string convertDateToCorrectFormat(DateTime date)
         {
             string datetimestring = date.ToString();
-
             // Adjust the format specifier to match the actual format of your datetime string
             if (DateTime.TryParseExact(datetimestring, "yyyy. MM. dd. H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue))
             {
                 // Convert the datetime value to the desired format
                 string formattedDateTimeString = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
-
                 // Update the value in the DataRow with the formatted datetime string
-                
-
                return formattedDateTimeString;
             }
             else
@@ -324,20 +311,15 @@ namespace WH_APP_GUI
                 return null;
             }
         }
-
         public static string convertShordDateTocorrectFormat(DateTime date)
         {
             string datetimestring = date.ToString();
-
             // Adjust the format specifier to match the actual format of your datetime string
             if (DateTime.TryParseExact(datetimestring, "yyyy. MM. dd.", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue))
             {
                 // Convert the datetime value to the desired format
                 string formattedDateTimeString = dateTimeValue.ToString("yyyy-MM-dd");
-
                 // Update the value in the DataRow with the formatted datetime string
-              
-
                 return formattedDateTimeString;
             }
             else
