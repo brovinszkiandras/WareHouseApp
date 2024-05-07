@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
                       Title="Főablak" FontFamily="Trade Gothic LT" TitleForeground="White"
-                      MinWidth="800" MinHeight="600" WindowTitleBrush="#FF2D3250"
+                      MinWidth="1200" MinHeight="800" WindowTitleBrush="#FF2D3250"
                       BorderThickness="0"
                       SizeChanged="FoOldal_SizeChanged"  
                       ResizeMode="CanResizeWithGrip"
@@ -72,7 +72,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid Name="pickture" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2">
-            <Label Content="images"/>
+            <Label Content=""/>
         </Grid>
 
         <Border x:Name="LogIn" Visibility="Collapsed" CornerRadius="20" Background="#FF2D3250" Grid.Column="2" Margin="20">
@@ -81,19 +81,19 @@
                     <Border Padding="5" x:Name="NameBorder" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                         <StackPanel>
                             <Label Content="Name:" Name="NameLBL" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                            <TextBox x:Name="Name" Text="micimacko" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                            <TextBox x:Name="Name" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                         </StackPanel>
                     </Border>
                     <Border Padding="5" x:Name="EmailBorder" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                         <StackPanel>
                             <Label Content="Emali:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                            <TextBox x:Name="Emali" Text="micimacko@tigris.com" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                            <TextBox x:Name="Emali" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                         </StackPanel>
                     </Border>
                     <Border x:Name="PasswordBorder" Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                         <StackPanel>
                             <Label Content="Password:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                            <PasswordBox x:Name="Password" Password="malacka" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                            <PasswordBox x:Name="Password" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                         </StackPanel>
                     </Border>
                     <Button Content="Login" x:Name="Login_button" Click="Login_Click" Visibility="Collapsed" Style="{StaticResource ElegantButtonStyle}"/>
@@ -109,21 +109,21 @@
                 <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                     <StackPanel>
                         <Label Content="Datasource:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                        <TextBox x:Name="DataSourceFU" Text="127.0.0.1" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                        <TextBox x:Name="DataSourceFU" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                     </StackPanel>
                 </Border>
 
                 <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                     <StackPanel>
                         <Label Content="Port number:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                        <TextBox x:Name="portFU" Text="3306" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                        <TextBox x:Name="portFU" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                     </StackPanel>
                 </Border>
 
                 <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                     <StackPanel>
                         <Label Content="Username:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                        <TextBox x:Name="usernameFU" Text="root" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                        <TextBox x:Name="usernameFU" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                     </StackPanel>
                 </Border>
 
@@ -137,7 +137,7 @@
                 <Border Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                     <StackPanel>
                         <Label Content="Name:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                        <TextBox x:Name="DatabaseNameFU" Text="test" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                        <TextBox x:Name="DatabaseNameFU" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                     </StackPanel>
                 </Border>
 
