@@ -193,7 +193,7 @@ namespace WH_APP_GUI.sectors
         }
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            CreateSectorPage createSectorPage = new CreateSectorPage();
+            CreateSectorPage createSectorPage = new CreateSectorPage(Warehouse);
             if (Warehouse != null)
             {
                 Navigation.ReturnParam = Warehouse;

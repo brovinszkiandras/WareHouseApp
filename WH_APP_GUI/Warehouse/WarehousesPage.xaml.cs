@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.IconPacks;
-using Microsoft.Maps.MapControl.WPF;
+﻿using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -239,8 +238,8 @@ namespace WH_APP_GUI.Warehouse
                         {
                             dock.Delete();
                         }
+                        Tables.docks.updateChanges();
                     }
-                    Tables.docks.updateChanges();
 
                     for (int i = 0; i < Tables.warehouseTables.Count; i++)
                     {

@@ -206,6 +206,10 @@ namespace WH_APP_GUI.Warehouse
             {
                 Ini_Revenue_A_Day();
             }
+            else
+            {
+                RevenueStatistics.Visibility = Visibility.Collapsed;
+            }
         }
         private void Ini_City()
         {

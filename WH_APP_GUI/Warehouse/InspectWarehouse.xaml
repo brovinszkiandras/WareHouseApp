@@ -82,7 +82,7 @@
             <Label Grid.Column="1" Content="Warehouse name - City name" Name="WarehouseNameDisplay" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Style="{StaticResource labelstyle}"/>
 
             <Grid Name="MapDisplay" Grid.Column="1" Grid.Row="1" Margin="5"/>
-            <Border Grid.Column="1" Grid.Row="2" BorderBrush="Black" BorderThickness="1">
+            <Border Name="RevenueStatistics" Grid.Column="1" Grid.Row="2" BorderBrush="Black" BorderThickness="1">
                 <Grid Name="Statistic">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>

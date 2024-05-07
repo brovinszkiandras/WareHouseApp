@@ -1,0 +1,45 @@
+extends ../../layouts/header.pug
+
+block content
+    .container.mt-5
+        h2.text-center Your cart
+        .card.mb-3
+            .card-body
+                table.table
+                    tr
+                        th Name
+                        th Quantity
+                        th Price
+                    - if (cart && cart.length !== 0)
+                        each item in cart
+                            tr
+                                td=item.productName
+                                td=item.quantity
+                                td=item.price                               
+                        tr
+                            td
+                            td Total price
+                            td=sumPrice
+                    - else
+                        tr
+                            td(colspan="4") No items in cart
+        h2.text-center Your info
+        form.form-group(action="/sendOrder" id="orderForm" data-parsley-validate method="POST")
+            label(for="user_name") User name
+            input.form-control#user_name(type="text" data-parsley-maxlength="50" data-parsley-minlength="7" data-parsley-required name="user_name")
+            label(for="address") Adress
+            input.form-control#address(type="text" data-parsley-maxlength="100" data-parsley-minlength="4" data-parsley-required name="address")
+            label(for="address") Payment Method
+            select.form-select#payment_method(name="payment_method" data-parsley-required)
+                option(value="bank card") Bank card
+                option(value="with cash on delivery") With cash on delivery
+            label(for="city_id") City
+            select.form-select#city_id(name="city_id" data-parsley-required)
+                each city in cities
+                    option(value=city.id)=city.city_name
+            .row
+                button.btn.btn-primary.btn-lg.btn-block.mt-3(type="submit") Save
+    script.
+        $(document).ready(function() {
+            $('#orderForm').parsley();
+        });

@@ -16,18 +16,18 @@ namespace WH_APP_GUI
 {
     public partial class CreateShelf : Window
     {
-
+       private static Orientation orientation = Orientation.Horizontal;
         public CreateShelf()
         {
             InitializeComponent();
-            Visual.orientation = Orientation.Horizontal;
+           
             name.ValueDataType = typeof(string);
             width.ValueDataType = typeof(double);
-            if (Visual.orientation == Orientation.Horizontal)
+            if (orientation == Orientation.Horizontal)
             {
                 maxWidth.Content = "max " + Visual.sizeHorizontally.ToString();
             }
-            if (Visual.orientation == Orientation.Vertical)
+            if (orientation == Orientation.Vertical)
             {
                 maxWidth.Content += "max " + Visual.sizeVertically.ToString();
             }
@@ -38,15 +38,15 @@ namespace WH_APP_GUI
         {
 
 
-            if (Visual.orientation == Orientation.Horizontal)
+            if (orientation == Orientation.Horizontal)
             {
-                Visual.orientation = Orientation.Vertical;
+                orientation = Orientation.Vertical;
                 change_orientation.Content = "Orientation: Vertical";
                 maxWidth.Content = "max " + Visual.sizeVertically.ToString();
             }
-            else if (Visual.orientation == Orientation.Vertical)
+            else if (orientation == Orientation.Vertical)
             {
-                Visual.orientation = Orientation.Horizontal;
+                orientation = Orientation.Horizontal;
                 change_orientation.Content = "Orientation: Horizontal";
                 maxWidth.Content = "max " + Visual.sizeHorizontally.ToString();
 
@@ -58,12 +58,12 @@ namespace WH_APP_GUI
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             shelfBuilder.newShelf = Tables.shelf.database.NewRow();
+            shelfBuilder.newShelf["orientation"] = orientation.ToString();
             if (Visual.checkIfWidthIsCorrectFormat(width.Text) == true && Validation.ValidateTextbox(name, shelfBuilder.newShelf) == false && Validation.ValidateTextbox(width, shelfBuilder.newShelf) == false)
             {
                 
                 shelfBuilder.newShelf["name"] = name.Text;
                 shelfBuilder.newShelf["width"] = double.Parse(width.Text);
-                shelfBuilder.newShelf["orientation"] = Visual.orientation.ToString();
                 shelfBuilder.isAShelfBeingCreated = true;
 
 

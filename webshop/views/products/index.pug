@@ -1,0 +1,18 @@
+extends ../../layouts/header.pug
+
+block content
+    .main
+        h1 Products
+        ul.cards
+            each product in products
+                li.cards_item
+                    .card
+                        .card_image
+                            img(src='/DefaultProductImage.png' style="width: 100% max-height: 20vh" alt='Product Image')
+                        .card_content
+                            h2.card_title=product.name
+                            strong.card_text=product.selling_price
+                            p.card_text=product.description
+                            form(action=`/addToCart/${JSON.stringify(product)}` id="myForm" method='POST')
+                                button.btn.card_btn.btn-primary Add product
+    script(src="cart.js")

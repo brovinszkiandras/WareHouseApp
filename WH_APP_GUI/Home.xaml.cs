@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.IconPacks;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -26,6 +25,8 @@ namespace WH_APP_GUI
         {
             InitializeComponent();
             //Faker.FakeEveryting();
+            //Faker.FakeDefaultTables();
+
             Navigation.RemoveParent();
 
             Loaded += HomeLoaded;

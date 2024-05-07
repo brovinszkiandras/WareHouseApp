@@ -12,9 +12,9 @@ namespace WH_APP_GUI
         {
             FakeAdmins();
             FakeCeos();
+            FakeWarehouses();
             FakeEmployees();
             FakeProducts();
-            FakeWarehouses();
             FakeProductsToWarehouses();
             FakeOrders();
             FakeRevenue();

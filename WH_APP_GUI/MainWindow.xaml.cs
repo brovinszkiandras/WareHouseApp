@@ -29,7 +29,6 @@ namespace WH_APP_GUI
             InitializeComponent();
 
             //Console.IniConsole();
-            //Email.send("szsoly04@gmail.com", "Megkérdezzem?", "Mivan mivan mivan");
             if (! SQL.IsDatabasetxtExist())
             {
                 DatabaseSet.Visibility = Visibility.Visible;
@@ -109,10 +108,25 @@ namespace WH_APP_GUI
                     SQL.CreateDatabaseConnectionDatas(DataSourceFU.Text, int.Parse(portFU.Text), usernameFU.Text, passwrdFU.Text, DatabaseNameFU.Text);
                     SQL.FillStaticDatabaseValues();
                     DatabaseSet.Visibility = Visibility.Collapsed;
+                    if (SQL.Tables().Contains("staff"))
+                    {
+                        if (SQL.SqlQuery("SELECT * FROM staff")[0][0] != string.Empty)
+                        {
+                            Tables.Ini();
+                            LogIn.Visibility = Visibility.Visible;
+                            Login_button.Visibility = Visibility.Visible;
+                            RegisterAsAdmin.Visibility = Visibility.Collapsed;
+
+                            Name.Visibility = Visibility.Collapsed;
+                            NameBorder.Visibility = Visibility.Collapsed;
+                            NameLBL.Visibility = Visibility.Collapsed;
+                        }
+                    }
                     LogIn.Visibility = Visibility.Visible;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Debug.WriteError(ex);
                     MessageBox.Show("Couldnt connect to the specified database", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
@@ -128,12 +142,12 @@ namespace WH_APP_GUI
             {
                 string hpsw = Hash.HashPassword(Password.Password);
 
-                List<string> employees = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM {Tables.employees.actual_name}"));
-                List<string> staffs = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM {Tables.staff.actual_name}"));
+                List<string> employees = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM employees"));
+                List<string> staffs = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM staff"));
 
                 if (employees.Contains(Emali.Text))
                 {
-                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM {Tables.employees.actual_name} WHERE email = '{Emali.Text}'");
+                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM employees WHERE email = '{Emali.Text}'");
 
                     if (datasOfUser[0][4] != "" || datasOfUser[0][5] != "")
                     {
@@ -162,7 +176,7 @@ namespace WH_APP_GUI
                         }
                         else
                         {
-                            Controller.LogWrite(User.currentUser["email"].ToString(),"User has been logged in to the application");
+                            Controller.LogWrite(User.currentUser["email"].ToString(), "User has been logged in to the application");
                             if (User.currentUser != null)
                             {
                                 LogIn.Visibility = Visibility.Visible;
@@ -180,7 +194,7 @@ namespace WH_APP_GUI
                 }
                 else if (staffs.Contains(Emali.Text))
                 {
-                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM {Tables.staff.actual_name} WHERE email = '{Emali.Text}'");
+                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM staff WHERE email = '{Emali.Text}'");
 
                     if (datasOfUser[0][4] != "")
                     {
