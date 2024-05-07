@@ -51,15 +51,13 @@ namespace WH_APP_GUI.Order
             {
                 foreach (DataRow transport in Tables.transports.database.Rows)
                 {
-                    if (int.Parse(transport["warehouse_id"].ToString()) == int.Parse(User.Warehouse()["id"].ToString()) && transport["status"].ToString() == "Docking")
-                    {
-                        string format = $"{Tables.transports.getEmployee(transport)["name"]} - {Tables.transports.getCar(transport)["type"]}\n" +
+
+                    string format = $"{Tables.transports.getEmployee(transport)["name"]} - {Tables.transports.getCar(transport)["type"]}\n" +
                             $"{transport["end_date"]}";
-                        if (!TransportsDataRow.ContainsKey(format))
-                        {
-                            Transports.Items.Add(format);
-                            TransportsDataRow.Add(format, transport);
-                        }
+                    if (!TransportsDataRow.ContainsKey(format))
+                    {
+                        Transports.Items.Add(format);
+                        TransportsDataRow.Add(format, transport);
                     }
                 }
             }
