@@ -364,12 +364,12 @@ namespace WH_APP_GUI
             {
                 CreateRequiredTablesBTN.Visibility = Visibility.Collapsed;
                 FeaturesDisplayG.Visibility = Visibility.Collapsed;
-                ModifyDatabase.Visibility = Visibility.Collapsed;
+                ModifyDatabase.Visibility = Visibility.Collapsed;//
             }
         }
-        public static void CreateCheckBoxes(Panel Display)
-        {
-            Display.Children.Clear();
+        public static void CreateCheckBoxes(Panel Display)//
+        {//
+            Display.Children.Clear();//
             #region Checkboxes
             DateLogFeature DateLogCBXexe = new DateLogFeature("Date Log");
             DateLogCBXexe.Content = "DateLog feature";
@@ -433,7 +433,7 @@ namespace WH_APP_GUI
         }
         public AdminHomePage(string AdminName, string AdminEmail, string AdminPassword)
         {
-            InitializeComponent();
+            InitializeComponent();//
 
             SAdminName = AdminName;
             SAdminEmail = AdminEmail;
