@@ -26,6 +26,7 @@ namespace WH_APP_GUI
         public EmployeesPage()
         {
             InitializeComponent();
+            Console.WriteLine("No warehouse");
 
             Back.Visibility = Visibility.Collapsed;
 
@@ -42,6 +43,7 @@ namespace WH_APP_GUI
         public EmployeesPage(DataRow warehouse)
         {
             InitializeComponent();
+            Console.WriteLine("Yes warehouse");
 
             if (User.DoesHavePermission("Modify all employees"))
             {
@@ -333,6 +335,7 @@ namespace WH_APP_GUI
             {
                 if (WarehouseFromPage != null)
                 {
+                    Navigation.ReturnParam = null;
                     Navigation.OpenPage(Navigation.GetTypeByName("EditEmployeePage"), employee);
                     Navigation.ReturnParam = WarehouseFromPage;
                 }
@@ -349,6 +352,7 @@ namespace WH_APP_GUI
         {
             if (WarehouseFromPage != null)
             {
+                Navigation.ReturnParam = null;
                 Navigation.OpenPage(Navigation.GetTypeByName("CreateEmployee"));
                 Navigation.ReturnParam = WarehouseFromPage;
             }
