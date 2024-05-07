@@ -35,7 +35,7 @@ namespace WH_APP_GUI.Order
                 DataRow warehouse = Tables.employees.getWarehouse(User.currentUser);
                 foreach (DataRow transport in Tables.warehouses.getTransports(warehouse))
                 {
-                    if (int.Parse(transport["warehouse_id"].ToString()) == int.Parse(User.Warehouse()["id"].ToString()) && transport["status"].ToString() == "Docking")
+                    if ((int)transport["warehouse_id"] == (int)User.currentUser["warehouse_id"] && transport["status"].ToString() == "Docking")
                     {
                         string format = $"{Tables.transports.getEmployee(transport)["name"]} - {Tables.transports.getCar(transport)["type"]}\n" +
                             $"{transport["end_date"]}";
