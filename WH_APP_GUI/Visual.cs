@@ -16,7 +16,7 @@ namespace WH_APP_GUI
 {
     internal class Visual
     {
-        public static Orientation orientation = Orientation.Horizontal;
+        
         public static double sizeHorizontally = 0;
         public static double sizeVertically = 0;
         public static double numberOfSquaresVertically = 0;
@@ -132,21 +132,21 @@ namespace WH_APP_GUI
                     double shelfWidth;
                     if (double.TryParse(width, out shelfWidth) == true)
                     {
-                        if (orientation == Orientation.Horizontal && shelfWidth > 0 && shelfWidth <= sizeHorizontally)
+                        if (shelfBuilder.newShelf["orientation"].ToString() == "Horizontal" && shelfWidth > 0 && shelfWidth <= sizeHorizontally)
                         {
                             isCorrect = true;
                         }
-                        else if (orientation == Orientation.Vertical && shelfWidth <= sizeVertically && shelfWidth > 0)
+                        else if (shelfBuilder.newShelf["orientation"].ToString() == "Vertical" && shelfWidth <= sizeVertically && shelfWidth > 0)
                         {
                             isCorrect = true;
                         }
                         else
                         {
-                            if (orientation == Orientation.Horizontal)
+                            if (shelfBuilder.newShelf["orientation"].ToString() == "Horizontal")
                             {
                                 MessageBox.Show($"The value entered must be greater than zero and less than {sizeVertically}. Please adjust your input accordingly.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
-                            else if (orientation == Orientation.Vertical)
+                            else if (shelfBuilder.newShelf["orientation"].ToString() == "Vertical")
                             {
                                 MessageBox.Show($"The value entered must be greater than zero and less than {sizeHorizontally}. Please adjust your input accordingly.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
