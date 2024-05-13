@@ -1,0 +1,80 @@
+﻿<Page x:Class="WH_APP_GUI.carsFolder.CreateCarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:WH_APP_GUI.carsFolder"
+        mc:Ignorable="d"
+        Title="CreateCarWindow"
+        d:DesignHeight="450" d:DesignWidth="800"
+        SizeChanged="CreateCarWindow_SizeChanged">
+
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+    </Page.Resources>
+
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.4*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="carsGrid" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Plate number" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Type" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Warehouse:" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="Km" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="last service" Grid.Row="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+                <Label Content="last exam" Grid.Row="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontFamily="Baskerville Old Face" Foreground="#FFCEA2"/>
+
+                <xctk:ValueRangeTextBox Grid.Column="1" Grid.Row="0" Name="plate_number" Text="{Binding Path=[plate_number]}" MaxLength="10" MaxLines="10" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <xctk:ValueRangeTextBox Grid.Column="1" Grid.Row="1" Name="type" Text="{Binding Path=[type]}" MaxLength="255" MaxLines="255" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <CheckBox Content="Ready" Grid.Column="1" Grid.Row="2" IsChecked="{Binding Path=[ready]}" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <ComboBox Name="warehouse_id" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <xctk:ValueRangeTextBox Grid.Column="1" Grid.Row="4" Name="km" Text="{Binding Path=[km]}" MaxLength="13" MaxLines="13" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <DatePicker Grid.Column="1" Grid.Row="5" SelectedDate="{Binding Path=[last_service]}" SelectedDateFormat="Short" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+                <DatePicker Grid.Column="1" Grid.Row="6" SelectedDate="{Binding Path=[last_exam]}" SelectedDateFormat="Short" VerticalContentAlignment="Center" Width="auto" FontFamily="Baskerville Old Face" Foreground="#FFCEA2" Background="#395250" BorderBrush="Black" Margin="5"/>
+            </Grid>
+
+            <StackPanel Grid.Column="8" Grid.Row="2" Margin="30">
+                <Button Name="save" Content="Done" Margin="0, 5" Padding="20, 10" Click="Button_Click" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button x:Name="Back" Content="Back" Margin="0, 5" Padding="20, 10" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Page>

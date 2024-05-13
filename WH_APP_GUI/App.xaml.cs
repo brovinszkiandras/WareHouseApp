@@ -13,5 +13,6 @@ namespace WH_APP_GUI
 {
     public partial class App : Application
     {
+        
     }
 }

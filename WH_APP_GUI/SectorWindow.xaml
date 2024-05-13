@@ -1,0 +1,228 @@
+﻿<Page x:Class="WH_APP_GUI.SectorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WH_APP_GUI"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+       
+        Unloaded="Window_Unloaded"
+        mc:Ignorable="d"
+        Title="SectorWindow" d:DesignHeight="600" d:DesignWidth="800">
+    
+        <!-- Page resources -->
+        <Page.Resources>
+        <Style x:Key="RectangleButtonStyle" TargetType="Button">
+            
+        </Style>
+
+
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+            
+            
+        <Style x:Key="LabelTextblockStyle" TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Background" Value="#425C5A"></Setter>
+                <Setter Property="Foreground" Value="#FFCEA2"></Setter>
+                <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                <Setter Property="FontSize" Value="17"></Setter>
+            </Style.Setters>
+        </Style>
+
+        <Style x:Key="ValueTextblockStyle" TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Background" Value="#425C5A"></Setter>
+                <Setter Property="Foreground" Value="#FFCEA2"></Setter>
+                <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                <Setter Property="FontSize" Value="17"></Setter>
+            </Style.Setters>
+        </Style>
+
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+       BorderBrush="{TemplateBinding BorderBrush}"
+       BorderThickness="{TemplateBinding BorderThickness}"
+       CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+ VerticalAlignment="Center"
+ Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+<!-- Main grid -->
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="8*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="8*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Button FontSize="17" Grid.Column="2" Content="Back" Name="Back" Click="Back_Click" Style="{StaticResource GoldenButtonStyle}" Margin="10"/>
+
+            <!-- Sector name -->
+            <Label FontSize="25" Content="{Binding Path=[name]}" Style="{StaticResource labelstyle}" VerticalContentAlignment="Center" Grid.Column="1"/>
+
+            <!-- Shelf bulilder info -->
+            <StackPanel Name="shelfInfoSPNL" Visibility="Collapsed"  Panel.ZIndex="1" Width="auto" Height="auto" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1">
+                <!-- Name -->
+                <Label Name="shelfName"  Foreground="Red" FontSize="20" Content="Shelf1"></Label>
+                <!-- Size -->
+                <Label Name="Size" Foreground="Red" FontSize="20" Content="2*8 m2"></Label>
+                <!-- Orientation -->
+                <Label Name="shelfOrientation" Foreground="Red" FontSize="20" Content="Vertical"></Label>
+            </StackPanel>
+
+            <!-- The grid of squares -->
+            <Border BorderBrush="Black" BorderThickness="0,0,0,2" Grid.Column="1"/>
+            <Border BorderBrush="Black" BorderThickness="0,0,2,0" Grid.Column="0" Grid.Row="1"/>
+            <Border BorderBrush="Black" BorderThickness="0,2,0,0" Grid.Column="1" Grid.Row="2"/>
+            <Border BorderBrush="Black" BorderThickness="2,0,0,0" Grid.Column="2" Grid.Row="1"/>
+            <xctk:Zoombox Panel.ZIndex="0" Loaded="zBox_Loaded" Grid.Row="1" x:Name="zBox"  Grid.Column="1">
+                <Viewbox Stretch="Fill" Name="myViewbox">
+                    <Grid  x:Name="boxGrid" VerticalAlignment="Stretch" Background="#395250">
+
+                    </Grid>
+                </Viewbox>
+            </xctk:Zoombox>
+
+            <!-- Toolpanel -->
+            <StackPanel Visibility="Visible" Name="toolPanel" Grid.Row="1" Grid.Column="2">
+                <!-- Desinger view -->
+                <Button Height="50" Content="Designer view: OFF" Name="desinger_viewButton" Click="Designer_Click" Margin="10" MaxHeight="30" Style="{StaticResource GoldenButtonStyle}"></Button>
+                <!-- New shelf button -->
+                <Button Height="50" Visibility="Hidden" Content="New shelf" Name="New_shelf" Click="New_shelf_Click" MaxHeight="30" Margin="10" Style="{StaticResource GoldenButtonStyle}"></Button>
+                <!-- Done building shelf -->
+                <Button Height="50" Content="Done" Visibility="Hidden" Name="Done" Click="Done_Click" Margin="10" MaxHeight="30" Style="{StaticResource GoldenButtonStyle}"></Button>
+                <!-- Delete button -->
+                <Button Height="50" Content="Delete" Foreground="White" Visibility="Hidden" Name="Delete" MaxHeight="30" Background="Red" Margin="10" Click="Delete_Click" Style="{StaticResource GoldenButtonStyle}"></Button>
+            </StackPanel>
+
+            <!-- Products info -->
+            <ScrollViewer Grid.RowSpan="2" x:Name="ProductsSRCW" Visibility="Collapsed" Grid.Column="2" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                <StackPanel>
+                    <!-- Edit button -->
+                    <Button x:Name="Edit" Click="Edit_Click" Content="Edit" Background="Azure"></Button>
+                    <!-- Close button -->
+                    <Border BorderBrush="Black" BorderThickness="0,0,0,2">
+                        <Grid Height="auto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label FontSize="17" Content="Products"></Label>
+                            <!-- Close button -->
+                            <Button Click="CloseBTN_Click" FontSize="17" Name="CloseBTN" Foreground="White" Background="Crimson" Content="X" Grid.Column="1"/>
+                        </Grid>
+                    </Border>
+                    <!-- Products panel -->
+                    <StackPanel Name="productsPanel">
+
+                    </StackPanel>
+                    <!-- Add level button -->
+                    <Button Name="add_level" Content="Add Level" Click="add_level_Click" Background="YellowGreen" Foreground="White"></Button>
+                </StackPanel>
+
+            </ScrollViewer>
+
+
+            <!-- Progressbars -->
+            <Grid Grid.Column="1" Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="7*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <!-- Area in use label -->
+                    <Label FontSize="16"
+                       VerticalContentAlignment="Center"
+                       Content="Area in use (m2):"
+                       Style="{StaticResource labelstyle}" VerticalAlignment="Bottom"
+                       ></Label>
+
+                    <!-- Show percentage -->
+                    <Label HorizontalContentAlignment="Center" 
+                       Background="Blue" 
+                       Foreground="White" 
+                       VerticalContentAlignment="Center"
+                       Content="0%"
+                       FontSize="20"
+                       Name="areaUsagePercent"
+                       Grid.Row="1"
+                       Style="{StaticResource labelstyle}"
+                       ></Label>
+
+                    <!-- Area in use progressbar -->
+                    <ProgressBar Grid.Column="1"
+                             Maximum="{Binding Path=[area]}"
+                             Value="{Binding Path=[area_in_use]}"
+                             Name="areaProgeressbar"
+                             Grid.Row="1"></ProgressBar>
+
+                    <!-- Squares in use labe-->
+                    <Label FontSize="16"
+                       Content="Squares in use:"
+                       Grid.Row="2"
+                       Style="{StaticResource labelstyle}" VerticalAlignment="Bottom"
+                       ></Label>
+
+                    <!-- Show used squares -->
+                    <Label HorizontalContentAlignment="Center" 
+               Background="Blue" 
+               Foreground="White" 
+               VerticalContentAlignment="Center"
+               Content="0"
+               FontSize="20"
+               Name="squares_in_use"
+               Grid.Row="3"
+               Style="{StaticResource labelstyle}"
+               ></Label>
+
+                    <!-- Squares in use progressbar -->
+                    <ProgressBar Grid.Column="1"
+                 Name="squaresProgressBar"
+                 Grid.Row="3"></ProgressBar>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Page>

@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace WH_APP_GUI
             {
                 returnList.Add(lis[i][0]);
             }
-            return returnList;
+            return returnList;   
         }
         public static bool IsDatabasetxtExist()
         {
@@ -55,84 +56,68 @@ namespace WH_APP_GUI
             databaseWrite.Close();
         }
 
-        public static void FillStaticDatabaseValues()
-        {
-            datasource = File.ReadAllLines("database.txt")[0].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[0].Split(' ')[1] : string.Empty;
-            port = int.TryParse(File.ReadAllLines("database.txt")[1].Split(' ')[1], out int tmp) ? tmp : 0;
-            username = File.ReadAllLines("database.txt")[2].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[2].Split(' ')[1] : string.Empty;
-            password = File.ReadAllLines("database.txt")[3].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[3].Split(' ')[1] : string.Empty;
-            database = File.ReadAllLines("database.txt")[4].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[4].Split(' ')[1] : string.Empty;
-
-
-            connectionstring = $"datasource={datasource};port={port};username={username};password={password};database={database};";
-            con = new MySqlConnection(connectionstring);
+            try
+            {
+                connectionstring = $"datasource={DataSource};port={Port};username={Username};password={password};database=;";
+                con = new MySqlConnection(connectionstring);
         }
 
-    #region Set methoods
-    private static void ModifyDatabaseTXT(string Data, object Value)
-        {
-            StreamReader readDatabaseData = new StreamReader("database.txt");
-            List<string> DatabaseData = new List<string>();
-            while (!readDatabaseData.EndOfStream)
-            {
-                string oneDataLine = readDatabaseData.ReadLine();
-                DatabaseData.Add(oneDataLine);
-            }
-            readDatabaseData.Close();
-
-            StreamWriter writeDatasToDBtxt = new StreamWriter("database.txt");
-            for (int i = 0; i < DatabaseData.Count; i++)
-            {
-                if (DatabaseData[i].Split(' ')[0] == Data)
+                string databaseIsExist = SQL.FindOneDataFromQueryWithoutDatabase($"SHOW DATABASES LIKE '{DatabaseName}';");
+                if (databaseIsExist != string.Empty)
                 {
-                    writeDatasToDBtxt.WriteLine($"{Data} {Value}");
+                    if (MessageBoxResult.Yes == MessageBox.Show("There is an already existing database with this name. Are you sure you want the app to connect to your database and delete any data there?", "Confirmaition", MessageBoxButton.YesNo, MessageBoxImage.Information))
+                    {
+                        SQL.SqlCommandWithoutDatabase($"DROP DATABASE {DatabaseName};");
+                        SQL.SqlCommandWithoutDatabase($"CREATE DATABASE {DatabaseName} DEFAULT CHARACTER SET utf8;");
+                    }
+                    else
+                    {
+                        SQL.SqlCommandWithoutDatabase($"CREATE DATABASE IF NOT EXISTS {DatabaseName} DEFAULT CHARACTER SET utf8;");
+                    }
                 }
                 else
                 {
-                    writeDatasToDBtxt.WriteLine(DatabaseData[i]);    
+                    SQL.SqlCommandWithoutDatabase($"CREATE DATABASE IF NOT EXISTS {DatabaseName} DEFAULT CHARACTER SET utf8;");
                 }
             }
             writeDatasToDBtxt.Close();
         }
 
-        public static void SetDatasource(string NewDatasource)
-        {
-            datasource = NewDatasource;
-            connectionstring = $"datasource={NewDatasource};port={port};username={username};password={password};database={database};";
-            ModifyDatabaseTXT("datasource", NewDatasource);
-            con = new MySqlConnection(connectionstring);
-        }
-        public static void SetPort(int NewPort)
-        {
-            port = NewPort;
-            connectionstring = $"datasource={datasource};port={NewPort};username={username};password={password};database={database};";
-            ModifyDatabaseTXT("port", NewPort);
-            con = new MySqlConnection(connectionstring);
-        }
+                connectionstring = $"datasource={DataSource};port={Port};username={Username};password={password};database={DatabaseName};";
+                con = new MySqlConnection(connectionstring);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Can't connect to the specified database", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         public static void SetUsername(string NewUsername)
         {
             username = NewUsername;
             connectionstring = $"datasource={datasource};port={port};username={NewUsername};password={password};database={database};";
             ModifyDatabaseTXT("username", NewUsername);
         }
-        public static void SetPassword(string NewPassword)
+        public static void FillStaticDatabaseValues()
         {
-            password = NewPassword;
-            connectionstring = $"datasource={datasource};port={port};username={username};password={NewPassword};database={database};";
-            ModifyDatabaseTXT("password", NewPassword);
-            con = new MySqlConnection(connectionstring);
-        }
-        public static void SetDatabaseName(string databaseName)
-        {
-            database = databaseName;
-            connectionstring = $"datasource={datasource};port={port};username={username};password={password};database={databaseName};";
-            ModifyDatabaseTXT("database", databaseName);
-            con = new MySqlConnection(connectionstring);
-        }
+            try
+            {
+                datasource = File.ReadAllLines("database.txt")[0].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[0].Split(' ')[1] : string.Empty;
+                port = int.TryParse(File.ReadAllLines("database.txt")[1].Split(' ')[1], out int tmp) ? tmp : 0;
+                username = File.ReadAllLines("database.txt")[2].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[2].Split(' ')[1] : string.Empty;
+                password = File.ReadAllLines("database.txt")[3].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[3].Split(' ')[1] : string.Empty;
+                database = File.ReadAllLines("database.txt")[4].Split(' ')[1] != null ? File.ReadAllLines("database.txt")[4].Split(' ')[1] : string.Empty;
 
-        #endregion
+                connectionstring = $"datasource={datasource};port={port};username={username};password={password};database={database};";
+                con = new MySqlConnection(connectionstring);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                File.Delete("database.txt");
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+            }
+        }
         #region Sql commands
-        static public void SqlCommand(string command)
+        public static void SqlCommand(string command)
         {
             try
             {
@@ -153,15 +138,15 @@ namespace WH_APP_GUI
             }
             catch (Exception ex)
             {
-                Debug.WriteError(ex.ToString());
+                Debug.WriteError(ex);
+                Debug.WriteError(command);
                 throw;
             }
         }
-
-        static public void SqlCommandWithoutDatabase(string command)
+        public static void SqlCommandWithoutDatabase(string command)
         {
             try
-            {
+            {   
                 MessageBox.Show(connectionstring);
                 MessageBox.Show(command);
                 
@@ -178,7 +163,7 @@ namespace WH_APP_GUI
             }
             catch (Exception ex)
             {
-                Debug.WriteError(ex.ToString());
+                Debug.WriteError(ex);
                 throw;
             }
         }
@@ -197,14 +182,22 @@ namespace WH_APP_GUI
                     string data;
                     using (MySqlCommand command = new MySqlCommand(query, con))
                     {
-                        data = command.ExecuteScalar().ToString();
+                        var result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            data = result.ToString();
+                        }
+                        else
+                        {
+                            data = string.Empty;
+                        }
                     }
                     return data;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteError(ex.ToString());
+                Debug.WriteError(ex);
                 throw;
             }
         }
@@ -219,19 +212,26 @@ namespace WH_APP_GUI
                     string data;
                     using (MySqlCommand command = new MySqlCommand(query, con))
                     {
-                        data = command.ExecuteScalar().ToString();
+                        var result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            data = result.ToString();
+                        }
+                        else
+                        {
+                            data = string.Empty;
+                        }
                     }
                     return data;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteError(ex.ToString());
+                Debug.WriteError(ex);
                 throw;
             }
         }
-
-        static public List<string[]> SqlQuery(string query)
+        public static List<string[]> SqlQuery(string query)
         {
             try
             {
@@ -262,12 +262,12 @@ namespace WH_APP_GUI
             }
             catch (Exception ex)
             {
-                Debug.WriteError(ex.ToString());
+                Debug.WriteError(ex);
+                Debug.WriteError(query);
                 throw;
             }
         }
-
-        static public List<string[]> SqlQueryWithoutDatabase(string query)
+        public static List<string[]> SqlQueryWithoutDatabase(string query)
         {
             try
             {
@@ -294,42 +294,64 @@ namespace WH_APP_GUI
             }
             catch (Exception ex)
             {
-                Debug.WriteError(ex.ToString());
+                Debug.WriteError(ex);
                 throw;
             }
         }
-
-        static public void DeleteTable(string tableName)
+        public static bool BoolQuery(string query)
         {
-            try
+            string result = FindOneDataFromQuery(query);
+            if (bool.Parse(result))
             {
-                con.Open();
-                string deleteTableQuery = $"USE {database}; DROP TABLE {tableName};";
-                using (MySqlCommand command = new MySqlCommand(deleteTableQuery, con))
-                {
-                    command.ExecuteNonQuery();
-                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
                 con.Close();
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show(ex.ToString(), "Error");
-                Debug.WriteError(ex.ToString());
-                throw;
-            }
         }
         #endregion
-
-        static public bool ContainsIllegalRegex(string input)
+        public static List<string> GetElementOfListArray(List<string[]> ListWithArray)
         {
-            string[] illegalPatterns = { @"\s", @"[\W&&[^_]]", @"\b(select|insert|update|delete|table)\b", @"[!@#$%^&*()+=\[\]{};':"",.<>?/\\|~`]", "[áéűó]" };
-
-            foreach (var pattern in illegalPatterns)
+            List<string> returnList = new List<string>();
+            for (int i = 0; i < ListWithArray.Count; i++)
             {
-                if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase) || char.IsDigit(input[0]))
-                {
-                    return true;
-                }
+                returnList.Add(ListWithArray[i][0]);
+            }
+            return returnList;
+        }
+        public static string convertDateToCorrectFormat(DateTime date)
+        {
+            string datetimestring = date.ToString();
+            // Adjust the format specifier to match the actual format of your datetime string
+            if (DateTime.TryParseExact(datetimestring, "yyyy. MM. dd. H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue))
+            {
+                // Convert the datetime value to the desired format
+                string formattedDateTimeString = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
+                // Update the value in the DataRow with the formatted datetime string
+               return formattedDateTimeString;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public static string convertShordDateTocorrectFormat(DateTime date)
+        {
+            string datetimestring = date.ToString();
+            // Adjust the format specifier to match the actual format of your datetime string
+            if (DateTime.TryParseExact(datetimestring, "yyyy. MM. dd.", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTimeValue))
+            {
+                // Convert the datetime value to the desired format
+                string formattedDateTimeString = dateTimeValue.ToString("yyyy-MM-dd");
+                // Update the value in the DataRow with the formatted datetime string
+                return formattedDateTimeString;
+            }
+            else
+            {
+                //MessageBox.Show("Could not parse it");
+                return null;
             }
             return false;
         }

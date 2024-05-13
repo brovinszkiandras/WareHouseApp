@@ -32,5 +32,11 @@ namespace WH_APP_GUI
             ir.Write($"\n[{DateTime.Now.ToString("yyyy/MM/dd:HH-mm")}] ERROR: {error}");
             ir.Close();
         }
+        public static void WriteError(Exception error)
+        {
+            StreamWriter ir = new StreamWriter("log.txt", true);
+            ir.Write($"\n[{DateTime.Now.ToString("yyyy/MM/dd:HH-mm")}] ERROR: {error.Message}");
+            ir.Close();
+        }
     }
 }

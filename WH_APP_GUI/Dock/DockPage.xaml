@@ -1,0 +1,73 @@
+﻿<Page x:Class="WH_APP_GUI.Dock.DockPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WH_APP_GUI.Dock"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="DockPage"
+      SizeChanged="DockPage_SizeChanged">
+
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GoldenButtonStyle">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFCEA2"/>
+            <Setter Property="Foreground" Value="#425C5A"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                     BorderBrush="{TemplateBinding BorderBrush}"
+                     BorderThickness="{TemplateBinding BorderThickness}"
+                     CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Content="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="labelstyle">
+            <Setter Property="Foreground" Value="#FFCEA2"/>
+            <Setter Property="FontFamily" Value="Baskerville Old Face"/>
+        </Style>
+    </Page.Resources>
+
+    <Border CornerRadius="30,0,0,0" Background="#425C5A">
+        <Grid Name="alapgrid" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="Add new dock" Name="AddNewDock" Click="AddNewDock_Click" Margin="5" Style="{StaticResource GoldenButtonStyle}"/>
+                <Button Content="Back" Name="Back" Click="Back_Click" Margin="5" Style="{StaticResource GoldenButtonStyle}"/>
+            </StackPanel>
+
+
+            <Grid Name="DockDisplayGRID" Grid.Column="1" Visibility="Visible">
+                <ScrollViewer Name="DockDisplaySCROLL" Visibility="Visible" Margin="20">
+                    <StackPanel Name="DockDisplaySTACK" Orientation="Vertical">
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+
+            <Frame Grid.ColumnSpan="2" Name="DockContent" Visibility="Collapsed"/>
+        </Grid>
+    </Border>
+</Page>
