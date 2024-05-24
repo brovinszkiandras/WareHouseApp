@@ -89,7 +89,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
                     <StackPanel>
                         <Border Margin="5" BorderBrush="Black" BorderThickness="1">
-                            <Grid Name="MapDisplay" MinHeight="200"/>
+                            <gmap:GMapControl x:Name="gmap" Zoom="12" MinZoom="2" MaxZoom="17" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="1" Margin="5"/>
                         </Border>
                         <StackPanel x:Name="transportDisplay"/>
                     </StackPanel>
