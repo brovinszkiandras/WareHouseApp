@@ -155,7 +155,7 @@ namespace WH_APP_GUI
                         {
                             User.SetCurrentUser(UserEmail.Text, hpsw);
                             Navigation.MainWindow = this;
-
+                            
                             if (Tables.features.isFeatureInUse("Activity"))
                             {
                                 if (!(bool)User.currentUser["activity"])
@@ -196,7 +196,7 @@ namespace WH_APP_GUI
                     }
                     else
                     {
-                        MessageBox.Show("Entry blocked. The user's data is either incomplete or non-existent!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Entry blocked. The user's data is incomplete or non-existent!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
 
                 }
