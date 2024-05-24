@@ -86,8 +86,8 @@
                     </Border>
                     <Border Padding="5" x:Name="EmailBorder" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">
                         <StackPanel>
-                            <Label Content="Emali:" VerticalContentAlignment="Bottom" Foreground="Black"/>
-                            <TextBox x:Name="Emali" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
+                            <Label Content="Email:" VerticalContentAlignment="Bottom" Foreground="Black"/>
+                            <TextBox x:Name="UserEmail" BorderThickness="0" BorderBrush="Transparent" Background="#FF676F9D" Foreground="White"/>
                         </StackPanel>
                     </Border>
                     <Border x:Name="PasswordBorder" Padding="5" CornerRadius="10" BorderThickness="0" SnapsToDevicePixels="True" Background="#FF676F9D" BorderBrush="White" Margin="0,0,0,10">

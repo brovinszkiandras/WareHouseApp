@@ -85,7 +85,7 @@ namespace WH_APP_GUI
                 FontSize = e.NewSize.Height * 0.03;
             }
             Name.FontSize = e.NewSize.Height * 0.02;
-            Emali.FontSize = e.NewSize.Height * 0.02;
+            UserEmail.FontSize = e.NewSize.Height * 0.02;
             Password.FontSize = e.NewSize.Height * 0.02;
 
             passwrdFU.FontSize = e.NewSize.Height * 0.02;
@@ -95,7 +95,7 @@ namespace WH_APP_GUI
             DatabaseNameFU.FontSize = e.NewSize.Height * 0.02;
 
             Name.FontSize = e.NewSize.Height * 0.02;
-            Emali.FontSize = e.NewSize.Height * 0.02;
+            UserEmail.FontSize = e.NewSize.Height * 0.02;
             RegisterAsAdmin.FontSize = e.NewSize.Height * 0.02;
         }
 
@@ -138,35 +138,49 @@ namespace WH_APP_GUI
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            if (Emali.Text != string.Empty && Password.Password != string.Empty)
+            if (UserEmail.Text != string.Empty && Password.Password != string.Empty)
             {
                 string hpsw = Hash.HashPassword(Password.Password);
 
                 List<string> employees = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM employees"));
                 List<string> staffs = SQL.GetElementOfListArray(SQL.SqlQuery($"SELECT email FROM staff"));
 
-                if (employees.Contains(Emali.Text))
+                if (employees.Contains(UserEmail.Text))
                 {
-                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM employees WHERE email = '{Emali.Text}'");
+                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM employees WHERE email = '{UserEmail.Text}'");
 
                     if (datasOfUser[0][4] != "" || datasOfUser[0][5] != "")
                     {
-                        User.SetCurrentUser(Emali.Text, hpsw);
-                        Navigation.MainWindow = this;
-                        if (Tables.features.isFeatureInUse("Activity"))
+                        if (Tables.employees.database.Select($"email = '{UserEmail.Text}'")[0]["password"].ToString() == hpsw)
                         {
-                            if (!(bool)User.currentUser["activity"])
+                            User.SetCurrentUser(UserEmail.Text, hpsw);
+                            Navigation.MainWindow = this;
+                            if (Tables.features.isFeatureInUse("Activity"))
                             {
-                                MessageBox.Show("Your activity is set to Inactive. You won't be able to log in until you're active again", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                if (!(bool)User.currentUser["activity"])
+                                {
+                                    MessageBox.Show("Your activity is set to Inactive. You won't be able to log in until you're active again", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                                else
+                                {
+                                    Controller.LogWrite(User.currentUser["email"].ToString(), "User has been logged in to the application");
+                                    if (User.currentUser != null)
+                                    {
+                                        User.currentUser["is_loggedin"] = true;
+                                        Tables.employees.updateChanges();
+
+                                        LogIn.Visibility = Visibility.Visible;
+                                        content.Visibility = Visibility.Visible;
+                                        content.Content = null;
+                                        content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                                    }
+                                }
                             }
                             else
                             {
                                 Controller.LogWrite(User.currentUser["email"].ToString(), "User has been logged in to the application");
                                 if (User.currentUser != null)
                                 {
-                                    User.currentUser["is_loggedin"] = true;
-                                    Tables.employees.updateChanges();
-
                                     LogIn.Visibility = Visibility.Visible;
                                     content.Visibility = Visibility.Visible;
                                     content.Content = null;
@@ -176,6 +190,25 @@ namespace WH_APP_GUI
                         }
                         else
                         {
+                            MessageBox.Show("Invalid password!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Entry blocked. The user's data is either incomplete or non-existent.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
+                }
+                else if (staffs.Contains(UserEmail.Text))
+                {
+                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM staff WHERE email = '{UserEmail.Text}'");
+
+                    if (datasOfUser[0][4] != "")
+                    {
+                        if (Tables.staff.database.Select($"email = '{UserEmail.Text}'")[0]["password"].ToString() == hpsw)
+                        {
+                            User.SetCurrentUser(UserEmail.Text, hpsw);
+                            Navigation.MainWindow = this;
                             Controller.LogWrite(User.currentUser["email"].ToString(), "User has been logged in to the application");
                             if (User.currentUser != null)
                             {
@@ -185,28 +218,9 @@ namespace WH_APP_GUI
                                 content.Navigate(new Uri("Home.xaml", UriKind.Relative));
                             }
                         }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Entry blocked. The user's data is either incomplete or non-existent.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-
-                }
-                else if (staffs.Contains(Emali.Text))
-                {
-                    List<string[]> datasOfUser = SQL.SqlQuery($"SELECT * FROM staff WHERE email = '{Emali.Text}'");
-
-                    if (datasOfUser[0][4] != "")
-                    {
-                        User.SetCurrentUser(Emali.Text, hpsw);
-                        Navigation.MainWindow = this;
-                        Controller.LogWrite(User.currentUser["email"].ToString(), "User has been logged in to the application");
-                        if (User.currentUser != null)
+                        else
                         {
-                            LogIn.Visibility = Visibility.Visible;
-                            content.Visibility = Visibility.Visible;
-                            content.Content = null;
-                            content.Navigate(new Uri("Home.xaml", UriKind.Relative));
+                            MessageBox.Show("Invalid password!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     else
@@ -227,10 +241,10 @@ namespace WH_APP_GUI
 
         private void RegisterAsAdmin_Click(object sender, RoutedEventArgs e)
         {
-            if (Name.Text != string.Empty && Emali.Text != string.Empty && Password.Password != string.Empty)
+            if (Name.Text != string.Empty && UserEmail.Text != string.Empty && Password.Password != string.Empty)
             {
                 string AdminName = Name.Text;
-                string AdminEmail = Emali.Text;
+                string AdminEmail = UserEmail.Text;
                 string AdminPassword = Hash.HashPassword(Password.Password);
 
                 LogIn.Visibility = Visibility.Collapsed;
