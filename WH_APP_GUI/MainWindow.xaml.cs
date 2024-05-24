@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -261,9 +261,6 @@ namespace WH_APP_GUI
             }
         }
 
-        private void content_Navigating(object sender, NavigatingCancelEventArgs e)
-        {
-          
-        }
+        private void content_Navigating(object sender, NavigatingCancelEventArgs e) { }
     }
 }
