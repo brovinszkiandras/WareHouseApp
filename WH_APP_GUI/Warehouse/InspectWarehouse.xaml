@@ -5,9 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WH_APP_GUI.Warehouse"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Unloaded="InspectWarehousePage_Unloaded"
       Title="InspectWarehouse"
       SizeChanged="inspectWarehouse_SizeChanged">
 
@@ -81,7 +81,8 @@
 
             <Label Grid.Column="1" Content="Warehouse name - City name" Name="WarehouseNameDisplay" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Style="{StaticResource labelstyle}"/>
 
-            <Grid Name="MapDisplay" Grid.Column="1" Grid.Row="1" Margin="5"/>
+            <gmap:GMapControl x:Name="gmap" Zoom="12" MinZoom="2" MaxZoom="17" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="1" Margin="5"/>
+
             <Border Name="RevenueStatistics" Grid.Column="1" Grid.Row="2" BorderBrush="Black" BorderThickness="1">
                 <Grid Name="Statistic">
                     <Grid.RowDefinitions>

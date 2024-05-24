@@ -1,4 +1,6 @@
-﻿using Microsoft.Maps.MapControl.WPF;
+﻿using GMap.NET.MapProviders;
+using GMap.NET;
+using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -32,15 +34,15 @@ namespace WH_APP_GUI.transport
         }
         private void Ini_Map()
         {
-            terkep.IsEnabled = false;
-            MapDisplay.Children.Add(terkep);
-            terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
-
             double lat = double.Parse(Tables.warehouses.getCity(Tables.transports.getWarehouse(Transport))["latitude"].ToString());
             double lon = double.Parse(Tables.warehouses.getCity(Tables.transports.getWarehouse(Transport))["longitude"].ToString());
 
-            terkep.Center = new Location(lat, lon);
-            terkep.ZoomLevel = 10;
+            gmap.MapProvider = GMapProviders.GoogleMap;
+            gmap.Position = new PointLatLng(lat, lon);
+            gmap.Zoom = 10;
+
+            gmap.ShowCenter = false;
+            gmap.IsEnabled = false;
         }
 
         private void DisplayOneTransport(DataRow transport)
@@ -427,8 +429,9 @@ namespace WH_APP_GUI.transport
                 double lat = double.Parse(Tables.orders.getCity(order)["latitude"].ToString());
                 double lon = double.Parse(Tables.orders.getCity(order)["longitude"].ToString());
 
-                terkep.Center = new Location(lat, lon);
-                terkep.ZoomLevel = 10;
+                gmap.MapProvider = GMapProviders.GoogleMap;
+                gmap.Position = new PointLatLng(lat, lon);
+                gmap.Zoom = 10;
             }
         }
 

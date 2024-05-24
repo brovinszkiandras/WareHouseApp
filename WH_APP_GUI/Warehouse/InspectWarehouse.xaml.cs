@@ -16,6 +16,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WH_APP_GUI.sectors;
 using WH_APP_GUI.warehouseTableFolder;
+using GMap.NET;
+using GMap.NET.MapProviders;
 
 namespace WH_APP_GUI.Warehouse
 {
@@ -25,11 +27,9 @@ namespace WH_APP_GUI.Warehouse
         {
             foreach (var child in alapgrid.Children)
             {
-                    FontSize = e.NewSize.Height * 0.03;
+                FontSize = e.NewSize.Height * 0.03;
             }
-            MapDisplay.Height = e.NewSize.Height * 0.4;
             WarehouseNameDisplay.FontSize = e.NewSize.Height * 0.04;
-
         }
         private Map terkep = new Map();
         private Type PreviousPageType;
@@ -39,7 +39,7 @@ namespace WH_APP_GUI.Warehouse
         {
             InitializeComponent();
             Warehouse = warehouse;
-            
+
             this.warehouseTable = Tables.getWarehosue(warehouse["name"].ToString());
 
             WarehouseNameDisplay.Content = $"{warehouse["name"]} - {Tables.warehouses.getCity(warehouse)["city_name"]}";
@@ -49,7 +49,7 @@ namespace WH_APP_GUI.Warehouse
                 User.tempWarehouse = Warehouse;
             }
 
-            if (! User.DoesHavePermission("Inspect Products"))
+            if (!User.DoesHavePermission("Inspect Products"))
             {
                 ProductsInspectToWarehouse.Visibility = Visibility.Collapsed;
             }
@@ -100,7 +100,7 @@ namespace WH_APP_GUI.Warehouse
             {
                 OrdersInspectToWarehouse.Visibility = Visibility.Collapsed;
             }
-           
+
 
             if (Tables.features.isFeatureInUse("Fleet"))
             {
@@ -171,12 +171,12 @@ namespace WH_APP_GUI.Warehouse
                         }
                         else
                         {
-                            DocksInspectToWarehouse.Visibility= Visibility.Collapsed;
+                            DocksInspectToWarehouse.Visibility = Visibility.Collapsed;
                         }
                     }
                     else
                     {
-                        DocksInspectToWarehouse.Visibility= Visibility.Visible;
+                        DocksInspectToWarehouse.Visibility = Visibility.Visible;
                     }
                 }
                 else
@@ -213,15 +213,15 @@ namespace WH_APP_GUI.Warehouse
         }
         private void Ini_City()
         {
-            terkep.IsEnabled = true;
-            MapDisplay.Children.Add(terkep);
-            terkep.CredentialsProvider = new ApplicationIdCredentialsProvider("I28YbqAL3vpfFHWSLW5x~bGccdfvqXsmwkAA8zHurUw~Apx4iHJNCNHKm28KE8CDvxw6wAeIp4-8Yz1DDnwyIa81h9Obx4dD-xlgWz3mrIq8");
-
             double lat = double.Parse(Tables.warehouses.getCity(Warehouse)["latitude"].ToString());
             double lon = double.Parse(Tables.warehouses.getCity(Warehouse)["longitude"].ToString());
 
-            terkep.Center = new Location(lat, lon);
-            terkep.ZoomLevel = 10;
+            gmap.MapProvider = GMapProviders.GoogleMap;
+            gmap.Position = new PointLatLng(lat, lon);
+            gmap.Zoom = 10;
+
+            gmap.ShowCenter = false;
+            gmap.IsEnabled = false;
         }
         private void Ini_Revenue_A_Day()
         {
@@ -276,11 +276,6 @@ namespace WH_APP_GUI.Warehouse
             {
                 NoRevenue.Visibility = Visibility.Visible;
             }
-        }
-        private void InspectWarehousePage_Unloaded(object sender, RoutedEventArgs e)
-        {
-            MapDisplay.Children.Remove(terkep);
-            terkep.Dispose();
         }
 
         private void SectorsInspectToWarehouse_Click(object sender, RoutedEventArgs e)
